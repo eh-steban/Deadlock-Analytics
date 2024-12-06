@@ -57,7 +57,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 application {
     // Define the main class for the application.
-    mainClass.set("skadistats.clarity.examples.matchend.Main")
+    mainClass.set("Main")
 
     // NOTE: Commenting this out for now, but I may need to bring this back later
     // if I don't want the main entry point to be matchend/Main.kt

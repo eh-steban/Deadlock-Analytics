@@ -1,5 +1,3 @@
-package skadistats.clarity.examples.matchend
-
 import skadistats.clarity.io.Util
 import skadistats.clarity.model.EngineId
 import skadistats.clarity.model.Entity
