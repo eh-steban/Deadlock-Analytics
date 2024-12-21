@@ -1,3 +1,5 @@
+package com
+
 import skadistats.clarity.model.GameEvent;
 import skadistats.clarity.processor.gameevents.OnGameEvent
 import skadistats.clarity.processor.runner.ControllableRunner
@@ -8,6 +10,7 @@ public class Events(private val fileName: String) {
     private val runner: ControllableRunner
 
     init {
+        // FIXME: Need a null handler here
         runner = ControllableRunner(MappedFileSource(fileName)).runWith(this)
         runner.seek(runner.lastTick)
         runner.halt()

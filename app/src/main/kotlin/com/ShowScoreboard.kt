@@ -1,3 +1,5 @@
+package com
+
 import skadistats.clarity.io.Util
 import skadistats.clarity.model.EngineId
 import skadistats.clarity.model.Entity
@@ -13,6 +15,7 @@ public class ShowScoreboard(private val fileName: String) {
     private val runner: ControllableRunner
 
     init {
+        // FIXME: Need a null handler here
         runner = ControllableRunner(MappedFileSource(fileName)).runWith(this)
         runner.seek(runner.lastTick)
         runner.halt()
