@@ -2,6 +2,7 @@
 
 plugins {
     kotlin("jvm") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -21,6 +22,10 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    // TODO: Using this in order to serialize the WebhookPayload data class
+    // There may be a better implementation
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
 
@@ -33,6 +38,12 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.slf4j:slf4j-api:2.0.9")
     runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
+
+    // Local server dependencies
+    implementation("io.ktor:ktor-server-core:2.2.3")
+    implementation("io.ktor:ktor-server-netty:2.2.3")
+    implementation("io.ktor:ktor-server-content-negotiation:2.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -57,9 +68,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 application {
     // Define the main class for the application.
-    mainClass.set("Main")
-
-    // NOTE: Commenting this out for now, but I may need to bring this back later
-    // if I don't want the main entry point to be matchend/Main.kt
-    // mainClass.set("deadlockstats.AppKt")
+    mainClass.set("com.MainKt")
 }
