@@ -1,5 +1,3 @@
-package com
-
 import skadistats.clarity.model.GameEvent;
 import skadistats.clarity.processor.gameevents.OnGameEvent
 import skadistats.clarity.processor.runner.ControllableRunner

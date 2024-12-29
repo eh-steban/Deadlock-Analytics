@@ -1,5 +1,3 @@
-package com
-
 import java.io.File
 
 class Match(matchId: Int) {

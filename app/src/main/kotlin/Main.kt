@@ -1,6 +1,3 @@
-// Application related imports
-package com
-
 import org.slf4j.LoggerFactory
 import kotlinx.coroutines.runBlocking
 

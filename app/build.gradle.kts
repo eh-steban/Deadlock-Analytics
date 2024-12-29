@@ -74,5 +74,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.MainKt")
+    mainClass.set("MainKt")
 }
