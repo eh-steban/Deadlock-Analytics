@@ -1,8 +1,8 @@
 // This build file is specific to the backend Kotlin application
 
 plugins {
-    kotlin("jvm") version "1.9.10"
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("jvm") version "2.0.21"
+    kotlin("plugin.serialization") version "2.0.21"
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
@@ -13,6 +13,7 @@ repositories {
     mavenCentral()
 }
 
+val ktorVersion = "3.0.2"
 dependencies {
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -24,7 +25,7 @@ dependencies {
 
     // TODO: Using this in order to serialize the WebhookPayload data class
     // There may be a better implementation
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
@@ -40,29 +41,31 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
 
     // Local server dependencies
-    implementation("io.ktor:ktor-server-core:2.2.3")
-    implementation("io.ktor:ktor-server-netty:2.2.3")
-    implementation("io.ktor:ktor-server-content-negotiation:2.2.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     // Use Java 21 as the toolchain for Java tasks
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 kotlin {
     // Use Java 21 as the toolchain for Kotlin tasks
-    jvmToolchain(17)
+    jvmToolchain(21)
     sourceSets["main"].kotlin.srcDirs("src/main/kotlin")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
