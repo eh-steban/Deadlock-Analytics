@@ -25,3 +25,4 @@ gradle-wrapper.properties
 .vscode
 
 match_metadata.json
+match_history.json
