@@ -40,13 +40,16 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
 
-    // Local server dependencies
+    // Local client/server dependencies
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
+
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

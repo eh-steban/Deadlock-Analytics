@@ -6,11 +6,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.github.cdimascio.dotenv.dotenv
 
 class DeadlockAPI() {
 
     private val client = HttpClient(CIO)
-    private val apiKey = "HEXE-9bb8629c-9d55-4b86-82d1-2cb0e4eee251"
+    private val dotenv = dotenv()
+    private val apiKey = dotenv["API_KEY"] ?: throw RuntimeException("API key not found in .env")
 
     // TODO: I'm setting this up to return a string because I'm printing this to a JSON file
     // I'll likely need to change this behavior to return an actual JSON object so
