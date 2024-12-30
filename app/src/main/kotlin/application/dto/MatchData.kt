@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 // NOTE: We can collect more history data, but we're starting with these fields first
 @Serializable
 data class MatchData(
-    @SerialName("match_id") val matchId: Int,
+    @SerialName("match_id") val matchId: Long,
     @SerialName("start_time") val startTime: Long,
     @SerialName("game_mode") val gameMode: Int,
     @SerialName("match_mode") val matchMode: Int,

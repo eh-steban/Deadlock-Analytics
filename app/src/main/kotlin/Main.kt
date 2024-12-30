@@ -1,4 +1,5 @@
 import domain.service.PlayerService
+import domain.service.MatchService
 import application.controller.DeadlockAPIController
 import org.slf4j.LoggerFactory
 import kotlinx.serialization.json.Json
@@ -16,7 +17,8 @@ fun main(args: Array<String>) = runBlocking {
     val steamId = dotenv["STEAM_ID"].toLong() ?: throw RuntimeException("Steam ID not found in .env")
 
     val playerMatchHistory = PlayerService().getMatchHistoryFor(steamId)
-    println("${playerMatchHistory}")
+    val matchId = playerMatchHistory.matchHistory[0].matchId
+    MatchService().downloadReplayFor(matchId)
 
     // given the history, we download each replay and parse it
 

@@ -4,6 +4,7 @@ build
 **/build/
 !src/**/build/
 .env
+src/main/kotlin/replays/*
 
 # Ignore Gradle GUI config
 gradle-app.setting
