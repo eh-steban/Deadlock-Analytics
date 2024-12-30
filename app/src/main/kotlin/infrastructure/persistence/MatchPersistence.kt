@@ -1,7 +1,8 @@
+package infrastructure.persistence
 import java.io.File
 
-class Match(matchId: Int) {
-    fun save(content: String) {
+class MatchPersistence(matchId: Int) {
+    fun saveToJsonFile(content: String) {
         val outputFilePath = "match_metadata.json"
         val outputFile = File(outputFilePath)
 
@@ -9,5 +10,4 @@ class Match(matchId: Int) {
         outputFile.writeText(content)
         println("JSON data saved to: $outputFilePath")
     }
-
 }

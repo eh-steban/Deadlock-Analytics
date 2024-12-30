@@ -1,4 +1,7 @@
+import domain.service.PlayerService
+import application.controller.DeadlockAPIController
 import org.slf4j.LoggerFactory
+import kotlinx.serialization.json.Json
 import kotlinx.coroutines.runBlocking
 import io.github.cdimascio.dotenv.dotenv
 
@@ -6,12 +9,25 @@ import io.github.cdimascio.dotenv.dotenv
 fun main(args: Array<String>) = runBlocking {
     val startTime = System.currentTimeMillis()
 
-    val matchId = 31067068
-    DeadlockAPI().fetchMatchMetadata(matchId)
-
+    // Steam user logs in
+    // allows us to pull match history
+    // we pull match history given the steamId
     val dotenv = dotenv()
-    val steamID = dotenv["STEAM_ID"].toLong() ?: throw RuntimeException("Steam ID not found in .env")
-    DeadlockAPI().fetchAccountMatchHistory(steamID)
+    val steamId = dotenv["STEAM_ID"].toLong() ?: throw RuntimeException("Steam ID not found in .env")
+
+    val playerMatchHistory = PlayerService().getMatchHistoryFor(steamId)
+    println("${playerMatchHistory}")
+
+    // given the history, we download each replay and parse it
+
+    // for the data we need in calculations
+
+    // NOTE: We'll probably need to store history such as matchId and
+    // uId because if we have data for that match already,
+    // we shouldn't have to download and parse it again
+
+    // val matchId = 31067068
+    // DeadlockAPIController().fetchMatchMetadata(matchId)
 
     val fileName = args.getOrNull(0) ?: throw IllegalArgumentException("Replay file is required.")
     // Events(fileName)
