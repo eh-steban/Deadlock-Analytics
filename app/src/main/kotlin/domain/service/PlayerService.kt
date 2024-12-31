@@ -1,10 +1,11 @@
 package domain.service
 import application.dto.PlayerMatchHistory
+import application.controller.APIClient
 import application.controller.DeadlockAPIController
 
-class PlayerService() {
+class PlayerService(private val apiClient: APIClient) {
     suspend fun getMatchHistoryFor(accountId: Long): PlayerMatchHistory {
-        return DeadlockAPIController().fetchAccountMatchHistory(accountId)
+        return DeadlockAPIController(apiClient).fetchAccountMatchHistory(accountId)
 
     }
 }
