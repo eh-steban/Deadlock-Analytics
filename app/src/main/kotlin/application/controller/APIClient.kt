@@ -55,7 +55,7 @@ class APIClient() {
 
     suspend fun downloadFromStream(replayFileStream: ByteReadChannel, matchId: Long): String {
         val replayDirPath = dotenv()["REPLAY_FILE_PATH"] ?: throw RuntimeException("REPLAY_FILE_PATH not found in .env")
-        val outputFilePath = "$replayDirPath/$matchId.dem"
+        val outputFilePath = "$replayDirPath/$matchId.dem.bz2"
         val outputFile = File(outputFilePath).apply {
             createNewFile()
         }
