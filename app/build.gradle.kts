@@ -51,6 +51,9 @@ dependencies {
     implementation("io.ktor:ktor-http:$ktorVersion")
     implementation("io.ktor:ktor-utils:$ktorVersion")
 
+    // Library to unzip files
+    implementation("org.apache.commons:commons-compress:1.23.0")
+
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
 
 }

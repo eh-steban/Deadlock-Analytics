@@ -1,5 +1,6 @@
 import domain.service.PlayerService
 import domain.service.MatchService
+import domain.service.ReplayService
 import application.controller.APIClient
 import application.controller.DeadlockAPIController
 import org.slf4j.LoggerFactory
@@ -7,6 +8,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.coroutines.runBlocking
 import io.github.cdimascio.dotenv.dotenv
 
+// TODO: This is here for now, but should likely move with the suggested
+// refactor below...
+import java.io.File
+import skadistats.clarity.model.EngineMagic
 
 // @JvmStatic
 fun main(args: Array<String>) = runBlocking {
@@ -17,12 +22,31 @@ fun main(args: Array<String>) = runBlocking {
         // Steam user logs in
         // allows us to pull match history
         // we pull match history given the steamId
-        val steamId = dotenv()["STEAM_ID"].toLong() ?: throw RuntimeException("Steam ID not found in .env")
+        // val steamId = dotenv()["STEAM_ID"].toLong() ?: throw RuntimeException("Steam ID not found in .env")
 
-        val playerMatchHistory = PlayerService(apiClient).getMatchHistoryFor(steamId)
-        MatchService(apiClient).downloadReplayFor(playerMatchHistory.matchHistory[0].matchId)
+        // val playerMatchHistory = PlayerService(apiClient).getMatchHistoryFor(steamId)
 
-        // given the history, we download each replay and parse it
+        // given the history, we download each replay and parse it to ShowScoreboard and/or Events
+        // MatchService(apiClient).downloadReplayFor(playerMatchHistory.matchHistory[0].matchId)
+
+        // *********************************************************
+        // FIXME: The code is iteration 1 towards making this work. I need to
+        // refactor this into something that makes more sense. I don't like
+        // that the method is intended to "get a replay" and we're doing
+        // decompress operations in here.
+        // TODO: The code below should be moved to a separate service or module
+        // ShowScoreboard likely needs to be refactored as well given the new direction
+        val replayFilePath = ReplayService().getFirstReplay()
+        val replayFile = File(replayFilePath)
+        if (!replayFile.exists()) {
+            throw IllegalStateException("Replay file does not exist: ${replayFile.absolutePath}")
+        }
+        if (!replayFile.isFile) {
+            throw IllegalStateException("Replay file path is not a file: ${replayFile.absolutePath}")
+        }
+        println("Parsing replay: $replayFilePath")
+        ShowScoreboard(replayFilePath).showScoreboard()
+        // Events(fileName)
 
         // for the data we need in calculations
 
@@ -33,10 +57,6 @@ fun main(args: Array<String>) = runBlocking {
 
         // val matchId = 31067068
         // DeadlockAPIController(apiClient).fetchMatchMetadata(matchId)
-
-        val fileName = args.getOrNull(0) ?: throw IllegalArgumentException("Replay file is required.")
-        // Events(fileName)
-        ShowScoreboard(fileName).showScoreboard()
 
         val totalTime = System.currentTimeMillis() - startTime
         LoggerFactory.getLogger("com.Main").info("Total time taken: {}s", totalTime / 1000.0)
