@@ -1,13 +1,16 @@
 package domain.service
 
 import java.io.File
+import java.io.IOException
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
 import io.github.cdimascio.dotenv.dotenv
 
 class ReplayService() {
-    fun getFirstReplay(): String {
+    // FIXME: It seems like a lot of this code could be moved to a Replay model.
+    // This was a first stab at making it work.
+    fun getFirstReplay(): File {
         val replayDirPath = dotenv()["REPLAY_FILE_PATH"] ?: throw RuntimeException("REPLAY_FILE_PATH not found in .env")
         val replayDirectory = File(replayDirPath)
 
@@ -34,30 +37,42 @@ class ReplayService() {
 
         // Get the first replay file
         // *********************************************************
-        // FIXME: The code is iteration 1 towards making this work. I need to
-        // refactor this into something that makes more sense. I don't like
-        // that the method is intended to "get a replay" and we're doing
-        // decompress operations in here.
+        // FIXME: This is iteration 1 towards making this work. I need to
+        // refactor it into something that makes more sense. I think the method
+        // is intended to "get a replay" so we may want to move the
+        // decompress operations elsewhere.
         val firstReplayFile = replayFiles.first()
+
         val replayFullPath = "${replayDirPath}/${firstReplayFile.name}"
-        val newFileName = firstReplayFile.name.removeSuffix(".bz2")
-        val outputPath = "${replayDirPath}/${newFileName}"
-
-        return decompressBzip2(replayFullPath, outputPath)
+        val unzippedReplay = unzipReplay(replayFullPath)
+        return unzippedReplay
     }
 
-    fun decompressBzip2(filePath: String, outputPath: String): String {
-        val inputFile = File(filePath)
-        val outputFile = File(outputPath)
+    fun unzipReplay(replayFullPath: String): File {
+        val scriptPath = dotenv()["UNZIP_SCRIPT_PATH"] ?: throw RuntimeException("UNZIP_SCRIPT_PATH not found in .env")
+        val processBuilder = ProcessBuilder(scriptPath, replayFullPath)
+            .redirectError(ProcessBuilder.Redirect.INHERIT)
 
-        FileInputStream(inputFile).use { input ->
-            BZip2CompressorInputStream(input).use { bzipInput ->
-                FileOutputStream(outputFile).use { output ->
-                    bzipInput.copyTo(output)
-                }
+        try {
+            var unzippedFile = File(replayFullPath.removeSuffix(".bz2"))
+            if (unzippedFile.exists()) {
+                return unzippedFile
             }
-        }
-        return outputFile.absolutePath
-    }
+            val process = processBuilder.start()
+            val unzippedFilePath = process.inputStream.bufferedReader().readText().trim()
+            val exitCode = process.waitFor()
+            if (exitCode != 0) {
+                throw IOException("Unzip script failed with exit code $exitCode")
+            }
 
+            println("Successfully unzipped: $unzippedFilePath")
+            unzippedFile = File(unzippedFilePath)
+            if (!unzippedFile.exists()) {
+                throw IOException("Unzipped file not found: $unzippedFilePath")
+            }
+            return unzippedFile
+        } catch (e: Exception) {
+            throw RuntimeException("Error unzipping replay: ${e.message}", e)
+        }
+    }
 }

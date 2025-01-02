@@ -8,11 +8,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.coroutines.runBlocking
 import io.github.cdimascio.dotenv.dotenv
 
-// TODO: This is here for now, but should likely move with the suggested
-// refactor below...
-import java.io.File
-import skadistats.clarity.model.EngineMagic
-
 // @JvmStatic
 fun main(args: Array<String>) = runBlocking {
     val startTime = System.currentTimeMillis()
@@ -36,16 +31,14 @@ fun main(args: Array<String>) = runBlocking {
         // decompress operations in here.
         // TODO: The code below should be moved to a separate service or module
         // ShowScoreboard likely needs to be refactored as well given the new direction
-        val replayFilePath = ReplayService().getFirstReplay()
-        val replayFile = File(replayFilePath)
+        val replayFile = ReplayService().getFirstReplay()
         if (!replayFile.exists()) {
             throw IllegalStateException("Replay file does not exist: ${replayFile.absolutePath}")
         }
         if (!replayFile.isFile) {
             throw IllegalStateException("Replay file path is not a file: ${replayFile.absolutePath}")
         }
-        println("Parsing replay: $replayFilePath")
-        ShowScoreboard(replayFilePath).showScoreboard()
+        ShowScoreboard(replayFile.absolutePath).showScoreboard()
         // Events(fileName)
 
         // for the data we need in calculations
