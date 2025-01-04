@@ -1,3 +1,5 @@
+import infrastructure.clarity.ClarityExploration
+
 import skadistats.clarity.io.Util
 import skadistats.clarity.model.EngineId
 import skadistats.clarity.model.Entity
@@ -44,7 +46,7 @@ public class ShowScoreboard(private val fileName: String) {
         // TeamNum 1 is the spectator
         for (idx in 2 until 14) {
             try {
-                val entity = getEntityByIndex(idx)
+                val entity = ClarityExploration(fileName).getEntityByIndex(idx)
                 val stats = PlayerStats(
                     name = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iszPlayerName")),
                     level = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iLevel")),
@@ -96,32 +98,6 @@ public class ShowScoreboard(private val fileName: String) {
             }
             println(tableBuilder)
         }
-    }
-
-    private fun getEntityByIndex(entityIndex: Int): Entity {
-        return runner.context.getProcessor(Entities::class.java)
-            .getByIndex(entityIndex)
-    }
-
-    private fun getEntityByName(entityName: String): Entity {
-        return runner.context.getProcessor(Entities::class.java)
-            .getByDtName(entityName)
-    }
-
-    fun printEntityTypes() {
-        val entities = runner.context.getProcessor(Entities::class.java)
-        val entityNames = mutableSetOf<String>()
-
-        for (idx in 0 until 256) { // Adjust the range based on the expected number of entities
-            val entity = entities.getByIndex(idx)
-            if (entity != null) {
-                entityNames.add(entity.dtClass.dtName)
-            }
-        }
-
-        println()
-        println("Discovered Entity Types:")
-        entityNames.forEach { println(it) }
     }
 
     private fun getTeamName(team: Int): String {
