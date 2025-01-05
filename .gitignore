@@ -26,4 +26,4 @@ gradle-wrapper.properties
 .classpath
 .vscode
 
-app/DataExploration
+app/src/main/resources/data_exploration

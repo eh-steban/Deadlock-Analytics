@@ -5,6 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import kotlin.reflect.full.*
+import io.github.cdimascio.dotenv.dotenv
 import skadistats.clarity.processor.entities.Entities
 import skadistats.clarity.processor.entities.UsesEntities
 import skadistats.clarity.io.s2.S2DTClass
@@ -44,7 +45,9 @@ class ClarityExploration (private val fileName: String) {
         // entities.forEach { entity ->
         //     println("Entity: ${entity}")
         // }
-        writeEntitiesToJsonFile(entities, "/home/lifted/Code/DeadlockStats/app/cnpc_basedefensesentry.json")
+        val clarityDataPath = dotenv()["CLARITY_DATA_PATH"] ?: throw RuntimeException("Clarity data path not found in .env")
+        val filePath = "$clarityDataPath/cnpc_base_defense_sentry.json"
+        writeEntitiesToJsonFile(entities, filePath)
     }
     
     fun getEntityByIndex(entityIndex: Int): Entity {

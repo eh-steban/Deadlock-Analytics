@@ -1,3 +1,5 @@
+package infrastructure.clarity
+
 import skadistats.clarity.model.GameEvent;
 import skadistats.clarity.model.GameEventDescriptor;
 import skadistats.clarity.processor.gameevents.OnGameEvent
@@ -11,6 +13,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import java.io.File
 import kotlin.text.split
 import kotlin.reflect.full.*
+import io.github.cdimascio.dotenv.dotenv
 
 public class Events(private val fileName: String) {
     private val runner: ControllableRunner
@@ -60,7 +63,8 @@ public class Events(private val fileName: String) {
     }
 
     fun appendGameEventToJson(gameEvent: GameEventData) {
-        val filePath = "/home/lifted/Code/DeadlockStats/app/game_events.json"
+        val clarityDataPath = dotenv()["CLARITY_DATA_PATH"] ?: throw RuntimeException("Clarity data path not found in .env")
+        val filePath = "$clarityDataPath/game_events.json"
         val file = File(filePath)
         val json = Json { prettyPrint = true }
         val existingEvents: MutableList<GameEventData> = if (file.exists()) {

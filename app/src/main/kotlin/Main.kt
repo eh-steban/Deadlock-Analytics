@@ -3,7 +3,7 @@ import domain.service.MatchService
 import domain.service.ReplayService
 import application.controller.APIClient
 import application.controller.DeadlockAPIController
-import infrastructure.clarity.ClarityExploration
+import infrastructure.clarity.*
 
 import org.slf4j.LoggerFactory
 import kotlinx.serialization.json.Json
@@ -40,10 +40,10 @@ fun main(args: Array<String>) = runBlocking {
         if (!replayFile.isFile) {
             throw IllegalStateException("Replay file path is not a file: ${replayFile.absolutePath}")
         }
-        // ShowScoreboard(replayFile.absolutePath).showScoreboard()
+        ShowScoreboard(replayFile.absolutePath).showScoreboard()
 
         println("replayFile.absolutePath: ${replayFile.absolutePath}")
-        // ClarityExploration(replayFile.absolutePath).printClarityEntityData()
+        ClarityExploration(replayFile.absolutePath).printClarityEntityData()
         Events(replayFile.absolutePath)
         // saveGameEventsToJson(gameEvents, "game_events.json")
         // for the data we need in calculations
