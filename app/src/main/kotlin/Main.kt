@@ -41,8 +41,9 @@ fun main(args: Array<String>) = runBlocking {
             throw IllegalStateException("Replay file path is not a file: ${replayFile.absolutePath}")
         }
         // ShowScoreboard(replayFile.absolutePath).showScoreboard()
-        StringTableLogger(replayFile.absolutePath)
+        // StringTableLogger(replayFile.absolutePath)
         // Entity(replayFile.absolutePath).printEntityData()
+        DTClassLogger(replayFile.absolutePath)
         // Events(replayFile.absolutePath)
         // saveGameEventsToJson(gameEvents, "game_events.json")
 
