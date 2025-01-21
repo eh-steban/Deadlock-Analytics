@@ -1,5 +1,4 @@
 package infrastructure.clarity
-// import infrastructure.clarity.ClarityExploration
 
 import skadistats.clarity.io.Util
 import skadistats.clarity.model.EngineId
@@ -47,7 +46,7 @@ public class ShowScoreboard(private val fileName: String) {
         // TeamNum 1 is the spectator
         for (idx in 2 until 14) {
             try {
-                val entity = ClarityExploration(fileName).getEntityByIndex(idx)
+                val entity = Entity(fileName).getEntityByIndex(idx)
                 val stats = PlayerStats(
                     name = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iszPlayerName")),
                     level = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iLevel")),

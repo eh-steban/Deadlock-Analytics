@@ -40,13 +40,13 @@ fun main(args: Array<String>) = runBlocking {
         if (!replayFile.isFile) {
             throw IllegalStateException("Replay file path is not a file: ${replayFile.absolutePath}")
         }
-        ShowScoreboard(replayFile.absolutePath).showScoreboard()
-
-        println("replayFile.absolutePath: ${replayFile.absolutePath}")
-        ClarityExploration(replayFile.absolutePath).printClarityEntityData()
-        Events(replayFile.absolutePath)
+        // ShowScoreboard(replayFile.absolutePath).showScoreboard()
+        StringTableLogger(replayFile.absolutePath)
+        // Entity(replayFile.absolutePath).printEntityData()
+        // Events(replayFile.absolutePath)
         // saveGameEventsToJson(gameEvents, "game_events.json")
-        // for the data we need in calculations
+
+        // NOTE: run calculations with data here
 
         // NOTE: We'll probably need to store history such as matchId and
         // uId because if we have data for that match already,

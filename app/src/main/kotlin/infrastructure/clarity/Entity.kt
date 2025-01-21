@@ -28,7 +28,7 @@ data class EntityData(
 )
 
 @UsesEntities
-class ClarityExploration (private val fileName: String) {
+class Entity (private val fileName: String) {
     private val runner: ControllableRunner
 
     init {
@@ -37,7 +37,7 @@ class ClarityExploration (private val fileName: String) {
         runner.halt()
     }
 
-    fun printClarityEntityData() {
+    fun printEntityData() {
         // printEntityTypes()
         val entities = getAllEntitiesByName("CNPC_BaseDefenseSentry")
         // val entities = getAllEntitiesByName("CCitadel_Destroyable_Building")
@@ -71,7 +71,7 @@ class ClarityExploration (private val fileName: String) {
         val entityNames = mutableSetOf<String>()
         println("entities: $entities")
 
-        for (idx in 0 until 256) { // Adjust the range based on the expected number of entities
+        for (idx in 0 until 256) {
             val entity = entities.getByIndex(idx)
             if (entity != null) {
                 entityNames.add(entity.dtClass.dtName)
@@ -85,14 +85,11 @@ class ClarityExploration (private val fileName: String) {
 
     fun extractEntityProperties(entity: Entity): EntityData {
         val properties = mutableListOf<EntityProperty>()
-        val entityState = entity.getState() // Access the state of the entity
+        val entityState = entity.getState()
     
-        // println(entity)
         for (fieldPath in entityState.fieldPathIterator()) {
             val propertyName = entity.getDtClass().s2().getNameForFieldPath(fieldPath)
             val propertyValue: Any? = entity.getPropertyForFieldPath<Any?>(fieldPath)
-            // println("fieldPath: $fieldPath")
-            // println("Property: $propertyName = $propertyValue")
             properties.add(EntityProperty(fieldPath.toString(), propertyName, propertyValue.toString()))
         }
     
