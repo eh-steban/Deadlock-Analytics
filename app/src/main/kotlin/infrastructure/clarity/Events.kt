@@ -70,7 +70,7 @@ public class Events(private val fileName: String) {
         val existingEvents: MutableList<GameEventData> = if (file.exists()) {
             file.readText().let { text ->
                 if (text.isNotBlank()) {
-                    Json.decodeFromString(ListSerializer(GameEventData.serializer()), text).toMutableList()
+                    Json.decodeFromString<List<GameEventData>>(text).toMutableList()
                 } else {
                     mutableListOf<GameEventData>()
                 }

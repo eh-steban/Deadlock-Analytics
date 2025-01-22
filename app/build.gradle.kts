@@ -25,7 +25,7 @@ dependencies {
 
     // TODO: Using this in order to serialize the WebhookPayload data class
     // There may be a better implementation
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
