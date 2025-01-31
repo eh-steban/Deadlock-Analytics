@@ -30,7 +30,11 @@ public class ShowScoreboard(private val fileName: String) {
         val souls: Int,
         val lastHits: Int,
         val denies: Int,
-        val team: Int
+        val team: Int,
+        val objDmg: Int,
+        val heroDmg: Int,
+        val heroHealing: Int,
+        val selfHealing: Int
     )
 
     public fun showScoreboard() {
@@ -47,6 +51,7 @@ public class ShowScoreboard(private val fileName: String) {
         for (idx in 2 until 14) {
             try {
                 val entity = Entity(fileName).getEntityByIndex(idx)
+                println(entity)
                 val stats = PlayerStats(
                     name = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iszPlayerName")),
                     level = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iLevel")),
@@ -56,7 +61,11 @@ public class ShowScoreboard(private val fileName: String) {
                     souls = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iGoldNetWorth")),
                     lastHits = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iLastHits")),
                     denies = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iDenies")),
-                    team = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iTeamNum"))
+                    team = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iTeamNum")),
+                    heroDmg = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iHeroDamage")),
+                    objDmg = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iObjectiveDamage")),
+                    heroHealing = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iHeroHealing")),
+                    selfHealing = entity.getPropertyForFieldPath<Int>(entity.dtClass.getFieldPathForName("m_iSelfHealing"))
                 )
                 players.add(stats)
             } catch (e: Exception) {
@@ -78,6 +87,10 @@ public class ShowScoreboard(private val fileName: String) {
             .addColumn("Souls", TextTable.Alignment.RIGHT)
             .addColumn("Last Hits", TextTable.Alignment.RIGHT)
             .addColumn("Denies", TextTable.Alignment.RIGHT)
+            .addColumn("heroDmg", TextTable.Alignment.RIGHT)
+            .addColumn("objDmg", TextTable.Alignment.RIGHT)
+            .addColumn("heroHealing", TextTable.Alignment.RIGHT)
+            .addColumn("selfHealing", TextTable.Alignment.RIGHT)
             .build()
 
         val teams = listOf(2 to "Amber", 3 to "Sapphire")

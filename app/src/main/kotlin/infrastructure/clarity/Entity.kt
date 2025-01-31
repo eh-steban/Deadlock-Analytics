@@ -10,7 +10,8 @@ import skadistats.clarity.processor.entities.Entities
 import skadistats.clarity.processor.entities.UsesEntities
 import skadistats.clarity.io.s2.S2DTClass
 import skadistats.clarity.model.s2.S2ModifiableFieldPath
-import skadistats.clarity.processor.runner.ControllableRunner
+// import skadistats.clarity.processor.runner.ControllableRunner
+import skadistats.clarity.processor.runner.SimpleRunner
 import skadistats.clarity.source.MappedFileSource
 import skadistats.clarity.model.Entity
 
@@ -29,12 +30,12 @@ data class EntityData(
 
 @UsesEntities
 class Entity (private val fileName: String) {
-    private val runner: ControllableRunner
+    private val runner: SimpleRunner
 
     init {
-        runner = ControllableRunner(MappedFileSource(fileName)).runWith(this)
-        runner.seek(runner.lastTick)
-        runner.halt()
+        runner = SimpleRunner(MappedFileSource(fileName)).runWith(this)
+        // runner.seek(runner.lastTick)
+        // runner.halt()
     }
 
     fun printEntityData() {
@@ -71,7 +72,7 @@ class Entity (private val fileName: String) {
         val entityNames = mutableSetOf<String>()
         println("entities: $entities")
 
-        for (idx in 0 until 256) {
+        for (idx in 0 until 1000) {
             val entity = entities.getByIndex(idx)
             if (entity != null) {
                 entityNames.add(entity.dtClass.dtName)
