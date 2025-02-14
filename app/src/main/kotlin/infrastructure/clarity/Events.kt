@@ -3,7 +3,7 @@ package infrastructure.clarity
 import skadistats.clarity.model.GameEvent;
 import skadistats.clarity.model.GameEventDescriptor;
 import skadistats.clarity.processor.gameevents.OnGameEvent
-import skadistats.clarity.processor.runner.ControllableRunner
+import skadistats.clarity.processor.runner.SimpleRunner
 import skadistats.clarity.source.MappedFileSource
 
 import kotlinx.serialization.Serializable
@@ -16,8 +16,6 @@ import kotlin.reflect.full.*
 import io.github.cdimascio.dotenv.dotenv
 
 public class Events(private val fileName: String) {
-    private val runner: ControllableRunner
-
     @Serializable
     data class GameEventData(
         val name: String,
@@ -26,10 +24,7 @@ public class Events(private val fileName: String) {
     )
 
     init {
-        // FIXME: Need a null handler here
-        runner = ControllableRunner(MappedFileSource(fileName)).runWith(this)
-        runner.seek(runner.lastTick)
-        runner.halt()
+        SimpleRunner(MappedFileSource(fileName)).runWith(this)
     }
 
     @OnGameEvent

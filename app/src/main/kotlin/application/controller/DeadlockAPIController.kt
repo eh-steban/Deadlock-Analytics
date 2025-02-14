@@ -11,6 +11,8 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.decodeFromJsonElement
+
 
 class DeadlockAPIController(private val apiClient: APIClient) {
 
@@ -31,7 +33,7 @@ class DeadlockAPIController(private val apiClient: APIClient) {
 
         // Convert the JSON array to a list of MatchSummary (or similar data class)
         val matches: List<MatchData> = matchesJsonArray.map { element ->
-            apiClient.json.decodeFromJsonElement(MatchData.serializer(), element)
+            apiClient.json.decodeFromJsonElement<MatchData>(element)
         }
 
         return PlayerMatchHistory(
@@ -64,4 +66,9 @@ class DeadlockAPIController(private val apiClient: APIClient) {
         val outputFilePath = apiClient.downloadFromStream(replayFileStream, matchId)
         println("Download complete: $outputFilePath")
     }
+
+    inline fun <reified T> Json.decode(element: JsonElement): T {
+        return decodeFromJsonElement(element)
+    }
+
 }

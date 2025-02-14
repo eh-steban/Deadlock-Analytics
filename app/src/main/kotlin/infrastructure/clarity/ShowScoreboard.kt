@@ -51,7 +51,6 @@ public class ShowScoreboard(private val fileName: String) {
         for (idx in 2 until 14) {
             try {
                 val entity = Entity(fileName).getEntityByIndex(idx)
-                println(entity)
                 val stats = PlayerStats(
                     name = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iszPlayerName")),
                     level = entity.getPropertyForFieldPath(entity.dtClass.getFieldPathForName("m_iLevel")),
@@ -87,10 +86,10 @@ public class ShowScoreboard(private val fileName: String) {
             .addColumn("Souls", TextTable.Alignment.RIGHT)
             .addColumn("Last Hits", TextTable.Alignment.RIGHT)
             .addColumn("Denies", TextTable.Alignment.RIGHT)
-            .addColumn("heroDmg", TextTable.Alignment.RIGHT)
-            .addColumn("objDmg", TextTable.Alignment.RIGHT)
-            .addColumn("heroHealing", TextTable.Alignment.RIGHT)
-            .addColumn("selfHealing", TextTable.Alignment.RIGHT)
+            .addColumn("Hero Dmg", TextTable.Alignment.RIGHT)
+            .addColumn("Obj Dmg", TextTable.Alignment.RIGHT)
+            .addColumn("Hero Healing", TextTable.Alignment.RIGHT)
+            .addColumn("Self Healing", TextTable.Alignment.RIGHT)
             .build()
 
         val teams = listOf(2 to "Amber", 3 to "Sapphire")
@@ -107,7 +106,11 @@ public class ShowScoreboard(private val fileName: String) {
                 tableBuilder.setData(row, 4, player.assists)
                 tableBuilder.setData(row, 5, player.souls)
                 tableBuilder.setData(row, 6, player.lastHits)
-                tableBuilder.setData(row++, 7, player.denies)
+                tableBuilder.setData(row, 7, player.denies)
+                tableBuilder.setData(row, 8, player.heroDmg)
+                tableBuilder.setData(row, 9, player.objDmg)
+                tableBuilder.setData(row, 10, player.heroHealing)
+                tableBuilder.setData(row++, 11, player.selfHealing)
             }
             println(tableBuilder)
         }
