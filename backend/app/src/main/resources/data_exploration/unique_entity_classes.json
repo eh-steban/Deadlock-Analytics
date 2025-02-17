@@ -1,0 +1,17 @@
+[
+    "CCitadelItemPickup",
+    "CCitadelItemPickupIdol",
+    "CCitadelObserverPawn",
+    "CCitadelPlayerController",
+    "CCitadelPlayerPawn",
+    "CCitadel_BreakableProp",
+    "CCitadel_Destroyable_Building",
+    "CNPC_BaseDefenseSentry",
+    "CNPC_Boss_Tier2",
+    "CNPC_Boss_Tier3",
+    "CNPC_MidBoss",
+    "CNPC_Trooper",
+    "CNPC_TrooperBarrackBoss",
+    "CNPC_TrooperBoss",
+    "CNPC_TrooperNeutral"
+]

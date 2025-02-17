@@ -1,0 +1,5802 @@
+[
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "50"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "576.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "128.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "640.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 90.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "40575297"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "3"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "554051436544"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "4294967296"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "-1925807911"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "217"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "30"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "50"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "448.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "128.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "640.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 90.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "174250173"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "3"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "554051436544"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "4294967296"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "-601259814"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "218"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "12"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "576.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "640.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 270.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "2232.1501"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "2230.4668"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "0.9090909"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "2231.0283"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "2232.1501"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "2231.2668"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "768585676"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "2"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "551903952896"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "2147483648"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "-1594687269"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "219"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "30"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "12"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "448.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "640.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 270.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "9525847"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "2"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "551903952896"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "2147483648"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "1703477468"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "220"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "50"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "448.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "768.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "602402867"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "3"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "554051436544"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "4294967296"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "-674102998"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "298"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "30"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "50"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "576.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "768.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "1240237111"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "3"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "554051436544"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "4294967296"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "745636139"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "299"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "30"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "12"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "576.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "256.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "133867375"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "2"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "551903952896"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "2147483648"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "521306412"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "300"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    },
+    {
+        "entityName": "CNPC_BaseDefenseSentry",
+        "properties": [
+            {
+                "fieldPath": "0",
+                "propertyName": "m_hOwnerEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "1",
+                "propertyName": "m_iHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "2/0",
+                "propertyName": "CBodyComponent.m_cellX",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/1",
+                "propertyName": "CBodyComponent.m_cellY",
+                "value": "12"
+            },
+            {
+                "fieldPath": "2/2",
+                "propertyName": "CBodyComponent.m_cellZ",
+                "value": "32"
+            },
+            {
+                "fieldPath": "2/3",
+                "propertyName": "CBodyComponent.m_vecX",
+                "value": "448.0"
+            },
+            {
+                "fieldPath": "2/4",
+                "propertyName": "CBodyComponent.m_vecY",
+                "value": "256.0"
+            },
+            {
+                "fieldPath": "2/5",
+                "propertyName": "CBodyComponent.m_vecZ",
+                "value": "896.0"
+            },
+            {
+                "fieldPath": "2/6",
+                "propertyName": "CBodyComponent.m_hParent",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "2/7",
+                "propertyName": "CBodyComponent.m_angRotation",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "2/8",
+                "propertyName": "CBodyComponent.m_flScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/9",
+                "propertyName": "CBodyComponent.m_hSequence",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/10",
+                "propertyName": "CBodyComponent.m_flSeqStartTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/11",
+                "propertyName": "CBodyComponent.m_flSeqFixedCycle",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/12",
+                "propertyName": "CBodyComponent.m_nAnimLoopMode",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/13",
+                "propertyName": "CBodyComponent.m_flPlaybackRate",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/14",
+                "propertyName": "CBodyComponent.m_name",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/15",
+                "propertyName": "CBodyComponent.m_hierarchyAttachName",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/16",
+                "propertyName": "CBodyComponent.m_hModel",
+                "value": "-5735198270824394053"
+            },
+            {
+                "fieldPath": "2/17",
+                "propertyName": "CBodyComponent.m_bClientClothCreationSuppressed",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/18",
+                "propertyName": "CBodyComponent.m_MeshGroupMask",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/19/0",
+                "propertyName": "CBodyComponent.m_nBodyGroupChoices.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/20",
+                "propertyName": "CBodyComponent.m_nIdealMotionType",
+                "value": "3"
+            },
+            {
+                "fieldPath": "2/21",
+                "propertyName": "CBodyComponent.m_bIsAnimationEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "2/22",
+                "propertyName": "CBodyComponent.m_bUseParentRenderBounds",
+                "value": "false"
+            },
+            {
+                "fieldPath": "2/23",
+                "propertyName": "CBodyComponent.m_materialGroup",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/24",
+                "propertyName": "CBodyComponent.m_nHitboxSet",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/25/0",
+                "propertyName": "CBodyComponent.m_PredBoolVariables.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/0",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/26/1",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/2",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/3",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/4",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/5",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/26/6",
+                "propertyName": "CBodyComponent.m_PredByteVariables.0006",
+                "value": "0"
+            },
+            {
+                "fieldPath": "2/28/0",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0000",
+                "value": "1"
+            },
+            {
+                "fieldPath": "2/28/1",
+                "propertyName": "CBodyComponent.m_PredIntVariables.0001",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "2/31/0",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0000",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/1",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0001",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/31/2",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0002",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/3",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0003",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/4",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0004",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/5",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0005",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/6",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0006",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/7",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0007",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/8",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0008",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/31/9",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0009",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "2/31/10",
+                "propertyName": "CBodyComponent.m_PredFloatVariables.0010",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "2/45",
+                "propertyName": "CBodyComponent.m_nBoolVariablesCount",
+                "value": "2"
+            },
+            {
+                "fieldPath": "2/46",
+                "propertyName": "CBodyComponent.m_nOwnerOnlyBoolVariablesCount",
+                "value": "4"
+            },
+            {
+                "fieldPath": "2/47",
+                "propertyName": "CBodyComponent.m_nRandomSeedOffset",
+                "value": "1678733266"
+            },
+            {
+                "fieldPath": "2/48",
+                "propertyName": "CBodyComponent.m_flLastTeleportTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "2/49",
+                "propertyName": "CBodyComponent.m_nOutsideWorld",
+                "value": "0"
+            },
+            {
+                "fieldPath": "3/0",
+                "propertyName": "m_pEntity.m_nameStringableIndex",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "4",
+                "propertyName": "m_iMaxHealth",
+                "value": "1000"
+            },
+            {
+                "fieldPath": "5",
+                "propertyName": "m_bTakesDamage",
+                "value": "false"
+            },
+            {
+                "fieldPath": "6",
+                "propertyName": "m_nTakeDamageFlags",
+                "value": "0"
+            },
+            {
+                "fieldPath": "7",
+                "propertyName": "m_nPlatformType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "8",
+                "propertyName": "m_MoveCollide",
+                "value": "0"
+            },
+            {
+                "fieldPath": "9",
+                "propertyName": "m_MoveType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "10",
+                "propertyName": "m_nSubclassID",
+                "value": "-858396500"
+            },
+            {
+                "fieldPath": "11",
+                "propertyName": "m_flCreateTime",
+                "value": "1.7500001"
+            },
+            {
+                "fieldPath": "12",
+                "propertyName": "m_bClientSideRagdoll",
+                "value": "false"
+            },
+            {
+                "fieldPath": "13",
+                "propertyName": "m_ubInterpolationFrame",
+                "value": "0"
+            },
+            {
+                "fieldPath": "14",
+                "propertyName": "m_iTeamNum",
+                "value": "2"
+            },
+            {
+                "fieldPath": "15/1",
+                "propertyName": "m_pModifierProp.m_nDisabledGroups",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/2/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/0",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/1",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/2",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/3",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/4",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/3/5",
+                "propertyName": "m_pModifierProp.m_bvDisabledStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/0",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0000",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/1",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0001",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/2",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0002",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/3",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0003",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/4",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0004",
+                "value": "0"
+            },
+            {
+                "fieldPath": "15/4/5",
+                "propertyName": "m_pModifierProp.m_bvEnabledPredictedStateMask.0005",
+                "value": "0"
+            },
+            {
+                "fieldPath": "16",
+                "propertyName": "m_hEffectEntity",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "17",
+                "propertyName": "m_fEffects",
+                "value": "0"
+            },
+            {
+                "fieldPath": "18",
+                "propertyName": "m_flElasticity",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "19",
+                "propertyName": "m_bAnimatedEveryTick",
+                "value": "true"
+            },
+            {
+                "fieldPath": "20",
+                "propertyName": "m_flNavIgnoreUntilTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "21",
+                "propertyName": "m_nRenderMode",
+                "value": "0"
+            },
+            {
+                "fieldPath": "22",
+                "propertyName": "m_nRenderFX",
+                "value": "0"
+            },
+            {
+                "fieldPath": "23",
+                "propertyName": "m_clrRender",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "25",
+                "propertyName": "m_bRenderToCubemaps",
+                "value": "false"
+            },
+            {
+                "fieldPath": "26",
+                "propertyName": "m_bNoInterpolate",
+                "value": "false"
+            },
+            {
+                "fieldPath": "27",
+                "propertyName": "m_nInteractsAs",
+                "value": "551903952896"
+            },
+            {
+                "fieldPath": "28",
+                "propertyName": "m_nInteractsWith",
+                "value": "798753"
+            },
+            {
+                "fieldPath": "29",
+                "propertyName": "m_nInteractsExclude",
+                "value": "2147483648"
+            },
+            {
+                "fieldPath": "30",
+                "propertyName": "m_nEntityId",
+                "value": "-763363027"
+            },
+            {
+                "fieldPath": "31",
+                "propertyName": "m_nOwnerId",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "32",
+                "propertyName": "m_nHierarchyId",
+                "value": "301"
+            },
+            {
+                "fieldPath": "33",
+                "propertyName": "m_nCollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "34",
+                "propertyName": "m_nCollisionFunctionMask",
+                "value": "7"
+            },
+            {
+                "fieldPath": "35",
+                "propertyName": "m_vecMins",
+                "value": "[-24.0, -24.0, 0.0]"
+            },
+            {
+                "fieldPath": "36",
+                "propertyName": "m_vecMaxs",
+                "value": "[24.0, 24.0, 48.0]"
+            },
+            {
+                "fieldPath": "37",
+                "propertyName": "m_usSolidFlags",
+                "value": "1"
+            },
+            {
+                "fieldPath": "38",
+                "propertyName": "m_nSolidType",
+                "value": "7"
+            },
+            {
+                "fieldPath": "39",
+                "propertyName": "m_triggerBloat",
+                "value": "0"
+            },
+            {
+                "fieldPath": "40",
+                "propertyName": "m_nSurroundType",
+                "value": "8"
+            },
+            {
+                "fieldPath": "41",
+                "propertyName": "m_CollisionGroup",
+                "value": "3"
+            },
+            {
+                "fieldPath": "42",
+                "propertyName": "m_nEnablePhysics",
+                "value": "1"
+            },
+            {
+                "fieldPath": "43",
+                "propertyName": "m_vecSpecifiedSurroundingMins",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "44",
+                "propertyName": "m_vecSpecifiedSurroundingMaxs",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "45",
+                "propertyName": "m_vCapsuleCenter1",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "46",
+                "propertyName": "m_vCapsuleCenter2",
+                "value": "[0.0, 0.0, 24.0]"
+            },
+            {
+                "fieldPath": "47",
+                "propertyName": "m_flCapsuleRadius",
+                "value": "24.0"
+            },
+            {
+                "fieldPath": "48",
+                "propertyName": "m_iGlowType",
+                "value": "0"
+            },
+            {
+                "fieldPath": "49",
+                "propertyName": "m_iGlowTeam",
+                "value": "-1"
+            },
+            {
+                "fieldPath": "50",
+                "propertyName": "m_nGlowRange",
+                "value": "0"
+            },
+            {
+                "fieldPath": "51",
+                "propertyName": "m_nGlowRangeMin",
+                "value": "0"
+            },
+            {
+                "fieldPath": "52",
+                "propertyName": "m_glowColorOverride",
+                "value": "-16777216"
+            },
+            {
+                "fieldPath": "53",
+                "propertyName": "m_bFlashing",
+                "value": "false"
+            },
+            {
+                "fieldPath": "54",
+                "propertyName": "m_flGlowTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "55",
+                "propertyName": "m_flGlowStartTime",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "56",
+                "propertyName": "m_flGlowBackfaceMult",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "57",
+                "propertyName": "m_fadeMinDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "58",
+                "propertyName": "m_fadeMaxDist",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "59",
+                "propertyName": "m_flFadeScale",
+                "value": "1.0"
+            },
+            {
+                "fieldPath": "60",
+                "propertyName": "m_flShadowStrength",
+                "value": "-1.0"
+            },
+            {
+                "fieldPath": "61",
+                "propertyName": "m_nObjectCulling",
+                "value": "0"
+            },
+            {
+                "fieldPath": "62",
+                "propertyName": "m_nAddDecal",
+                "value": "0"
+            },
+            {
+                "fieldPath": "63",
+                "propertyName": "m_vDecalPosition",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "64",
+                "propertyName": "m_vDecalForwardAxis",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "65",
+                "propertyName": "m_flDecalHealBloodRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "66",
+                "propertyName": "m_flDecalHealHeightRate",
+                "value": "0.0"
+            },
+            {
+                "fieldPath": "68",
+                "propertyName": "m_bInitiallyPopulateInterpHistory",
+                "value": "false"
+            },
+            {
+                "fieldPath": "69",
+                "propertyName": "m_bAnimGraphUpdateEnabled",
+                "value": "true"
+            },
+            {
+                "fieldPath": "70",
+                "propertyName": "m_vecForce",
+                "value": "[0.0, 0.0, 0.0]"
+            },
+            {
+                "fieldPath": "71",
+                "propertyName": "m_nForceBone",
+                "value": "0"
+            },
+            {
+                "fieldPath": "73",
+                "propertyName": "m_hOwner",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "74",
+                "propertyName": "m_bRagdollClientSide",
+                "value": "false"
+            },
+            {
+                "fieldPath": "76",
+                "propertyName": "m_nAnimGraph2SerializeDataSizeBytes",
+                "value": "0"
+            },
+            {
+                "fieldPath": "77",
+                "propertyName": "m_hEnemy",
+                "value": "16777215"
+            },
+            {
+                "fieldPath": "78",
+                "propertyName": "m_vecUnitStatusOffset",
+                "value": "[0.0, 0.0, 60.0]"
+            },
+            {
+                "fieldPath": "79/0",
+                "propertyName": "m_bvDisabledHitGroups.0000",
+                "value": "0"
+            }
+        ]
+    }
+]

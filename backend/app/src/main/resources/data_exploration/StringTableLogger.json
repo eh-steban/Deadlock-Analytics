@@ -1,0 +1,6398 @@
+[
+    {
+        "index": 0,
+        "key": "BigNet"
+    },
+    {
+        "index": 1,
+        "key": "screenshot_camera_00"
+    },
+    {
+        "index": 2,
+        "key": "screenshot_camera_01"
+    },
+    {
+        "index": 3,
+        "key": "screenshot_camera_02"
+    },
+    {
+        "index": 4,
+        "key": "screenshot_camera_03"
+    },
+    {
+        "index": 5,
+        "key": "screenshot_camera_04"
+    },
+    {
+        "index": 6,
+        "key": "screenshot_camera_05"
+    },
+    {
+        "index": 7,
+        "key": "screenshot_camera_06"
+    },
+    {
+        "index": 8,
+        "key": "2392_post_processing"
+    },
+    {
+        "index": 9,
+        "key": "2392_1392_fog_main"
+    },
+    {
+        "index": 10,
+        "key": "2392_fog_blinded"
+    },
+    {
+        "index": 11,
+        "key": "2392_89_sky_entity"
+    },
+    {
+        "index": 12,
+        "key": "8785_Lane4"
+    },
+    {
+        "index": 13,
+        "key": "8785_Lane6"
+    },
+    {
+        "index": 14,
+        "key": "8785_Lane3"
+    },
+    {
+        "index": 15,
+        "key": "8785_Lane1"
+    },
+    {
+        "index": 16,
+        "key": "base_hurt_trigger"
+    },
+    {
+        "index": 17,
+        "key": "mid_temple_zap_origin"
+    },
+    {
+        "index": 18,
+        "key": "mid_interior_trigger"
+    },
+    {
+        "index": 19,
+        "key": "14741_garage_interior_trigger"
+    },
+    {
+        "index": 20,
+        "key": "14743_idol_building_zap_origin_01"
+    },
+    {
+        "index": 21,
+        "key": "14743_idol_building_zap_trigger_01"
+    },
+    {
+        "index": 22,
+        "key": "14743_idol_building_zap_trigger_02"
+    },
+    {
+        "index": 23,
+        "key": "14743_idol_building_zap_origin_02"
+    },
+    {
+        "index": 24,
+        "key": "14743_idol_building_zap_trigger_03"
+    },
+    {
+        "index": 25,
+        "key": "14743_idol_building_zap_origin_03"
+    },
+    {
+        "index": 26,
+        "key": "14743_record_store_interior_trigger"
+    },
+    {
+        "index": 27,
+        "key": "14743_imports_interior_trigger"
+    },
+    {
+        "index": 28,
+        "key": "14743_comedy_interior_trigger"
+    },
+    {
+        "index": 29,
+        "key": "14743_apothecary_interior_trigger"
+    },
+    {
+        "index": 30,
+        "key": "relay_control_point_rebels"
+    },
+    {
+        "index": 31,
+        "key": "counter_mid_gate_rebel"
+    },
+    {
+        "index": 32,
+        "key": "counter_mid_gate_combine"
+    },
+    {
+        "index": 33,
+        "key": "counter_mid_gate_combine_switch_paths"
+    },
+    {
+        "index": 34,
+        "key": "relay_control_point_combine"
+    },
+    {
+        "index": 35,
+        "key": "counter_mid_gate_rebel_switch_paths"
+    },
+    {
+        "index": 36,
+        "key": "control_point_rebels_01_beam_end"
+    },
+    {
+        "index": 37,
+        "key": "control_point_combine_01_beam_end"
+    },
+    {
+        "index": 38,
+        "key": "filter_team_humans"
+    },
+    {
+        "index": 39,
+        "key": "filter_team_aliens"
+    },
+    {
+        "index": 40,
+        "key": "control_point_combine_01_beam_start"
+    },
+    {
+        "index": 41,
+        "key": "shop_model_target"
+    },
+    {
+        "index": 42,
+        "key": "rebels_t3_generator_purple"
+    },
+    {
+        "index": 43,
+        "key": "rebels_t3_generator_yellow"
+    },
+    {
+        "index": 44,
+        "key": "combine_t3_generator_yellow"
+    },
+    {
+        "index": 45,
+        "key": "combine_t3_generator_purple"
+    },
+    {
+        "index": 46,
+        "key": "combine_t2_boss_yellow"
+    },
+    {
+        "index": 47,
+        "key": "combine_t2_boss_purple"
+    },
+    {
+        "index": 48,
+        "key": "rebels_t2_boss_purple"
+    },
+    {
+        "index": 49,
+        "key": "rebels_t2_boss_yellow"
+    },
+    {
+        "index": 50,
+        "key": "rebels_t2_boss_blue"
+    },
+    {
+        "index": 51,
+        "key": "combine_t2_boss_orange"
+    },
+    {
+        "index": 52,
+        "key": "combine_t2_boss_blue"
+    },
+    {
+        "index": 53,
+        "key": "rebels_t2_boss_orange"
+    },
+    {
+        "index": 54,
+        "key": "amber_base_area"
+    },
+    {
+        "index": 55,
+        "key": "sapphire_team_area"
+    },
+    {
+        "index": 56,
+        "key": "rebels_fountain_collidable"
+    },
+    {
+        "index": 57,
+        "key": "combine_fountain_collidable"
+    },
+    {
+        "index": 58,
+        "key": "center_shop_south_trigger"
+    },
+    {
+        "index": 59,
+        "key": "center_shop_north_trigger"
+    },
+    {
+        "index": 60,
+        "key": "mid_post"
+    },
+    {
+        "index": 61,
+        "key": "north_post"
+    },
+    {
+        "index": 62,
+        "key": "south_post"
+    },
+    {
+        "index": 63,
+        "key": "amber_trooper_detector"
+    },
+    {
+        "index": 64,
+        "key": "sapphire_trooper_detector"
+    },
+    {
+        "index": 65,
+        "key": "sapphire_exit_west"
+    },
+    {
+        "index": 66,
+        "key": "amber_exit_east"
+    },
+    {
+        "index": 67,
+        "key": "push_fx"
+    },
+    {
+        "index": 68,
+        "key": "bounce_market_walkway_target"
+    },
+    {
+        "index": 69,
+        "key": "bounce_market_blue_target"
+    },
+    {
+        "index": 70,
+        "key": "bounce_market_highline_target"
+    },
+    {
+        "index": 71,
+        "key": "bounce_market_orange_target"
+    },
+    {
+        "index": 72,
+        "key": "dance_pad_target"
+    },
+    {
+        "index": 73,
+        "key": "boutique_pad_target"
+    },
+    {
+        "index": 74,
+        "key": "exit_w"
+    },
+    {
+        "index": 75,
+        "key": "exit_e"
+    },
+    {
+        "index": 76,
+        "key": "bounce_walker_courthouse_target"
+    },
+    {
+        "index": 77,
+        "key": "bounce_culturalcenter_purple_target"
+    },
+    {
+        "index": 78,
+        "key": "amber_base_collidable"
+    },
+    {
+        "index": 79,
+        "key": "sapphire_base_collidable"
+    },
+    {
+        "index": 80,
+        "key": "exit_sw"
+    },
+    {
+        "index": 81,
+        "key": "exit_se"
+    },
+    {
+        "index": 82,
+        "key": "exit_ne"
+    },
+    {
+        "index": 83,
+        "key": "exit_nw"
+    },
+    {
+        "index": 84,
+        "key": "amber_exit_west"
+    },
+    {
+        "index": 85,
+        "key": "sapphire_exit_east"
+    },
+    {
+        "index": 86,
+        "key": "bounce_barber_purple_target"
+    },
+    {
+        "index": 87,
+        "key": "bounce_coffee_yellow_target"
+    },
+    {
+        "index": 88,
+        "key": "base_amber"
+    },
+    {
+        "index": 89,
+        "key": "base_sapphire"
+    },
+    {
+        "index": 90,
+        "key": "combine_west_collidable"
+    },
+    {
+        "index": 91,
+        "key": "combine_east_collidable"
+    },
+    {
+        "index": 92,
+        "key": "rebels_west_collidable"
+    },
+    {
+        "index": 93,
+        "key": "rebels_wast_collidable"
+    },
+    {
+        "index": 94,
+        "key": "bounce_base_se_target"
+    },
+    {
+        "index": 95,
+        "key": "bounce_base_sw_target"
+    },
+    {
+        "index": 96,
+        "key": "bounce_base_nw_target"
+    },
+    {
+        "index": 97,
+        "key": "bounce_base_ne_target"
+    },
+    {
+        "index": 98,
+        "key": "125_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 99,
+        "key": "125_combine_final_exposed_relay"
+    },
+    {
+        "index": 100,
+        "key": "125_combine_final_shielded_relay"
+    },
+    {
+        "index": 101,
+        "key": "125_rebels_final_shielded"
+    },
+    {
+        "index": 102,
+        "key": "125_rebels_final_exposed"
+    },
+    {
+        "index": 103,
+        "key": "125_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 104,
+        "key": "125_rebels_final_destroyed_template"
+    },
+    {
+        "index": 105,
+        "key": "125_combine_final_destroyed_template"
+    },
+    {
+        "index": 106,
+        "key": "shop_combine_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 107,
+        "key": "shop_combine_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 108,
+        "key": "shop_combine_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 109,
+        "key": "shop_combine_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 110,
+        "key": "shop_combine_t1_orange_shop_prop"
+    },
+    {
+        "index": 111,
+        "key": "shop_combine_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 112,
+        "key": "shop_combine_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 113,
+        "key": "shop_combine_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 114,
+        "key": "shop_combine_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 115,
+        "key": "shop_combine_t1_blue_shop_prop"
+    },
+    {
+        "index": 116,
+        "key": "shop_rebel_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 117,
+        "key": "shop_rebel_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 118,
+        "key": "shop_rebel_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 119,
+        "key": "shop_rebel_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 120,
+        "key": "shop_rebel_t1_orange_shop_prop"
+    },
+    {
+        "index": 121,
+        "key": "shop_rebel_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 122,
+        "key": "shop_rebel_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 123,
+        "key": "shop_rebel_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 124,
+        "key": "shop_rebel_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 125,
+        "key": "shop_rebel_t1_blue_shop_prop"
+    },
+    {
+        "index": 126,
+        "key": "957_teleport_trigger"
+    },
+    {
+        "index": 127,
+        "key": "957_box"
+    },
+    {
+        "index": 128,
+        "key": "960_teleport_trigger"
+    },
+    {
+        "index": 129,
+        "key": "960_box"
+    },
+    {
+        "index": 130,
+        "key": "1002_base_door_trigger"
+    },
+    {
+        "index": 131,
+        "key": "1002_base_door"
+    },
+    {
+        "index": 132,
+        "key": "1002_base_teleport_trigger"
+    },
+    {
+        "index": 133,
+        "key": "1002_south_filter"
+    },
+    {
+        "index": 134,
+        "key": "1002_base_door_glass"
+    },
+    {
+        "index": 135,
+        "key": "1002_base_door_frame"
+    },
+    {
+        "index": 136,
+        "key": "1002_north_filter"
+    },
+    {
+        "index": 137,
+        "key": "1002_oob_teleport"
+    },
+    {
+        "index": 138,
+        "key": "1003_base_door_trigger"
+    },
+    {
+        "index": 139,
+        "key": "1003_base_door"
+    },
+    {
+        "index": 140,
+        "key": "1003_base_teleport_trigger"
+    },
+    {
+        "index": 141,
+        "key": "1003_south_filter"
+    },
+    {
+        "index": 142,
+        "key": "1003_base_door_glass"
+    },
+    {
+        "index": 143,
+        "key": "1003_base_door_frame"
+    },
+    {
+        "index": 144,
+        "key": "1003_north_filter"
+    },
+    {
+        "index": 145,
+        "key": "1003_oob_teleport"
+    },
+    {
+        "index": 146,
+        "key": "1005_base_door_trigger"
+    },
+    {
+        "index": 147,
+        "key": "1005_base_door"
+    },
+    {
+        "index": 148,
+        "key": "1005_base_teleport_trigger"
+    },
+    {
+        "index": 149,
+        "key": "1005_south_filter"
+    },
+    {
+        "index": 150,
+        "key": "1005_base_door_glass"
+    },
+    {
+        "index": 151,
+        "key": "1005_base_door_frame"
+    },
+    {
+        "index": 152,
+        "key": "1005_north_filter"
+    },
+    {
+        "index": 153,
+        "key": "1005_oob_teleport"
+    },
+    {
+        "index": 154,
+        "key": "1006_base_door_trigger"
+    },
+    {
+        "index": 155,
+        "key": "1006_base_door"
+    },
+    {
+        "index": 156,
+        "key": "1006_base_teleport_trigger"
+    },
+    {
+        "index": 157,
+        "key": "1006_south_filter"
+    },
+    {
+        "index": 158,
+        "key": "1006_base_door_glass"
+    },
+    {
+        "index": 159,
+        "key": "1006_base_door_frame"
+    },
+    {
+        "index": 160,
+        "key": "1006_north_filter"
+    },
+    {
+        "index": 161,
+        "key": "1006_oob_teleport"
+    },
+    {
+        "index": 162,
+        "key": "1007_base_door_trigger"
+    },
+    {
+        "index": 163,
+        "key": "1007_base_door"
+    },
+    {
+        "index": 164,
+        "key": "1007_base_teleport_trigger"
+    },
+    {
+        "index": 165,
+        "key": "1007_base_door_prop"
+    },
+    {
+        "index": 166,
+        "key": "1007_north_filter"
+    },
+    {
+        "index": 167,
+        "key": "1008_base_door_trigger"
+    },
+    {
+        "index": 168,
+        "key": "1008_base_door"
+    },
+    {
+        "index": 169,
+        "key": "1008_base_teleport_trigger"
+    },
+    {
+        "index": 170,
+        "key": "1008_base_door_prop"
+    },
+    {
+        "index": 171,
+        "key": "1008_north_filter"
+    },
+    {
+        "index": 172,
+        "key": "1009_base_door_trigger"
+    },
+    {
+        "index": 173,
+        "key": "1009_base_door"
+    },
+    {
+        "index": 174,
+        "key": "1009_base_teleport_trigger"
+    },
+    {
+        "index": 175,
+        "key": "1009_south_filter"
+    },
+    {
+        "index": 176,
+        "key": "1009_base_door_prop"
+    },
+    {
+        "index": 177,
+        "key": "1010_base_door_trigger"
+    },
+    {
+        "index": 178,
+        "key": "1010_base_door"
+    },
+    {
+        "index": 179,
+        "key": "1010_base_teleport_trigger"
+    },
+    {
+        "index": 180,
+        "key": "1010_south_filter"
+    },
+    {
+        "index": 181,
+        "key": "1010_base_door_prop"
+    },
+    {
+        "index": 182,
+        "key": "shop_combine_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 183,
+        "key": "shop_combine_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 184,
+        "key": "shop_combine_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 185,
+        "key": "shop_combine_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 186,
+        "key": "shop_combine_t1_purple_shop_prop"
+    },
+    {
+        "index": 187,
+        "key": "shop_combine_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 188,
+        "key": "shop_combine_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 189,
+        "key": "shop_combine_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 190,
+        "key": "shop_combine_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 191,
+        "key": "shop_combine_t1_yellow_shop_prop"
+    },
+    {
+        "index": 192,
+        "key": "shop_rebel_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 193,
+        "key": "shop_rebel_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 194,
+        "key": "shop_rebel_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 195,
+        "key": "shop_rebel_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 196,
+        "key": "shop_rebel_t1_yellow_shop_prop"
+    },
+    {
+        "index": 197,
+        "key": "shop_rebel_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 198,
+        "key": "shop_rebel_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 199,
+        "key": "shop_rebel_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 200,
+        "key": "shop_rebel_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 201,
+        "key": "shop_rebel_t1_purple_shop_prop"
+    },
+    {
+        "index": 202,
+        "key": "1453_shop_kill_relay"
+    },
+    {
+        "index": 203,
+        "key": "1453_shop_disable_relay"
+    },
+    {
+        "index": 204,
+        "key": "1453_shop_enable_relay"
+    },
+    {
+        "index": 205,
+        "key": "1453_shop_item_trigger"
+    },
+    {
+        "index": 206,
+        "key": "1453_shop_prop"
+    },
+    {
+        "index": 207,
+        "key": "1456_shop_kill_relay"
+    },
+    {
+        "index": 208,
+        "key": "1456_shop_disable_relay"
+    },
+    {
+        "index": 209,
+        "key": "1456_shop_enable_relay"
+    },
+    {
+        "index": 210,
+        "key": "1456_shop_item_trigger"
+    },
+    {
+        "index": 211,
+        "key": "1456_shop_prop"
+    },
+    {
+        "index": 212,
+        "key": "2010_base_door_trigger"
+    },
+    {
+        "index": 213,
+        "key": "2010_base_door"
+    },
+    {
+        "index": 214,
+        "key": "2010_base_teleport_trigger"
+    },
+    {
+        "index": 215,
+        "key": "2010_south_filter"
+    },
+    {
+        "index": 216,
+        "key": "2010_base_door_glass"
+    },
+    {
+        "index": 217,
+        "key": "2010_base_door_frame"
+    },
+    {
+        "index": 218,
+        "key": "2010_north_filter"
+    },
+    {
+        "index": 219,
+        "key": "2010_oob_teleport"
+    },
+    {
+        "index": 220,
+        "key": "2011_base_door_trigger"
+    },
+    {
+        "index": 221,
+        "key": "2011_base_door"
+    },
+    {
+        "index": 222,
+        "key": "2011_base_teleport_trigger"
+    },
+    {
+        "index": 223,
+        "key": "2011_south_filter"
+    },
+    {
+        "index": 224,
+        "key": "2011_base_door_glass"
+    },
+    {
+        "index": 225,
+        "key": "2011_base_door_frame"
+    },
+    {
+        "index": 226,
+        "key": "2011_north_filter"
+    },
+    {
+        "index": 227,
+        "key": "2011_oob_teleport"
+    },
+    {
+        "index": 228,
+        "key": "2012_base_door_trigger"
+    },
+    {
+        "index": 229,
+        "key": "2012_base_door"
+    },
+    {
+        "index": 230,
+        "key": "2012_base_teleport_trigger"
+    },
+    {
+        "index": 231,
+        "key": "2012_south_filter"
+    },
+    {
+        "index": 232,
+        "key": "2012_base_door_glass"
+    },
+    {
+        "index": 233,
+        "key": "2012_base_door_frame"
+    },
+    {
+        "index": 234,
+        "key": "2012_north_filter"
+    },
+    {
+        "index": 235,
+        "key": "2012_oob_teleport"
+    },
+    {
+        "index": 236,
+        "key": "2013_base_door_trigger"
+    },
+    {
+        "index": 237,
+        "key": "2013_base_door"
+    },
+    {
+        "index": 238,
+        "key": "2013_base_teleport_trigger"
+    },
+    {
+        "index": 239,
+        "key": "2013_south_filter"
+    },
+    {
+        "index": 240,
+        "key": "2013_base_door_glass"
+    },
+    {
+        "index": 241,
+        "key": "2013_base_door_frame"
+    },
+    {
+        "index": 242,
+        "key": "2013_north_filter"
+    },
+    {
+        "index": 243,
+        "key": "2013_oob_teleport"
+    },
+    {
+        "index": 244,
+        "key": "2150_shop_disable_relay"
+    },
+    {
+        "index": 245,
+        "key": "2150_shop_enable_relay"
+    },
+    {
+        "index": 246,
+        "key": "2150_shop_item_trigger"
+    },
+    {
+        "index": 247,
+        "key": "2150_shop_prop"
+    },
+    {
+        "index": 248,
+        "key": "2151_shop_disable_relay"
+    },
+    {
+        "index": 249,
+        "key": "2151_shop_enable_relay"
+    },
+    {
+        "index": 250,
+        "key": "2151_shop_item_trigger"
+    },
+    {
+        "index": 251,
+        "key": "2151_shop_prop"
+    },
+    {
+        "index": 252,
+        "key": "2399_bounce_pad_sound"
+    },
+    {
+        "index": 253,
+        "key": "2399_bounce_pad_trigger"
+    },
+    {
+        "index": 254,
+        "key": "2399_bounce_pad_fx"
+    },
+    {
+        "index": 255,
+        "key": "2400_bounce_pad_sound"
+    },
+    {
+        "index": 256,
+        "key": "2400_bounce_pad_trigger"
+    },
+    {
+        "index": 257,
+        "key": "2400_bounce_pad_fx"
+    },
+    {
+        "index": 258,
+        "key": "2403_bounce_pad_sound"
+    },
+    {
+        "index": 259,
+        "key": "2403_bounce_pad_trigger"
+    },
+    {
+        "index": 260,
+        "key": "2403_bounce_pad_fx"
+    },
+    {
+        "index": 261,
+        "key": "2404_bounce_pad_sound"
+    },
+    {
+        "index": 262,
+        "key": "2404_bounce_pad_trigger"
+    },
+    {
+        "index": 263,
+        "key": "2404_bounce_pad_fx"
+    },
+    {
+        "index": 264,
+        "key": "2419_bounce_pad_sound"
+    },
+    {
+        "index": 265,
+        "key": "2419_bounce_pad_trigger"
+    },
+    {
+        "index": 266,
+        "key": "2419_bounce_pad_fx"
+    },
+    {
+        "index": 267,
+        "key": "2423_bounce_pad_sound"
+    },
+    {
+        "index": 268,
+        "key": "2423_bounce_pad_trigger"
+    },
+    {
+        "index": 269,
+        "key": "2423_bounce_pad_fx"
+    },
+    {
+        "index": 270,
+        "key": "2424_teleport_trigger"
+    },
+    {
+        "index": 271,
+        "key": "2424_box"
+    },
+    {
+        "index": 272,
+        "key": "2425_teleport_trigger"
+    },
+    {
+        "index": 273,
+        "key": "2425_box"
+    },
+    {
+        "index": 274,
+        "key": "2430_bounce_pad_sound"
+    },
+    {
+        "index": 275,
+        "key": "2430_bounce_pad_trigger"
+    },
+    {
+        "index": 276,
+        "key": "2430_bounce_pad_fx"
+    },
+    {
+        "index": 277,
+        "key": "2434_bounce_pad_sound"
+    },
+    {
+        "index": 278,
+        "key": "2434_bounce_pad_trigger"
+    },
+    {
+        "index": 279,
+        "key": "2434_bounce_pad_fx"
+    },
+    {
+        "index": 280,
+        "key": "2461_teleport_trigger"
+    },
+    {
+        "index": 281,
+        "key": "2461_box"
+    },
+    {
+        "index": 282,
+        "key": "2463_teleport_trigger"
+    },
+    {
+        "index": 283,
+        "key": "2463_box"
+    },
+    {
+        "index": 284,
+        "key": "2465_teleport_trigger"
+    },
+    {
+        "index": 285,
+        "key": "2465_box"
+    },
+    {
+        "index": 286,
+        "key": "2467_teleport_trigger"
+    },
+    {
+        "index": 287,
+        "key": "2467_box"
+    },
+    {
+        "index": 288,
+        "key": "2469_teleport_trigger"
+    },
+    {
+        "index": 289,
+        "key": "2469_box"
+    },
+    {
+        "index": 290,
+        "key": "2472_teleport_trigger"
+    },
+    {
+        "index": 291,
+        "key": "2472_box"
+    },
+    {
+        "index": 292,
+        "key": "2477_bounce_pad_sound"
+    },
+    {
+        "index": 293,
+        "key": "2477_bounce_pad_trigger"
+    },
+    {
+        "index": 294,
+        "key": "2477_bounce_pad_fx"
+    },
+    {
+        "index": 295,
+        "key": "2479_bounce_pad_sound"
+    },
+    {
+        "index": 296,
+        "key": "2479_bounce_pad_trigger"
+    },
+    {
+        "index": 297,
+        "key": "2479_bounce_pad_fx"
+    },
+    {
+        "index": 298,
+        "key": "14997_garment_interior_trigger"
+    },
+    {
+        "index": 299,
+        "key": "14998_garment_interior_trigger"
+    },
+    {
+        "index": 300,
+        "key": "14999_8243_newstand_talker"
+    },
+    {
+        "index": 301,
+        "key": "14999_9359_newstand_talker"
+    },
+    {
+        "index": 302,
+        "key": "15049_underground_interior_trigger"
+    },
+    {
+        "index": 303,
+        "key": "15065_underground_interior_trigger"
+    },
+    {
+        "index": 304,
+        "key": "15799_zap_trigger_07"
+    },
+    {
+        "index": 305,
+        "key": "15799_zap_origin_07"
+    },
+    {
+        "index": 306,
+        "key": "15799_zap_trigger_17"
+    },
+    {
+        "index": 307,
+        "key": "15799_zap_origin_17"
+    },
+    {
+        "index": 308,
+        "key": "15799_zap_origin_18"
+    },
+    {
+        "index": 309,
+        "key": "15799_zap_trigger_18"
+    },
+    {
+        "index": 310,
+        "key": "15799_zap_trigger_23"
+    },
+    {
+        "index": 311,
+        "key": "15799_zap_origin_23"
+    },
+    {
+        "index": 312,
+        "key": "15799_zap_trigger_31"
+    },
+    {
+        "index": 313,
+        "key": "15799_zap_origin_31"
+    },
+    {
+        "index": 314,
+        "key": "15799_zap_trigger_31b"
+    },
+    {
+        "index": 315,
+        "key": "15799_zap_trigger_31a"
+    },
+    {
+        "index": 316,
+        "key": "15799_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 317,
+        "key": "15799_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 318,
+        "key": "15799_zap_trigger_11"
+    },
+    {
+        "index": 319,
+        "key": "15799_zap_origin_11"
+    },
+    {
+        "index": 320,
+        "key": "15799_zap_origin_06"
+    },
+    {
+        "index": 321,
+        "key": "15799_zap_trigger_06"
+    },
+    {
+        "index": 322,
+        "key": "15800_zap_trigger_07"
+    },
+    {
+        "index": 323,
+        "key": "15800_zap_origin_07"
+    },
+    {
+        "index": 324,
+        "key": "15800_zap_origin_12"
+    },
+    {
+        "index": 325,
+        "key": "15800_zap_trigger_17"
+    },
+    {
+        "index": 326,
+        "key": "15800_zap_origin_17"
+    },
+    {
+        "index": 327,
+        "key": "15800_zap_origin_18"
+    },
+    {
+        "index": 328,
+        "key": "15800_zap_trigger_18"
+    },
+    {
+        "index": 329,
+        "key": "15800_zap_trigger_23"
+    },
+    {
+        "index": 330,
+        "key": "15800_zap_origin_23"
+    },
+    {
+        "index": 331,
+        "key": "15800_zap_trigger_31"
+    },
+    {
+        "index": 332,
+        "key": "15800_zap_origin_31"
+    },
+    {
+        "index": 333,
+        "key": "15800_zap_trigger_31b"
+    },
+    {
+        "index": 334,
+        "key": "15800_zap_trigger_31a"
+    },
+    {
+        "index": 335,
+        "key": "15800_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 336,
+        "key": "15800_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 337,
+        "key": "15800_zap_trigger_12b"
+    },
+    {
+        "index": 338,
+        "key": "15800_zap_trigger_11"
+    },
+    {
+        "index": 339,
+        "key": "15800_zap_origin_11"
+    },
+    {
+        "index": 340,
+        "key": "15800_zap_trigger_37"
+    },
+    {
+        "index": 341,
+        "key": "15800_zap_origin_37"
+    },
+    {
+        "index": 342,
+        "key": "17613_Trigger Rat Run"
+    },
+    {
+        "index": 343,
+        "key": "17613_Disable Rat Run Trigger"
+    },
+    {
+        "index": 344,
+        "key": "17613_Rat Run Sound to Trigger"
+    },
+    {
+        "index": 345,
+        "key": "17613_Reset Sound Triggers"
+    },
+    {
+        "index": 346,
+        "key": "17613_Rat Run Sound to Trigger2"
+    },
+    {
+        "index": 347,
+        "key": "17613_Trigger Rat Run2"
+    },
+    {
+        "index": 348,
+        "key": "17613_Disable Rat Run Trigger2"
+    },
+    {
+        "index": 349,
+        "key": "17613_Bell Sound to Trigger"
+    },
+    {
+        "index": 350,
+        "key": "17613_Trigger Purple Bell"
+    },
+    {
+        "index": 351,
+        "key": "17613_Trigger Bird Fly"
+    },
+    {
+        "index": 352,
+        "key": "17613_Rooftop Start"
+    },
+    {
+        "index": 353,
+        "key": "17613_Alley South"
+    },
+    {
+        "index": 354,
+        "key": "17613_Alley North"
+    },
+    {
+        "index": 355,
+        "key": "17613_Temple"
+    },
+    {
+        "index": 356,
+        "key": "17613_Park"
+    },
+    {
+        "index": 357,
+        "key": "17613_Home Base North"
+    },
+    {
+        "index": 358,
+        "key": "17613_Home Base North Inside"
+    },
+    {
+        "index": 359,
+        "key": "17613_Spawn South"
+    },
+    {
+        "index": 360,
+        "key": "17613_Spawn North"
+    },
+    {
+        "index": 361,
+        "key": "17613_Home Base South"
+    },
+    {
+        "index": 362,
+        "key": "17613_Home Base South Inside"
+    },
+    {
+        "index": 363,
+        "key": "17613_Lane Blue South Outside"
+    },
+    {
+        "index": 364,
+        "key": "17613_Lane Blue South Inside"
+    },
+    {
+        "index": 365,
+        "key": "17613_Lane Blue North Outside"
+    },
+    {
+        "index": 366,
+        "key": "17613_Blue North Inside"
+    },
+    {
+        "index": 367,
+        "key": "17613_Lane Yellow South Outside"
+    },
+    {
+        "index": 368,
+        "key": "17613_Lane Yellow North Outside"
+    },
+    {
+        "index": 369,
+        "key": "17613_Lane Yellow South Inside"
+    },
+    {
+        "index": 370,
+        "key": "17613_Lane Orange North Outside"
+    },
+    {
+        "index": 371,
+        "key": "17613_Underpass"
+    },
+    {
+        "index": 372,
+        "key": "17613_Lane Orange South Inside"
+    },
+    {
+        "index": 373,
+        "key": "17613_Lane Orange South Outside"
+    },
+    {
+        "index": 374,
+        "key": "17613_Lane Purple North Inside"
+    },
+    {
+        "index": 375,
+        "key": "17613_Lane Purple South Inside"
+    },
+    {
+        "index": 376,
+        "key": "17613_Lane Purple North Outside"
+    },
+    {
+        "index": 377,
+        "key": "17613_Lane Purple South Outside"
+    },
+    {
+        "index": 378,
+        "key": "17613_Warehouse North"
+    },
+    {
+        "index": 379,
+        "key": "17613_Warehouse South"
+    },
+    {
+        "index": 380,
+        "key": "17613_Underground"
+    },
+    {
+        "index": 381,
+        "key": "17613_Generic Outdoors"
+    },
+    {
+        "index": 382,
+        "key": "17613_Tunnel South"
+    },
+    {
+        "index": 383,
+        "key": "17613_Tunnel North"
+    },
+    {
+        "index": 384,
+        "key": "17613_Teleporter Amb 1"
+    },
+    {
+        "index": 385,
+        "key": "17613_Teleporter Amb 2"
+    },
+    {
+        "index": 386,
+        "key": "17613_Teleporter Amb 4"
+    },
+    {
+        "index": 387,
+        "key": "17613_Teleporter Amb 3"
+    },
+    {
+        "index": 388,
+        "key": "17613_Disable Teleport Amb 2"
+    },
+    {
+        "index": 389,
+        "key": "17613_Disable Teleport Amb 3"
+    },
+    {
+        "index": 390,
+        "key": "17613_Disable Teleport Amb 1"
+    },
+    {
+        "index": 391,
+        "key": "17613_Disable Teleport Amb 4"
+    },
+    {
+        "index": 392,
+        "key": "17613_Waltz Music"
+    },
+    {
+        "index": 393,
+        "key": "17613_Hotel Music"
+    },
+    {
+        "index": 394,
+        "key": "26889_factory_interior_trigger"
+    },
+    {
+        "index": 395,
+        "key": "331195_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 396,
+        "key": "331195_combine_final_exposed_relay"
+    },
+    {
+        "index": 397,
+        "key": "331195_combine_final_shielded_relay"
+    },
+    {
+        "index": 398,
+        "key": "331195_rebels_final_shielded"
+    },
+    {
+        "index": 399,
+        "key": "331195_rebels_final_exposed"
+    },
+    {
+        "index": 400,
+        "key": "331195_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 401,
+        "key": "331195_rebels_final_destroyed_template"
+    },
+    {
+        "index": 402,
+        "key": "331195_combine_final_destroyed_template"
+    },
+    {
+        "index": 403,
+        "key": "645064_tunnel_interior_trigger"
+    },
+    {
+        "index": 404,
+        "key": "645065_tunnel_interior_trigger"
+    },
+    {
+        "index": 405,
+        "key": "806303_factory_interior_trigger"
+    },
+    {
+        "index": 406,
+        "key": "832308_push_alt_fx"
+    },
+    {
+        "index": 407,
+        "key": "832309_push_fx"
+    },
+    {
+        "index": 408,
+        "key": "1224970_8298_chapel_building_zap_trigger"
+    },
+    {
+        "index": 409,
+        "key": "1224970_8298_chapel_building_zap_origin"
+    },
+    {
+        "index": 410,
+        "key": "1224970_10912_speakeasy_zap_trigger_01"
+    },
+    {
+        "index": 411,
+        "key": "1224970_10912_speakeasy_zap_origin_01"
+    },
+    {
+        "index": 412,
+        "key": "1224970_10913_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 413,
+        "key": "1224971_9919_port_zap_trigger_01"
+    },
+    {
+        "index": 414,
+        "key": "1224971_9919_port_zap_origin_01"
+    },
+    {
+        "index": 415,
+        "key": "1224971_9920_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 416,
+        "key": "1225002_8243_newstand_talker"
+    },
+    {
+        "index": 417,
+        "key": "1225002_9359_newstand_talker"
+    },
+    {
+        "index": 418,
+        "key": "citadel_gamerules"
+    },
+    {
+        "index": 419,
+        "key": "Announcer_3"
+    },
+    {
+        "index": 420,
+        "key": "Announcer_2"
+    },
+    {
+        "index": 421,
+        "key": "citadel_weapon_bosstier3_set"
+    },
+    {
+        "index": 422,
+        "key": "citadel_ability_tier3boss_laser_beam"
+    },
+    {
+        "index": 423,
+        "key": "citadel_ability_tier3boss_damage_pulse"
+    },
+    {
+        "index": 424,
+        "key": "citadel_weapon_bosstier2_set"
+    },
+    {
+        "index": 425,
+        "key": "citadel_ability_tier2boss_rocket_barrage"
+    },
+    {
+        "index": 426,
+        "key": "citadel_ability_tier2boss_laser_beam"
+    },
+    {
+        "index": 427,
+        "key": "citadel_ability_tier2boss_stomp"
+    },
+    {
+        "index": 428,
+        "key": "boss_rebel_t1_yellow"
+    },
+    {
+        "index": 429,
+        "key": "boss_rebel_t1_purple"
+    },
+    {
+        "index": 430,
+        "key": "boss_combine_t1_purple"
+    },
+    {
+        "index": 431,
+        "key": "boss_combine_t1_orange"
+    },
+    {
+        "index": 432,
+        "key": "boss_combine_t1_yellow"
+    },
+    {
+        "index": 433,
+        "key": "boss_rebel_t1_blue"
+    },
+    {
+        "index": 434,
+        "key": "boss_rebel_t1_orange"
+    },
+    {
+        "index": 435,
+        "key": "boss_combine_t1_blue"
+    },
+    {
+        "index": 436,
+        "key": "citadel_ability_trooper_zip_line"
+    },
+    {
+        "index": 437,
+        "key": "ability_medic_trooper_heal"
+    },
+    {
+        "index": 438,
+        "key": "citadel_weapon_lash_set"
+    },
+    {
+        "index": 439,
+        "key": "ability_melee_lash"
+    },
+    {
+        "index": 440,
+        "key": "citadel_ability_mantle"
+    },
+    {
+        "index": 441,
+        "key": "citadel_ability_jump"
+    },
+    {
+        "index": 442,
+        "key": "citadel_ability_slide"
+    },
+    {
+        "index": 443,
+        "key": "citadel_ability_zip_line"
+    },
+    {
+        "index": 444,
+        "key": "citadel_ability_zipline_boost"
+    },
+    {
+        "index": 445,
+        "key": "citadel_ability_climb_rope"
+    },
+    {
+        "index": 446,
+        "key": "citadel_ability_dash"
+    },
+    {
+        "index": 447,
+        "key": "citadel_ability_sprint"
+    },
+    {
+        "index": 448,
+        "key": "citadel_ability_melee_parry"
+    },
+    {
+        "index": 449,
+        "key": "citadel_ability_lash_down_strike"
+    },
+    {
+        "index": 450,
+        "key": "citadel_ability_lash"
+    },
+    {
+        "index": 451,
+        "key": "ability_lash_flog"
+    },
+    {
+        "index": 452,
+        "key": "citadel_ability_lash_ultimate"
+    },
+    {
+        "index": 453,
+        "key": "hero_lash"
+    },
+    {
+        "index": 454,
+        "key": "citadel_weapon_yamato_set"
+    },
+    {
+        "index": 455,
+        "key": "ability_melee_yamato"
+    },
+    {
+        "index": 456,
+        "key": "citadel_weapon_yamato_alt"
+    },
+    {
+        "index": 457,
+        "key": "citadel_ability_power_slash"
+    },
+    {
+        "index": 458,
+        "key": "citadel_ability_flying_strike"
+    },
+    {
+        "index": 459,
+        "key": "citadel_ability_healing_slash"
+    },
+    {
+        "index": 460,
+        "key": "citadel_ability_infinity_slash"
+    },
+    {
+        "index": 461,
+        "key": "hero_yamato"
+    },
+    {
+        "index": 462,
+        "key": "citadel_weapon_inferno_set"
+    },
+    {
+        "index": 463,
+        "key": "ability_melee_inferno"
+    },
+    {
+        "index": 464,
+        "key": "ability_incendiary_projectile"
+    },
+    {
+        "index": 465,
+        "key": "ability_flame_dash"
+    },
+    {
+        "index": 466,
+        "key": "ability_flame_dash_cancel_trigger"
+    },
+    {
+        "index": 467,
+        "key": "ability_afterburn"
+    },
+    {
+        "index": 468,
+        "key": "ability_fire_bomb"
+    },
+    {
+        "index": 469,
+        "key": "hero_inferno"
+    },
+    {
+        "index": 470,
+        "key": "citadel_weapon_warden_set"
+    },
+    {
+        "index": 471,
+        "key": "citadel_ability_melee_warden"
+    },
+    {
+        "index": 472,
+        "key": "ability_warden_crowd_control"
+    },
+    {
+        "index": 473,
+        "key": "ability_warden_high_alert"
+    },
+    {
+        "index": 474,
+        "key": "ability_warden_lock_down"
+    },
+    {
+        "index": 475,
+        "key": "ability_warden_riot_protocol"
+    },
+    {
+        "index": 476,
+        "key": "hero_warden"
+    },
+    {
+        "index": 477,
+        "key": "citadel_weapon_bebop_set"
+    },
+    {
+        "index": 478,
+        "key": "citadel_ability_melee_bebop"
+    },
+    {
+        "index": 479,
+        "key": "citadel_ability_uppercut"
+    },
+    {
+        "index": 480,
+        "key": "citadel_ability_sticky_bomb"
+    },
+    {
+        "index": 481,
+        "key": "citadel_ability_hook"
+    },
+    {
+        "index": 482,
+        "key": "citadel_ability_bebop_laser_beam"
+    },
+    {
+        "index": 483,
+        "key": "hero_bebop"
+    },
+    {
+        "index": 484,
+        "key": "citadel_weapon_wraith_set"
+    },
+    {
+        "index": 485,
+        "key": "citadel_ability_melee_wraith"
+    },
+    {
+        "index": 486,
+        "key": "citadel_ability_card_toss"
+    },
+    {
+        "index": 487,
+        "key": "citadel_ability_projectmind"
+    },
+    {
+        "index": 488,
+        "key": "citadel_ability_wraith_rapidfire"
+    },
+    {
+        "index": 489,
+        "key": "citadel_ability_psychic_lift"
+    },
+    {
+        "index": 490,
+        "key": "hero_wraith"
+    },
+    {
+        "index": 491,
+        "key": "citadel_weapon_gigawatt_set"
+    },
+    {
+        "index": 492,
+        "key": "citadel_ability_melee_gigawatt"
+    },
+    {
+        "index": 493,
+        "key": "citadel_ability_lightning_ball"
+    },
+    {
+        "index": 494,
+        "key": "citadel_ability_static_charge"
+    },
+    {
+        "index": 495,
+        "key": "ability_power_surge"
+    },
+    {
+        "index": 496,
+        "key": "citadel_ability_storm_cloud"
+    },
+    {
+        "index": 497,
+        "key": "hero_gigawatt"
+    },
+    {
+        "index": 498,
+        "key": "citadel_weapon_mirage_set"
+    },
+    {
+        "index": 499,
+        "key": "citadel_ability_melee_genericperson"
+    },
+    {
+        "index": 500,
+        "key": "mirage_fire_beetles"
+    },
+    {
+        "index": 501,
+        "key": "mirage_tornado"
+    },
+    {
+        "index": 502,
+        "key": "mirage_sand_phantom"
+    },
+    {
+        "index": 503,
+        "key": "mirage_teleport"
+    },
+    {
+        "index": 504,
+        "key": "hero_mirage"
+    },
+    {
+        "index": 505,
+        "key": "citadel_weapon_haze_set"
+    },
+    {
+        "index": 506,
+        "key": "ability_melee_haze"
+    },
+    {
+        "index": 507,
+        "key": "ability_sleep_dagger"
+    },
+    {
+        "index": 508,
+        "key": "ability_smoke_bomb"
+    },
+    {
+        "index": 509,
+        "key": "ability_stacking_damage"
+    },
+    {
+        "index": 510,
+        "key": "ability_bullet_flurry"
+    },
+    {
+        "index": 511,
+        "key": "hero_haze"
+    },
+    {
+        "index": 512,
+        "key": "citadel_weapon_chrono_set"
+    },
+    {
+        "index": 513,
+        "key": "citadel_ability_melee_chrono"
+    },
+    {
+        "index": 514,
+        "key": "citadel_ability_chrono_pulse_grenade"
+    },
+    {
+        "index": 515,
+        "key": "citadel_ability_chrono_time_wall"
+    },
+    {
+        "index": 516,
+        "key": "citadel_ability_chrono_kinetic_carbine"
+    },
+    {
+        "index": 517,
+        "key": "citadel_ability_chrono_swap"
+    },
+    {
+        "index": 518,
+        "key": "hero_chrono"
+    },
+    {
+        "index": 519,
+        "key": "citadel_weapon_sumo_set"
+    },
+    {
+        "index": 520,
+        "key": "citadel_ability_melee_sumo"
+    },
+    {
+        "index": 521,
+        "key": "citadel_ability_stomp"
+    },
+    {
+        "index": 522,
+        "key": "citadel_ability_void_sphere"
+    },
+    {
+        "index": 523,
+        "key": "citadel_ability_nikuman"
+    },
+    {
+        "index": 524,
+        "key": "citadel_ability_self_vacuum"
+    },
+    {
+        "index": 525,
+        "key": "hero_dynamo"
+    },
+    {
+        "index": 526,
+        "key": "citadel_weapon_archer_set"
+    },
+    {
+        "index": 527,
+        "key": "ability_melee_archer"
+    },
+    {
+        "index": 528,
+        "key": "ability_charged_shot"
+    },
+    {
+        "index": 529,
+        "key": "ability_power_jump"
+    },
+    {
+        "index": 530,
+        "key": "ability_immobilize_trap"
+    },
+    {
+        "index": 531,
+        "key": "ability_guided_arrow"
+    },
+    {
+        "index": 532,
+        "key": "hero_orion"
+    },
+    {
+        "index": 0,
+        "key": "BigNet"
+    },
+    {
+        "index": 1,
+        "key": "screenshot_camera_00"
+    },
+    {
+        "index": 2,
+        "key": "screenshot_camera_01"
+    },
+    {
+        "index": 3,
+        "key": "screenshot_camera_02"
+    },
+    {
+        "index": 4,
+        "key": "screenshot_camera_03"
+    },
+    {
+        "index": 5,
+        "key": "screenshot_camera_04"
+    },
+    {
+        "index": 6,
+        "key": "screenshot_camera_05"
+    },
+    {
+        "index": 7,
+        "key": "screenshot_camera_06"
+    },
+    {
+        "index": 8,
+        "key": "2392_post_processing"
+    },
+    {
+        "index": 9,
+        "key": "2392_1392_fog_main"
+    },
+    {
+        "index": 10,
+        "key": "2392_fog_blinded"
+    },
+    {
+        "index": 11,
+        "key": "2392_89_sky_entity"
+    },
+    {
+        "index": 12,
+        "key": "8785_Lane4"
+    },
+    {
+        "index": 13,
+        "key": "8785_Lane6"
+    },
+    {
+        "index": 14,
+        "key": "8785_Lane3"
+    },
+    {
+        "index": 15,
+        "key": "8785_Lane1"
+    },
+    {
+        "index": 16,
+        "key": "base_hurt_trigger"
+    },
+    {
+        "index": 17,
+        "key": "mid_temple_zap_origin"
+    },
+    {
+        "index": 18,
+        "key": "mid_interior_trigger"
+    },
+    {
+        "index": 19,
+        "key": "14741_garage_interior_trigger"
+    },
+    {
+        "index": 20,
+        "key": "14743_idol_building_zap_origin_01"
+    },
+    {
+        "index": 21,
+        "key": "14743_idol_building_zap_trigger_01"
+    },
+    {
+        "index": 22,
+        "key": "14743_idol_building_zap_trigger_02"
+    },
+    {
+        "index": 23,
+        "key": "14743_idol_building_zap_origin_02"
+    },
+    {
+        "index": 24,
+        "key": "14743_idol_building_zap_trigger_03"
+    },
+    {
+        "index": 25,
+        "key": "14743_idol_building_zap_origin_03"
+    },
+    {
+        "index": 26,
+        "key": "14743_record_store_interior_trigger"
+    },
+    {
+        "index": 27,
+        "key": "14743_imports_interior_trigger"
+    },
+    {
+        "index": 28,
+        "key": "14743_comedy_interior_trigger"
+    },
+    {
+        "index": 29,
+        "key": "14743_apothecary_interior_trigger"
+    },
+    {
+        "index": 30,
+        "key": "relay_control_point_rebels"
+    },
+    {
+        "index": 31,
+        "key": "counter_mid_gate_rebel"
+    },
+    {
+        "index": 32,
+        "key": "counter_mid_gate_combine"
+    },
+    {
+        "index": 33,
+        "key": "counter_mid_gate_combine_switch_paths"
+    },
+    {
+        "index": 34,
+        "key": "relay_control_point_combine"
+    },
+    {
+        "index": 35,
+        "key": "counter_mid_gate_rebel_switch_paths"
+    },
+    {
+        "index": 36,
+        "key": "control_point_rebels_01_beam_end"
+    },
+    {
+        "index": 37,
+        "key": "control_point_combine_01_beam_end"
+    },
+    {
+        "index": 38,
+        "key": "filter_team_humans"
+    },
+    {
+        "index": 39,
+        "key": "filter_team_aliens"
+    },
+    {
+        "index": 40,
+        "key": "control_point_combine_01_beam_start"
+    },
+    {
+        "index": 41,
+        "key": "shop_model_target"
+    },
+    {
+        "index": 42,
+        "key": "rebels_t3_generator_purple"
+    },
+    {
+        "index": 43,
+        "key": "rebels_t3_generator_yellow"
+    },
+    {
+        "index": 44,
+        "key": "combine_t3_generator_yellow"
+    },
+    {
+        "index": 45,
+        "key": "combine_t3_generator_purple"
+    },
+    {
+        "index": 46,
+        "key": "combine_t2_boss_yellow"
+    },
+    {
+        "index": 47,
+        "key": "combine_t2_boss_purple"
+    },
+    {
+        "index": 48,
+        "key": "rebels_t2_boss_purple"
+    },
+    {
+        "index": 49,
+        "key": "rebels_t2_boss_yellow"
+    },
+    {
+        "index": 50,
+        "key": "rebels_t2_boss_blue"
+    },
+    {
+        "index": 51,
+        "key": "combine_t2_boss_orange"
+    },
+    {
+        "index": 52,
+        "key": "combine_t2_boss_blue"
+    },
+    {
+        "index": 53,
+        "key": "rebels_t2_boss_orange"
+    },
+    {
+        "index": 54,
+        "key": "amber_base_area"
+    },
+    {
+        "index": 55,
+        "key": "sapphire_team_area"
+    },
+    {
+        "index": 56,
+        "key": "rebels_fountain_collidable"
+    },
+    {
+        "index": 57,
+        "key": "combine_fountain_collidable"
+    },
+    {
+        "index": 58,
+        "key": "center_shop_south_trigger"
+    },
+    {
+        "index": 59,
+        "key": "center_shop_north_trigger"
+    },
+    {
+        "index": 60,
+        "key": "mid_post"
+    },
+    {
+        "index": 61,
+        "key": "north_post"
+    },
+    {
+        "index": 62,
+        "key": "south_post"
+    },
+    {
+        "index": 63,
+        "key": "amber_trooper_detector"
+    },
+    {
+        "index": 64,
+        "key": "sapphire_trooper_detector"
+    },
+    {
+        "index": 65,
+        "key": "sapphire_exit_west"
+    },
+    {
+        "index": 66,
+        "key": "amber_exit_east"
+    },
+    {
+        "index": 67,
+        "key": "push_fx"
+    },
+    {
+        "index": 68,
+        "key": "bounce_market_walkway_target"
+    },
+    {
+        "index": 69,
+        "key": "bounce_market_blue_target"
+    },
+    {
+        "index": 70,
+        "key": "bounce_market_highline_target"
+    },
+    {
+        "index": 71,
+        "key": "bounce_market_orange_target"
+    },
+    {
+        "index": 72,
+        "key": "dance_pad_target"
+    },
+    {
+        "index": 73,
+        "key": "boutique_pad_target"
+    },
+    {
+        "index": 74,
+        "key": "exit_w"
+    },
+    {
+        "index": 75,
+        "key": "exit_e"
+    },
+    {
+        "index": 76,
+        "key": "bounce_walker_courthouse_target"
+    },
+    {
+        "index": 77,
+        "key": "bounce_culturalcenter_purple_target"
+    },
+    {
+        "index": 78,
+        "key": "amber_base_collidable"
+    },
+    {
+        "index": 79,
+        "key": "sapphire_base_collidable"
+    },
+    {
+        "index": 80,
+        "key": "exit_sw"
+    },
+    {
+        "index": 81,
+        "key": "exit_se"
+    },
+    {
+        "index": 82,
+        "key": "exit_ne"
+    },
+    {
+        "index": 83,
+        "key": "exit_nw"
+    },
+    {
+        "index": 84,
+        "key": "amber_exit_west"
+    },
+    {
+        "index": 85,
+        "key": "sapphire_exit_east"
+    },
+    {
+        "index": 86,
+        "key": "bounce_barber_purple_target"
+    },
+    {
+        "index": 87,
+        "key": "bounce_coffee_yellow_target"
+    },
+    {
+        "index": 88,
+        "key": "base_amber"
+    },
+    {
+        "index": 89,
+        "key": "base_sapphire"
+    },
+    {
+        "index": 90,
+        "key": "combine_west_collidable"
+    },
+    {
+        "index": 91,
+        "key": "combine_east_collidable"
+    },
+    {
+        "index": 92,
+        "key": "rebels_west_collidable"
+    },
+    {
+        "index": 93,
+        "key": "rebels_wast_collidable"
+    },
+    {
+        "index": 94,
+        "key": "bounce_base_se_target"
+    },
+    {
+        "index": 95,
+        "key": "bounce_base_sw_target"
+    },
+    {
+        "index": 96,
+        "key": "bounce_base_nw_target"
+    },
+    {
+        "index": 97,
+        "key": "bounce_base_ne_target"
+    },
+    {
+        "index": 98,
+        "key": "125_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 99,
+        "key": "125_combine_final_exposed_relay"
+    },
+    {
+        "index": 100,
+        "key": "125_combine_final_shielded_relay"
+    },
+    {
+        "index": 101,
+        "key": "125_rebels_final_shielded"
+    },
+    {
+        "index": 102,
+        "key": "125_rebels_final_exposed"
+    },
+    {
+        "index": 103,
+        "key": "125_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 104,
+        "key": "125_rebels_final_destroyed_template"
+    },
+    {
+        "index": 105,
+        "key": "125_combine_final_destroyed_template"
+    },
+    {
+        "index": 106,
+        "key": "shop_combine_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 107,
+        "key": "shop_combine_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 108,
+        "key": "shop_combine_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 109,
+        "key": "shop_combine_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 110,
+        "key": "shop_combine_t1_orange_shop_prop"
+    },
+    {
+        "index": 111,
+        "key": "shop_combine_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 112,
+        "key": "shop_combine_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 113,
+        "key": "shop_combine_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 114,
+        "key": "shop_combine_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 115,
+        "key": "shop_combine_t1_blue_shop_prop"
+    },
+    {
+        "index": 116,
+        "key": "shop_rebel_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 117,
+        "key": "shop_rebel_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 118,
+        "key": "shop_rebel_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 119,
+        "key": "shop_rebel_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 120,
+        "key": "shop_rebel_t1_orange_shop_prop"
+    },
+    {
+        "index": 121,
+        "key": "shop_rebel_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 122,
+        "key": "shop_rebel_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 123,
+        "key": "shop_rebel_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 124,
+        "key": "shop_rebel_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 125,
+        "key": "shop_rebel_t1_blue_shop_prop"
+    },
+    {
+        "index": 126,
+        "key": "957_teleport_trigger"
+    },
+    {
+        "index": 127,
+        "key": "957_box"
+    },
+    {
+        "index": 128,
+        "key": "960_teleport_trigger"
+    },
+    {
+        "index": 129,
+        "key": "960_box"
+    },
+    {
+        "index": 130,
+        "key": "1002_base_door_trigger"
+    },
+    {
+        "index": 131,
+        "key": "1002_base_door"
+    },
+    {
+        "index": 132,
+        "key": "1002_base_teleport_trigger"
+    },
+    {
+        "index": 133,
+        "key": "1002_south_filter"
+    },
+    {
+        "index": 134,
+        "key": "1002_base_door_glass"
+    },
+    {
+        "index": 135,
+        "key": "1002_base_door_frame"
+    },
+    {
+        "index": 136,
+        "key": "1002_north_filter"
+    },
+    {
+        "index": 137,
+        "key": "1002_oob_teleport"
+    },
+    {
+        "index": 138,
+        "key": "1003_base_door_trigger"
+    },
+    {
+        "index": 139,
+        "key": "1003_base_door"
+    },
+    {
+        "index": 140,
+        "key": "1003_base_teleport_trigger"
+    },
+    {
+        "index": 141,
+        "key": "1003_south_filter"
+    },
+    {
+        "index": 142,
+        "key": "1003_base_door_glass"
+    },
+    {
+        "index": 143,
+        "key": "1003_base_door_frame"
+    },
+    {
+        "index": 144,
+        "key": "1003_north_filter"
+    },
+    {
+        "index": 145,
+        "key": "1003_oob_teleport"
+    },
+    {
+        "index": 146,
+        "key": "1005_base_door_trigger"
+    },
+    {
+        "index": 147,
+        "key": "1005_base_door"
+    },
+    {
+        "index": 148,
+        "key": "1005_base_teleport_trigger"
+    },
+    {
+        "index": 149,
+        "key": "1005_south_filter"
+    },
+    {
+        "index": 150,
+        "key": "1005_base_door_glass"
+    },
+    {
+        "index": 151,
+        "key": "1005_base_door_frame"
+    },
+    {
+        "index": 152,
+        "key": "1005_north_filter"
+    },
+    {
+        "index": 153,
+        "key": "1005_oob_teleport"
+    },
+    {
+        "index": 154,
+        "key": "1006_base_door_trigger"
+    },
+    {
+        "index": 155,
+        "key": "1006_base_door"
+    },
+    {
+        "index": 156,
+        "key": "1006_base_teleport_trigger"
+    },
+    {
+        "index": 157,
+        "key": "1006_south_filter"
+    },
+    {
+        "index": 158,
+        "key": "1006_base_door_glass"
+    },
+    {
+        "index": 159,
+        "key": "1006_base_door_frame"
+    },
+    {
+        "index": 160,
+        "key": "1006_north_filter"
+    },
+    {
+        "index": 161,
+        "key": "1006_oob_teleport"
+    },
+    {
+        "index": 162,
+        "key": "1007_base_door_trigger"
+    },
+    {
+        "index": 163,
+        "key": "1007_base_door"
+    },
+    {
+        "index": 164,
+        "key": "1007_base_teleport_trigger"
+    },
+    {
+        "index": 165,
+        "key": "1007_base_door_prop"
+    },
+    {
+        "index": 166,
+        "key": "1007_north_filter"
+    },
+    {
+        "index": 167,
+        "key": "1008_base_door_trigger"
+    },
+    {
+        "index": 168,
+        "key": "1008_base_door"
+    },
+    {
+        "index": 169,
+        "key": "1008_base_teleport_trigger"
+    },
+    {
+        "index": 170,
+        "key": "1008_base_door_prop"
+    },
+    {
+        "index": 171,
+        "key": "1008_north_filter"
+    },
+    {
+        "index": 172,
+        "key": "1009_base_door_trigger"
+    },
+    {
+        "index": 173,
+        "key": "1009_base_door"
+    },
+    {
+        "index": 174,
+        "key": "1009_base_teleport_trigger"
+    },
+    {
+        "index": 175,
+        "key": "1009_south_filter"
+    },
+    {
+        "index": 176,
+        "key": "1009_base_door_prop"
+    },
+    {
+        "index": 177,
+        "key": "1010_base_door_trigger"
+    },
+    {
+        "index": 178,
+        "key": "1010_base_door"
+    },
+    {
+        "index": 179,
+        "key": "1010_base_teleport_trigger"
+    },
+    {
+        "index": 180,
+        "key": "1010_south_filter"
+    },
+    {
+        "index": 181,
+        "key": "1010_base_door_prop"
+    },
+    {
+        "index": 182,
+        "key": "shop_combine_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 183,
+        "key": "shop_combine_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 184,
+        "key": "shop_combine_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 185,
+        "key": "shop_combine_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 186,
+        "key": "shop_combine_t1_purple_shop_prop"
+    },
+    {
+        "index": 187,
+        "key": "shop_combine_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 188,
+        "key": "shop_combine_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 189,
+        "key": "shop_combine_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 190,
+        "key": "shop_combine_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 191,
+        "key": "shop_combine_t1_yellow_shop_prop"
+    },
+    {
+        "index": 192,
+        "key": "shop_rebel_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 193,
+        "key": "shop_rebel_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 194,
+        "key": "shop_rebel_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 195,
+        "key": "shop_rebel_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 196,
+        "key": "shop_rebel_t1_yellow_shop_prop"
+    },
+    {
+        "index": 197,
+        "key": "shop_rebel_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 198,
+        "key": "shop_rebel_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 199,
+        "key": "shop_rebel_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 200,
+        "key": "shop_rebel_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 201,
+        "key": "shop_rebel_t1_purple_shop_prop"
+    },
+    {
+        "index": 202,
+        "key": "1453_shop_kill_relay"
+    },
+    {
+        "index": 203,
+        "key": "1453_shop_disable_relay"
+    },
+    {
+        "index": 204,
+        "key": "1453_shop_enable_relay"
+    },
+    {
+        "index": 205,
+        "key": "1453_shop_item_trigger"
+    },
+    {
+        "index": 206,
+        "key": "1453_shop_prop"
+    },
+    {
+        "index": 207,
+        "key": "1456_shop_kill_relay"
+    },
+    {
+        "index": 208,
+        "key": "1456_shop_disable_relay"
+    },
+    {
+        "index": 209,
+        "key": "1456_shop_enable_relay"
+    },
+    {
+        "index": 210,
+        "key": "1456_shop_item_trigger"
+    },
+    {
+        "index": 211,
+        "key": "1456_shop_prop"
+    },
+    {
+        "index": 212,
+        "key": "2010_base_door_trigger"
+    },
+    {
+        "index": 213,
+        "key": "2010_base_door"
+    },
+    {
+        "index": 214,
+        "key": "2010_base_teleport_trigger"
+    },
+    {
+        "index": 215,
+        "key": "2010_south_filter"
+    },
+    {
+        "index": 216,
+        "key": "2010_base_door_glass"
+    },
+    {
+        "index": 217,
+        "key": "2010_base_door_frame"
+    },
+    {
+        "index": 218,
+        "key": "2010_north_filter"
+    },
+    {
+        "index": 219,
+        "key": "2010_oob_teleport"
+    },
+    {
+        "index": 220,
+        "key": "2011_base_door_trigger"
+    },
+    {
+        "index": 221,
+        "key": "2011_base_door"
+    },
+    {
+        "index": 222,
+        "key": "2011_base_teleport_trigger"
+    },
+    {
+        "index": 223,
+        "key": "2011_south_filter"
+    },
+    {
+        "index": 224,
+        "key": "2011_base_door_glass"
+    },
+    {
+        "index": 225,
+        "key": "2011_base_door_frame"
+    },
+    {
+        "index": 226,
+        "key": "2011_north_filter"
+    },
+    {
+        "index": 227,
+        "key": "2011_oob_teleport"
+    },
+    {
+        "index": 228,
+        "key": "2012_base_door_trigger"
+    },
+    {
+        "index": 229,
+        "key": "2012_base_door"
+    },
+    {
+        "index": 230,
+        "key": "2012_base_teleport_trigger"
+    },
+    {
+        "index": 231,
+        "key": "2012_south_filter"
+    },
+    {
+        "index": 232,
+        "key": "2012_base_door_glass"
+    },
+    {
+        "index": 233,
+        "key": "2012_base_door_frame"
+    },
+    {
+        "index": 234,
+        "key": "2012_north_filter"
+    },
+    {
+        "index": 235,
+        "key": "2012_oob_teleport"
+    },
+    {
+        "index": 236,
+        "key": "2013_base_door_trigger"
+    },
+    {
+        "index": 237,
+        "key": "2013_base_door"
+    },
+    {
+        "index": 238,
+        "key": "2013_base_teleport_trigger"
+    },
+    {
+        "index": 239,
+        "key": "2013_south_filter"
+    },
+    {
+        "index": 240,
+        "key": "2013_base_door_glass"
+    },
+    {
+        "index": 241,
+        "key": "2013_base_door_frame"
+    },
+    {
+        "index": 242,
+        "key": "2013_north_filter"
+    },
+    {
+        "index": 243,
+        "key": "2013_oob_teleport"
+    },
+    {
+        "index": 244,
+        "key": "2150_shop_disable_relay"
+    },
+    {
+        "index": 245,
+        "key": "2150_shop_enable_relay"
+    },
+    {
+        "index": 246,
+        "key": "2150_shop_item_trigger"
+    },
+    {
+        "index": 247,
+        "key": "2150_shop_prop"
+    },
+    {
+        "index": 248,
+        "key": "2151_shop_disable_relay"
+    },
+    {
+        "index": 249,
+        "key": "2151_shop_enable_relay"
+    },
+    {
+        "index": 250,
+        "key": "2151_shop_item_trigger"
+    },
+    {
+        "index": 251,
+        "key": "2151_shop_prop"
+    },
+    {
+        "index": 252,
+        "key": "2399_bounce_pad_sound"
+    },
+    {
+        "index": 253,
+        "key": "2399_bounce_pad_trigger"
+    },
+    {
+        "index": 254,
+        "key": "2399_bounce_pad_fx"
+    },
+    {
+        "index": 255,
+        "key": "2400_bounce_pad_sound"
+    },
+    {
+        "index": 256,
+        "key": "2400_bounce_pad_trigger"
+    },
+    {
+        "index": 257,
+        "key": "2400_bounce_pad_fx"
+    },
+    {
+        "index": 258,
+        "key": "2403_bounce_pad_sound"
+    },
+    {
+        "index": 259,
+        "key": "2403_bounce_pad_trigger"
+    },
+    {
+        "index": 260,
+        "key": "2403_bounce_pad_fx"
+    },
+    {
+        "index": 261,
+        "key": "2404_bounce_pad_sound"
+    },
+    {
+        "index": 262,
+        "key": "2404_bounce_pad_trigger"
+    },
+    {
+        "index": 263,
+        "key": "2404_bounce_pad_fx"
+    },
+    {
+        "index": 264,
+        "key": "2419_bounce_pad_sound"
+    },
+    {
+        "index": 265,
+        "key": "2419_bounce_pad_trigger"
+    },
+    {
+        "index": 266,
+        "key": "2419_bounce_pad_fx"
+    },
+    {
+        "index": 267,
+        "key": "2423_bounce_pad_sound"
+    },
+    {
+        "index": 268,
+        "key": "2423_bounce_pad_trigger"
+    },
+    {
+        "index": 269,
+        "key": "2423_bounce_pad_fx"
+    },
+    {
+        "index": 270,
+        "key": "2424_teleport_trigger"
+    },
+    {
+        "index": 271,
+        "key": "2424_box"
+    },
+    {
+        "index": 272,
+        "key": "2425_teleport_trigger"
+    },
+    {
+        "index": 273,
+        "key": "2425_box"
+    },
+    {
+        "index": 274,
+        "key": "2430_bounce_pad_sound"
+    },
+    {
+        "index": 275,
+        "key": "2430_bounce_pad_trigger"
+    },
+    {
+        "index": 276,
+        "key": "2430_bounce_pad_fx"
+    },
+    {
+        "index": 277,
+        "key": "2434_bounce_pad_sound"
+    },
+    {
+        "index": 278,
+        "key": "2434_bounce_pad_trigger"
+    },
+    {
+        "index": 279,
+        "key": "2434_bounce_pad_fx"
+    },
+    {
+        "index": 280,
+        "key": "2461_teleport_trigger"
+    },
+    {
+        "index": 281,
+        "key": "2461_box"
+    },
+    {
+        "index": 282,
+        "key": "2463_teleport_trigger"
+    },
+    {
+        "index": 283,
+        "key": "2463_box"
+    },
+    {
+        "index": 284,
+        "key": "2465_teleport_trigger"
+    },
+    {
+        "index": 285,
+        "key": "2465_box"
+    },
+    {
+        "index": 286,
+        "key": "2467_teleport_trigger"
+    },
+    {
+        "index": 287,
+        "key": "2467_box"
+    },
+    {
+        "index": 288,
+        "key": "2469_teleport_trigger"
+    },
+    {
+        "index": 289,
+        "key": "2469_box"
+    },
+    {
+        "index": 290,
+        "key": "2472_teleport_trigger"
+    },
+    {
+        "index": 291,
+        "key": "2472_box"
+    },
+    {
+        "index": 292,
+        "key": "2477_bounce_pad_sound"
+    },
+    {
+        "index": 293,
+        "key": "2477_bounce_pad_trigger"
+    },
+    {
+        "index": 294,
+        "key": "2477_bounce_pad_fx"
+    },
+    {
+        "index": 295,
+        "key": "2479_bounce_pad_sound"
+    },
+    {
+        "index": 296,
+        "key": "2479_bounce_pad_trigger"
+    },
+    {
+        "index": 297,
+        "key": "2479_bounce_pad_fx"
+    },
+    {
+        "index": 298,
+        "key": "14997_garment_interior_trigger"
+    },
+    {
+        "index": 299,
+        "key": "14998_garment_interior_trigger"
+    },
+    {
+        "index": 300,
+        "key": "14999_8243_newstand_talker"
+    },
+    {
+        "index": 301,
+        "key": "14999_9359_newstand_talker"
+    },
+    {
+        "index": 302,
+        "key": "15049_underground_interior_trigger"
+    },
+    {
+        "index": 303,
+        "key": "15065_underground_interior_trigger"
+    },
+    {
+        "index": 304,
+        "key": "15799_zap_trigger_07"
+    },
+    {
+        "index": 305,
+        "key": "15799_zap_origin_07"
+    },
+    {
+        "index": 306,
+        "key": "15799_zap_trigger_17"
+    },
+    {
+        "index": 307,
+        "key": "15799_zap_origin_17"
+    },
+    {
+        "index": 308,
+        "key": "15799_zap_origin_18"
+    },
+    {
+        "index": 309,
+        "key": "15799_zap_trigger_18"
+    },
+    {
+        "index": 310,
+        "key": "15799_zap_trigger_23"
+    },
+    {
+        "index": 311,
+        "key": "15799_zap_origin_23"
+    },
+    {
+        "index": 312,
+        "key": "15799_zap_trigger_31"
+    },
+    {
+        "index": 313,
+        "key": "15799_zap_origin_31"
+    },
+    {
+        "index": 314,
+        "key": "15799_zap_trigger_31b"
+    },
+    {
+        "index": 315,
+        "key": "15799_zap_trigger_31a"
+    },
+    {
+        "index": 316,
+        "key": "15799_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 317,
+        "key": "15799_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 318,
+        "key": "15799_zap_trigger_11"
+    },
+    {
+        "index": 319,
+        "key": "15799_zap_origin_11"
+    },
+    {
+        "index": 320,
+        "key": "15799_zap_origin_06"
+    },
+    {
+        "index": 321,
+        "key": "15799_zap_trigger_06"
+    },
+    {
+        "index": 322,
+        "key": "15800_zap_trigger_07"
+    },
+    {
+        "index": 323,
+        "key": "15800_zap_origin_07"
+    },
+    {
+        "index": 324,
+        "key": "15800_zap_origin_12"
+    },
+    {
+        "index": 325,
+        "key": "15800_zap_trigger_17"
+    },
+    {
+        "index": 326,
+        "key": "15800_zap_origin_17"
+    },
+    {
+        "index": 327,
+        "key": "15800_zap_origin_18"
+    },
+    {
+        "index": 328,
+        "key": "15800_zap_trigger_18"
+    },
+    {
+        "index": 329,
+        "key": "15800_zap_trigger_23"
+    },
+    {
+        "index": 330,
+        "key": "15800_zap_origin_23"
+    },
+    {
+        "index": 331,
+        "key": "15800_zap_trigger_31"
+    },
+    {
+        "index": 332,
+        "key": "15800_zap_origin_31"
+    },
+    {
+        "index": 333,
+        "key": "15800_zap_trigger_31b"
+    },
+    {
+        "index": 334,
+        "key": "15800_zap_trigger_31a"
+    },
+    {
+        "index": 335,
+        "key": "15800_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 336,
+        "key": "15800_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 337,
+        "key": "15800_zap_trigger_12b"
+    },
+    {
+        "index": 338,
+        "key": "15800_zap_trigger_11"
+    },
+    {
+        "index": 339,
+        "key": "15800_zap_origin_11"
+    },
+    {
+        "index": 340,
+        "key": "15800_zap_trigger_37"
+    },
+    {
+        "index": 341,
+        "key": "15800_zap_origin_37"
+    },
+    {
+        "index": 342,
+        "key": "17613_Trigger Rat Run"
+    },
+    {
+        "index": 343,
+        "key": "17613_Disable Rat Run Trigger"
+    },
+    {
+        "index": 344,
+        "key": "17613_Rat Run Sound to Trigger"
+    },
+    {
+        "index": 345,
+        "key": "17613_Reset Sound Triggers"
+    },
+    {
+        "index": 346,
+        "key": "17613_Rat Run Sound to Trigger2"
+    },
+    {
+        "index": 347,
+        "key": "17613_Trigger Rat Run2"
+    },
+    {
+        "index": 348,
+        "key": "17613_Disable Rat Run Trigger2"
+    },
+    {
+        "index": 349,
+        "key": "17613_Bell Sound to Trigger"
+    },
+    {
+        "index": 350,
+        "key": "17613_Trigger Purple Bell"
+    },
+    {
+        "index": 351,
+        "key": "17613_Trigger Bird Fly"
+    },
+    {
+        "index": 352,
+        "key": "17613_Rooftop Start"
+    },
+    {
+        "index": 353,
+        "key": "17613_Alley South"
+    },
+    {
+        "index": 354,
+        "key": "17613_Alley North"
+    },
+    {
+        "index": 355,
+        "key": "17613_Temple"
+    },
+    {
+        "index": 356,
+        "key": "17613_Park"
+    },
+    {
+        "index": 357,
+        "key": "17613_Home Base North"
+    },
+    {
+        "index": 358,
+        "key": "17613_Home Base North Inside"
+    },
+    {
+        "index": 359,
+        "key": "17613_Spawn South"
+    },
+    {
+        "index": 360,
+        "key": "17613_Spawn North"
+    },
+    {
+        "index": 361,
+        "key": "17613_Home Base South"
+    },
+    {
+        "index": 362,
+        "key": "17613_Home Base South Inside"
+    },
+    {
+        "index": 363,
+        "key": "17613_Lane Blue South Outside"
+    },
+    {
+        "index": 364,
+        "key": "17613_Lane Blue South Inside"
+    },
+    {
+        "index": 365,
+        "key": "17613_Lane Blue North Outside"
+    },
+    {
+        "index": 366,
+        "key": "17613_Blue North Inside"
+    },
+    {
+        "index": 367,
+        "key": "17613_Lane Yellow South Outside"
+    },
+    {
+        "index": 368,
+        "key": "17613_Lane Yellow North Outside"
+    },
+    {
+        "index": 369,
+        "key": "17613_Lane Yellow South Inside"
+    },
+    {
+        "index": 370,
+        "key": "17613_Lane Orange North Outside"
+    },
+    {
+        "index": 371,
+        "key": "17613_Underpass"
+    },
+    {
+        "index": 372,
+        "key": "17613_Lane Orange South Inside"
+    },
+    {
+        "index": 373,
+        "key": "17613_Lane Orange South Outside"
+    },
+    {
+        "index": 374,
+        "key": "17613_Lane Purple North Inside"
+    },
+    {
+        "index": 375,
+        "key": "17613_Lane Purple South Inside"
+    },
+    {
+        "index": 376,
+        "key": "17613_Lane Purple North Outside"
+    },
+    {
+        "index": 377,
+        "key": "17613_Lane Purple South Outside"
+    },
+    {
+        "index": 378,
+        "key": "17613_Warehouse North"
+    },
+    {
+        "index": 379,
+        "key": "17613_Warehouse South"
+    },
+    {
+        "index": 380,
+        "key": "17613_Underground"
+    },
+    {
+        "index": 381,
+        "key": "17613_Generic Outdoors"
+    },
+    {
+        "index": 382,
+        "key": "17613_Tunnel South"
+    },
+    {
+        "index": 383,
+        "key": "17613_Tunnel North"
+    },
+    {
+        "index": 384,
+        "key": "17613_Teleporter Amb 1"
+    },
+    {
+        "index": 385,
+        "key": "17613_Teleporter Amb 2"
+    },
+    {
+        "index": 386,
+        "key": "17613_Teleporter Amb 4"
+    },
+    {
+        "index": 387,
+        "key": "17613_Teleporter Amb 3"
+    },
+    {
+        "index": 388,
+        "key": "17613_Disable Teleport Amb 2"
+    },
+    {
+        "index": 389,
+        "key": "17613_Disable Teleport Amb 3"
+    },
+    {
+        "index": 390,
+        "key": "17613_Disable Teleport Amb 1"
+    },
+    {
+        "index": 391,
+        "key": "17613_Disable Teleport Amb 4"
+    },
+    {
+        "index": 392,
+        "key": "17613_Waltz Music"
+    },
+    {
+        "index": 393,
+        "key": "17613_Hotel Music"
+    },
+    {
+        "index": 394,
+        "key": "26889_factory_interior_trigger"
+    },
+    {
+        "index": 395,
+        "key": "331195_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 396,
+        "key": "331195_combine_final_exposed_relay"
+    },
+    {
+        "index": 397,
+        "key": "331195_combine_final_shielded_relay"
+    },
+    {
+        "index": 398,
+        "key": "331195_rebels_final_shielded"
+    },
+    {
+        "index": 399,
+        "key": "331195_rebels_final_exposed"
+    },
+    {
+        "index": 400,
+        "key": "331195_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 401,
+        "key": "331195_rebels_final_destroyed_template"
+    },
+    {
+        "index": 402,
+        "key": "331195_combine_final_destroyed_template"
+    },
+    {
+        "index": 403,
+        "key": "645064_tunnel_interior_trigger"
+    },
+    {
+        "index": 404,
+        "key": "645065_tunnel_interior_trigger"
+    },
+    {
+        "index": 405,
+        "key": "806303_factory_interior_trigger"
+    },
+    {
+        "index": 406,
+        "key": "832308_push_alt_fx"
+    },
+    {
+        "index": 407,
+        "key": "832309_push_fx"
+    },
+    {
+        "index": 408,
+        "key": "1224970_8298_chapel_building_zap_trigger"
+    },
+    {
+        "index": 409,
+        "key": "1224970_8298_chapel_building_zap_origin"
+    },
+    {
+        "index": 410,
+        "key": "1224970_10912_speakeasy_zap_trigger_01"
+    },
+    {
+        "index": 411,
+        "key": "1224970_10912_speakeasy_zap_origin_01"
+    },
+    {
+        "index": 412,
+        "key": "1224970_10913_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 413,
+        "key": "1224971_9919_port_zap_trigger_01"
+    },
+    {
+        "index": 414,
+        "key": "1224971_9919_port_zap_origin_01"
+    },
+    {
+        "index": 415,
+        "key": "1224971_9920_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 416,
+        "key": "1225002_8243_newstand_talker"
+    },
+    {
+        "index": 417,
+        "key": "1225002_9359_newstand_talker"
+    },
+    {
+        "index": 418,
+        "key": "citadel_gamerules"
+    },
+    {
+        "index": 419,
+        "key": "Announcer_3"
+    },
+    {
+        "index": 420,
+        "key": "Announcer_2"
+    },
+    {
+        "index": 421,
+        "key": "citadel_weapon_bosstier3_set"
+    },
+    {
+        "index": 422,
+        "key": "citadel_ability_tier3boss_laser_beam"
+    },
+    {
+        "index": 423,
+        "key": "citadel_ability_tier3boss_damage_pulse"
+    },
+    {
+        "index": 424,
+        "key": "citadel_weapon_bosstier2_set"
+    },
+    {
+        "index": 425,
+        "key": "citadel_ability_tier2boss_rocket_barrage"
+    },
+    {
+        "index": 426,
+        "key": "citadel_ability_tier2boss_laser_beam"
+    },
+    {
+        "index": 427,
+        "key": "citadel_ability_tier2boss_stomp"
+    },
+    {
+        "index": 428,
+        "key": "boss_rebel_t1_yellow"
+    },
+    {
+        "index": 429,
+        "key": "boss_rebel_t1_purple"
+    },
+    {
+        "index": 430,
+        "key": "boss_combine_t1_purple"
+    },
+    {
+        "index": 431,
+        "key": "boss_combine_t1_orange"
+    },
+    {
+        "index": 432,
+        "key": "boss_combine_t1_yellow"
+    },
+    {
+        "index": 433,
+        "key": "boss_rebel_t1_blue"
+    },
+    {
+        "index": 434,
+        "key": "boss_rebel_t1_orange"
+    },
+    {
+        "index": 435,
+        "key": "boss_combine_t1_blue"
+    },
+    {
+        "index": 436,
+        "key": "citadel_ability_trooper_zip_line"
+    },
+    {
+        "index": 437,
+        "key": "ability_medic_trooper_heal"
+    },
+    {
+        "index": 438,
+        "key": "citadel_weapon_lash_set"
+    },
+    {
+        "index": 439,
+        "key": "ability_melee_lash"
+    },
+    {
+        "index": 440,
+        "key": "citadel_ability_mantle"
+    },
+    {
+        "index": 441,
+        "key": "citadel_ability_jump"
+    },
+    {
+        "index": 442,
+        "key": "citadel_ability_slide"
+    },
+    {
+        "index": 443,
+        "key": "citadel_ability_zip_line"
+    },
+    {
+        "index": 444,
+        "key": "citadel_ability_zipline_boost"
+    },
+    {
+        "index": 445,
+        "key": "citadel_ability_climb_rope"
+    },
+    {
+        "index": 446,
+        "key": "citadel_ability_dash"
+    },
+    {
+        "index": 447,
+        "key": "citadel_ability_sprint"
+    },
+    {
+        "index": 448,
+        "key": "citadel_ability_melee_parry"
+    },
+    {
+        "index": 449,
+        "key": "citadel_ability_lash_down_strike"
+    },
+    {
+        "index": 450,
+        "key": "citadel_ability_lash"
+    },
+    {
+        "index": 451,
+        "key": "ability_lash_flog"
+    },
+    {
+        "index": 452,
+        "key": "citadel_ability_lash_ultimate"
+    },
+    {
+        "index": 453,
+        "key": "hero_lash"
+    },
+    {
+        "index": 454,
+        "key": "citadel_weapon_yamato_set"
+    },
+    {
+        "index": 455,
+        "key": "ability_melee_yamato"
+    },
+    {
+        "index": 456,
+        "key": "citadel_weapon_yamato_alt"
+    },
+    {
+        "index": 457,
+        "key": "citadel_ability_power_slash"
+    },
+    {
+        "index": 458,
+        "key": "citadel_ability_flying_strike"
+    },
+    {
+        "index": 459,
+        "key": "citadel_ability_healing_slash"
+    },
+    {
+        "index": 460,
+        "key": "citadel_ability_infinity_slash"
+    },
+    {
+        "index": 461,
+        "key": "hero_yamato"
+    },
+    {
+        "index": 462,
+        "key": "citadel_weapon_inferno_set"
+    },
+    {
+        "index": 463,
+        "key": "ability_melee_inferno"
+    },
+    {
+        "index": 464,
+        "key": "ability_incendiary_projectile"
+    },
+    {
+        "index": 465,
+        "key": "ability_flame_dash"
+    },
+    {
+        "index": 466,
+        "key": "ability_flame_dash_cancel_trigger"
+    },
+    {
+        "index": 467,
+        "key": "ability_afterburn"
+    },
+    {
+        "index": 468,
+        "key": "ability_fire_bomb"
+    },
+    {
+        "index": 469,
+        "key": "hero_inferno"
+    },
+    {
+        "index": 470,
+        "key": "citadel_weapon_warden_set"
+    },
+    {
+        "index": 471,
+        "key": "citadel_ability_melee_warden"
+    },
+    {
+        "index": 472,
+        "key": "ability_warden_crowd_control"
+    },
+    {
+        "index": 473,
+        "key": "ability_warden_high_alert"
+    },
+    {
+        "index": 474,
+        "key": "ability_warden_lock_down"
+    },
+    {
+        "index": 475,
+        "key": "ability_warden_riot_protocol"
+    },
+    {
+        "index": 476,
+        "key": "hero_warden"
+    },
+    {
+        "index": 477,
+        "key": "citadel_weapon_bebop_set"
+    },
+    {
+        "index": 478,
+        "key": "citadel_ability_melee_bebop"
+    },
+    {
+        "index": 479,
+        "key": "citadel_ability_uppercut"
+    },
+    {
+        "index": 480,
+        "key": "citadel_ability_sticky_bomb"
+    },
+    {
+        "index": 481,
+        "key": "citadel_ability_hook"
+    },
+    {
+        "index": 482,
+        "key": "citadel_ability_bebop_laser_beam"
+    },
+    {
+        "index": 483,
+        "key": "hero_bebop"
+    },
+    {
+        "index": 484,
+        "key": "citadel_weapon_wraith_set"
+    },
+    {
+        "index": 485,
+        "key": "citadel_ability_melee_wraith"
+    },
+    {
+        "index": 486,
+        "key": "citadel_ability_card_toss"
+    },
+    {
+        "index": 487,
+        "key": "citadel_ability_projectmind"
+    },
+    {
+        "index": 488,
+        "key": "citadel_ability_wraith_rapidfire"
+    },
+    {
+        "index": 489,
+        "key": "citadel_ability_psychic_lift"
+    },
+    {
+        "index": 490,
+        "key": "hero_wraith"
+    },
+    {
+        "index": 491,
+        "key": "citadel_weapon_gigawatt_set"
+    },
+    {
+        "index": 492,
+        "key": "citadel_ability_melee_gigawatt"
+    },
+    {
+        "index": 493,
+        "key": "citadel_ability_lightning_ball"
+    },
+    {
+        "index": 494,
+        "key": "citadel_ability_static_charge"
+    },
+    {
+        "index": 495,
+        "key": "ability_power_surge"
+    },
+    {
+        "index": 496,
+        "key": "citadel_ability_storm_cloud"
+    },
+    {
+        "index": 497,
+        "key": "hero_gigawatt"
+    },
+    {
+        "index": 498,
+        "key": "citadel_weapon_mirage_set"
+    },
+    {
+        "index": 499,
+        "key": "citadel_ability_melee_genericperson"
+    },
+    {
+        "index": 500,
+        "key": "mirage_fire_beetles"
+    },
+    {
+        "index": 501,
+        "key": "mirage_tornado"
+    },
+    {
+        "index": 502,
+        "key": "mirage_sand_phantom"
+    },
+    {
+        "index": 503,
+        "key": "mirage_teleport"
+    },
+    {
+        "index": 504,
+        "key": "hero_mirage"
+    },
+    {
+        "index": 505,
+        "key": "citadel_weapon_haze_set"
+    },
+    {
+        "index": 506,
+        "key": "ability_melee_haze"
+    },
+    {
+        "index": 507,
+        "key": "ability_sleep_dagger"
+    },
+    {
+        "index": 508,
+        "key": "ability_smoke_bomb"
+    },
+    {
+        "index": 509,
+        "key": "ability_stacking_damage"
+    },
+    {
+        "index": 510,
+        "key": "ability_bullet_flurry"
+    },
+    {
+        "index": 511,
+        "key": "hero_haze"
+    },
+    {
+        "index": 512,
+        "key": "citadel_weapon_chrono_set"
+    },
+    {
+        "index": 513,
+        "key": "citadel_ability_melee_chrono"
+    },
+    {
+        "index": 514,
+        "key": "citadel_ability_chrono_pulse_grenade"
+    },
+    {
+        "index": 515,
+        "key": "citadel_ability_chrono_time_wall"
+    },
+    {
+        "index": 516,
+        "key": "citadel_ability_chrono_kinetic_carbine"
+    },
+    {
+        "index": 517,
+        "key": "citadel_ability_chrono_swap"
+    },
+    {
+        "index": 518,
+        "key": "hero_chrono"
+    },
+    {
+        "index": 519,
+        "key": "citadel_weapon_sumo_set"
+    },
+    {
+        "index": 520,
+        "key": "citadel_ability_melee_sumo"
+    },
+    {
+        "index": 521,
+        "key": "citadel_ability_stomp"
+    },
+    {
+        "index": 522,
+        "key": "citadel_ability_void_sphere"
+    },
+    {
+        "index": 523,
+        "key": "citadel_ability_nikuman"
+    },
+    {
+        "index": 524,
+        "key": "citadel_ability_self_vacuum"
+    },
+    {
+        "index": 525,
+        "key": "hero_dynamo"
+    },
+    {
+        "index": 526,
+        "key": "citadel_weapon_archer_set"
+    },
+    {
+        "index": 527,
+        "key": "ability_melee_archer"
+    },
+    {
+        "index": 528,
+        "key": "ability_charged_shot"
+    },
+    {
+        "index": 529,
+        "key": "ability_power_jump"
+    },
+    {
+        "index": 530,
+        "key": "ability_immobilize_trap"
+    },
+    {
+        "index": 531,
+        "key": "ability_guided_arrow"
+    },
+    {
+        "index": 532,
+        "key": "hero_orion"
+    },
+    {
+        "index": 0,
+        "key": "BigNet"
+    },
+    {
+        "index": 1,
+        "key": "screenshot_camera_00"
+    },
+    {
+        "index": 2,
+        "key": "screenshot_camera_01"
+    },
+    {
+        "index": 3,
+        "key": "screenshot_camera_02"
+    },
+    {
+        "index": 4,
+        "key": "screenshot_camera_03"
+    },
+    {
+        "index": 5,
+        "key": "screenshot_camera_04"
+    },
+    {
+        "index": 6,
+        "key": "screenshot_camera_05"
+    },
+    {
+        "index": 7,
+        "key": "screenshot_camera_06"
+    },
+    {
+        "index": 8,
+        "key": "2392_post_processing"
+    },
+    {
+        "index": 9,
+        "key": "2392_1392_fog_main"
+    },
+    {
+        "index": 10,
+        "key": "2392_fog_blinded"
+    },
+    {
+        "index": 11,
+        "key": "2392_89_sky_entity"
+    },
+    {
+        "index": 12,
+        "key": "8785_Lane4"
+    },
+    {
+        "index": 13,
+        "key": "8785_Lane6"
+    },
+    {
+        "index": 14,
+        "key": "8785_Lane3"
+    },
+    {
+        "index": 15,
+        "key": "8785_Lane1"
+    },
+    {
+        "index": 16,
+        "key": "base_hurt_trigger"
+    },
+    {
+        "index": 17,
+        "key": "mid_temple_zap_origin"
+    },
+    {
+        "index": 18,
+        "key": "mid_interior_trigger"
+    },
+    {
+        "index": 19,
+        "key": "14741_garage_interior_trigger"
+    },
+    {
+        "index": 20,
+        "key": "14743_idol_building_zap_origin_01"
+    },
+    {
+        "index": 21,
+        "key": "14743_idol_building_zap_trigger_01"
+    },
+    {
+        "index": 22,
+        "key": "14743_idol_building_zap_trigger_02"
+    },
+    {
+        "index": 23,
+        "key": "14743_idol_building_zap_origin_02"
+    },
+    {
+        "index": 24,
+        "key": "14743_idol_building_zap_trigger_03"
+    },
+    {
+        "index": 25,
+        "key": "14743_idol_building_zap_origin_03"
+    },
+    {
+        "index": 26,
+        "key": "14743_record_store_interior_trigger"
+    },
+    {
+        "index": 27,
+        "key": "14743_imports_interior_trigger"
+    },
+    {
+        "index": 28,
+        "key": "14743_comedy_interior_trigger"
+    },
+    {
+        "index": 29,
+        "key": "14743_apothecary_interior_trigger"
+    },
+    {
+        "index": 30,
+        "key": "relay_control_point_rebels"
+    },
+    {
+        "index": 31,
+        "key": "counter_mid_gate_rebel"
+    },
+    {
+        "index": 32,
+        "key": "counter_mid_gate_combine"
+    },
+    {
+        "index": 33,
+        "key": "counter_mid_gate_combine_switch_paths"
+    },
+    {
+        "index": 34,
+        "key": "relay_control_point_combine"
+    },
+    {
+        "index": 35,
+        "key": "counter_mid_gate_rebel_switch_paths"
+    },
+    {
+        "index": 36,
+        "key": "control_point_rebels_01_beam_end"
+    },
+    {
+        "index": 37,
+        "key": "control_point_combine_01_beam_end"
+    },
+    {
+        "index": 38,
+        "key": "filter_team_humans"
+    },
+    {
+        "index": 39,
+        "key": "filter_team_aliens"
+    },
+    {
+        "index": 40,
+        "key": "control_point_combine_01_beam_start"
+    },
+    {
+        "index": 41,
+        "key": "shop_model_target"
+    },
+    {
+        "index": 42,
+        "key": "rebels_t3_generator_purple"
+    },
+    {
+        "index": 43,
+        "key": "rebels_t3_generator_yellow"
+    },
+    {
+        "index": 44,
+        "key": "combine_t3_generator_yellow"
+    },
+    {
+        "index": 45,
+        "key": "combine_t3_generator_purple"
+    },
+    {
+        "index": 46,
+        "key": "combine_t2_boss_yellow"
+    },
+    {
+        "index": 47,
+        "key": "combine_t2_boss_purple"
+    },
+    {
+        "index": 48,
+        "key": "rebels_t2_boss_purple"
+    },
+    {
+        "index": 49,
+        "key": "rebels_t2_boss_yellow"
+    },
+    {
+        "index": 50,
+        "key": "rebels_t2_boss_blue"
+    },
+    {
+        "index": 51,
+        "key": "combine_t2_boss_orange"
+    },
+    {
+        "index": 52,
+        "key": "combine_t2_boss_blue"
+    },
+    {
+        "index": 53,
+        "key": "rebels_t2_boss_orange"
+    },
+    {
+        "index": 54,
+        "key": "amber_base_area"
+    },
+    {
+        "index": 55,
+        "key": "sapphire_team_area"
+    },
+    {
+        "index": 56,
+        "key": "rebels_fountain_collidable"
+    },
+    {
+        "index": 57,
+        "key": "combine_fountain_collidable"
+    },
+    {
+        "index": 58,
+        "key": "center_shop_south_trigger"
+    },
+    {
+        "index": 59,
+        "key": "center_shop_north_trigger"
+    },
+    {
+        "index": 60,
+        "key": "mid_post"
+    },
+    {
+        "index": 61,
+        "key": "north_post"
+    },
+    {
+        "index": 62,
+        "key": "south_post"
+    },
+    {
+        "index": 63,
+        "key": "amber_trooper_detector"
+    },
+    {
+        "index": 64,
+        "key": "sapphire_trooper_detector"
+    },
+    {
+        "index": 65,
+        "key": "sapphire_exit_west"
+    },
+    {
+        "index": 66,
+        "key": "amber_exit_east"
+    },
+    {
+        "index": 67,
+        "key": "push_fx"
+    },
+    {
+        "index": 68,
+        "key": "bounce_market_walkway_target"
+    },
+    {
+        "index": 69,
+        "key": "bounce_market_blue_target"
+    },
+    {
+        "index": 70,
+        "key": "bounce_market_highline_target"
+    },
+    {
+        "index": 71,
+        "key": "bounce_market_orange_target"
+    },
+    {
+        "index": 72,
+        "key": "dance_pad_target"
+    },
+    {
+        "index": 73,
+        "key": "boutique_pad_target"
+    },
+    {
+        "index": 74,
+        "key": "exit_w"
+    },
+    {
+        "index": 75,
+        "key": "exit_e"
+    },
+    {
+        "index": 76,
+        "key": "bounce_walker_courthouse_target"
+    },
+    {
+        "index": 77,
+        "key": "bounce_culturalcenter_purple_target"
+    },
+    {
+        "index": 78,
+        "key": "amber_base_collidable"
+    },
+    {
+        "index": 79,
+        "key": "sapphire_base_collidable"
+    },
+    {
+        "index": 80,
+        "key": "exit_sw"
+    },
+    {
+        "index": 81,
+        "key": "exit_se"
+    },
+    {
+        "index": 82,
+        "key": "exit_ne"
+    },
+    {
+        "index": 83,
+        "key": "exit_nw"
+    },
+    {
+        "index": 84,
+        "key": "amber_exit_west"
+    },
+    {
+        "index": 85,
+        "key": "sapphire_exit_east"
+    },
+    {
+        "index": 86,
+        "key": "bounce_barber_purple_target"
+    },
+    {
+        "index": 87,
+        "key": "bounce_coffee_yellow_target"
+    },
+    {
+        "index": 88,
+        "key": "base_amber"
+    },
+    {
+        "index": 89,
+        "key": "base_sapphire"
+    },
+    {
+        "index": 90,
+        "key": "combine_west_collidable"
+    },
+    {
+        "index": 91,
+        "key": "combine_east_collidable"
+    },
+    {
+        "index": 92,
+        "key": "rebels_west_collidable"
+    },
+    {
+        "index": 93,
+        "key": "rebels_wast_collidable"
+    },
+    {
+        "index": 94,
+        "key": "bounce_base_se_target"
+    },
+    {
+        "index": 95,
+        "key": "bounce_base_sw_target"
+    },
+    {
+        "index": 96,
+        "key": "bounce_base_nw_target"
+    },
+    {
+        "index": 97,
+        "key": "bounce_base_ne_target"
+    },
+    {
+        "index": 98,
+        "key": "125_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 99,
+        "key": "125_combine_final_exposed_relay"
+    },
+    {
+        "index": 100,
+        "key": "125_combine_final_shielded_relay"
+    },
+    {
+        "index": 101,
+        "key": "125_rebels_final_shielded"
+    },
+    {
+        "index": 102,
+        "key": "125_rebels_final_exposed"
+    },
+    {
+        "index": 103,
+        "key": "125_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 104,
+        "key": "125_rebels_final_destroyed_template"
+    },
+    {
+        "index": 105,
+        "key": "125_combine_final_destroyed_template"
+    },
+    {
+        "index": 106,
+        "key": "shop_combine_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 107,
+        "key": "shop_combine_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 108,
+        "key": "shop_combine_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 109,
+        "key": "shop_combine_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 110,
+        "key": "shop_combine_t1_orange_shop_prop"
+    },
+    {
+        "index": 111,
+        "key": "shop_combine_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 112,
+        "key": "shop_combine_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 113,
+        "key": "shop_combine_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 114,
+        "key": "shop_combine_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 115,
+        "key": "shop_combine_t1_blue_shop_prop"
+    },
+    {
+        "index": 116,
+        "key": "shop_rebel_t1_orange_shop_kill_relay"
+    },
+    {
+        "index": 117,
+        "key": "shop_rebel_t1_orange_shop_disable_relay"
+    },
+    {
+        "index": 118,
+        "key": "shop_rebel_t1_orange_shop_enable_relay"
+    },
+    {
+        "index": 119,
+        "key": "shop_rebel_t1_orange_shop_item_trigger"
+    },
+    {
+        "index": 120,
+        "key": "shop_rebel_t1_orange_shop_prop"
+    },
+    {
+        "index": 121,
+        "key": "shop_rebel_t1_blue_shop_kill_relay"
+    },
+    {
+        "index": 122,
+        "key": "shop_rebel_t1_blue_shop_disable_relay"
+    },
+    {
+        "index": 123,
+        "key": "shop_rebel_t1_blue_shop_enable_relay"
+    },
+    {
+        "index": 124,
+        "key": "shop_rebel_t1_blue_shop_item_trigger"
+    },
+    {
+        "index": 125,
+        "key": "shop_rebel_t1_blue_shop_prop"
+    },
+    {
+        "index": 126,
+        "key": "957_teleport_trigger"
+    },
+    {
+        "index": 127,
+        "key": "957_box"
+    },
+    {
+        "index": 128,
+        "key": "960_teleport_trigger"
+    },
+    {
+        "index": 129,
+        "key": "960_box"
+    },
+    {
+        "index": 130,
+        "key": "1002_base_door_trigger"
+    },
+    {
+        "index": 131,
+        "key": "1002_base_door"
+    },
+    {
+        "index": 132,
+        "key": "1002_base_teleport_trigger"
+    },
+    {
+        "index": 133,
+        "key": "1002_south_filter"
+    },
+    {
+        "index": 134,
+        "key": "1002_base_door_glass"
+    },
+    {
+        "index": 135,
+        "key": "1002_base_door_frame"
+    },
+    {
+        "index": 136,
+        "key": "1002_north_filter"
+    },
+    {
+        "index": 137,
+        "key": "1002_oob_teleport"
+    },
+    {
+        "index": 138,
+        "key": "1003_base_door_trigger"
+    },
+    {
+        "index": 139,
+        "key": "1003_base_door"
+    },
+    {
+        "index": 140,
+        "key": "1003_base_teleport_trigger"
+    },
+    {
+        "index": 141,
+        "key": "1003_south_filter"
+    },
+    {
+        "index": 142,
+        "key": "1003_base_door_glass"
+    },
+    {
+        "index": 143,
+        "key": "1003_base_door_frame"
+    },
+    {
+        "index": 144,
+        "key": "1003_north_filter"
+    },
+    {
+        "index": 145,
+        "key": "1003_oob_teleport"
+    },
+    {
+        "index": 146,
+        "key": "1005_base_door_trigger"
+    },
+    {
+        "index": 147,
+        "key": "1005_base_door"
+    },
+    {
+        "index": 148,
+        "key": "1005_base_teleport_trigger"
+    },
+    {
+        "index": 149,
+        "key": "1005_south_filter"
+    },
+    {
+        "index": 150,
+        "key": "1005_base_door_glass"
+    },
+    {
+        "index": 151,
+        "key": "1005_base_door_frame"
+    },
+    {
+        "index": 152,
+        "key": "1005_north_filter"
+    },
+    {
+        "index": 153,
+        "key": "1005_oob_teleport"
+    },
+    {
+        "index": 154,
+        "key": "1006_base_door_trigger"
+    },
+    {
+        "index": 155,
+        "key": "1006_base_door"
+    },
+    {
+        "index": 156,
+        "key": "1006_base_teleport_trigger"
+    },
+    {
+        "index": 157,
+        "key": "1006_south_filter"
+    },
+    {
+        "index": 158,
+        "key": "1006_base_door_glass"
+    },
+    {
+        "index": 159,
+        "key": "1006_base_door_frame"
+    },
+    {
+        "index": 160,
+        "key": "1006_north_filter"
+    },
+    {
+        "index": 161,
+        "key": "1006_oob_teleport"
+    },
+    {
+        "index": 162,
+        "key": "1007_base_door_trigger"
+    },
+    {
+        "index": 163,
+        "key": "1007_base_door"
+    },
+    {
+        "index": 164,
+        "key": "1007_base_teleport_trigger"
+    },
+    {
+        "index": 165,
+        "key": "1007_base_door_prop"
+    },
+    {
+        "index": 166,
+        "key": "1007_north_filter"
+    },
+    {
+        "index": 167,
+        "key": "1008_base_door_trigger"
+    },
+    {
+        "index": 168,
+        "key": "1008_base_door"
+    },
+    {
+        "index": 169,
+        "key": "1008_base_teleport_trigger"
+    },
+    {
+        "index": 170,
+        "key": "1008_base_door_prop"
+    },
+    {
+        "index": 171,
+        "key": "1008_north_filter"
+    },
+    {
+        "index": 172,
+        "key": "1009_base_door_trigger"
+    },
+    {
+        "index": 173,
+        "key": "1009_base_door"
+    },
+    {
+        "index": 174,
+        "key": "1009_base_teleport_trigger"
+    },
+    {
+        "index": 175,
+        "key": "1009_south_filter"
+    },
+    {
+        "index": 176,
+        "key": "1009_base_door_prop"
+    },
+    {
+        "index": 177,
+        "key": "1010_base_door_trigger"
+    },
+    {
+        "index": 178,
+        "key": "1010_base_door"
+    },
+    {
+        "index": 179,
+        "key": "1010_base_teleport_trigger"
+    },
+    {
+        "index": 180,
+        "key": "1010_south_filter"
+    },
+    {
+        "index": 181,
+        "key": "1010_base_door_prop"
+    },
+    {
+        "index": 182,
+        "key": "shop_combine_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 183,
+        "key": "shop_combine_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 184,
+        "key": "shop_combine_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 185,
+        "key": "shop_combine_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 186,
+        "key": "shop_combine_t1_purple_shop_prop"
+    },
+    {
+        "index": 187,
+        "key": "shop_combine_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 188,
+        "key": "shop_combine_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 189,
+        "key": "shop_combine_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 190,
+        "key": "shop_combine_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 191,
+        "key": "shop_combine_t1_yellow_shop_prop"
+    },
+    {
+        "index": 192,
+        "key": "shop_rebel_t1_yellow_shop_kill_relay"
+    },
+    {
+        "index": 193,
+        "key": "shop_rebel_t1_yellow_shop_disable_relay"
+    },
+    {
+        "index": 194,
+        "key": "shop_rebel_t1_yellow_shop_enable_relay"
+    },
+    {
+        "index": 195,
+        "key": "shop_rebel_t1_yellow_shop_item_trigger"
+    },
+    {
+        "index": 196,
+        "key": "shop_rebel_t1_yellow_shop_prop"
+    },
+    {
+        "index": 197,
+        "key": "shop_rebel_t1_purple_shop_kill_relay"
+    },
+    {
+        "index": 198,
+        "key": "shop_rebel_t1_purple_shop_disable_relay"
+    },
+    {
+        "index": 199,
+        "key": "shop_rebel_t1_purple_shop_enable_relay"
+    },
+    {
+        "index": 200,
+        "key": "shop_rebel_t1_purple_shop_item_trigger"
+    },
+    {
+        "index": 201,
+        "key": "shop_rebel_t1_purple_shop_prop"
+    },
+    {
+        "index": 202,
+        "key": "1453_shop_kill_relay"
+    },
+    {
+        "index": 203,
+        "key": "1453_shop_disable_relay"
+    },
+    {
+        "index": 204,
+        "key": "1453_shop_enable_relay"
+    },
+    {
+        "index": 205,
+        "key": "1453_shop_item_trigger"
+    },
+    {
+        "index": 206,
+        "key": "1453_shop_prop"
+    },
+    {
+        "index": 207,
+        "key": "1456_shop_kill_relay"
+    },
+    {
+        "index": 208,
+        "key": "1456_shop_disable_relay"
+    },
+    {
+        "index": 209,
+        "key": "1456_shop_enable_relay"
+    },
+    {
+        "index": 210,
+        "key": "1456_shop_item_trigger"
+    },
+    {
+        "index": 211,
+        "key": "1456_shop_prop"
+    },
+    {
+        "index": 212,
+        "key": "2010_base_door_trigger"
+    },
+    {
+        "index": 213,
+        "key": "2010_base_door"
+    },
+    {
+        "index": 214,
+        "key": "2010_base_teleport_trigger"
+    },
+    {
+        "index": 215,
+        "key": "2010_south_filter"
+    },
+    {
+        "index": 216,
+        "key": "2010_base_door_glass"
+    },
+    {
+        "index": 217,
+        "key": "2010_base_door_frame"
+    },
+    {
+        "index": 218,
+        "key": "2010_north_filter"
+    },
+    {
+        "index": 219,
+        "key": "2010_oob_teleport"
+    },
+    {
+        "index": 220,
+        "key": "2011_base_door_trigger"
+    },
+    {
+        "index": 221,
+        "key": "2011_base_door"
+    },
+    {
+        "index": 222,
+        "key": "2011_base_teleport_trigger"
+    },
+    {
+        "index": 223,
+        "key": "2011_south_filter"
+    },
+    {
+        "index": 224,
+        "key": "2011_base_door_glass"
+    },
+    {
+        "index": 225,
+        "key": "2011_base_door_frame"
+    },
+    {
+        "index": 226,
+        "key": "2011_north_filter"
+    },
+    {
+        "index": 227,
+        "key": "2011_oob_teleport"
+    },
+    {
+        "index": 228,
+        "key": "2012_base_door_trigger"
+    },
+    {
+        "index": 229,
+        "key": "2012_base_door"
+    },
+    {
+        "index": 230,
+        "key": "2012_base_teleport_trigger"
+    },
+    {
+        "index": 231,
+        "key": "2012_south_filter"
+    },
+    {
+        "index": 232,
+        "key": "2012_base_door_glass"
+    },
+    {
+        "index": 233,
+        "key": "2012_base_door_frame"
+    },
+    {
+        "index": 234,
+        "key": "2012_north_filter"
+    },
+    {
+        "index": 235,
+        "key": "2012_oob_teleport"
+    },
+    {
+        "index": 236,
+        "key": "2013_base_door_trigger"
+    },
+    {
+        "index": 237,
+        "key": "2013_base_door"
+    },
+    {
+        "index": 238,
+        "key": "2013_base_teleport_trigger"
+    },
+    {
+        "index": 239,
+        "key": "2013_south_filter"
+    },
+    {
+        "index": 240,
+        "key": "2013_base_door_glass"
+    },
+    {
+        "index": 241,
+        "key": "2013_base_door_frame"
+    },
+    {
+        "index": 242,
+        "key": "2013_north_filter"
+    },
+    {
+        "index": 243,
+        "key": "2013_oob_teleport"
+    },
+    {
+        "index": 244,
+        "key": "2150_shop_disable_relay"
+    },
+    {
+        "index": 245,
+        "key": "2150_shop_enable_relay"
+    },
+    {
+        "index": 246,
+        "key": "2150_shop_item_trigger"
+    },
+    {
+        "index": 247,
+        "key": "2150_shop_prop"
+    },
+    {
+        "index": 248,
+        "key": "2151_shop_disable_relay"
+    },
+    {
+        "index": 249,
+        "key": "2151_shop_enable_relay"
+    },
+    {
+        "index": 250,
+        "key": "2151_shop_item_trigger"
+    },
+    {
+        "index": 251,
+        "key": "2151_shop_prop"
+    },
+    {
+        "index": 252,
+        "key": "2399_bounce_pad_sound"
+    },
+    {
+        "index": 253,
+        "key": "2399_bounce_pad_trigger"
+    },
+    {
+        "index": 254,
+        "key": "2399_bounce_pad_fx"
+    },
+    {
+        "index": 255,
+        "key": "2400_bounce_pad_sound"
+    },
+    {
+        "index": 256,
+        "key": "2400_bounce_pad_trigger"
+    },
+    {
+        "index": 257,
+        "key": "2400_bounce_pad_fx"
+    },
+    {
+        "index": 258,
+        "key": "2403_bounce_pad_sound"
+    },
+    {
+        "index": 259,
+        "key": "2403_bounce_pad_trigger"
+    },
+    {
+        "index": 260,
+        "key": "2403_bounce_pad_fx"
+    },
+    {
+        "index": 261,
+        "key": "2404_bounce_pad_sound"
+    },
+    {
+        "index": 262,
+        "key": "2404_bounce_pad_trigger"
+    },
+    {
+        "index": 263,
+        "key": "2404_bounce_pad_fx"
+    },
+    {
+        "index": 264,
+        "key": "2419_bounce_pad_sound"
+    },
+    {
+        "index": 265,
+        "key": "2419_bounce_pad_trigger"
+    },
+    {
+        "index": 266,
+        "key": "2419_bounce_pad_fx"
+    },
+    {
+        "index": 267,
+        "key": "2423_bounce_pad_sound"
+    },
+    {
+        "index": 268,
+        "key": "2423_bounce_pad_trigger"
+    },
+    {
+        "index": 269,
+        "key": "2423_bounce_pad_fx"
+    },
+    {
+        "index": 270,
+        "key": "2424_teleport_trigger"
+    },
+    {
+        "index": 271,
+        "key": "2424_box"
+    },
+    {
+        "index": 272,
+        "key": "2425_teleport_trigger"
+    },
+    {
+        "index": 273,
+        "key": "2425_box"
+    },
+    {
+        "index": 274,
+        "key": "2430_bounce_pad_sound"
+    },
+    {
+        "index": 275,
+        "key": "2430_bounce_pad_trigger"
+    },
+    {
+        "index": 276,
+        "key": "2430_bounce_pad_fx"
+    },
+    {
+        "index": 277,
+        "key": "2434_bounce_pad_sound"
+    },
+    {
+        "index": 278,
+        "key": "2434_bounce_pad_trigger"
+    },
+    {
+        "index": 279,
+        "key": "2434_bounce_pad_fx"
+    },
+    {
+        "index": 280,
+        "key": "2461_teleport_trigger"
+    },
+    {
+        "index": 281,
+        "key": "2461_box"
+    },
+    {
+        "index": 282,
+        "key": "2463_teleport_trigger"
+    },
+    {
+        "index": 283,
+        "key": "2463_box"
+    },
+    {
+        "index": 284,
+        "key": "2465_teleport_trigger"
+    },
+    {
+        "index": 285,
+        "key": "2465_box"
+    },
+    {
+        "index": 286,
+        "key": "2467_teleport_trigger"
+    },
+    {
+        "index": 287,
+        "key": "2467_box"
+    },
+    {
+        "index": 288,
+        "key": "2469_teleport_trigger"
+    },
+    {
+        "index": 289,
+        "key": "2469_box"
+    },
+    {
+        "index": 290,
+        "key": "2472_teleport_trigger"
+    },
+    {
+        "index": 291,
+        "key": "2472_box"
+    },
+    {
+        "index": 292,
+        "key": "2477_bounce_pad_sound"
+    },
+    {
+        "index": 293,
+        "key": "2477_bounce_pad_trigger"
+    },
+    {
+        "index": 294,
+        "key": "2477_bounce_pad_fx"
+    },
+    {
+        "index": 295,
+        "key": "2479_bounce_pad_sound"
+    },
+    {
+        "index": 296,
+        "key": "2479_bounce_pad_trigger"
+    },
+    {
+        "index": 297,
+        "key": "2479_bounce_pad_fx"
+    },
+    {
+        "index": 298,
+        "key": "14997_garment_interior_trigger"
+    },
+    {
+        "index": 299,
+        "key": "14998_garment_interior_trigger"
+    },
+    {
+        "index": 300,
+        "key": "14999_8243_newstand_talker"
+    },
+    {
+        "index": 301,
+        "key": "14999_9359_newstand_talker"
+    },
+    {
+        "index": 302,
+        "key": "15049_underground_interior_trigger"
+    },
+    {
+        "index": 303,
+        "key": "15065_underground_interior_trigger"
+    },
+    {
+        "index": 304,
+        "key": "15799_zap_trigger_07"
+    },
+    {
+        "index": 305,
+        "key": "15799_zap_origin_07"
+    },
+    {
+        "index": 306,
+        "key": "15799_zap_trigger_17"
+    },
+    {
+        "index": 307,
+        "key": "15799_zap_origin_17"
+    },
+    {
+        "index": 308,
+        "key": "15799_zap_origin_18"
+    },
+    {
+        "index": 309,
+        "key": "15799_zap_trigger_18"
+    },
+    {
+        "index": 310,
+        "key": "15799_zap_trigger_23"
+    },
+    {
+        "index": 311,
+        "key": "15799_zap_origin_23"
+    },
+    {
+        "index": 312,
+        "key": "15799_zap_trigger_31"
+    },
+    {
+        "index": 313,
+        "key": "15799_zap_origin_31"
+    },
+    {
+        "index": 314,
+        "key": "15799_zap_trigger_31b"
+    },
+    {
+        "index": 315,
+        "key": "15799_zap_trigger_31a"
+    },
+    {
+        "index": 316,
+        "key": "15799_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 317,
+        "key": "15799_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 318,
+        "key": "15799_zap_trigger_11"
+    },
+    {
+        "index": 319,
+        "key": "15799_zap_origin_11"
+    },
+    {
+        "index": 320,
+        "key": "15799_zap_origin_06"
+    },
+    {
+        "index": 321,
+        "key": "15799_zap_trigger_06"
+    },
+    {
+        "index": 322,
+        "key": "15800_zap_trigger_07"
+    },
+    {
+        "index": 323,
+        "key": "15800_zap_origin_07"
+    },
+    {
+        "index": 324,
+        "key": "15800_zap_origin_12"
+    },
+    {
+        "index": 325,
+        "key": "15800_zap_trigger_17"
+    },
+    {
+        "index": 326,
+        "key": "15800_zap_origin_17"
+    },
+    {
+        "index": 327,
+        "key": "15800_zap_origin_18"
+    },
+    {
+        "index": 328,
+        "key": "15800_zap_trigger_18"
+    },
+    {
+        "index": 329,
+        "key": "15800_zap_trigger_23"
+    },
+    {
+        "index": 330,
+        "key": "15800_zap_origin_23"
+    },
+    {
+        "index": 331,
+        "key": "15800_zap_trigger_31"
+    },
+    {
+        "index": 332,
+        "key": "15800_zap_origin_31"
+    },
+    {
+        "index": 333,
+        "key": "15800_zap_trigger_31b"
+    },
+    {
+        "index": 334,
+        "key": "15800_zap_trigger_31a"
+    },
+    {
+        "index": 335,
+        "key": "15800_ny_oracle_arch_zap_trigger_01"
+    },
+    {
+        "index": 336,
+        "key": "15800_ny_oracle_arch_zap_origin_01"
+    },
+    {
+        "index": 337,
+        "key": "15800_zap_trigger_12b"
+    },
+    {
+        "index": 338,
+        "key": "15800_zap_trigger_11"
+    },
+    {
+        "index": 339,
+        "key": "15800_zap_origin_11"
+    },
+    {
+        "index": 340,
+        "key": "15800_zap_trigger_37"
+    },
+    {
+        "index": 341,
+        "key": "15800_zap_origin_37"
+    },
+    {
+        "index": 342,
+        "key": "17613_Trigger Rat Run"
+    },
+    {
+        "index": 343,
+        "key": "17613_Disable Rat Run Trigger"
+    },
+    {
+        "index": 344,
+        "key": "17613_Rat Run Sound to Trigger"
+    },
+    {
+        "index": 345,
+        "key": "17613_Reset Sound Triggers"
+    },
+    {
+        "index": 346,
+        "key": "17613_Rat Run Sound to Trigger2"
+    },
+    {
+        "index": 347,
+        "key": "17613_Trigger Rat Run2"
+    },
+    {
+        "index": 348,
+        "key": "17613_Disable Rat Run Trigger2"
+    },
+    {
+        "index": 349,
+        "key": "17613_Bell Sound to Trigger"
+    },
+    {
+        "index": 350,
+        "key": "17613_Trigger Purple Bell"
+    },
+    {
+        "index": 351,
+        "key": "17613_Trigger Bird Fly"
+    },
+    {
+        "index": 352,
+        "key": "17613_Rooftop Start"
+    },
+    {
+        "index": 353,
+        "key": "17613_Alley South"
+    },
+    {
+        "index": 354,
+        "key": "17613_Alley North"
+    },
+    {
+        "index": 355,
+        "key": "17613_Temple"
+    },
+    {
+        "index": 356,
+        "key": "17613_Park"
+    },
+    {
+        "index": 357,
+        "key": "17613_Home Base North"
+    },
+    {
+        "index": 358,
+        "key": "17613_Home Base North Inside"
+    },
+    {
+        "index": 359,
+        "key": "17613_Spawn South"
+    },
+    {
+        "index": 360,
+        "key": "17613_Spawn North"
+    },
+    {
+        "index": 361,
+        "key": "17613_Home Base South"
+    },
+    {
+        "index": 362,
+        "key": "17613_Home Base South Inside"
+    },
+    {
+        "index": 363,
+        "key": "17613_Lane Blue South Outside"
+    },
+    {
+        "index": 364,
+        "key": "17613_Lane Blue South Inside"
+    },
+    {
+        "index": 365,
+        "key": "17613_Lane Blue North Outside"
+    },
+    {
+        "index": 366,
+        "key": "17613_Blue North Inside"
+    },
+    {
+        "index": 367,
+        "key": "17613_Lane Yellow South Outside"
+    },
+    {
+        "index": 368,
+        "key": "17613_Lane Yellow North Outside"
+    },
+    {
+        "index": 369,
+        "key": "17613_Lane Yellow South Inside"
+    },
+    {
+        "index": 370,
+        "key": "17613_Lane Orange North Outside"
+    },
+    {
+        "index": 371,
+        "key": "17613_Underpass"
+    },
+    {
+        "index": 372,
+        "key": "17613_Lane Orange South Inside"
+    },
+    {
+        "index": 373,
+        "key": "17613_Lane Orange South Outside"
+    },
+    {
+        "index": 374,
+        "key": "17613_Lane Purple North Inside"
+    },
+    {
+        "index": 375,
+        "key": "17613_Lane Purple South Inside"
+    },
+    {
+        "index": 376,
+        "key": "17613_Lane Purple North Outside"
+    },
+    {
+        "index": 377,
+        "key": "17613_Lane Purple South Outside"
+    },
+    {
+        "index": 378,
+        "key": "17613_Warehouse North"
+    },
+    {
+        "index": 379,
+        "key": "17613_Warehouse South"
+    },
+    {
+        "index": 380,
+        "key": "17613_Underground"
+    },
+    {
+        "index": 381,
+        "key": "17613_Generic Outdoors"
+    },
+    {
+        "index": 382,
+        "key": "17613_Tunnel South"
+    },
+    {
+        "index": 383,
+        "key": "17613_Tunnel North"
+    },
+    {
+        "index": 384,
+        "key": "17613_Teleporter Amb 1"
+    },
+    {
+        "index": 385,
+        "key": "17613_Teleporter Amb 2"
+    },
+    {
+        "index": 386,
+        "key": "17613_Teleporter Amb 4"
+    },
+    {
+        "index": 387,
+        "key": "17613_Teleporter Amb 3"
+    },
+    {
+        "index": 388,
+        "key": "17613_Disable Teleport Amb 2"
+    },
+    {
+        "index": 389,
+        "key": "17613_Disable Teleport Amb 3"
+    },
+    {
+        "index": 390,
+        "key": "17613_Disable Teleport Amb 1"
+    },
+    {
+        "index": 391,
+        "key": "17613_Disable Teleport Amb 4"
+    },
+    {
+        "index": 392,
+        "key": "17613_Waltz Music"
+    },
+    {
+        "index": 393,
+        "key": "17613_Hotel Music"
+    },
+    {
+        "index": 394,
+        "key": "26889_factory_interior_trigger"
+    },
+    {
+        "index": 395,
+        "key": "331195_combine_final_shield_omni_volume_template"
+    },
+    {
+        "index": 396,
+        "key": "331195_combine_final_exposed_relay"
+    },
+    {
+        "index": 397,
+        "key": "331195_combine_final_shielded_relay"
+    },
+    {
+        "index": 398,
+        "key": "331195_rebels_final_shielded"
+    },
+    {
+        "index": 399,
+        "key": "331195_rebels_final_exposed"
+    },
+    {
+        "index": 400,
+        "key": "331195_rebels_final_shield_omni_volume_template"
+    },
+    {
+        "index": 401,
+        "key": "331195_rebels_final_destroyed_template"
+    },
+    {
+        "index": 402,
+        "key": "331195_combine_final_destroyed_template"
+    },
+    {
+        "index": 403,
+        "key": "645064_tunnel_interior_trigger"
+    },
+    {
+        "index": 404,
+        "key": "645065_tunnel_interior_trigger"
+    },
+    {
+        "index": 405,
+        "key": "806303_factory_interior_trigger"
+    },
+    {
+        "index": 406,
+        "key": "832308_push_alt_fx"
+    },
+    {
+        "index": 407,
+        "key": "832309_push_fx"
+    },
+    {
+        "index": 408,
+        "key": "1224970_8298_chapel_building_zap_trigger"
+    },
+    {
+        "index": 409,
+        "key": "1224970_8298_chapel_building_zap_origin"
+    },
+    {
+        "index": 410,
+        "key": "1224970_10912_speakeasy_zap_trigger_01"
+    },
+    {
+        "index": 411,
+        "key": "1224970_10912_speakeasy_zap_origin_01"
+    },
+    {
+        "index": 412,
+        "key": "1224970_10913_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 413,
+        "key": "1224971_9919_port_zap_trigger_01"
+    },
+    {
+        "index": 414,
+        "key": "1224971_9919_port_zap_origin_01"
+    },
+    {
+        "index": 415,
+        "key": "1224971_9920_subway_entrance_interior_trigger"
+    },
+    {
+        "index": 416,
+        "key": "1225002_8243_newstand_talker"
+    },
+    {
+        "index": 417,
+        "key": "1225002_9359_newstand_talker"
+    },
+    {
+        "index": 418,
+        "key": "citadel_gamerules"
+    },
+    {
+        "index": 419,
+        "key": "Announcer_3"
+    },
+    {
+        "index": 420,
+        "key": "Announcer_2"
+    },
+    {
+        "index": 421,
+        "key": "citadel_weapon_bosstier3_set"
+    },
+    {
+        "index": 422,
+        "key": "citadel_ability_tier3boss_laser_beam"
+    },
+    {
+        "index": 423,
+        "key": "citadel_ability_tier3boss_damage_pulse"
+    },
+    {
+        "index": 424,
+        "key": "citadel_weapon_bosstier2_set"
+    },
+    {
+        "index": 425,
+        "key": "citadel_ability_tier2boss_rocket_barrage"
+    },
+    {
+        "index": 426,
+        "key": "citadel_ability_tier2boss_laser_beam"
+    },
+    {
+        "index": 427,
+        "key": "citadel_ability_tier2boss_stomp"
+    },
+    {
+        "index": 428,
+        "key": "boss_rebel_t1_yellow"
+    },
+    {
+        "index": 429,
+        "key": "boss_rebel_t1_purple"
+    },
+    {
+        "index": 430,
+        "key": "boss_combine_t1_purple"
+    },
+    {
+        "index": 431,
+        "key": "boss_combine_t1_orange"
+    },
+    {
+        "index": 432,
+        "key": "boss_combine_t1_yellow"
+    },
+    {
+        "index": 433,
+        "key": "boss_rebel_t1_blue"
+    },
+    {
+        "index": 434,
+        "key": "boss_rebel_t1_orange"
+    },
+    {
+        "index": 435,
+        "key": "boss_combine_t1_blue"
+    },
+    {
+        "index": 436,
+        "key": "citadel_ability_trooper_zip_line"
+    },
+    {
+        "index": 437,
+        "key": "ability_medic_trooper_heal"
+    },
+    {
+        "index": 438,
+        "key": "citadel_weapon_lash_set"
+    },
+    {
+        "index": 439,
+        "key": "ability_melee_lash"
+    },
+    {
+        "index": 440,
+        "key": "citadel_ability_mantle"
+    },
+    {
+        "index": 441,
+        "key": "citadel_ability_jump"
+    },
+    {
+        "index": 442,
+        "key": "citadel_ability_slide"
+    },
+    {
+        "index": 443,
+        "key": "citadel_ability_zip_line"
+    },
+    {
+        "index": 444,
+        "key": "citadel_ability_zipline_boost"
+    },
+    {
+        "index": 445,
+        "key": "citadel_ability_climb_rope"
+    },
+    {
+        "index": 446,
+        "key": "citadel_ability_dash"
+    },
+    {
+        "index": 447,
+        "key": "citadel_ability_sprint"
+    },
+    {
+        "index": 448,
+        "key": "citadel_ability_melee_parry"
+    },
+    {
+        "index": 449,
+        "key": "citadel_ability_lash_down_strike"
+    },
+    {
+        "index": 450,
+        "key": "citadel_ability_lash"
+    },
+    {
+        "index": 451,
+        "key": "ability_lash_flog"
+    },
+    {
+        "index": 452,
+        "key": "citadel_ability_lash_ultimate"
+    },
+    {
+        "index": 453,
+        "key": "hero_lash"
+    },
+    {
+        "index": 454,
+        "key": "citadel_weapon_yamato_set"
+    },
+    {
+        "index": 455,
+        "key": "ability_melee_yamato"
+    },
+    {
+        "index": 456,
+        "key": "citadel_weapon_yamato_alt"
+    },
+    {
+        "index": 457,
+        "key": "citadel_ability_power_slash"
+    },
+    {
+        "index": 458,
+        "key": "citadel_ability_flying_strike"
+    },
+    {
+        "index": 459,
+        "key": "citadel_ability_healing_slash"
+    },
+    {
+        "index": 460,
+        "key": "citadel_ability_infinity_slash"
+    },
+    {
+        "index": 461,
+        "key": "hero_yamato"
+    },
+    {
+        "index": 462,
+        "key": "citadel_weapon_inferno_set"
+    },
+    {
+        "index": 463,
+        "key": "ability_melee_inferno"
+    },
+    {
+        "index": 464,
+        "key": "ability_incendiary_projectile"
+    },
+    {
+        "index": 465,
+        "key": "ability_flame_dash"
+    },
+    {
+        "index": 466,
+        "key": "ability_flame_dash_cancel_trigger"
+    },
+    {
+        "index": 467,
+        "key": "ability_afterburn"
+    },
+    {
+        "index": 468,
+        "key": "ability_fire_bomb"
+    },
+    {
+        "index": 469,
+        "key": "hero_inferno"
+    },
+    {
+        "index": 470,
+        "key": "citadel_weapon_warden_set"
+    },
+    {
+        "index": 471,
+        "key": "citadel_ability_melee_warden"
+    },
+    {
+        "index": 472,
+        "key": "ability_warden_crowd_control"
+    },
+    {
+        "index": 473,
+        "key": "ability_warden_high_alert"
+    },
+    {
+        "index": 474,
+        "key": "ability_warden_lock_down"
+    },
+    {
+        "index": 475,
+        "key": "ability_warden_riot_protocol"
+    },
+    {
+        "index": 476,
+        "key": "hero_warden"
+    },
+    {
+        "index": 477,
+        "key": "citadel_weapon_bebop_set"
+    },
+    {
+        "index": 478,
+        "key": "citadel_ability_melee_bebop"
+    },
+    {
+        "index": 479,
+        "key": "citadel_ability_uppercut"
+    },
+    {
+        "index": 480,
+        "key": "citadel_ability_sticky_bomb"
+    },
+    {
+        "index": 481,
+        "key": "citadel_ability_hook"
+    },
+    {
+        "index": 482,
+        "key": "citadel_ability_bebop_laser_beam"
+    },
+    {
+        "index": 483,
+        "key": "hero_bebop"
+    },
+    {
+        "index": 484,
+        "key": "citadel_weapon_wraith_set"
+    },
+    {
+        "index": 485,
+        "key": "citadel_ability_melee_wraith"
+    },
+    {
+        "index": 486,
+        "key": "citadel_ability_card_toss"
+    },
+    {
+        "index": 487,
+        "key": "citadel_ability_projectmind"
+    },
+    {
+        "index": 488,
+        "key": "citadel_ability_wraith_rapidfire"
+    },
+    {
+        "index": 489,
+        "key": "citadel_ability_psychic_lift"
+    },
+    {
+        "index": 490,
+        "key": "hero_wraith"
+    },
+    {
+        "index": 491,
+        "key": "citadel_weapon_gigawatt_set"
+    },
+    {
+        "index": 492,
+        "key": "citadel_ability_melee_gigawatt"
+    },
+    {
+        "index": 493,
+        "key": "citadel_ability_lightning_ball"
+    },
+    {
+        "index": 494,
+        "key": "citadel_ability_static_charge"
+    },
+    {
+        "index": 495,
+        "key": "ability_power_surge"
+    },
+    {
+        "index": 496,
+        "key": "citadel_ability_storm_cloud"
+    },
+    {
+        "index": 497,
+        "key": "hero_gigawatt"
+    },
+    {
+        "index": 498,
+        "key": "citadel_weapon_mirage_set"
+    },
+    {
+        "index": 499,
+        "key": "citadel_ability_melee_genericperson"
+    },
+    {
+        "index": 500,
+        "key": "mirage_fire_beetles"
+    },
+    {
+        "index": 501,
+        "key": "mirage_tornado"
+    },
+    {
+        "index": 502,
+        "key": "mirage_sand_phantom"
+    },
+    {
+        "index": 503,
+        "key": "mirage_teleport"
+    },
+    {
+        "index": 504,
+        "key": "hero_mirage"
+    },
+    {
+        "index": 505,
+        "key": "citadel_weapon_haze_set"
+    },
+    {
+        "index": 506,
+        "key": "ability_melee_haze"
+    },
+    {
+        "index": 507,
+        "key": "ability_sleep_dagger"
+    },
+    {
+        "index": 508,
+        "key": "ability_smoke_bomb"
+    },
+    {
+        "index": 509,
+        "key": "ability_stacking_damage"
+    },
+    {
+        "index": 510,
+        "key": "ability_bullet_flurry"
+    },
+    {
+        "index": 511,
+        "key": "hero_haze"
+    },
+    {
+        "index": 512,
+        "key": "citadel_weapon_chrono_set"
+    },
+    {
+        "index": 513,
+        "key": "citadel_ability_melee_chrono"
+    },
+    {
+        "index": 514,
+        "key": "citadel_ability_chrono_pulse_grenade"
+    },
+    {
+        "index": 515,
+        "key": "citadel_ability_chrono_time_wall"
+    },
+    {
+        "index": 516,
+        "key": "citadel_ability_chrono_kinetic_carbine"
+    },
+    {
+        "index": 517,
+        "key": "citadel_ability_chrono_swap"
+    },
+    {
+        "index": 518,
+        "key": "hero_chrono"
+    },
+    {
+        "index": 519,
+        "key": "citadel_weapon_sumo_set"
+    },
+    {
+        "index": 520,
+        "key": "citadel_ability_melee_sumo"
+    },
+    {
+        "index": 521,
+        "key": "citadel_ability_stomp"
+    },
+    {
+        "index": 522,
+        "key": "citadel_ability_void_sphere"
+    },
+    {
+        "index": 523,
+        "key": "citadel_ability_nikuman"
+    },
+    {
+        "index": 524,
+        "key": "citadel_ability_self_vacuum"
+    },
+    {
+        "index": 525,
+        "key": "hero_dynamo"
+    },
+    {
+        "index": 526,
+        "key": "citadel_weapon_archer_set"
+    },
+    {
+        "index": 527,
+        "key": "ability_melee_archer"
+    },
+    {
+        "index": 528,
+        "key": "ability_charged_shot"
+    },
+    {
+        "index": 529,
+        "key": "ability_power_jump"
+    },
+    {
+        "index": 530,
+        "key": "ability_immobilize_trap"
+    },
+    {
+        "index": 531,
+        "key": "ability_guided_arrow"
+    },
+    {
+        "index": 532,
+        "key": "hero_orion"
+    }
+]

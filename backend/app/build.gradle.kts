@@ -1,19 +1,19 @@
-// This build file is specific to the backend Kotlin application
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+// This build file is specific to the backend Kotlin application
 plugins {
     kotlin("jvm") version "2.0.21"
     kotlin("plugin.serialization") version "2.0.21"
+    id("io.ktor.plugin") version "3.1.0"
 
-    // Apply the application plugin to add support for building a CLI application in Java.
     application
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
 
-val ktorVersion = "3.0.2"
+val ktorVersion = "3.1.0"
 dependencies {
     // Use the Kotlin JUnit 5 integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -41,15 +41,18 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
 
     // Local client/server dependencies
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-plugins:$ktorVersion")
-    implementation("io.ktor:ktor-http:$ktorVersion")
-    implementation("io.ktor:ktor-utils:$ktorVersion")
+    implementation("io.ktor:ktor-server-core")
+    implementation("io.ktor:ktor-server-netty")
+    implementation("io.ktor:ktor-server-content-negotiation")
+    implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
+    implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json")
+    implementation("io.ktor:ktor-client-core")
+    implementation("io.ktor:ktor-client-cio")
+    implementation("io.ktor:ktor-client-plugins")
+    implementation("io.ktor:ktor-http")
+    implementation("io.ktor:ktor-utils")
 
     // Library to unzip files
     implementation("org.apache.commons:commons-compress:1.23.0")
@@ -72,13 +75,14 @@ kotlin {
     sourceSets["main"].kotlin.srcDirs("src/main/kotlin")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "21"
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21) // ✅ Correct way to set JVM target
     }
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("MainKt")
+    // mainClass.set("MainKt")
+    mainClass.set("com.example.ApplicationKt")
 }

@@ -82,6 +82,8 @@ public class EntityEvents (private val fileName: String) {
     private var evDying: Event<OnEntityDying>? = null
     private var evDied: Event<OnEntityDied>? = null
 
+    private val json = Json { prettyPrint = true }
+
     init {
         SimpleRunner(MappedFileSource(fileName)).runWith(this)
     }
@@ -333,7 +335,7 @@ public class EntityEvents (private val fileName: String) {
             val healthLogs: List<EntityHealthLog> = Json.decodeFromString(jsonString)
             val uniqueClasses = healthLogs.map { it.entityClass }.toSet().sorted()
             val uniqueFile = File(uniqueFilePath)
-            val outputJson = Json { prettyPrint = true }.encodeToString(uniqueClasses)
+            val outputJson = createJsonString(uniqueClasses)
             uniqueFile.writeText(outputJson)
         } catch (e: Exception) {
             println("❌ Error processing JSON: ${e.message}")
@@ -357,7 +359,7 @@ public class EntityEvents (private val fileName: String) {
 
         jsonFile.parentFile?.mkdirs()
 
-        val jsonString = Json { prettyPrint = true }.encodeToString(propertyChangeLog)
+        val jsonString = createJsonString(propertyChangeLog)
 
         jsonFile.writeText(jsonString)
     }
@@ -370,12 +372,17 @@ public class EntityEvents (private val fileName: String) {
         jsonFile.parentFile?.mkdirs()
 
         try {
-            val jsonString = Json { prettyPrint = true }.encodeToString(healthLogs.values.toList())
+            val jsonString = createJsonString(healthLogs.values.toList())
             jsonFile.writeText(jsonString)
         } catch (e: Exception) {
             println("❌ Error writing JSON: ${e.message}")
             e.printStackTrace()
         }
+    }
+
+    // NOTE: toLog: Any, the type in this class is 3 different data classes
+    private fun createJsonString(toLog: Any): String {
+        return json.encodeToString(toLog)
     }
 
 }
