@@ -4,8 +4,8 @@ build
 **/build/
 !src/**/build/
 .env
-app/src/main/kotlin/replays/*
-!app/src/main/kotlin/replays/
+backend/app/src/main/kotlin/replays/*
+!backend/app/src/main/kotlin/replays/
 
 # Ignore Gradle GUI config
 gradle-app.setting
