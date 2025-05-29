@@ -326,7 +326,7 @@ public class EntityEvents (private val fileName: String) {
 
         val jsonFile = File(healthFilePath)
         if (!jsonFile.exists()) {
-            println("❌ Error: health_changes.json not found!")
+            println("Error: health_changes.json not found!")
             return
         }
 
@@ -338,7 +338,7 @@ public class EntityEvents (private val fileName: String) {
             val outputJson = createJsonString(uniqueClasses)
             uniqueFile.writeText(outputJson)
         } catch (e: Exception) {
-            println("❌ Error processing JSON: ${e.message}")
+            println("Error processing JSON: ${e.message}")
             e.printStackTrace()
         }
     }
@@ -375,7 +375,7 @@ public class EntityEvents (private val fileName: String) {
             val jsonString = createJsonString(healthLogs.values.toList())
             jsonFile.writeText(jsonString)
         } catch (e: Exception) {
-            println("❌ Error writing JSON: ${e.message}")
+            println("Error writing JSON: ${e.message}")
             e.printStackTrace()
         }
     }
