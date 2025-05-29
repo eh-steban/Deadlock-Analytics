@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+}
+
+.minimap-container {
+  position: relative;
+  display: inline-block;
+}
+
+.minimap-image {
+  width: 512px; /* Adjust based on your actual image */
+  height: auto;
+}
+
+.marker {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
