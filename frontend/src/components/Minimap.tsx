@@ -1,10 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-const RADIUS = 10752;
+// RADIUS comes from match_metadata response returned from
+// Deadlock API (https://api.deadlock-api.com/v1/matches/{match_id}/metadata)
+// and looks something like: "match_info": { "match_paths": "x_resolution": 16383, "y_resolution": 16383 }
+const RADIUS = 16383;
 const DIAMETER = RADIUS * 2;
-const MINIMAP_SIZE = 512;
+const MINIMAP_SIZE = 768;
 // TODO: Figure out if we need this constant
 const API_URL = 'https://assets.deadlock-api.com/v1/map';
+
+interface MatchData {
+  match_info: {
+    duration_s: number;
+    objectives: Objective[],
+    match_paths: { paths: Array<PlayerPath> }
+  };
+}
 
 interface Objective {
   team: string;
@@ -17,12 +28,25 @@ interface Objective {
   first_damage_time_s?: number;
 }
 
+interface PlayerPath {
+  player_slot: number;
+  x_min: number;
+  y_min: number;
+  x_max: number;
+  y_max: number;
+  x_pos: Array<number>;
+  y_pos: Array<number>;
+  health: Array<number>;
+}
+
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
   const images = { minimap: 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png' };
   const [error, setError] = useState(false);
-  const [matchData, setMatchData] = useState<{ match_info: { objectives: Objective[] } }>({ match_info: { objectives: [] } });
+  const initMatchData = { match_info: { duration_s: 0, objectives: [], match_paths: { paths: [] } } };
+  const [matchData, setMatchData] = useState<MatchData>(initMatchData);
   const objectives = matchData.match_info.objectives;
+  const playerPaths = matchData.match_info.match_paths.paths;
 
   const objectiveCoordinates = [
     { label: 'Midboss', x: 0 * RADIUS, y: 0 * RADIUS },
@@ -115,6 +139,45 @@ const Minimap = () => {
             const isDestroyed = objectivesDestroyed.has(label);
             const color = isDestroyed ? 'black' : 'red';
 
+            {matchData.match_info.objectives
+              .filter(obj => obj.destroyed_time_s)
+              .flatMap(obj =>
+                playerPaths.map(player => {
+                  // Map destroyed_time_s to index (with safety checks)
+                  const totalTime = matchData.match_info.duration_s;
+                  const index = Math.floor(
+                    Math.min(obj.destroyed_time_s ?? 0, totalTime - 1)
+                  );
+
+                  const playerX = player.x_pos[index];
+                  const playerY = player.y_pos[index];
+
+                  if (playerX !== undefined && playerY !== undefined) {
+                    const playerLeft = ((playerX / DIAMETER) + 0.5) * MINIMAP_SIZE;
+                    const playerTop = ((-playerY / DIAMETER) + 0.5) * MINIMAP_SIZE;
+                    console.log(`Player ${player.player_slot} at ${obj.destroyed_time_s}s player position: (${playerLeft}, ${playerTop}) player coordinates: (${playerX}, ${playerY})`);
+
+                    return (
+                      <div
+                        key={`player-${player.player_slot}-at-${obj.destroyed_time_s}`}
+                        style={{
+                          position: 'absolute',
+                          left: `${playerLeft}px`,
+                          top: `${playerTop}px`,
+                          width: '12px',
+                          height: '12px',
+                          backgroundColor: 'green',
+                          borderRadius: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                        title={`Player ${player.player_slot} at ${obj.destroyed_time_s}s`}
+                      />
+                    );
+                  }
+                  return null;
+                }).filter(Boolean)
+              )
+            }
             return (
               <div
                 key={label}
