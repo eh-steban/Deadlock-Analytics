@@ -2,12 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
+const heros: { [key: number]: string } = {'1': 'Infernus', '2': 'Seven', '3': 'Vindicta', '4': 'Lady Geist', '6': 'Abrams', '7': 'Wraith', '8': 'McGinnis', '10': 'Paradox', '11': 'Dynamo', '12': 'Kelvin', '13': 'Haze', '14': 'Holliday', '15': 'Bebop', '16': 'Calico', '17': 'Grey Talon', '18': 'Mo & Krill', '19': 'Shiv', '20': 'Ivy', '25': 'Warden', '27': 'Yamato', '31': 'Lash', '35': 'Viscous', '48': 'Wrecker', '50': 'Pocket', '52': 'Mirage', '53': 'Fathom', '58': 'Vyper', '60': 'Sinclair', '61': 'Trapper', '62': 'Raven'};
+const HEROS_URL = 'https://assets.deadlock-api.com/v2/heroes?only_active=true';
 
 interface PlayerInfo {
   account_id: number;
   player_slot: number;
   team: number;
-  // ...other properties as needed
+  hero_id: number;
+}
+
+interface Hero {
+  name: string;
 }
 
 interface MatchData {
@@ -43,6 +49,7 @@ interface PlayerPath {
   x_pos: Array<number>;
   y_pos: Array<number>;
   health: Array<number>;
+  move_type: Array<number>;
 }
 
 interface ObjectiveCoordinate {
@@ -56,6 +63,7 @@ interface ObjectiveCoordinate {
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
   const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] }, players: [] } });
+  const [heroData, setHeroData] = useState<Hero[]>([{name: 'Yo Momma'}]);
   const [error, setError] = useState(false);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(null);
@@ -67,48 +75,49 @@ const Minimap = () => {
   const yResolution = matchData.match_info.match_paths.y_resolution;
 
   const scaleToMinimap = (x: number, y: number): { left: number; top: number } => {
-    const left = x * MINIMAP_SIZE;
+    const xOffset = -75;
+    const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
     const top = (1 - y) * MINIMAP_SIZE; // Invert y-axis for correct orientation
     return { left, top };
   };
 
   const renderObjectiveDot = (obj: ObjectiveCoordinate) => { return scaleToMinimap(obj.x, obj.y) };
-  const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y) };
+  const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y)};
 
   const objectiveCoordinates: ObjectiveCoordinate[] = [
-    { label: 'Midboss', x: 0.5, y: 0.5 },
+    { label: 'Midboss', x: 0.6, y: 0.5 },
 
     // Team 0 Objectives
     // NOTE: The labels are a combination of a couple of message types listed in the protos here:
     // https://github.com/SteamDatabase/Protobufs/blob/ad608d0b059c4f58a12abb621cb729bed999fa02/deadlock/citadel_gcmessages_common.proto
-    { team_id: 0, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.13 },
-    { team_id: 0, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.15 },
-    { team_id: 0, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.1, y: 0.4 },
-    { team_id: 0, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.2125, y: 0.2625 },
-    { team_id: 0, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.2 },
-    { team_id: 0, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.505, y: 0.4125 },
-    { team_id: 0, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.435, y: 0.35 },
-    { team_id: 0, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.5, y: 0.225 },
-    { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.835, y: 0.4 },
-    { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.76, y: 0.275 },
-    { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.6, y: 0.2 },
-    { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.15 },
-    { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.15 },
+    { team_id: 0, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.6, y: 0.13 },
+    { team_id: 0, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.6, y: 0.15 },
+    { team_id: 0, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.2, y: 0.4 },
+    { team_id: 0, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.3125, y: 0.2625 },
+    { team_id: 0, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.5, y: 0.2 },
+    { team_id: 0, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.605, y: 0.4125 },
+    { team_id: 0, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.535, y: 0.35 },
+    { team_id: 0, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.6, y: 0.225 },
+    { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.935, y: 0.4 },
+    { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.86, y: 0.275 },
+    { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.7, y: 0.2 },
+    { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.5375, y: 0.15 },
+    { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.6625, y: 0.15 },
 
     // Team 1 Objectives
-    { team_id: 1, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.87 },
-    { team_id: 1, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.85 },
-    { team_id: 1, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.165, y: 0.6 },
-    { team_id: 1, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.24, y: 0.7375 },
-    { team_id: 1, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.8 },
-    { team_id: 1, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.505, y: 0.5875 },
-    { team_id: 1, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.565, y: 0.65 },
-    { team_id: 1, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.5, y: 0.775 },
-    { team_id: 1, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.9, y: 0.6 },
-    { team_id: 1, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.7875, y: 0.725 },
-    { team_id: 1, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.6, y: 0.8 },
-    { team_id: 1, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.85 },
-    { team_id: 1, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.85 },
+    { team_id: 1, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.6, y: 0.87 },
+    { team_id: 1, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.6, y: 0.85 },
+    { team_id: 1, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.265, y: 0.6 },
+    { team_id: 1, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.34, y: 0.7375 },
+    { team_id: 1, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.5, y: 0.8 },
+    { team_id: 1, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.605, y: 0.5875 },
+    { team_id: 1, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.665, y: 0.65 },
+    { team_id: 1, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.6, y: 0.775 },
+    { team_id: 1, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 1, y: 0.6 },
+    { team_id: 1, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.8875, y: 0.725 },
+    { team_id: 1, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.7, y: 0.8 },
+    { team_id: 1, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.5375, y: 0.85 },
+    { team_id: 1, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.6625, y: 0.85 },
   ];
 
   const destroyedObjectives = [...matchData.match_info.objectives].filter(obj => obj.destroyed_time_s !== 0).sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
@@ -144,25 +153,30 @@ const Minimap = () => {
   };
 
   useEffect(() => {
-    fetch('/match_metadata.json')
+    // fetch('/match_metadata.json')
+    // fetch('/match_metadataNew.json')
+    fetch('/match_metadataNew2.json')
       .then(res => res.json())
       .then(data => {
         console.log('Loaded match data:');
         setMatchData(data);
       })
-      .catch(err => console.error('Error fetching match data:', err));
-  }, []);
+      .catch(err => {
+        console.error('Error fetching match data:', err)
+        setError(true);
+      });
 
-  const X_OFFSET = [
-    -108 / MINIMAP_SIZE,
-    -128 / MINIMAP_SIZE
-  ];
-  const Y_OFFSETS = [
-    7 / MINIMAP_SIZE,
-    110 / MINIMAP_SIZE
-  ];
-  const xScale = [1.05, 1.1];
-  const yScale = [0.77, 0.85];
+    fetch(HEROS_URL)
+      .then(res => res.json())
+      .then(data => {
+        console.log('Loaded hero data:', data);
+        setHeroData(data);
+      })
+      .catch(err => {
+        console.error('Error fetching hero data:', err);
+        setError(true);
+      });
+  }, []);
 
   return (
     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
@@ -234,15 +248,37 @@ const Minimap = () => {
         {playerPaths.map(player => {
           const playerInfo = matchData.match_info.players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
           const team = playerInfo ? playerInfo.team : 0;
+
+          // ****** NOTE: This is the current attempt at only showing a specific hero ******
+          // if (playerInfo?.hero_id !== 1) return null;
+          // if (heroData[(playerInfo?.hero_id || 1 - 1)]?.name !== "Infernus") return null;
+          // if (heros[`${playerInfo?.hero_id || 1}`] !== "Seven") return null;
+          // console.log('Rendering Hero:', (playerInfo?.hero_id || 1), 'Hero:', heros[`${playerInfo?.hero_id || 1}`]);
+          // *******************************************************************************
+
+          // NOTE: If I want to only render team0 or team1, I can use the following check
           // if (team !== 0) return null;
+          // NOTE: If I want to only render a certain player, I can use the following check
+          // if (player.player_slot !== 1) return null;
           const color = team === 0 ? 'rgba(0,128,255,0.3)' : 'rgba(0,200,0,0.3)';
+          const zipcolor = 'rgba(229, 255, 0, 0.45)';
           return player.x_pos.map((x, idx) => {
             const y = player.y_pos[idx];
+            const moveType = player.move_type[idx];
             if (x !== undefined && y !== undefined) {
-              // Apply normalization and offset
-              const normX = (x / xResolution) * xScale[team] + X_OFFSET[team];
-              const normY = (y / yResolution) * yScale[team] + Y_OFFSETS[team];
-              const { left, top } = renderPlayerDot(normX, normY);
+              const normPlayerX = player.x_min + (x / xResolution) * (player.x_max - player.x_min)
+              const normPlayerY = player.y_min + (y / yResolution) * (player.y_max - player.y_min)
+
+              const allPlayerXMin = Math.min(...playerPaths.map(p => p.x_min));
+              const allPlayerXMax = Math.max(...playerPaths.map(p => p.x_max));
+              const allPlayerYMin = Math.min(...playerPaths.map(p => p.y_min));
+              const allPlayerYMax = Math.max(...playerPaths.map(p => p.y_max));
+
+              const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
+              const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
+
+              const { left, top } = renderPlayerDot(scaledPlayerX, scaledPlayerY);
+
               return (
                 <div
                   key={`player-${player.player_slot}-pt-${idx}`}
@@ -253,7 +289,7 @@ const Minimap = () => {
                     top,
                     width: 6,
                     height: 6,
-                    backgroundColor: color,
+                    backgroundColor: moveType !== 6 ? color : zipcolor,
                     borderRadius: '50%',
                     transform: 'translate(-50%, -50%)',
                     pointerEvents: 'none',
@@ -268,14 +304,24 @@ const Minimap = () => {
         {playerPaths.map(player => {
           const playerInfo = matchData.match_info.players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
           const team = playerInfo ? playerInfo.team : 0;
-          if (team !== 0) return null;
-          const color = 'rgba(0,64,255,0.8)';
+          // if (team !== 0) return null;
+          const color = team === 0 ? 'rgb(4, 0, 255)' : 'rgb(3, 100, 3)';
           const playerX = player.x_pos[currentTime];
           const playerY = player.y_pos[currentTime];
           if (playerX !== undefined && playerY !== undefined) {
-            const normX = (playerX / xResolution) * xScale[team] + X_OFFSET[team];
-            const normY = (playerY / yResolution) * yScale[team] + Y_OFFSETS[team];
-            const { left, top } = renderPlayerDot(normX, normY);
+            const normPlayerX = player.x_min + (playerX / xResolution) * (player.x_max - player.x_min);
+            const normPlayerY = player.y_min + (playerY / yResolution) * (player.y_max - player.y_min);
+
+            const allPlayerXMin = Math.min(...playerPaths.map(p => p.x_min));
+            const allPlayerXMax = Math.max(...playerPaths.map(p => p.x_max));
+            const allPlayerYMin = Math.min(...playerPaths.map(p => p.y_min));
+            const allPlayerYMax = Math.max(...playerPaths.map(p => p.y_max));
+
+            const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
+            const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
+
+            const { left, top } = renderPlayerDot(scaledPlayerX, scaledPlayerY);
+
             return (
               <div
                 key={`player-${player.player_slot}-current`}
@@ -288,7 +334,7 @@ const Minimap = () => {
                   height: 10,
                   backgroundColor: color,
                   borderRadius: '50%',
-                  border: '2px solid #222',
+                  border: '2px solid #ff0000',
                   transform: 'translate(-50%, -50%)',
                   pointerEvents: 'none',
                 }}
