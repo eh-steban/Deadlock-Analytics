@@ -3,6 +3,13 @@ import React, { useRef, useState, useEffect } from 'react';
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
 
+interface PlayerInfo {
+  account_id: number;
+  player_slot: number;
+  team: number;
+  // ...other properties as needed
+}
+
 interface MatchData {
   match_info: {
     duration_s: number;
@@ -12,6 +19,7 @@ interface MatchData {
       y_resolution: number;
       paths: Array<PlayerPath>;
     };
+    players: PlayerInfo[];
   };
 }
 
@@ -47,7 +55,7 @@ interface ObjectiveCoordinate {
 
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
-  const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] } } });
+  const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] }, players: [] } });
   const [error, setError] = useState(false);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(null);
@@ -60,7 +68,7 @@ const Minimap = () => {
 
   const scaleToMinimap = (x: number, y: number): { left: number; top: number } => {
     const left = x * MINIMAP_SIZE;
-    const top = y * MINIMAP_SIZE;
+    const top = (1 - y) * MINIMAP_SIZE; // Invert y-axis for correct orientation
     return { left, top };
   };
 
@@ -68,40 +76,39 @@ const Minimap = () => {
   const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y) };
 
   const objectiveCoordinates: ObjectiveCoordinate[] = [
-    // Neutral objectives
     { label: 'Midboss', x: 0.5, y: 0.5 },
 
-    // Team 0 objectives
+    // Team 0 Objectives
     // NOTE: The labels are a combination of a couple of message types listed in the protos here:
     // https://github.com/SteamDatabase/Protobufs/blob/ad608d0b059c4f58a12abb621cb729bed999fa02/deadlock/citadel_gcmessages_common.proto
-    { team_id: 0, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.08 },
-    { team_id: 0, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.105 },
-    { team_id: 0, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.1, y: 0.355 },
-    { team_id: 0, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.2125, y: 0.2175 },
-    { team_id: 0, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.155 },
-    { team_id: 0, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.505, y: 0.3675 },
-    { team_id: 0, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.435, y: 0.305 },
-    { team_id: 0, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.5, y: 0.18 },
-    { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.105 },
-    { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.105 },
-    { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane4', x: 0.84, y: 0.355 },
-    { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane4', x: 0.76, y: 0.23 },
-    { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane4', x: 0.6, y: 0.155 },
+    { team_id: 0, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.13 },
+    { team_id: 0, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.15 },
+    { team_id: 0, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.1, y: 0.4 },
+    { team_id: 0, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.2125, y: 0.2625 },
+    { team_id: 0, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.2 },
+    { team_id: 0, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.505, y: 0.4125 },
+    { team_id: 0, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.435, y: 0.35 },
+    { team_id: 0, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.5, y: 0.225 },
+    { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.835, y: 0.4 },
+    { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.76, y: 0.275 },
+    { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.6, y: 0.2 },
+    { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.15 },
+    { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.15 },
 
-    // Team 1 objectives
-    { team_id: 1, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.83 },
-    { team_id: 1, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.805 },
-    { team_id: 1, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.165, y: 0.555 },
-    { team_id: 1, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.24, y: 0.6925 },
-    { team_id: 1, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.755 },
-    { team_id: 1, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.505, y: 0.5425 },
-    { team_id: 1, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.565, y: 0.605 },
-    { team_id: 1, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.5, y: 0.73 },
-    { team_id: 1, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.805 },
-    { team_id: 1, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.805 },
-    { team_id: 1, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane4', x: 0.9, y: 0.555 },
-    { team_id: 1, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane4', x: 0.7875, y: 0.68 },
-    { team_id: 1, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane4', x: 0.6, y: 0.755 },
+    // Team 1 Objectives
+    { team_id: 1, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.5, y: 0.87 },
+    { team_id: 1, team_objective_id: 9, label: 'k_eCitadelTeamObjective_Titan', x: 0.5, y: 0.85 },
+    { team_id: 1, team_objective_id: 1, label: 'k_eCitadelTeamObjective_Tier1_Lane1', x: 0.165, y: 0.6 },
+    { team_id: 1, team_objective_id: 5, label: 'k_eCitadelTeamObjective_Tier2_Lane1', x: 0.24, y: 0.7375 },
+    { team_id: 1, team_objective_id: 12, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane1', x: 0.4, y: 0.8 },
+    { team_id: 1, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.505, y: 0.5875 },
+    { team_id: 1, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.565, y: 0.65 },
+    { team_id: 1, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.5, y: 0.775 },
+    { team_id: 1, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.9, y: 0.6 },
+    { team_id: 1, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.7875, y: 0.725 },
+    { team_id: 1, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.6, y: 0.8 },
+    { team_id: 1, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.4375, y: 0.85 },
+    { team_id: 1, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.5625, y: 0.85 },
   ];
 
   const destroyedObjectives = [...matchData.match_info.objectives].filter(obj => obj.destroyed_time_s !== 0).sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
@@ -146,10 +153,42 @@ const Minimap = () => {
       .catch(err => console.error('Error fetching match data:', err));
   }, []);
 
+  const X_OFFSET = [
+    -108 / MINIMAP_SIZE,
+    -128 / MINIMAP_SIZE
+  ];
+  const Y_OFFSETS = [
+    7 / MINIMAP_SIZE,
+    110 / MINIMAP_SIZE
+  ];
+  const xScale = [1.05, 1.1];
+  const yScale = [0.77, 0.85];
+
   return (
     <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
       <div style={{ width: '300px', padding: '1rem', backgroundColor: '#f0f0f0', marginRight: '20px' }}>
+        <h3>Current Time: {currentTime} seconds</h3>
         <h3>Objective Info</h3>
+        {/* Legend for minimap colors */}
+        <div style={{ marginBottom: '1rem', padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px' }}>
+          <strong>Legend</strong>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+            <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,128,255,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #0070c0' }}></span>
+            Team 0 Player
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+            <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,200,0,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #008000' }}></span>
+            Team 1 Player
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+            <span style={{ display: 'inline-block', width: 16, height: 16, background: 'red', borderRadius: '50%', marginRight: 8, border: '1px solid #a00' }}></span>
+            Objective (Active)
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+            <span style={{ display: 'inline-block', width: 16, height: 16, background: 'black', borderRadius: '50%', marginRight: 8, border: '1px solid #333' }}></span>
+            Objective (Destroyed)
+          </div>
+        </div>
         {destroyedObjectives.filter((_, index) => index <= currentObjectiveIndex).map((obj, idx) => (
           <div key={idx} style={{ marginBottom: '1rem', borderBottom: '1px solid #ccc' }}>
             <strong>ID:</strong> {obj.team_objective_id}<br />
@@ -193,39 +232,68 @@ const Minimap = () => {
         })}
 
         {playerPaths.map(player => {
+          const playerInfo = matchData.match_info.players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
+          const team = playerInfo ? playerInfo.team : 0;
+          // if (team !== 0) return null;
+          const color = team === 0 ? 'rgba(0,128,255,0.3)' : 'rgba(0,200,0,0.3)';
+          return player.x_pos.map((x, idx) => {
+            const y = player.y_pos[idx];
+            if (x !== undefined && y !== undefined) {
+              // Apply normalization and offset
+              const normX = (x / xResolution) * xScale[team] + X_OFFSET[team];
+              const normY = (y / yResolution) * yScale[team] + Y_OFFSETS[team];
+              const { left, top } = renderPlayerDot(normX, normY);
+              return (
+                <div
+                  key={`player-${player.player_slot}-pt-${idx}`}
+                  title={`Player ${player.player_slot} t=${idx}`}
+                  style={{
+                    position: 'absolute',
+                    left,
+                    top,
+                    width: 6,
+                    height: 6,
+                    backgroundColor: color,
+                    borderRadius: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              );
+            }
+            return null;
+          });
+        })}
+
+        {playerPaths.map(player => {
+          const playerInfo = matchData.match_info.players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
+          const team = playerInfo ? playerInfo.team : 0;
+          if (team !== 0) return null;
+          const color = 'rgba(0,64,255,0.8)';
           const playerX = player.x_pos[currentTime];
           const playerY = player.y_pos[currentTime];
           if (playerX !== undefined && playerY !== undefined) {
-            // *****************************************************************************************
-            // NOTE: If I want to manually offset the player positions, I can do so here.
-            // The problem is when I do that, the player positions at other time stamps seem to be off.
-            // I need to figure out why the first timestamp appears correct, but the others are off.
-            // *****************************************************************************************
-            // const normX = playerX / xResolution - 0.1;
-            // const normY = playerY / yResolution;
-            // const { left, top } = renderPlayerDot(normX, normY);
-
-            // *****************************************************************************************
-            // NOTE: If I go purely based off the data, this line plots the players pretty close to correctly.
-            // They're shifted slightly to the right.
-            // *****************************************************************************************
-            const { left, top } = renderPlayerDot((playerX)/xResolution, playerY/yResolution);
-            console.log(`Player ${player.player_slot} position: (${playerX}, ${playerY}) at currentTime ${currentTime}`);
-            console.log(`left: ${left}, top: ${top}`);
-            return <div
-              key={`player-${player.player_slot}`}
-              title={`Player ${player.player_slot}`}
-              style={{
-                position: 'absolute',
-                left,
-                top,
-                width: 10,
-                height: 10,
-                backgroundColor: 'green',
-                borderRadius: '50%',
-                transform: 'translate(-50%, -50%)'
-              }}
-            />;
+            const normX = (playerX / xResolution) * xScale[team] + X_OFFSET[team];
+            const normY = (playerY / yResolution) * yScale[team] + Y_OFFSETS[team];
+            const { left, top } = renderPlayerDot(normX, normY);
+            return (
+              <div
+                key={`player-${player.player_slot}-current`}
+                title={`Player ${player.player_slot} at currentTime`}
+                style={{
+                  position: 'absolute',
+                  left,
+                  top,
+                  width: 10,
+                  height: 10,
+                  backgroundColor: color,
+                  borderRadius: '50%',
+                  border: '2px solid #222',
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none',
+                }}
+              />
+            );
           }
           return null;
         })}
