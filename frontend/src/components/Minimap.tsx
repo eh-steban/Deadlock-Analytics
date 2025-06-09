@@ -46,6 +46,15 @@ interface MatchData {
   };
 }
 
+enum StatType {
+  Damage = 0,
+  Healing = 1,
+  HealPrevented = 2,
+  Mitigated = 3,
+  LethalDamage = 4,
+  Regen = 5
+}
+
 interface DestroyedObjective {
   team: string; // team is an ID stored as a string in the format "0" or "1"
   team_objective_id: string;
@@ -444,7 +453,8 @@ const Minimap = () => {
                   if (!sampleSources || sampleSources.length === 0) return null;
                   if (!Array.isArray(sampleSources)) return null;
 
-                  // For each source, collect damage_to_players info for this sampleIdx only, and include source_details_index
+                  // For each source, collect damage_to_players info for this sampleIdx. Use source_details_index
+                  // to display damage source id/name, target, and damage amount. Each sample spans 180 seconds.
                   const damageToPlayersSummary = sampleSources.map((src: any) => {
                     if (!src.damage_to_players || !Array.isArray(src.damage_to_players) || src.damage_to_players.length === 0) return null;
                     const perTarget = src.damage_to_players
@@ -452,8 +462,14 @@ const Minimap = () => {
                         const dmg = Array.isArray(dtp.damage) ? dtp.damage[sampleIdx] : undefined;
                         if (dmg === undefined || dmg === 0) return null;
                         const target = dtp.target_player_slot !== undefined ? dtp.target_player_slot : '-';
-                        const sourceName = matchData.match_info.damage_matrix.source_details.source_name?.[src.source_details_index] ?? `Undefined Source ${src.source_details_index}`;
-                        return `Source Name & Index: ${sourceName} (${src.source_details_index}) | Target: ${target} | Damage: ${dmg}`;
+                        // NOTE: Looks like source_details: { stat_type: number[]; source_name: string[]; };
+                        const { stat_type: sourceStatType, source_name: sourceName } = matchData.match_info.damage_matrix.source_details;
+                        return `Source  Index (${src.source_details_index}),
+                                Name: ${sourceName[src.source_details_index]},
+                                Stat Type Number ${sourceStatType[src.source_details_index]},
+                                and Stat Type Name ${StatType[sourceStatType[src.source_details_index]]}|
+                                Target: ${target} |
+                                Damage: ${dmg}`;
                       })
                       .filter(Boolean)
                       .join('; ');
