@@ -7,7 +7,7 @@ interface PlayerCardsProps {
   playerPaths: PlayerPath[];
   players: PlayerInfo[];
   currentTime: number;
-  heros: { [key: number]: string };
+  heros: Hero[];
 }
 
 enum EMoveType {
@@ -31,7 +31,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
           const playerInfo = players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
           if (!playerInfo) return null;
           const team = playerInfo.team;
-          const heroName = heros[playerInfo.hero_id] || `Hero ${playerInfo.hero_id}`;
+          const heroName = heros.find(h => h.id === playerInfo.hero_id)?.name || `Hero ${playerInfo.hero_id}`;
           const health = player.health?.[currentTime];
           const moveType = player.move_type?.[currentTime];
           const moveTypeLabel = moveType !== undefined && EMoveType[moveType] !== undefined ? EMoveType[moveType] : moveType;

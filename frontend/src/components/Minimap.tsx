@@ -18,8 +18,6 @@ import PlayerPositions from './PlayerPositions';
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
-const heros: { [key: number]: string } = {'1': 'Infernus', '2': 'Seven', '3': 'Vindicta', '4': 'Lady Geist', '6': 'Abrams', '7': 'Wraith', '8': 'McGinnis', '10': 'Paradox', '11': 'Dynamo', '12': 'Kelvin', '13': 'Haze', '14': 'Holliday', '15': 'Bebop', '16': 'Calico', '17': 'Grey Talon', '18': 'Mo & Krill', '19': 'Shiv', '20': 'Ivy', '25': 'Warden', '27': 'Yamato', '31': 'Lash', '35': 'Viscous', '48': 'Wrecker', '50': 'Pocket', '52': 'Mirage', '53': 'Fathom', '58': 'Vyper', '60': 'Sinclair', '61': 'Trapper', '62': 'Raven'};
-const HEROS_URL = 'https://assets.deadlock-api.com/v2/heroes?only_active=true';
 
 interface MatchData {
   match_info: {
@@ -68,22 +66,10 @@ interface ObjectiveCoordinate {
   team_objective_id?: number;
 }
 
-enum EMoveType {
-  Normal = 0,
-  Ability = 1,
-  AbilityDebuff = 2,
-  GroundDash = 3,
-  Slide = 4,
-  RopeClimbing = 5,
-  Ziplining = 6,
-  InAir = 7,
-  AirDash = 8,
-}
-
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
   const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] }, damage_matrix: { sample_time_s: [], source_details: { stat_type: [], source_name: [] }, damage_dealers: []}, players: [] } });
-  const [heroData, setHeroData] = useState<Hero[]>([{name: 'Yo Momma'}]);
+  const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma' }]);
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -118,7 +104,7 @@ const Minimap = () => {
         setError(true);
       });
 
-    fetch(HEROS_URL)
+    fetch('https://assets.deadlock-api.com/v2/heroes?only_active=true')
       .then(res => res.json())
       .then(data => {
         console.log('Loaded hero data:', data);
@@ -228,7 +214,7 @@ const Minimap = () => {
             playerPaths={playerPaths}
             players={matchData.match_info.players}
             currentTime={currentTime}
-            heros={heros}
+            heros={heroData}
           />
         </div>
         {/* Minimap and slider */}
@@ -307,7 +293,7 @@ const Minimap = () => {
             currentTick={currentTime}
             xResolution={xResolution}
             yResolution={yResolution}
-            heros={heros}
+            heros={heroData}
             renderPlayerDot={renderPlayerDot}
             getPlayerMinimapPosition={getPlayerMinimapPosition}
           />

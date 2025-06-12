@@ -9,7 +9,7 @@ interface PlayerPositionsProps {
   currentTick: number; // Rename to currentTime for clarity
   xResolution: number;
   yResolution: number;
-  heros: { [key: number]: string };
+  heros: Hero[];
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
   getPlayerMinimapPosition: (args: {
     player: any;
@@ -37,7 +37,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
       {playerPaths.map(player => {
         const playerInfo = players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
         if (!playerInfo) return null;
-        const heroName = heros[playerInfo.hero_id] || `Hero ${playerInfo.hero_id}`;
+        const heroName = heros.find(h => h.id === playerInfo.hero_id)?.name || `Hero ${playerInfo.hero_id}`;
         const team = playerInfo.team;
         const color = team === 0 ? 'rgba(0,128,255,0.7)' : 'rgba(0,200,0,0.7)';
         const x = player.x_pos?.[currentTime];
