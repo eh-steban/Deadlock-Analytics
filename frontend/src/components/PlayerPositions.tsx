@@ -6,7 +6,7 @@ import { Hero } from '../types/Hero';
 interface PlayerPositionsProps {
   playerPaths: PlayerPath[];
   players: PlayerInfo[];
-  currentTick: number; // Rename to currentTime for clarity
+  currentTime: number;
   xResolution: number;
   yResolution: number;
   heros: Hero[];
@@ -25,7 +25,7 @@ interface PlayerPositionsProps {
 const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   playerPaths,
   players,
-  currentTick: currentTime,
+  currentTime,
   xResolution,
   yResolution,
   heros,
@@ -37,8 +37,11 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
       {playerPaths.map(player => {
         const playerInfo = players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
         if (!playerInfo) return null;
-        const heroName = heros.find(h => h.id === playerInfo.hero_id)?.name || `Hero ${playerInfo.hero_id}`;
+        const hero = heros.find(h => h.id === playerInfo.hero_id);
+        const heroName = hero?.name || `Hero ${playerInfo.hero_id}`;
+        const minimapImg = hero?.images?.minimap_image_webp;
         const team = playerInfo.team;
+        // NOTE: If we don't have a minimap image, we use the color based on the team
         const color = team === 0 ? 'rgba(0,128,255,0.7)' : 'rgba(0,200,0,0.7)';
         const x = player.x_pos?.[currentTime];
         const y = player.y_pos?.[currentTime];
@@ -52,7 +55,28 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
             yResolution,
             renderPlayerDot,
           });
-          return (
+          return minimapImg ? (
+            <img
+              key={`${heroName} Player-${player.player_slot}`}
+              title={`${heroName} Player ${player.player_slot}`}
+              src={minimapImg}
+              alt={heroName}
+              style={{
+                position: 'absolute',
+                left,
+                top,
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                border: '2px solid #fff',
+                pointerEvents: 'auto',
+                zIndex: 2,
+                background: color,
+                objectFit: 'contain',
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          ) : (
             <div
               key={`${heroName} Player-${player.player_slot}`}
               title={`${heroName} Player ${player.player_slot}`}
@@ -67,6 +91,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
                 border: '2px solid #fff',
                 pointerEvents: 'auto',
                 zIndex: 2,
+                transform: 'translate(-50%, -50%)',
               }}
             />
           );

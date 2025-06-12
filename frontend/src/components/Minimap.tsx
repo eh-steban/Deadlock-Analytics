@@ -69,7 +69,7 @@ interface ObjectiveCoordinate {
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
   const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] }, damage_matrix: { sample_time_s: [], source_details: { stat_type: [], source_name: [] }, damage_dealers: []}, players: [] } });
-  const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma' }]);
+  const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -172,6 +172,7 @@ const Minimap = () => {
     <>
       <div style={{ width: '100vw', minHeight: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
         <div
+          title='InformationPanel'
           style={{
             width: '45vw',
             padding: '1rem',
@@ -218,7 +219,7 @@ const Minimap = () => {
           />
         </div>
         {/* Minimap and slider */}
-        <div style={{ position: 'fixed', top: '60px', right: 0, width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE + 60}px`, flexShrink: 0, marginLeft: '24px', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
+        <div title='MinimapPanel' style={{ position: 'absolute', right: 0, width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE + 60}px`, flexShrink: 0, marginLeft: '24px', marginTop: '1rem', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
           <div
             style={{
               position: 'relative',
@@ -286,11 +287,11 @@ const Minimap = () => {
             </button>
             <span style={{ marginLeft: 8 }}>Tick: {currentTime}</span>
           </div>
-          {/* Player positions at currentTick */}
+          {/* Player positions at currentTime */}
           <PlayerPositions
             playerPaths={playerPaths}
             players={matchData.match_info.players}
-            currentTick={currentTime}
+            currentTime={currentTime}
             xResolution={xResolution}
             yResolution={yResolution}
             heros={heroData}
@@ -320,6 +321,23 @@ const Minimap = () => {
 
       {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
       {/* <DamageMatrixTable matchData={matchData} StatType={StatType} /> */}
+
+      <div style={{ marginTop: 40 }}>
+        <h3>All Hero Images (from API)</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+          {heroData.map(hero => (
+            <div key={hero.id} style={{ minWidth: 200, marginBottom: 24 }}>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>{hero.name}</div>
+              {hero.images && Object.entries(hero.images).map(([label, url]) => (
+                <div key={label} style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.95em', color: '#888', marginRight: 8 }}>{label}:</span>
+                  <img src={url} alt={label} style={{ maxWidth: 120, maxHeight: 80, verticalAlign: 'middle', border: '1px solid #ccc', borderRadius: 4, background: '#fff' }} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 };
