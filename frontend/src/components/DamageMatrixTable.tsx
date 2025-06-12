@@ -1,13 +1,13 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
+import { StatType } from '../types/StatType';
 
 interface DamageMatrixTableProps {
   matchData: any;
-  StatType: any;
 }
 
-const DamageMatrixTable: React.FC<DamageMatrixTableProps> = ({ matchData, StatType }) => {
+const DamageMatrixTable: React.FC<DamageMatrixTableProps> = ({ matchData }) => {
   const { sample_time_s, damage_dealers, source_details } = matchData.match_info.damage_matrix;
   const { stat_type, source_name } = source_details;
   // Only dealer_player_slot 1 (Abrams)

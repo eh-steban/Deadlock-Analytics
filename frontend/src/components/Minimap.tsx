@@ -49,15 +49,6 @@ interface MatchData {
   };
 }
 
-enum StatType {
-  Damage = 0,
-  Healing = 1,
-  HealPrevented = 2,
-  Mitigated = 3,
-  LethalDamage = 4,
-  Regen = 5
-}
-
 interface ObjectiveCoordinate {
   label: string;
   x: number;
@@ -315,12 +306,11 @@ const Minimap = () => {
 
       {/* Damage Source Types Table */}
       {/* <DamageSourceTypesTable
-        statType={StatType}
         sourceDetails={matchData.match_info.damage_matrix.source_details}
       /> */}
 
       {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
-      {/* <DamageMatrixTable matchData={matchData} StatType={StatType} /> */}
+      {/* <DamageMatrixTable matchData={matchData} /> */}
 
       <div style={{ marginTop: 40 }}>
         <h3>All Hero Images (from API)</h3>
@@ -355,7 +345,7 @@ export function getPlayerMinimapPosition({
   player: any;
   playerX: number;
   playerY: number;
-  playerPaths: any[];
+  playerPaths: Array<PlayerPath>;
   xResolution: number;
   yResolution: number;
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
@@ -363,10 +353,10 @@ export function getPlayerMinimapPosition({
   const normPlayerX = player.x_min + (playerX / xResolution) * (player.x_max - player.x_min);
   const normPlayerY = player.y_min + (playerY / yResolution) * (player.y_max - player.y_min);
 
-  const allPlayerXMin = Math.min(...playerPaths.map(p => p.x_min));
-  const allPlayerXMax = Math.max(...playerPaths.map(p => p.x_max));
-  const allPlayerYMin = Math.min(...playerPaths.map(p => p.y_min));
-  const allPlayerYMax = Math.max(...playerPaths.map(p => p.y_max));
+  const allPlayerXMin = Math.min(...playerPaths.map((p: PlayerPath) => p.x_min));
+  const allPlayerXMax = Math.max(...playerPaths.map((p: PlayerPath) => p.x_max));
+  const allPlayerYMin = Math.min(...playerPaths.map((p: PlayerPath) => p.y_min));
+  const allPlayerYMax = Math.max(...playerPaths.map((p: PlayerPath) => p.y_max));
 
   const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
   const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));

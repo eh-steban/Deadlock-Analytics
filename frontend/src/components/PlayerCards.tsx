@@ -10,7 +10,7 @@ interface PlayerCardsProps {
   heros: Hero[];
 }
 
-enum EMoveType {
+enum MoveType {
   Normal = 0,
   Ability = 1,
   AbilityDebuff = 2,
@@ -34,8 +34,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
           const heroName = heros.find(h => h.id === playerInfo.hero_id)?.name || `Hero ${playerInfo.hero_id}`;
           const health = player.health?.[currentTime];
           const moveType = player.move_type?.[currentTime];
-          const moveTypeLabel = moveType !== undefined && EMoveType[moveType] !== undefined ? EMoveType[moveType] : moveType;
-          // Combat type label logic (window of 1s for currentTime)
+          const moveTypeLabel = moveType !== undefined && MoveType[moveType] !== undefined ? MoveType[moveType] : moveType;
           const combatTypes = player.combat_type?.slice(currentTime, currentTime + 1) || [];
           const combatTypeSet = Array.from(new Set(combatTypes.filter(x => x !== undefined)));
           const combatTypeLabels = ["Out of Combat", "Player", "Enemy NPC", "Neutral"];

@@ -1,14 +1,14 @@
 import React from 'react';
+import { StatType } from '../types/StatType';
 
 interface DamageSourceTypesTableProps {
-  statType: any;
   sourceDetails: {
     stat_type: number[];
     source_name: string[];
   } | undefined;
 }
 
-const DamageSourceTypesTable: React.FC<DamageSourceTypesTableProps> = ({ statType, sourceDetails }) => {
+const DamageSourceTypesTable: React.FC<DamageSourceTypesTableProps> = ({ sourceDetails }) => {
   if (!sourceDetails || !sourceDetails.stat_type || !sourceDetails.source_name) {
     return <div>No damage source details available.</div>;
   }
@@ -29,7 +29,7 @@ const DamageSourceTypesTable: React.FC<DamageSourceTypesTableProps> = ({ statTyp
           {sourceDetails.stat_type.map((statTypeNum: number, idx: number) => (
             <tr key={`source-detail-row-${idx}`} style={{ background: idx % 2 === 0 ? '#f9f9f9' : '#fff' }}>
               <td style={{ border: '1px solid #ccc', padding: '2px 6px' }}>{idx}</td>
-              <td style={{ border: '1px solid #ccc', padding: '2px 6px' }}>{statType[statTypeNum] !== undefined ? statType[statTypeNum] : statTypeNum}</td>
+              <td style={{ border: '1px solid #ccc', padding: '2px 6px' }}>{StatType[statTypeNum] !== undefined ? StatType[statTypeNum] : statTypeNum}</td>
               <td style={{ border: '1px solid #ccc', padding: '2px 6px' }}>{statTypeNum}</td>
               <td style={{ border: '1px solid #ccc', padding: '2px 6px' }}>{sourceDetails.source_name[idx]}</td>
             </tr>
