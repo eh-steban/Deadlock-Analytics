@@ -9,6 +9,7 @@ import DamageSourceTypesTable from './DamageSourceTypesTable';
 import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
 import { DestroyedObjective } from '../types/DestroyedObjective';
+import { Hero } from '../types/Hero';
 import MinimapObjectives from './MinimapObjectives';
 import { objectiveCoordinates } from '../data/objectiveCoordinates';
 import ObjectiveInfoPanel from './ObjectiveInfoPanel';
@@ -19,10 +20,6 @@ const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
 const heros: { [key: number]: string } = {'1': 'Infernus', '2': 'Seven', '3': 'Vindicta', '4': 'Lady Geist', '6': 'Abrams', '7': 'Wraith', '8': 'McGinnis', '10': 'Paradox', '11': 'Dynamo', '12': 'Kelvin', '13': 'Haze', '14': 'Holliday', '15': 'Bebop', '16': 'Calico', '17': 'Grey Talon', '18': 'Mo & Krill', '19': 'Shiv', '20': 'Ivy', '25': 'Warden', '27': 'Yamato', '31': 'Lash', '35': 'Viscous', '48': 'Wrecker', '50': 'Pocket', '52': 'Mirage', '53': 'Fathom', '58': 'Vyper', '60': 'Sinclair', '61': 'Trapper', '62': 'Raven'};
 const HEROS_URL = 'https://assets.deadlock-api.com/v2/heroes?only_active=true';
-
-interface Hero {
-  name: string;
-}
 
 interface MatchData {
   match_info: {
@@ -164,7 +161,7 @@ const Minimap = () => {
   };
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
-  // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for 
+  // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
   // the minimap. It may be worth revisiting later.
   const destroyedObjectivesSorted = matchData.match_info.objectives
     .filter(obj => obj.destroyed_time_s !== 0)
@@ -188,7 +185,20 @@ const Minimap = () => {
   return (
     <>
       <div style={{ width: '100vw', minHeight: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-        <div style={{ width: '48%', padding: '1rem', backgroundColor: '#f0f0f0', display: 'flex', flexDirection: 'column', gap: '1rem', borderRight: '1px solid #ddd', minHeight: '100vh' }}>
+        <div
+          style={{
+            width: '45vw',
+            padding: '1rem',
+            backgroundColor: '#f0f0f0',
+            borderRight: '1px solid #ddd',
+            height: '100vh',
+            overflowY: 'auto',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+          }}
+        >
           <h3>Current Time: {Math.floor(currentTime / 60)}:{(currentTime % 60).toString().padStart(2, '0')}</h3>
           <div style={{ marginBottom: 0, padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px', width: 180, alignSelf: 'flex-start' }}>
             <strong>Legend</strong>
@@ -217,27 +227,42 @@ const Minimap = () => {
           <PlayerCards
             playerPaths={playerPaths}
             players={matchData.match_info.players}
-            currentTick={currentTime}
+            currentTime={currentTime}
             heros={heros}
           />
         </div>
         {/* Minimap and slider */}
-        <div style={{ position: 'fixed', top: '60px', right: 0, width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE + 60}px`, flexShrink: 0, marginLeft: '24px', background: '#fafbfc', zIndex: 10, boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
-          <img ref={mapRef} src={MINIMAP_URL} alt="Minimap" style={{ width: '100%' }} />
-          <MinimapObjectives
-            objectiveCoordinates={objectiveCoordinates}
-            destroyedObjectives={destroyedObjectivesSorted}
-            currentTime={currentTime}
-            renderObjectiveDot={renderObjectiveDot}
-            activeObjectiveKey={activeObjectiveKey}
-          />
-          {/* <AllPlayerPositions
-            playerPaths={playerPaths}
-            matchData={matchData}
-            xResolution={xResolution}
-            yResolution={yResolution}
-            renderPlayerDot={renderPlayerDot}
-          /> */}
+        <div style={{ position: 'fixed', top: '60px', right: 0, width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE + 60}px`, flexShrink: 0, marginLeft: '24px', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: `${MINIMAP_SIZE}px`,
+              height: `${MINIMAP_SIZE}px`,
+              pointerEvents: 'none',
+            }}
+          >
+            <img
+              ref={mapRef}
+              src={MINIMAP_URL}
+              alt="Minimap"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            />
+            <MinimapObjectives
+              objectiveCoordinates={objectiveCoordinates}
+              destroyedObjectives={destroyedObjectivesSorted}
+              currentTime={currentTime}
+              renderObjectiveDot={renderObjectiveDot}
+              activeObjectiveKey={activeObjectiveKey}
+            />
+          </div>
           <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: '#f7f7f7', padding: '8px 0', borderTop: '1px solid #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
             <button
               onClick={() => setCurrentTime(t => Math.max(0, t - 1))}
@@ -282,6 +307,7 @@ const Minimap = () => {
             currentTick={currentTime}
             xResolution={xResolution}
             yResolution={yResolution}
+            heros={heros}
             renderPlayerDot={renderPlayerDot}
             getPlayerMinimapPosition={getPlayerMinimapPosition}
           />
@@ -289,7 +315,7 @@ const Minimap = () => {
       </div>
 
       {/* Player combat type/health Table */}
-      {/* 
+      {/*
         The buttons that control the time windows has been removed, but I may have use for some of the
         code in here so I'm keeping it for now
       */}

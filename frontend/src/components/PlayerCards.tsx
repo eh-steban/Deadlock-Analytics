@@ -1,11 +1,12 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
+import { Hero } from '../types/Hero';
 
 interface PlayerCardsProps {
   playerPaths: PlayerPath[];
   players: PlayerInfo[];
-  currentTick: number; // Rename to currentTime for clarity
+  currentTime: number;
   heros: { [key: number]: string };
 }
 
@@ -21,7 +22,7 @@ enum EMoveType {
   AirDash = 8,
 }
 
-const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTick: currentTime, heros }) => {
+const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros }) => {
   return (
     <>
       <h3 style={{ margin: '0 0 0.5rem 0' }}>Player Info</h3>

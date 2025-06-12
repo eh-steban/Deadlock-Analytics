@@ -47,6 +47,7 @@ const MinimapObjectives: React.FC<MinimapObjectivesProps> = ({
               borderRadius: '50%',
               border: isActive ? '2px solid yellow' : '1px solid red',
               transform: 'translate(-50%, -50%)',
+              pointerEvents: 'auto',
             }}
           />
         );

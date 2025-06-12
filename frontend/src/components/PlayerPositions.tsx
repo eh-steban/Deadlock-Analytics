@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
+import { Hero } from '../types/Hero';
 
 interface PlayerPositionsProps {
   playerPaths: PlayerPath[];
@@ -8,6 +9,7 @@ interface PlayerPositionsProps {
   currentTick: number; // Rename to currentTime for clarity
   xResolution: number;
   yResolution: number;
+  heros: { [key: number]: string };
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
   getPlayerMinimapPosition: (args: {
     player: any;
@@ -26,6 +28,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   currentTick: currentTime,
   xResolution,
   yResolution,
+  heros,
   renderPlayerDot,
   getPlayerMinimapPosition,
 }) => {
@@ -33,7 +36,9 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
     <>
       {playerPaths.map(player => {
         const playerInfo = players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
-        const team = playerInfo ? playerInfo.team : 0;
+        if (!playerInfo) return null;
+        const heroName = heros[playerInfo.hero_id] || `Hero ${playerInfo.hero_id}`;
+        const team = playerInfo.team;
         const color = team === 0 ? 'rgba(0,128,255,0.7)' : 'rgba(0,200,0,0.7)';
         const x = player.x_pos?.[currentTime];
         const y = player.y_pos?.[currentTime];
@@ -49,8 +54,8 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
           });
           return (
             <div
-              key={`player-${player.player_slot}-tick-${currentTime}`}
-              title={`Player ${player.player_slot} t=${currentTime}`}
+              key={`${heroName} Player-${player.player_slot}`}
+              title={`${heroName} Player ${player.player_slot}`}
               style={{
                 position: 'absolute',
                 left,
@@ -60,7 +65,8 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
                 backgroundColor: color,
                 borderRadius: '50%',
                 border: '2px solid #fff',
-                pointerEvents: 'none',
+                pointerEvents: 'auto',
+                zIndex: 2,
               }}
             />
           );

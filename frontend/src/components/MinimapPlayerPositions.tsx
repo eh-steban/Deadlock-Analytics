@@ -53,7 +53,8 @@ const MinimapPlayerPositions: React.FC<MinimapPlayerPositionsProps> = ({
                 borderRadius: '50%',
                 border: '2px solid #ff0000',
                 transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none',
+                pointerEvents: 'auto',
+                zIndex: 2,
               }}
             />
           );
