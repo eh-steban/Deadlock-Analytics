@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
+import { getPlayerMinimapPosition } from './Minimap';
 
 interface MinimapPlayerPositionsProps {
   playerPaths: PlayerPath[];
@@ -28,18 +29,15 @@ const MinimapPlayerPositions: React.FC<MinimapPlayerPositionsProps> = ({
         const playerX = player.x_pos[currentTime];
         const playerY = player.y_pos[currentTime];
         if (playerX !== undefined && playerY !== undefined) {
-          const normPlayerX = player.x_min + (playerX / xResolution) * (player.x_max - player.x_min);
-          const normPlayerY = player.y_min + (playerY / yResolution) * (player.y_max - player.y_min);
-
-          const allPlayerXMin = Math.min(...playerPaths.map(p => p.x_min));
-          const allPlayerXMax = Math.max(...playerPaths.map(p => p.x_max));
-          const allPlayerYMin = Math.min(...playerPaths.map(p => p.y_min));
-          const allPlayerYMax = Math.max(...playerPaths.map(p => p.y_max));
-
-          const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
-          const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
-
-          const { left, top } = renderPlayerDot(scaledPlayerX, scaledPlayerY);
+          const { left, top } = getPlayerMinimapPosition({
+            player,
+            playerX,
+            playerY,
+            playerPaths,
+            xResolution,
+            yResolution,
+            renderPlayerDot,
+          });
 
           return (
             <div

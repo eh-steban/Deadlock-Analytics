@@ -1,5 +1,6 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
+import { getPlayerMinimapPosition } from './Minimap';
 
 interface AllPlayerPositionsProps {
   playerPaths: PlayerPath[];
@@ -29,18 +30,15 @@ const AllPlayerPositions: React.FC<AllPlayerPositionsProps> = ({
           const y = player.y_pos[idx];
           const moveType = player.move_type[idx];
           if (x !== undefined && y !== undefined) {
-            const normPlayerX = player.x_min + (x / xResolution) * (player.x_max - player.x_min);
-            const normPlayerY = player.y_min + (y / yResolution) * (player.y_max - player.y_min);
-
-            const allPlayerXMin = Math.min(...playerPaths.map(p => p.x_min));
-            const allPlayerXMax = Math.max(...playerPaths.map(p => p.x_max));
-            const allPlayerYMin = Math.min(...playerPaths.map(p => p.y_min));
-            const allPlayerYMax = Math.max(...playerPaths.map(p => p.y_max));
-
-            const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
-            const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
-
-            const { left, top } = renderPlayerDot(scaledPlayerX, scaledPlayerY);
+            const { left, top } = getPlayerMinimapPosition({
+              player,
+              playerX: x,
+              playerY: y,
+              playerPaths,
+              xResolution,
+              yResolution,
+              renderPlayerDot,
+            });
 
             return (
               <div
@@ -56,6 +54,7 @@ const AllPlayerPositions: React.FC<AllPlayerPositionsProps> = ({
                   borderRadius: '50%',
                   transform: 'translate(-50%, -50%)',
                   pointerEvents: 'none',
+                  float: 'right',
                 }}
               />
             );

@@ -13,16 +13,16 @@ interface MinimapObjectivesProps {
   objectiveCoordinates: ObjectiveCoordinate[];
   destroyedObjectives: DestroyedObjective[];
   currentTime: number;
-  activeObjectiveKey: string | null;
   renderObjectiveDot: (obj: ObjectiveCoordinate) => { left: number; top: number };
+  activeObjectiveKey?: string | null;
 }
 
 const MinimapObjectives: React.FC<MinimapObjectivesProps> = ({
   objectiveCoordinates,
   destroyedObjectives,
   currentTime,
-  activeObjectiveKey,
   renderObjectiveDot,
+  activeObjectiveKey,
 }) => {
   return (
     <>
