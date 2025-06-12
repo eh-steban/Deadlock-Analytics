@@ -159,6 +159,36 @@ const Minimap = () => {
     setCurrentObjectiveIndex(currentIdx);
   }, [destroyedObjectivesSorted, currentTime]);
 
+  // --- REGION DATA STRUCTURE (for future labeling/interactivity) ---
+  // Each region is a polygon (array of [x, y] in minimap-normalized 0-1 coordinates), with a label
+  const regions = [
+    {
+      label: 'Team 0 Side',
+      polygon: [
+        [0, 0], [0.5, 0], [0.5, 1], [0, 1]
+      ],
+      color: 'rgba(0,128,255,0.08)',
+      border: 'rgba(0,128,255,0.3)'
+    },
+    {
+      label: 'Team 1 Side',
+      polygon: [
+        [0.5, 0], [1, 0], [1, 1], [0.5, 1]
+      ],
+      color: 'rgba(0,200,0,0.08)',
+      border: 'rgba(0,200,0,0.3)'
+    },
+    {
+      label: 'Center Lane',
+      polygon: [
+        [0.4, 0.4], [0.6, 0.4], [0.6, 0.6], [0.4, 0.6]
+      ],
+      color: 'rgba(255,200,0,0.10)',
+      border: 'rgba(255,200,0,0.3)'
+    }
+    // Add more regions as needed
+  ];
+
   return (
     <>
       <div style={{ width: '100vw', minHeight: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
@@ -219,6 +249,86 @@ const Minimap = () => {
               pointerEvents: 'none',
             }}
           >
+            {/* --- GRID OVERLAY --- */}
+            <svg
+              width={MINIMAP_SIZE}
+              height={MINIMAP_SIZE}
+              style={{ position: 'absolute', top: 0, left: 0, zIndex: 2, pointerEvents: 'none' }}
+            >
+              {/* Draw grid lines */}
+              {[...Array(21)].map((_, i) => (
+                <g key={i}>
+                  {/* Vertical lines */}
+                  <line
+                    x1={(i / 20) * MINIMAP_SIZE}
+                    y1={0}
+                    x2={(i / 20) * MINIMAP_SIZE}
+                    y2={MINIMAP_SIZE}
+                    stroke="#bbb"
+                    strokeDasharray="2,2"
+                    strokeWidth={i % 5 === 0 ? 1.5 : 0.7}
+                    opacity={i % 5 === 0 ? 0.35 : 0.18}
+                  />
+                  {/* Horizontal lines */}
+                  <line
+                    x1={0}
+                    y1={(i / 20) * MINIMAP_SIZE}
+                    x2={MINIMAP_SIZE}
+                    y2={(i / 20) * MINIMAP_SIZE}
+                    stroke="#bbb"
+                    strokeDasharray="2,2"
+                    strokeWidth={i % 5 === 0 ? 1.5 : 0.7}
+                    opacity={i % 5 === 0 ? 0.35 : 0.18}
+                  />
+                  {/* Axis labels (every 5th line) */}
+                  {i % 5 === 0 && i !== 0 && i !== 20 && (
+                    <>
+                      <text x={(i / 20) * MINIMAP_SIZE + 2} y={12} fontSize="11" fill="#888">{i}</text>
+                      <text x={4} y={(i / 20) * MINIMAP_SIZE - 2} fontSize="11" fill="#888">{i}</text>
+                    </>
+                  )}
+                </g>
+              ))}
+              {/* Key coordinate markers */}
+              {/* (0,0) */}
+              <circle cx={0} cy={MINIMAP_SIZE} r={7} fill="#e00" stroke="#fff" strokeWidth={2} />
+              <text x={12} y={MINIMAP_SIZE - 8} fontSize="12" fill="#e00">(0,0)</text>
+              {/* (20,20) */}
+              <circle cx={MINIMAP_SIZE} cy={0} r={7} fill="#00e" stroke="#fff" strokeWidth={2} />
+              <text x={MINIMAP_SIZE - 44} y={18} fontSize="12" fill="#00e">(20,20)</text>
+              {/* Center */}
+              <circle cx={MINIMAP_SIZE/2} cy={MINIMAP_SIZE/2} r={7} fill="#0a0" stroke="#fff" strokeWidth={2} />
+              <text x={MINIMAP_SIZE/2 + 10} y={MINIMAP_SIZE/2 - 10} fontSize="12" fill="#0a0">center</text>
+            </svg>
+            {/* --- REGION OVERLAYS --- */}
+            <svg
+              width={MINIMAP_SIZE}
+              height={MINIMAP_SIZE}
+              style={{ position: 'absolute', top: 0, left: 0, zIndex: 3, pointerEvents: 'auto' }}
+            >
+              {regions.map((region, idx) => (
+                <g key={region.label}>
+                  <polygon
+                    points={region.polygon.map(([x, y]) => `${x * MINIMAP_SIZE},${y * MINIMAP_SIZE}`).join(' ')}
+                    fill={region.color}
+                    stroke={region.border}
+                    strokeWidth={2}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => alert(`Region: ${region.label}`)}
+                  />
+                  {/* Region label at centroid */}
+                  {(() => {
+                    const xs = region.polygon.map(([x]) => x * MINIMAP_SIZE);
+                    const ys = region.polygon.map(([,y]) => y * MINIMAP_SIZE);
+                    const cx = xs.reduce((a,b) => a+b,0)/xs.length;
+                    const cy = ys.reduce((a,b) => a+b,0)/ys.length;
+                    return (
+                      <text x={cx} y={cy} fontSize="15" fill="#333" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle" style={{ pointerEvents: 'none' }}>{region.label}</text>
+                    );
+                  })()}
+                </g>
+              ))}
+            </svg>
             <img
               ref={mapRef}
               src={MINIMAP_URL}
