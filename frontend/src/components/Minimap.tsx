@@ -165,28 +165,209 @@ const Minimap = () => {
     {
       label: 'Team 0 Side',
       polygon: [
-        [0, 0], [0.5, 0], [0.5, 1], [0, 1]
+        [0, 0.5], [1, 0.5], [1, 1], [0, 1]
+      ],
+      color: 'rgba(255,200,0,0.10)',
+      border: 'rgba(255,200,0,0.3)'
+    },
+    {
+      label: 'Team 0 Base (Amber)',
+      polygon: [
+        [0.43, 0.78],
+        [0.57, 0.78],
+        [0.61, 0.83],
+        [0.61, 0.94],
+        [0.4, 0.94],
+        [0.39, 0.83],
+      ],
+      color: 'rgba(255,200,0,0.10)',
+      border: 'rgba(255, 200, 0, 0.79)'
+    },
+    {
+      label: 'Team 1 Side',
+      polygon: [
+        [0, 0], [1, 0], [1, 0.5], [0, 0.5]
       ],
       color: 'rgba(0,128,255,0.08)',
       border: 'rgba(0,128,255,0.3)'
     },
     {
-      label: 'Team 1 Side',
+      label: 'Team 1 Base (Sapphire)',
       polygon: [
-        [0.5, 0], [1, 0], [1, 1], [0.5, 1]
+        [0.4, 0.06],
+        [0.6, 0.06],
+        [0.6, 0.16],
+        [0.568, 0.21],
+        [0.432, 0.21],
+        [0.4, 0.16],
+      ],
+      color: 'rgba(0, 26, 255, 0.1)',
+      border: 'rgba(21, 0, 255, 0.79)'
+    },
+    {
+      label: 'Center Area',
+      polygon: [
+        [0.3, 0.3], [0.7, 0.3], [0.7, 0.7], [0.3, 0.7]
       ],
       color: 'rgba(0,200,0,0.08)',
       border: 'rgba(0,200,0,0.3)'
     },
     {
-      label: 'Center Lane',
+      label: 'Lane 1 (Left)',
       polygon: [
-        [0.4, 0.4], [0.6, 0.4], [0.6, 0.6], [0.4, 0.6]
+        [0.4, 0.16],
+        [0.432, 0.21],
+        [0.3, 0.3], // Same point as top left point of center area
+        [0.3, 0.5],
+        [0.3, 0.7],
+        [0.43, 0.78],
+        [0.39, 0.83],
+        [0.32, 0.83],
+        [0.23, 0.81],
+        [0.07, 0.7],
+        [0, 0.5],
+        [0.071, 0.34],
+        [0.2, 0.2],
       ],
-      color: 'rgba(255,200,0,0.10)',
-      border: 'rgba(255,200,0,0.3)'
-    }
-    // Add more regions as needed
+      color: 'rgba(200, 147, 0, 0.08)',
+      border: 'rgba(227, 160, 25, 0.93)'
+    },
+    {
+      label: 'Lane 2 (Mid)',
+      polygon: [
+        [0.432, 0.21],
+        [0.568, 0.21],
+        [0.7, 0.3],
+        [0.7, 0.7],
+        [0.57, 0.78],
+        [0.43, 0.78],
+        [0.3, 0.7],
+        [0.3, 0.3],
+        [0.432, 0.21],
+      ],
+      color: 'rgba(35, 99, 236, 0.15)',
+      border: 'rgba(43, 117, 253, 0.93)'
+    },
+    {
+      label: 'Lane 3 (Right)',
+      polygon: [
+        [0.6, 0.16],
+        [0.7, 0.16],
+        [0.9, 0.25],
+        [1, 0.5],
+        [0.92, 0.68],
+        [0.8, 0.8],
+        [0.61, 0.83],
+        [0.57, 0.78],
+        [0.7, 0.7],
+        [0.7, 0.3],
+        [0.568, 0.21],
+      ],
+      color: 'rgba(177, 0, 200, 0.15)',
+      border: 'rgba(183, 25, 227, 0.93)'
+    },
+    {
+      label: 'Left Bodega',
+      polygon: [
+        [0.253, 0.3],
+        [0.375, 0.235],
+        [0.469, 0.235],
+        [0.469, 0.274],
+        [0.525, 0.274],
+        [0.525, 0.332],
+        [0.489, 0.332],
+        [0.489, 0.386],
+        [0.43, 0.386],
+        [0.43, 0.475],
+        [0.189, 0.475],
+        [0.181, 0.467],
+        [0.185, 0.4],
+      ],
+      color: 'rgba(255, 47, 0, 0.1)',
+      border: 'rgba(255, 55, 0, 0.79)'
+    },
+    {
+      label: 'Right Bodega',
+      polygon: [
+        [0.634, 0.22],
+        [0.655, 0.22],
+        [0.69, 0.265],
+        [0.69, 0.281],
+        [0.735, 0.281],
+        [0.765, 0.287],
+        [0.8, 0.287],
+        [0.8, 0.37],
+        [0.83, 0.37],
+        [0.841, 0.379],
+        [0.854, 0.379],
+        [0.854, 0.422],
+        [0.864, 0.422],
+        [0.864, 0.46],
+        [0.715, 0.46],
+        [0.715, 0.483],
+        [0.596, 0.483],
+        [0.586, 0.471],
+        [0.586, 0.427],
+        [0.527, 0.427],
+        [0.527, 0.373],
+        [0.601, 0.373],
+        [0.601, 0.234],
+        [0.634, 0.234],
+      ],
+      color: 'rgba(255, 47, 0, 0.1)',
+      border: 'rgba(255, 55, 0, 0.79)'
+    },
+    {
+      label: 'Right Bodega',
+      polygon: [
+        [0.578, 0.52],
+        [0.814, 0.52],
+        [0.822, 0.528],
+        [0.818, 0.595],
+        [0.743, 0.695],
+        [0.627, 0.759],
+        [0.532, 0.759],
+        [0.532, 0.721],
+        [0.477, 0.721],
+        [0.477, 0.66],
+        [0.513, 0.66],
+        [0.513, 0.61],
+        [0.578, 0.61],
+      ],
+      color: 'rgba(255, 47, 0, 0.1)',
+      border: 'rgba(255, 55, 0, 0.79)'
+    },
+    {
+      label: 'Left Bodega',
+      polygon: [
+        [0.369, 0.775],
+        [0.35, 0.775],
+        [0.315, 0.73],
+        [0.315, 0.714],
+        [0.27, 0.714],
+        [0.24, 0.708],
+        [0.205, 0.708],
+        [0.205, 0.625],
+        [0.175, 0.625],
+        [0.164, 0.616],
+        [0.151, 0.616],
+        [0.151, 0.573],
+        [0.141, 0.573],
+        [0.141, 0.535],
+        [0.29, 0.535],
+        [0.29, 0.512],
+        [0.407, 0.512],
+        [0.417, 0.524],
+        [0.417, 0.568],
+        [0.476, 0.568],
+        [0.476, 0.622],
+        [0.401, 0.622],
+        [0.401, 0.761],
+        [0.369, 0.761],
+      ],
+      color: 'rgba(255, 47, 0, 0.1)',
+      border: 'rgba(255, 55, 0, 0.79)'
+    },
   ];
 
   return (
@@ -231,7 +412,6 @@ const Minimap = () => {
             destroyedObjectives={destroyedObjectivesSorted}
             currentObjectiveIndex={currentObjectiveIndex}
           />
-          {/* Player by-the-second data as cards */}
           <PlayerCards
             playerPaths={playerPaths}
             players={matchData.match_info.players}
@@ -280,11 +460,27 @@ const Minimap = () => {
                     strokeWidth={i % 5 === 0 ? 1.5 : 0.7}
                     opacity={i % 5 === 0 ? 0.35 : 0.18}
                   />
-                  {/* Axis labels (every 5th line) */}
-                  {i % 5 === 0 && i !== 0 && i !== 20 && (
+                  {/* Axis labels (every 5th line, except 0) */}
+                  {i % 5 === 0 && i !== 0 && (
                     <>
-                      <text x={(i / 20) * MINIMAP_SIZE + 2} y={12} fontSize="11" fill="#888">{i}</text>
-                      <text x={4} y={(i / 20) * MINIMAP_SIZE - 2} fontSize="11" fill="#888">{i}</text>
+                      {/* X-axis: left to right, 0 to 1 */}
+                      <text
+                        x={(i / 20) * MINIMAP_SIZE + 2}
+                        y={12}
+                        fontSize="11"
+                        fill="#888"
+                      >
+                        {(i / 20).toFixed(2)}
+                      </text>
+                      {/* Y-axis: top to bottom, 0 to 1 */}
+                      <text
+                        x={4}
+                        y={(i / 20) * MINIMAP_SIZE - 2}
+                        fontSize="11"
+                        fill="#888"
+                      >
+                        {(i / 20).toFixed(2)}
+                      </text>
                     </>
                   )}
                 </g>
@@ -292,10 +488,10 @@ const Minimap = () => {
               {/* Key coordinate markers */}
               {/* (0,0) */}
               <circle cx={0} cy={MINIMAP_SIZE} r={7} fill="#e00" stroke="#fff" strokeWidth={2} />
-              <text x={12} y={MINIMAP_SIZE - 8} fontSize="12" fill="#e00">(0,0)</text>
+              <text x={12} y={MINIMAP_SIZE - 8} fontSize="12" fill="#e00">(0,1)</text>
               {/* (20,20) */}
               <circle cx={MINIMAP_SIZE} cy={0} r={7} fill="#00e" stroke="#fff" strokeWidth={2} />
-              <text x={MINIMAP_SIZE - 44} y={18} fontSize="12" fill="#00e">(20,20)</text>
+              <text x={MINIMAP_SIZE - 44} y={18} fontSize="12" fill="#00e">(1,0)</text>
               {/* Center */}
               <circle cx={MINIMAP_SIZE/2} cy={MINIMAP_SIZE/2} r={7} fill="#0a0" stroke="#fff" strokeWidth={2} />
               <text x={MINIMAP_SIZE/2 + 10} y={MINIMAP_SIZE/2 - 10} fontSize="12" fill="#0a0">center</text>
@@ -388,7 +584,6 @@ const Minimap = () => {
             </button>
             <span style={{ marginLeft: 8 }}>Tick: {currentTime}</span>
           </div>
-          {/* Player positions at currentTime */}
           <PlayerPositions
             playerPaths={playerPaths}
             players={matchData.match_info.players}
