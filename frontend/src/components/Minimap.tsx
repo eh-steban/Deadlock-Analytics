@@ -19,6 +19,7 @@ import RegionsMapping from './RegionsMapping';
 import { regions } from '../data/Regions';
 import RegionToggle from './RegionToggle';
 import GameTimeViewer from './GameTimeViewer';
+import { standardizePlayerPosition } from '../components/PlayerPositions';
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
@@ -150,6 +151,52 @@ const Minimap = () => {
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(null);
 
+  function isPlayerInRegion(
+    x_max: number,
+    x_min: number,
+    y_max: number,
+    y_min: number,
+    point: [number, number],
+    polygon: [number, number][],
+    xResolution: number, yResolution: number
+    ): boolean {
+      const [playerX, playerY] = point;
+      const { standPlayerX, standPlayerY } = standardizePlayerPosition(
+        x_max,
+        x_min,
+        y_max,
+        y_min,
+        playerX,
+        playerY,
+        playerPaths,
+        xResolution,
+        yResolution,
+      );
+      let inside = false;
+      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const [xi, yi] = polygon[i];
+        const [xj, yj] = polygon[j];
+        const intersect = ((yi > standPlayerY) !== (yj > standPlayerY)) &&
+          (standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
+        if (intersect) inside = !inside;
+      }
+      return inside;
+  }
+
+  function getPlayerRegionLabel(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number): string {
+    const foundRegion = regions.find(region => isPlayerInRegion(
+      x_max,
+      x_min,
+      y_max,
+      y_min,
+      [x, y],
+      region.polygon,
+      xResolution,
+      yResolution
+    ));
+    return foundRegion ? foundRegion.label : 'None';
+  }
+
   useEffect(() => {
     let lastActiveKey: string | null = null;
     let currentIdx = -1;
@@ -219,6 +266,7 @@ const Minimap = () => {
             players={matchData.match_info.players}
             currentTime={currentTime}
             heros={heroData}
+            getPlayerRegionLabel={getPlayerRegionLabel}
           />
         </div>
         {/* Minimap and slider */}
@@ -263,7 +311,6 @@ const Minimap = () => {
             yResolution={yResolution}
             heros={heroData}
             renderPlayerDot={renderPlayerDot}
-            getPlayerMinimapPosition={getPlayerMinimapPosition}
           />
           <div style={{ width: '100%', background: '#f7f7f7', borderTop: '1px solid #ccc', display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 0, padding: 0 }}>
             <GameTimeViewer
@@ -321,37 +368,5 @@ const Minimap = () => {
     </>
   );
 };
-
-// Utility function to map player position to minimap coordinates
-export function getPlayerMinimapPosition({
-  player,
-  playerX,
-  playerY,
-  playerPaths,
-  xResolution,
-  yResolution,
-  renderPlayerDot,
-}: {
-  player: any;
-  playerX: number;
-  playerY: number;
-  playerPaths: Array<PlayerPath>;
-  xResolution: number;
-  yResolution: number;
-  renderPlayerDot: (x: number, y: number) => { left: number; top: number };
-}) {
-  const normPlayerX = player.x_min + (playerX / xResolution) * (player.x_max - player.x_min);
-  const normPlayerY = player.y_min + (playerY / yResolution) * (player.y_max - player.y_min);
-
-  const allPlayerXMin = Math.min(...playerPaths.map((p: PlayerPath) => p.x_min));
-  const allPlayerXMax = Math.max(...playerPaths.map((p: PlayerPath) => p.x_max));
-  const allPlayerYMin = Math.min(...playerPaths.map((p: PlayerPath) => p.y_min));
-  const allPlayerYMax = Math.max(...playerPaths.map((p: PlayerPath) => p.y_max));
-
-  const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
-  const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
-
-  return renderPlayerDot(scaledPlayerX, scaledPlayerY);
-}
 
 export default Minimap;

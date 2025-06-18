@@ -11,15 +11,6 @@ interface PlayerPositionsProps {
   yResolution: number;
   heros: Hero[];
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
-  getPlayerMinimapPosition: (args: {
-    player: any;
-    playerX: number;
-    playerY: number;
-    playerPaths: any[];
-    xResolution: number;
-    yResolution: number;
-    renderPlayerDot: (x: number, y: number) => { left: number; top: number };
-  }) => { left: number; top: number };
 }
 
 const PlayerPositions: React.FC<PlayerPositionsProps> = ({
@@ -30,7 +21,6 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   yResolution,
   heros,
   renderPlayerDot,
-  getPlayerMinimapPosition,
 }) => {
   return (
     <>
@@ -45,16 +35,23 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
         const color = team === 0 ? 'rgba(0,128,255,0.7)' : 'rgba(0,200,0,0.7)';
         const playerX = player.x_pos[currentTime];
         const playerY = player.y_pos[currentTime];
+        const x_max = player.x_max;
+        const x_min = player.x_min;
+        const y_max = player.y_max;
+        const y_min = player.y_min;
         if (playerX !== undefined && playerY!== undefined) {
-          const { left, top } = getPlayerMinimapPosition({
-            player,
+          const { left, top } = getPlayerMinimapPosition(
+            x_max,
+            x_min,
+            y_max,
+            y_min,
             playerX,
             playerY,
             playerPaths,
             xResolution,
             yResolution,
             renderPlayerDot,
-          });
+          );
           return minimapImg ? (
             <img
               key={`${heroName} Player-${player.player_slot}`}
@@ -101,5 +98,61 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
     </>
   );
 };
+
+export function standardizePlayerPosition(
+  x_max: number,
+  x_min: number,
+  y_max: number,
+  y_min: number,
+  playerX: number,
+  playerY: number,
+  playerPaths: Array<PlayerPath>,
+  xResolution: number,
+  yResolution: number,
+): { standPlayerX: number; standPlayerY: number } {
+  // Normalize player position to (0,1) range based on the minimap dimensions
+  // and the player paths' min/max coordinates
+  const normPlayerX = x_min + (playerX / xResolution) * (x_max - x_min);
+  const normPlayerY = y_min + (playerY / yResolution) * (y_max - y_min);
+
+  // Find the min/max coordinates across all player paths
+  // to scale the normalized position correctly
+  const allPlayerXMin = Math.min(...playerPaths.map((p: PlayerPath) => p.x_min));
+  const allPlayerXMax = Math.max(...playerPaths.map((p: PlayerPath) => p.x_max));
+  const allPlayerYMin = Math.min(...playerPaths.map((p: PlayerPath) => p.y_min));
+  const allPlayerYMax = Math.max(...playerPaths.map((p: PlayerPath) => p.y_max));
+
+  // Scale the normalized position to (0,1) range based on the overall min/max
+  // This ensures that the player position is correctly represented on the minimap
+  const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
+  const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
+  return { standPlayerX: scaledPlayerX, standPlayerY: scaledPlayerY };
+}
+
+export function getPlayerMinimapPosition(
+  x_max: number,
+  x_min: number,
+  y_max: number,
+  y_min: number,
+  playerX: number,
+  playerY: number,
+  playerPaths: Array<PlayerPath>,
+  xResolution: number,
+  yResolution: number,
+  renderPlayerDot: (x: number, y: number) => { left: number; top: number },
+): { left: number; top: number } {
+  const { standPlayerX, standPlayerY } = standardizePlayerPosition(
+    x_max,
+    x_min,
+    y_max,
+    y_min,
+    playerX,
+    playerY,
+    playerPaths,
+    xResolution,
+    yResolution,
+  );
+  return renderPlayerDot(standPlayerX, standPlayerY);
+}
 
 export default PlayerPositions;

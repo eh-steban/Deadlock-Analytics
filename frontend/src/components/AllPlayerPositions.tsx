@@ -1,6 +1,6 @@
 import React from 'react';
 import { PlayerPath } from '../types/PlayerPath';
-import { getPlayerMinimapPosition } from './Minimap';
+import { getPlayerMinimapPosition } from './PlayerPositions';
 
 interface AllPlayerPositionsProps {
   playerPaths: PlayerPath[];
@@ -26,19 +26,26 @@ const AllPlayerPositions: React.FC<AllPlayerPositionsProps> = ({
         const zipcolor = 'rgba(229, 255, 0, 0.45)';
         // Limit to first 2000 points per player to avoid stack issues
         const maxPoints = 2000;
-        return player.x_pos.slice(0, maxPoints).map((x, idx) => {
-          const y = player.y_pos[idx];
+        return player.x_pos.slice(0, maxPoints).map((playerX, idx) => {
+          const playerY = player.y_pos[idx];
+          const x_max = player.x_max;
+          const x_min = player.x_min;
+          const y_max = player.y_max;
+          const y_min = player.y_min;
           const moveType = player.move_type[idx];
-          if (x !== undefined && y !== undefined) {
-            const { left, top } = getPlayerMinimapPosition({
-              player,
-              playerX: x,
-              playerY: y,
+          if (playerX !== undefined && playerY !== undefined) {
+            const { left, top } = getPlayerMinimapPosition(
+              x_max,
+              x_min,
+              y_max,
+              y_min,
+              playerX,
+              playerY,
               playerPaths,
               xResolution,
               yResolution,
               renderPlayerDot,
-            });
+            );
 
             return (
               <div

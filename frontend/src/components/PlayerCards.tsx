@@ -8,6 +8,14 @@ interface PlayerCardsProps {
   players: PlayerInfo[];
   currentTime: number;
   heros: Hero[];
+  getPlayerRegionLabel: (
+    x_max: number,
+    x_min: number,
+    y_max: number,
+    y_min: number,
+    playerX: number,
+    playerY: number
+  ) => string;
 }
 
 enum MoveType {
@@ -22,7 +30,7 @@ enum MoveType {
   AirDash = 8,
 }
 
-const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros }) => {
+const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros, getPlayerRegionLabel }) => {
   return (
     <>
       <h3 style={{ margin: '0 0 0.5rem 0' }}>Player Info</h3>
@@ -41,6 +49,15 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
           const combatTypeSet = Array.from(new Set(combatTypes.filter(x => x !== undefined)));
           const combatTypeLabels = ["Out of Combat", "Player", "Enemy NPC", "Neutral"];
           const combatTypeLabelList = combatTypeSet.map(type => combatTypeLabels[type] || type).join(', ');
+          const regionLabel = getPlayerRegionLabel(
+            player.x_max,
+            player.x_min,
+            player.y_max,
+            player.y_max,
+            player.x_pos[currentTime],
+            player.y_pos[currentTime]
+          );
+
           return (
             <div key={`player-card-${player.player_slot}`} style={{ background: '#fff', border: '1px solid #ccc', borderRadius: '0.5rem', padding: '0.5rem 0.75rem', boxShadow: '0 0.0625rem 0.125rem rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.625rem' }}>
               {heroImg && (
@@ -54,6 +71,8 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
                   <div><strong>Move Type:</strong> {moveTypeLabel !== undefined ? moveTypeLabel : '-'}</div>
                   <br/>
                   <div><strong>Combat Type:</strong> {combatTypeLabelList || '-'}</div>
+                  <br/>
+                  <div><strong>Current Region:</strong> {regionLabel}</div>
                 </div>
               </div>
             </div>
