@@ -43,13 +43,13 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
         const team = playerInfo.team;
         // NOTE: If we don't have a minimap image, we use the color based on the team
         const color = team === 0 ? 'rgba(0,128,255,0.7)' : 'rgba(0,200,0,0.7)';
-        const x = player.x_pos?.[currentTime];
-        const y = player.y_pos?.[currentTime];
-        if (x !== undefined && y !== undefined) {
+        const playerX = player.x_pos[currentTime];
+        const playerY = player.y_pos[currentTime];
+        if (playerX !== undefined && playerY!== undefined) {
           const { left, top } = getPlayerMinimapPosition({
             player,
-            playerX: x,
-            playerY: y,
+            playerX,
+            playerY,
             playerPaths,
             xResolution,
             yResolution,
@@ -88,10 +88,10 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
                 height: 10,
                 backgroundColor: color,
                 borderRadius: '50%',
-                border: '2px solid #fff',
+                border: '2px solid #ff0000',
+                transform: 'translate(-50%, -50%)',
                 pointerEvents: 'auto',
                 zIndex: 2,
-                transform: 'translate(-50%, -50%)',
               }}
             />
           );

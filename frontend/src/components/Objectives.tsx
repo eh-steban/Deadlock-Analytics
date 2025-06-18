@@ -9,7 +9,7 @@ interface ObjectiveCoordinate {
   team_objective_id?: number;
 }
 
-interface MinimapObjectivesProps {
+interface ObjectivesProps {
   objectiveCoordinates: ObjectiveCoordinate[];
   destroyedObjectives: DestroyedObjective[];
   currentTime: number;
@@ -17,7 +17,7 @@ interface MinimapObjectivesProps {
   activeObjectiveKey?: string | null;
 }
 
-const MinimapObjectives: React.FC<MinimapObjectivesProps> = ({
+const Objectives: React.FC<ObjectivesProps> = ({
   objectiveCoordinates,
   destroyedObjectives,
   currentTime,
@@ -56,4 +56,4 @@ const MinimapObjectives: React.FC<MinimapObjectivesProps> = ({
   );
 };
 
-export default MinimapObjectives;
+export default Objectives;

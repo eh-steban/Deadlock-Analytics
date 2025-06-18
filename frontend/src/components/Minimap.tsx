@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import PerSecondTable from './PerSecondTable';
 import AllPlayerPositions from './AllPlayerPositions';
 import PerPlayerWindowTable from './PerPlayerWindowTable';
-import MinimapPlayerPositions from './MinimapPlayerPositions';
 import DamageEventsTable from './DamageEventsTable';
 import DamageMatrixTable from './DamageMatrixTable';
 import DamageSourceTypesTable from './DamageSourceTypesTable';
@@ -10,7 +9,7 @@ import { PlayerPath } from '../types/PlayerPath';
 import { PlayerInfo } from '../types/PlayerInfo';
 import { DestroyedObjective } from '../types/DestroyedObjective';
 import { Hero } from '../types/Hero';
-import MinimapObjectives from './MinimapObjectives';
+import Objectives from './Objectives';
 import { objectiveCoordinates } from '../data/objectiveCoordinates';
 import ObjectiveInfoPanel from './ObjectiveInfoPanel';
 import PlayerCards from './PlayerCards';
@@ -236,7 +235,7 @@ const Minimap = () => {
                 pointerEvents: 'none',
               }}
             />
-            <MinimapObjectives
+            <Objectives
               objectiveCoordinates={objectiveCoordinates}
               destroyedObjectives={destroyedObjectivesSorted}
               currentTime={currentTime}
