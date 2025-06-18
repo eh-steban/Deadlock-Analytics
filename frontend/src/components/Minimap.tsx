@@ -15,7 +15,10 @@ import ObjectiveInfoPanel from './ObjectiveInfoPanel';
 import PlayerCards from './PlayerCards';
 import PlayerPositions from './PlayerPositions';
 import Grid from './Grid';
-import Regions from './Regions';
+import RegionsMapping from './RegionsMapping';
+import { regions } from '../data/Regions';
+import RegionToggle from './RegionToggle';
+import GameTimeViewer from './GameTimeViewer';
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
@@ -160,6 +163,15 @@ const Minimap = () => {
     setCurrentObjectiveIndex(currentIdx);
   }, [destroyedObjectivesSorted, currentTime]);
 
+  const [visibleRegions, setVisibleRegions] = useState<{ [label: string]: boolean }>(
+    () => Object.fromEntries(regions.map(r => [r.label, true]))
+  );
+  const handleRegionToggle = (label: string) => {
+    setVisibleRegions(v => ({ ...v, [label]: !v[label] }));
+  };
+
+  const visibleRegionList = regions.filter(r => visibleRegions[r.label]);
+
   return (
     <>
       <div style={{ width: '100vw', minHeight: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
@@ -210,7 +222,7 @@ const Minimap = () => {
           />
         </div>
         {/* Minimap and slider */}
-        <div title='MinimapPanel' style={{ position: 'absolute', right: 0, width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE + 60}px`, flexShrink: 0, marginLeft: '24px', marginTop: '1rem', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
+        <div title='MinimapPanel' style={{ position: 'absolute', right: 0, width: `${MINIMAP_SIZE}px`, flexShrink: 0, marginLeft: '24px', marginTop: '1rem', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
           <div
             style={{
               position: 'relative',
@@ -220,7 +232,7 @@ const Minimap = () => {
             }}
           >
             <Grid MINIMAP_SIZE={MINIMAP_SIZE} />
-            <Regions MINIMAP_SIZE={MINIMAP_SIZE} />
+            <RegionsMapping MINIMAP_SIZE={MINIMAP_SIZE} regions={visibleRegionList} />
             <img
               ref={mapRef}
               src={MINIMAP_URL}
@@ -243,43 +255,6 @@ const Minimap = () => {
               activeObjectiveKey={activeObjectiveKey}
             />
           </div>
-          <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, background: '#f7f7f7', padding: '8px 0', borderTop: '1px solid #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            <button
-              onClick={() => setCurrentTime(t => Math.max(0, t - 1))}
-              onMouseDown={() => startRepeat('left')}
-              onMouseUp={stopRepeat}
-              onMouseLeave={stopRepeat}
-              onTouchStart={() => startRepeat('left')}
-              onTouchEnd={stopRepeat}
-              disabled={currentTime <= 0}
-              style={{ padding: '2px 10px', fontSize: '1.2em', borderRadius: 4, border: '1px solid #bbb', background: currentTime <= 0 ? '#eee' : '#fff', cursor: currentTime <= 0 ? 'not-allowed' : 'pointer' }}
-              aria-label="Previous Tick"
-            >
-              ◀
-            </button>
-            <input
-              type="range"
-              min={0}
-              max={playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0}
-              value={currentTime}
-              onChange={e => setCurrentTime(Number(e.target.value))}
-              style={{ width: '70%' }}
-            />
-            <button
-              onClick={() => setCurrentTime(t => Math.min((playerPaths[0]?.x_pos?.length || 1) - 1, t + 1))}
-              onMouseDown={() => startRepeat('right')}
-              onMouseUp={stopRepeat}
-              onMouseLeave={stopRepeat}
-              onTouchStart={() => startRepeat('right')}
-              onTouchEnd={stopRepeat}
-              disabled={currentTime >= ((playerPaths[0]?.x_pos?.length || 1) - 1)}
-              style={{ padding: '2px 10px', fontSize: '1.2em', borderRadius: 4, border: '1px solid #bbb', background: currentTime >= ((playerPaths[0]?.x_pos?.length || 1) - 1) ? '#eee' : '#fff', cursor: currentTime >= ((playerPaths[0]?.x_pos?.length || 1) - 1) ? 'not-allowed' : 'pointer' }}
-              aria-label="Next Tick"
-            >
-              ▶
-            </button>
-            <span style={{ marginLeft: 8 }}>Tick: {currentTime}</span>
-          </div>
           <PlayerPositions
             playerPaths={playerPaths}
             players={matchData.match_info.players}
@@ -290,6 +265,20 @@ const Minimap = () => {
             renderPlayerDot={renderPlayerDot}
             getPlayerMinimapPosition={getPlayerMinimapPosition}
           />
+          <div style={{ width: '100%', background: '#f7f7f7', borderTop: '1px solid #ccc', display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 0, padding: 0 }}>
+            <GameTimeViewer
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              maxTime={playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0}
+              startRepeat={startRepeat}
+              stopRepeat={stopRepeat}
+            />
+            <RegionToggle
+              regions={regions}
+              visibleRegions={visibleRegions}
+              onToggle={handleRegionToggle}
+            />
+          </div>
         </div>
       </div>
 
