@@ -81,11 +81,12 @@ const Minimap = () => {
   const scaleToMinimap = (x: number, y: number): { left: number; top: number } => {
     const xOffset = -75;
     const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
-    const top = (1 - y) * MINIMAP_SIZE; // Invert y-axis for correct orientation
+    const top = y * MINIMAP_SIZE;
     return { left, top };
   };
 
-  const renderObjectiveDot = (obj: ObjectiveCoordinate) => { return scaleToMinimap(obj.x, obj.y) };
+  // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
+  const renderObjectiveDot = (obj: ObjectiveCoordinate) => { return scaleToMinimap(obj.x, 1 - obj.y) };
   const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y)};
 
   useEffect(() => {
@@ -176,43 +177,10 @@ const Minimap = () => {
         yResolution,
       );
 
-      console.log(`point: ${point}`);
-      if (playerX == 386.217 && playerY == 115.945) {
-        console.log(386.217, 115.945);
-        console.log('Player position matches the specific coordinates:', playerX, playerY);
-        console.log('Standardized position:', standPlayerX, standPlayerY);
-        console.log('Polygon:', polygon);
-        console.log('Point in polygon:', pointInPolygon([standPlayerX, standPlayerY], polygon));
-        pointInPolygon([standPlayerX, standPlayerY], polygon)
-      }
-
-      // console.log('standPlayerX', standPlayerX, 'standPlayerY', standPlayerY);
-      // console.log(`pointInPolygon([standPlayerX, standPlayerY], polygon) ${pointInPolygon([standPlayerX, standPlayerY], polygon)}`)
-      // console.log(`pointInPolygon([0.5, 0.5], center) ${pointInPolygon([0.5, 0.5], [[0.3, 0.3], [0.7, 0.3], [0.7, 0.7], [0.3, 0.7], [0.3, 0.3]])}`);
-
       return pointInPolygon([standPlayerX, standPlayerY], polygon);
-      // console.log('polygon', polygon);
-      // console.log('standPlayerX', standPlayerX, 'standPlayerY', standPlayerY);
-      // let inside = false;
-      // for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-      //   const [xi, yi] = polygon[i];
-      //   const [xj, yj] = polygon[j];
-      //   const intersect = ((yi > standPlayerY) !== (yj > standPlayerY)) &&
-      //     (standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
-      //   console.log(`Checking edge intersect (${xi}, ${yi}) to (${xj}, ${yj}):`, intersect);
-      //   console.log('(yi > standPlayerY) !== (yj > standPlayerY)', (yi > standPlayerY) !== (yj > standPlayerY));
-      //   console.log('standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi', standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
-      //   console.log(`(yi > standPlayerY): ${(yi > standPlayerY)}`);
-      //   console.log(`standPlayerX < (xj - xi): ${standPlayerX < (xj - xi)}`);
-      //   console.log(`(standPlayerY - yi) / ((yj - yi) || 1e-10): ${(standPlayerY - yi) / ((yj - yi) || 1e-10)}`);
-      //   console.log(`xi: ${xi}, yi: ${yi}, xj: ${xj}, yj: ${yj}`);
-      //   if (intersect) inside = !inside;
-      // }
-      // console.log('inside', inside);
-      // return inside;
   };
 
-  function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number): string[] {
+  function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number, debug: boolean = false): string[] {
     const foundRegions: string[] = regions.filter(region => isPlayerInRegion(
       x_max,
       x_min,
@@ -221,7 +189,7 @@ const Minimap = () => {
       [x, y],
       region.polygon,
       xResolution,
-      yResolution
+      yResolution,
     )).map<string>((region): string => { return region.label ? region.label : 'None' });
     return foundRegions;
   };

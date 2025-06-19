@@ -14,7 +14,7 @@ interface PlayerCardsProps {
     y_max: number,
     y_min: number,
     playerX: number,
-    playerY: number
+    playerY: number,
   ) => string[];
 }
 
@@ -53,9 +53,9 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
             player.x_max,
             player.x_min,
             player.y_max,
-            player.y_max,
+            player.y_min,
             player.x_pos[currentTime],
-            player.y_pos[currentTime]
+            player.y_pos[currentTime],
           );
 
           return (
@@ -72,9 +72,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
                   <br/>
                   <div><strong>Combat Type:</strong> {combatTypeLabelList || '-'}</div>
                   <br/>
-                  <div>
-                    <strong>Current Region:</strong> {regionLabels.map(label => label)}
-                  </div>
+                  <div><strong>Current Region:</strong> {regionLabels.join(', ')}</div>
                 </div>
               </div>
             </div>

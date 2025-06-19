@@ -55,9 +55,9 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
           return minimapImg ? (
             <img
               key={`${heroName} Player-${player.player_slot}`}
-              title={`${heroName} Player ${player.player_slot}`}
+              title={`${heroName} Player ${player.player_slot} left: ${left} top: ${top}`}
               src={minimapImg}
-              alt={heroName}
+              alt={`${heroName}`}
               style={{
                 position: 'absolute',
                 left,
@@ -67,7 +67,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
                 borderRadius: '50%',
                 border: '2px solid #fff',
                 pointerEvents: 'auto',
-                zIndex: 2,
+                zIndex: 99,
                 background: color,
                 objectFit: 'contain',
                 transform: 'translate(-50%, -50%)',
@@ -126,7 +126,7 @@ export function standardizePlayerPosition(
   // This ensures that the player position is correctly represented on the minimap
   const scaledPlayerX = ((normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin));
   const scaledPlayerY = ((normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin));
-  return { standPlayerX: scaledPlayerX, standPlayerY: scaledPlayerY };
+  return { standPlayerX: scaledPlayerX, standPlayerY: (1 - scaledPlayerY) };
 }
 
 export function getPlayerMinimapPosition(
