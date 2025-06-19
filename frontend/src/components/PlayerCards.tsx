@@ -8,14 +8,14 @@ interface PlayerCardsProps {
   players: PlayerInfo[];
   currentTime: number;
   heros: Hero[];
-  getPlayerRegionLabel: (
+  getPlayerRegionLabels: (
     x_max: number,
     x_min: number,
     y_max: number,
     y_min: number,
     playerX: number,
     playerY: number
-  ) => string;
+  ) => string[];
 }
 
 enum MoveType {
@@ -30,7 +30,7 @@ enum MoveType {
   AirDash = 8,
 }
 
-const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros, getPlayerRegionLabel }) => {
+const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros, getPlayerRegionLabels }) => {
   return (
     <>
       <h3 style={{ margin: '0 0 0.5rem 0' }}>Player Info</h3>
@@ -49,7 +49,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
           const combatTypeSet = Array.from(new Set(combatTypes.filter(x => x !== undefined)));
           const combatTypeLabels = ["Out of Combat", "Player", "Enemy NPC", "Neutral"];
           const combatTypeLabelList = combatTypeSet.map(type => combatTypeLabels[type] || type).join(', ');
-          const regionLabel = getPlayerRegionLabel(
+          const regionLabels: string[] = getPlayerRegionLabels(
             player.x_max,
             player.x_min,
             player.y_max,
@@ -72,7 +72,9 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
                   <br/>
                   <div><strong>Combat Type:</strong> {combatTypeLabelList || '-'}</div>
                   <br/>
-                  <div><strong>Current Region:</strong> {regionLabel}</div>
+                  <div>
+                    <strong>Current Region:</strong> {regionLabels.map(label => label)}
+                  </div>
                 </div>
               </div>
             </div>

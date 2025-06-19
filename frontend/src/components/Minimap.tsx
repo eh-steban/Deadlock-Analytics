@@ -21,6 +21,8 @@ import RegionToggle from './RegionToggle';
 import GameTimeViewer from './GameTimeViewer';
 import { standardizePlayerPosition } from '../components/PlayerPositions';
 
+var pointInPolygon = require('point-in-polygon')
+
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
 
@@ -158,7 +160,8 @@ const Minimap = () => {
     y_min: number,
     point: [number, number],
     polygon: [number, number][],
-    xResolution: number, yResolution: number
+    xResolution: number,
+    yResolution: number,
     ): boolean {
       const [playerX, playerY] = point;
       const { standPlayerX, standPlayerY } = standardizePlayerPosition(
@@ -172,19 +175,45 @@ const Minimap = () => {
         xResolution,
         yResolution,
       );
-      let inside = false;
-      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        const [xi, yi] = polygon[i];
-        const [xj, yj] = polygon[j];
-        const intersect = ((yi > standPlayerY) !== (yj > standPlayerY)) &&
-          (standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
-        if (intersect) inside = !inside;
-      }
-      return inside;
-  }
 
-  function getPlayerRegionLabel(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number): string {
-    const foundRegion = regions.find(region => isPlayerInRegion(
+      console.log(`point: ${point}`);
+      if (playerX == 386.217 && playerY == 115.945) {
+        console.log(386.217, 115.945);
+        console.log('Player position matches the specific coordinates:', playerX, playerY);
+        console.log('Standardized position:', standPlayerX, standPlayerY);
+        console.log('Polygon:', polygon);
+        console.log('Point in polygon:', pointInPolygon([standPlayerX, standPlayerY], polygon));
+        pointInPolygon([standPlayerX, standPlayerY], polygon)
+      }
+
+      // console.log('standPlayerX', standPlayerX, 'standPlayerY', standPlayerY);
+      // console.log(`pointInPolygon([standPlayerX, standPlayerY], polygon) ${pointInPolygon([standPlayerX, standPlayerY], polygon)}`)
+      // console.log(`pointInPolygon([0.5, 0.5], center) ${pointInPolygon([0.5, 0.5], [[0.3, 0.3], [0.7, 0.3], [0.7, 0.7], [0.3, 0.7], [0.3, 0.3]])}`);
+
+      return pointInPolygon([standPlayerX, standPlayerY], polygon);
+      // console.log('polygon', polygon);
+      // console.log('standPlayerX', standPlayerX, 'standPlayerY', standPlayerY);
+      // let inside = false;
+      // for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      //   const [xi, yi] = polygon[i];
+      //   const [xj, yj] = polygon[j];
+      //   const intersect = ((yi > standPlayerY) !== (yj > standPlayerY)) &&
+      //     (standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
+      //   console.log(`Checking edge intersect (${xi}, ${yi}) to (${xj}, ${yj}):`, intersect);
+      //   console.log('(yi > standPlayerY) !== (yj > standPlayerY)', (yi > standPlayerY) !== (yj > standPlayerY));
+      //   console.log('standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi', standPlayerX < (xj - xi) * (standPlayerY - yi) / ((yj - yi) || 1e-10) + xi);
+      //   console.log(`(yi > standPlayerY): ${(yi > standPlayerY)}`);
+      //   console.log(`standPlayerX < (xj - xi): ${standPlayerX < (xj - xi)}`);
+      //   console.log(`(standPlayerY - yi) / ((yj - yi) || 1e-10): ${(standPlayerY - yi) / ((yj - yi) || 1e-10)}`);
+      //   console.log(`xi: ${xi}, yi: ${yi}, xj: ${xj}, yj: ${yj}`);
+      //   if (intersect) inside = !inside;
+      // }
+      // console.log('inside', inside);
+      // return inside;
+  };
+
+  function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number): string[] {
+    const foundRegions: string[] = regions.filter(region => isPlayerInRegion(
       x_max,
       x_min,
       y_max,
@@ -193,9 +222,9 @@ const Minimap = () => {
       region.polygon,
       xResolution,
       yResolution
-    ));
-    return foundRegion ? foundRegion.label : 'None';
-  }
+    )).map<string>((region): string => { return region.label ? region.label : 'None' });
+    return foundRegions;
+  };
 
   useEffect(() => {
     let lastActiveKey: string | null = null;
@@ -266,7 +295,7 @@ const Minimap = () => {
             players={matchData.match_info.players}
             currentTime={currentTime}
             heros={heroData}
-            getPlayerRegionLabel={getPlayerRegionLabel}
+            getPlayerRegionLabels={getPlayerRegionLabels}
           />
         </div>
         {/* Minimap and slider */}
