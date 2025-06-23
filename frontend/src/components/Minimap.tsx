@@ -235,7 +235,7 @@ const Minimap = () => {
           }}
         >
           <h3>Current Time: {Math.floor(currentTime / 60)}:{(currentTime % 60).toString().padStart(2, '0')}</h3>
-          <div style={{ marginBottom: 0, padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px', width: 180, alignSelf: 'flex-start' }}>
+          {/* <div style={{ marginBottom: 0, padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px', width: 180, alignSelf: 'flex-start' }}>
             <strong>Legend</strong>
             <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
               <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,128,255,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #0070c0' }}></span>
@@ -253,7 +253,7 @@ const Minimap = () => {
               <span style={{ display: 'inline-block', width: 16, height: 16, background: 'black', borderRadius: '50%', marginRight: 8, border: '1px solid #333' }}></span>
               Objective (Destroyed)
             </div>
-          </div>
+          </div> */}
           <ObjectiveInfoPanel
             destroyedObjectives={destroyedObjectivesSorted}
             currentObjectiveIndex={currentObjectiveIndex}
@@ -276,7 +276,7 @@ const Minimap = () => {
               pointerEvents: 'none',
             }}
           >
-            <Grid MINIMAP_SIZE={MINIMAP_SIZE} />
+            {/* <Grid MINIMAP_SIZE={MINIMAP_SIZE} /> */}
             <RegionsMapping MINIMAP_SIZE={MINIMAP_SIZE} regions={visibleRegionList} />
             <img
               ref={mapRef}
