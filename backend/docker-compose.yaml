@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--log-level", "debug"]
+
+    volumes:
+      - .:/app/
+
+    ports:
+      - "8001:8000"
+
+    tty: true
+    stdin_open: true

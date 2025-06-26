@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from app.api import auth, internal 
+# from app.api import auth, internal
 # Only need the line below for now. Uncomment the line above
 # when we implement internal API endpoints.
 from app.api import auth
