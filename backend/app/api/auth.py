@@ -3,7 +3,7 @@ import httpx
 import re
 import logging
 from fastapi import APIRouter, Request, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 from urllib.parse import urlencode
 from openid.consumer.consumer import Consumer
 from app.services.auth.manage_jwt_token import create_access_token
@@ -27,7 +27,6 @@ async def login():
 
 @router.get("/callback")
 async def callback(request: Request):
-    logger.info
     consumer = Consumer({}, None)
     response = consumer.complete(request.query_params, RETURN_TO)
     if response.status != "success":
@@ -37,6 +36,12 @@ async def callback(request: Request):
     steam_id = extract_steam_id(identity_url)
     access_token = create_access_token(data={"steam_id": steam_id})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/logout")
+async def logout(response: JSONResponse):
+    resp = JSONResponse(content={"detail": "Successfully logged out."})
+    resp.delete_cookie("access_token")
+    return resp
 
 # Helper function to extract Steam ID from OpenID identity URL
 def extract_steam_id(identity_url: str) -> str:
