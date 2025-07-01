@@ -36,6 +36,7 @@ async def callback(request: Request):
     identity_url = response.identity_url
     steam_id = extract_steam_id(identity_url)
     access_token = create_access_token(data={"steam_id": steam_id})
+    logger.info(f"User logged in with Steam ID: {steam_id}")
     return {"access_token": access_token, "token_type": "bearer"}
 
 # Helper function to extract Steam ID from OpenID identity URL
