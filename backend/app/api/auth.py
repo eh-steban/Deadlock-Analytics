@@ -6,11 +6,13 @@ from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import RedirectResponse
 from urllib.parse import urlencode
 from openid.consumer.consumer import Consumer
+from app.services.auth.manage_jwt_token import create_access_token
 
 router = APIRouter()
 
 STEAM_OPENID_ENDPOINT = "https://steamcommunity.com/openid"
-REALM = "http://localhost:8001"
+STEAM_OPENID_IDENTITY_PATTERN = r".*\/(?P<steam_id>[^/]+)$"
+REALM = "http://localhost:8000"
 RETURN_TO = f"{REALM}/auth/callback"
 logger = logging.getLogger("uvicorn.error")
 
@@ -21,10 +23,6 @@ async def login():
     redirect_url = auth_begin.redirectURL(REALM, RETURN_TO)
     
     response = RedirectResponse(url=redirect_url)
-    logger.debug(f"[login] Redirecting to: {response.headers['Location']}")
-    logger.debug(f"[login] Response status code: {response.status_code}")
-    logger.debug(f"[login] Response headers: {response.headers}")
-    logger.debug(f"[login] Response: {response}")
     return response
 
 @router.get("/callback")
@@ -32,15 +30,17 @@ async def callback(request: Request):
     logger.info
     consumer = Consumer({}, None)
     response = consumer.complete(request.query_params, RETURN_TO)
-    logger.debug(f"[callback] OpenID response: {response}")
     if response.status != "success":
-        return None
+        raise HTTPException(status_code=403, detail="Steam login failed")
 
     identity_url = response.identity_url
-    pattern = r"https://steamcommunity\.com/openid/id/(?P<steam_id>\d+)"
-    match = re.search(pattern, identity_url)
+    steam_id = extract_steam_id(identity_url)
+    access_token = create_access_token(data={"steam_id": steam_id})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+# Helper function to extract Steam ID from OpenID identity URL
+def extract_steam_id(identity_url: str) -> str:
+    match = re.search(STEAM_OPENID_IDENTITY_PATTERN, identity_url)
     if not match:
         raise HTTPException(status_code=403, detail=f"Failed to extract Steam ID: {identity_url}")
-    
-    steam_id = match.group("steam_id")
-    return {"steam_id": steam_id}
+    return match.group("steam_id")
