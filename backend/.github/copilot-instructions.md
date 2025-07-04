@@ -7,13 +7,42 @@ applyTo: "**/*.py"
 
 ## 🧱 Architecture & Structure
 
-- Follow **Domain-Driven Design (DDD)** principles:
-  - Use `/domain` for core business models, value objects, and interfaces
-  - Use `/services` for business logic and use cases
-  - Use `/infra` for external dependencies like HTTP clients or databases
-  - Use `/api` for FastAPI route handlers and request/response models
-- Avoid tight coupling between layers — rely on clear interfaces or adapters
-- Use async/await for all I/O (HTTP, file, DB)
+This project follows **Domain-Driven Design (DDD)** principles:
+
+- `domain/` — Pure domain models and rules (no frameworks)
+- `services/` — Application use cases, orchestrating domain logic
+- `infra/` — External systems (Steam, DB, file I/O)
+- `repo/` — Data access interfaces and implementations
+- `api/` — FastAPI routes
+- `dependencies.py` — Dependency injection bindings
+- `config.py` — App settings (e.g. environment, secrets)
+- `main.py` — App instantiation and router registration
+
+---
+
+## 🗂 Folder Responsibilities
+
+### `/domain/{context}/`
+- Contains only business logic
+- Define `BaseModel` classes here (e.g., `User`, `Match`)
+- Validate inputs, enforce invariants, encapsulate rules
+
+### `/services/{context}/`
+- Contains use case logic (e.g. login via Steam, link user)
+- Orchestrates domain models and external systems
+
+### `/infra/{context}/`
+- Interfaces with external APIs (Steam, DB drivers, file systems)
+- Wraps `httpx`, `sqlalchemy`, or other libraries
+
+### `/repo/{context}/`
+- Contains abstractions for database or data layer
+- May define and implement interfaces like `UserRepository`
+
+### `/api/{context}/`
+- Defines FastAPI routes and request/response models
+- Minimal logic — delegate to services
+- Use `APIRouter`, handle exceptions, return responses
 
 ## 🐍 Naming Conventions
 

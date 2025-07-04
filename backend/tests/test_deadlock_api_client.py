@@ -3,7 +3,7 @@ import pytest_asyncio
 import httpx
 import os
 import aiofiles
-from app.infra.deadlock.deadlock_api_client import DeadlockAPIClient
+from app.infra.deadlock_api.deadlock_api_client import DeadlockAPIClient
 
 @pytest_asyncio.fixture
 async def client():

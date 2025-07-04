@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     API_KEY: str
     STEAM_ID: str
     REPLAY_FILE_PATH: str
+    DEADLOCK_API_DOMAIN: str = "https://api.deadlock-api.com"
 
     model_config = ConfigDict(env_file=".env")
 

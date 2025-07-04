@@ -11,18 +11,18 @@ class DeadlockAPIClient:
         self.timeout = httpx.Timeout(300.0, connect=30.0)
         self.client = httpx.AsyncClient(timeout=self.timeout)
 
-    async def get(self, url: str, caller: str) -> dict[str, Any] | list[Any]:
+    async def get(self, url: str) -> dict[str, Any] | list[dict]:
         headers = {"X-API-Key": self.api_key}
         response = await self.client.get(url, headers=headers)
         if response.is_error:
-            raise Exception(f"Failed #{caller}: HTTP {response.status_code} - {response.text}")
+            raise Exception(f"#get({url}) Failed: HTTP {response.status_code} - {response.text}")
         return response.json()
 
-    async def get_new_stream(self, url: str, caller: str):
+    async def get_new_stream(self, url: str):
         headers = {"X-API-Key": self.api_key}
         response = await self.client.get(url, headers=headers)
         if response.is_error:
-            raise Exception(f"Failed #{caller}: HTTP {response.status_code} - {response.text}")
+            raise Exception(f"#get_new_stream({url}) Failed: HTTP {response.status_code} - {response.text}")
         return response.aiter_bytes()
 
     async def download_from_stream(self, replay_file_stream, match_id: int) -> str:
