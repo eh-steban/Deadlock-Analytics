@@ -1,27 +1,19 @@
 from typing import Any
 from app.infra.deadlock_api.deadlock_api_client import DeadlockAPIClient
-from app.config import settings
+
+api_client = DeadlockAPIClient()
 
 class DeadlockAPIService:
-    def __init__(self, api_client: DeadlockAPIClient):
-        self.api_client = api_client
+    async def get_account_match_history(self, account_id: str) -> list[dict[str, Any]]:
+        return await api_client.fetch_account_match_history(account_id)
 
-    async def fetch_account_match_history(self, account_id: int) -> list[dict[str, Any]]:
-        url = self.api_url(f"/v1/players/{account_id}/match-history")
-        return await self.api_client.get(url)
+    async def get_match_metadata(self, match_id: str) -> dict[str, Any]:
+        return await api_client.fetch_match_metadata(match_id)
 
-    async def fetch_match_metadata(self, match_id: int) -> dict[str, Any]:
-        url = self.api_url(f"/v1/matches/{match_id}/metadata")
-        return await self.api_client.get(url)
-
-    async def fetch_demo_url(self, match_id: int) -> dict[str, str]:
-        try:
-            salts_response = await self.fetch_salts(match_id)
-            demo_url = salts_response["demo_url"]
-            return {"demo_url": demo_url}
-        except Exception as e:
-            raise Exception(f"Failed to fetch demo w/ match id: {match_id}:: Exception: {e}")
-
+    async def get_demo_url(self, match_id: int) -> dict[str, str]:
+        salts_response = await self.get_salts(match_id)
+        return {"demo_url": salts_response["demo_url"]}
+    
     # DLAPIService#fetch_salts returns a response that looks like:
     # {
     #     match_id (int): Unique identifier for the match.
@@ -31,17 +23,12 @@ class DeadlockAPIService:
     #     metadata_url (str): URL pointing to the compressed match metadata (.meta.bz2).
     #     demo_url (str): URL pointing to the compressed replay/demo file (.dem.bz2).
     # }
-    async def fetch_salts(self, match_id: int) -> dict[str, int | str]:
-        url = self.api_url(f"/v1/matches/{match_id}/salts")
-        return await self.api_client.get(url)
+    async def get_salts(self, match_id: int) -> dict[str, str]:
+        return await api_client.fetch_salts(match_id)
 
-    async def fetch_and_download_replay(self, demo_url: str, match_id: int) -> str:
+    async def get_and_download_replay(self, demo_url: str, match_id: int) -> str:
         print(f"Starting download from {demo_url}")
-        replay_file_stream = await self.api_client.get_new_stream(demo_url)
-        output_file_path = await self.api_client.download_from_stream(replay_file_stream, match_id)
+        replay_file_stream = await api_client.get_new_stream(demo_url)
+        output_file_path = await api_client.download_from_stream(replay_file_stream, match_id)
         print(f"Download complete: {output_file_path}")
         return output_file_path
-
-    @staticmethod
-    def api_url(path: str) -> str:
-        return f"{settings.DEADLOCK_API_DOMAIN}{path}"

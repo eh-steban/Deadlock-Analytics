@@ -1,18 +1,14 @@
 from fastapi import APIRouter, HTTPException
-from app.services.account_service import AccountService
-from app.infra.deadlock_api.deadlock_api_client import DeadlockAPIClient
-from app.domain.match.match_history import MatchHistoryResponse
-from app.config import settings
+from app.domain.steam_account_response import SteamAccountResponse
+from app.services.deadlock_api_service import DeadlockAPIService
 
 router = APIRouter()
 
-api_client = DeadlockAPIClient()
-dl_api_service = DeadlockAPIService(api_client)
-
-@router.get("/account/{steam_id}/match_history", response_model=AccountResponse)
+@router.get("/account/{steam_id}/match_history", response_model=SteamAccountResponse)
 async def account_match_history_for(steam_id: str) -> list:
     try:
-        return dl_api_service.fetch_account_match_history(steam_id)
+        api_service = DeadlockAPIService()
+        return await api_service.get_account_match_history(steam_id)
     except HTTPException as e:
         raise e
     except Exception as e:

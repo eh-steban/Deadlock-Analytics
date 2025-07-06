@@ -1,28 +1,43 @@
-import httpx
-import aiofiles
 import os
+import aiofiles
+import logging
+from httpx import AsyncClient, Response, Timeout
 from app.config import settings
 from typing import Any
 
+logger = logging.getLogger(__name__)
 class DeadlockAPIClient:
     def __init__(self):
         self.api_key = settings.API_KEY
         self.replay_file_path = settings.REPLAY_FILE_PATH
-        self.timeout = httpx.Timeout(300.0, connect=30.0)
-        self.client = httpx.AsyncClient(timeout=self.timeout)
+        self.timeout = Timeout(300.0, connect=30.0)
+        self.client = AsyncClient(timeout=self.timeout)
 
-    async def get(self, url: str) -> dict[str, Any] | list[dict]:
+    async def call_api(self, url: str) -> Response:
         headers = {"X-API-Key": self.api_key}
         response = await self.client.get(url, headers=headers)
         if response.is_error:
-            raise Exception(f"#get({url}) Failed: HTTP {response.status_code} - {response.text}")
+            logger.error(f"DeadlockAPIClient#call_api({url}) failed: {response.status_code} - {response.text}")
+            raise Exception(f"#call_api({url}) Failed: HTTP {response.status_code} - {response.text}")
+        return response
+
+    async def fetch_account_match_history(self, steam_id: str) -> list[dict]:
+        url = self.api_url(f"/v1/players/{steam_id}/match-history")
+        response = await self.call_api(url)
+        return response.json()
+
+    async def fetch_match_metadata(self, match_id: str) -> dict[str, Any]:
+        url = self.api_url(f"/v1/matches/{match_id}/metadata")
+        response = await self.call_api(url)
+        return response.json()
+    
+    async def fetch_salts(self, match_id: int) -> dict[str, str]:
+        url = self.api_url(f"/v1/matches/{match_id}/salts")
+        response = await self.call_api(url)
         return response.json()
 
     async def get_new_stream(self, url: str):
-        headers = {"X-API-Key": self.api_key}
-        response = await self.client.get(url, headers=headers)
-        if response.is_error:
-            raise Exception(f"#get_new_stream({url}) Failed: HTTP {response.status_code} - {response.text}")
+        response = await self.call_api(url)
         return response.aiter_bytes()
 
     async def download_from_stream(self, replay_file_stream, match_id: int) -> str:
@@ -32,5 +47,7 @@ class DeadlockAPIClient:
                 await out_file.write(chunk)
         return output_file_path
 
-    async def close(self):
-        await self.client.aclose()
+    @staticmethod
+    def api_url(path: str) -> str:
+        return f"{settings.DEADLOCK_API_DOMAIN}{path}"
+

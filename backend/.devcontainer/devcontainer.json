@@ -17,6 +17,16 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip3 install --user -r requirements.txt && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort"
+			]
+		}
+	},
 
 	// Configure tool-specific properties.
 	// "customizations": {},
