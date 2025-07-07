@@ -1,10 +1,7 @@
-import os
-import httpx
 import re
 import logging
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import RedirectResponse
-from urllib.parse import urlencode
 from openid.consumer.consumer import Consumer
 from app.services.auth.manage_jwt_token import create_access_token
 
@@ -30,7 +27,7 @@ async def callback(request: Request):
     logger.info
     consumer = Consumer({}, None)
     response = consumer.complete(request.query_params, RETURN_TO)
-    if response.status != "success":
+    if response.status != "success" or not response.identity_url:
         raise HTTPException(status_code=403, detail="Steam login failed")
 
     identity_url = response.identity_url
