@@ -1,16 +1,10 @@
-
-from fastapi import APIRouter, HTTPException
-from app.domain.steam_account_response import SteamAccountResponse
+from fastapi import APIRouter
 from app.services.deadlock_api_service import DeadlockAPIService
+from app.domain.deadlock_api import MatchSummary
 
 router = APIRouter()
-    
-@router.get("{steam_id}/match_history", response_model=SteamAccountResponse)
-async def my_account_match_history(steam_id: str) -> list:
-    try:
-        api_service = DeadlockAPIService()
-        return await api_service.get_account_match_history(steam_id)
-    except HTTPException:
-        raise HTTPException(status_code=403, detail="Steam ID is required for this operation")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
+
+@router.get("/{steam_id}/match_history", response_model=list[MatchSummary])
+async def account_match_history_for(steam_id: str):
+    api_service = DeadlockAPIService()
+    return await api_service.get_account_match_history_for(steam_id)

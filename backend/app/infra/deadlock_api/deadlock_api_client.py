@@ -1,9 +1,10 @@
 import os
 import aiofiles
 import logging
+import textwrap
 from httpx import AsyncClient, Response, Timeout
 from app.config import settings
-from typing import Any
+from app.domain.deadlock_api import MatchMetadata, MatchSummary
 
 logger = logging.getLogger(__name__)
 class DeadlockAPIClient:
@@ -17,20 +18,21 @@ class DeadlockAPIClient:
         headers = {"X-API-Key": self.api_key}
         response = await self.client.get(url, headers=headers)
         if response.is_error:
-            logger.error(f"DeadlockAPIClient#call_api({url}) failed: {response.status_code} - {response.text}")
-            raise Exception(f"#call_api({url}) Failed: HTTP {response.status_code} - {response.text}")
+            truncated_text = textwrap.shorten(response.text, width=200, placeholder='...')
+            logger.error(f"DeadlockAPIClient#call_api({url}) failed: {response.status_code} - {truncated_text}")
+            raise Exception(f"#call_api({url}) Failed: HTTP {response.status_code} - {truncated_text}")
         return response
 
-    async def fetch_account_match_history(self, steam_id: str) -> list[dict]:
+    async def fetch_account_match_history(self, steam_id: str) -> list[MatchSummary]:
         url = self.api_url(f"/v1/players/{steam_id}/match-history")
         response = await self.call_api(url)
         return response.json()
 
-    async def fetch_match_metadata(self, match_id: str) -> dict[str, Any]:
+    async def fetch_match_metadata(self, match_id: str) -> MatchMetadata:
         url = self.api_url(f"/v1/matches/{match_id}/metadata")
         response = await self.call_api(url)
-        return response.json()
-    
+        return MatchMetadata(**response.json())
+
     async def fetch_salts(self, match_id: int) -> dict[str, str]:
         url = self.api_url(f"/v1/matches/{match_id}/salts")
         response = await self.call_api(url)

@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from app.services.deadlock_api_service import DeadlockAPIService
-from app.domain.match_response import MatchResponse
+from app.domain.deadlock_api import MatchMetadata
 
 router = APIRouter()
 api_service = DeadlockAPIService()
 
-@router.get("/{match_id}/metadata", response_model=MatchResponse)
-async def get_match_metadata(match_id: str):
-    return await api_service.get_match_metadata(match_id)
+@router.get("/{match_id}/metadata", response_model=MatchMetadata)
+async def match_metadata_for(match_id: str):
+    return await api_service.get_match_metadata_for(match_id)
