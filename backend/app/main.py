@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # from app.api import auth, internal
 # Only need the line below for now. Uncomment the line above
 # when we implement internal API endpoints.
-from app.api import auth
+from app.api import auth, account, match
 
 app = FastAPI()
 
@@ -22,3 +22,5 @@ app.add_middleware(
 # Mount routers
 # app.include_router(internal.router, prefix="/internal", tags=["Internal"])
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
+app.include_router(account.router, prefix="/account", tags=["Account"])
+app.include_router(match.router, prefix="/match", tags=["Match"])
