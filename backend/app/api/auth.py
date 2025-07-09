@@ -1,10 +1,7 @@
-import os
-import httpx
 import re
 import logging
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import RedirectResponse, JSONResponse
-from urllib.parse import urlencode
 from openid.consumer.consumer import Consumer
 from app.services.auth.manage_jwt_token import create_access_token
 
@@ -29,12 +26,13 @@ async def login():
 async def callback(request: Request):
     consumer = Consumer({}, None)
     response = consumer.complete(request.query_params, RETURN_TO)
-    if response.status != "success":
+    if response.status != "success" or not response.identity_url:
         raise HTTPException(status_code=403, detail="Steam login failed")
 
     identity_url = response.identity_url
     steam_id = extract_steam_id(identity_url)
     access_token = create_access_token(data={"steam_id": steam_id})
+    logger.info(f"User logged in with Steam ID: {steam_id}")
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/logout")
