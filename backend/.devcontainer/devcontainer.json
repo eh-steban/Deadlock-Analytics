@@ -7,7 +7,6 @@
 	// "build": {
 	// 	"dockerfile": "../Dockerfile"
 	// },
-	"runArgs": ["-v", "/var/run/docker.sock:/var/run/docker.sock"],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -16,15 +15,15 @@
 	"forwardPorts": [8000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r requirements.txt && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - 2>/dev/null && echo \"deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable\" | sudo tee /etc/apt/sources.list.d/docker.list && sudo apt-get update -y && sudo apt-get install -y docker-ce-cli",
+	"postCreateCommand": "pip3 install --user -r requirements.txt",
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.black-formatter",
-				"ms-python.isort",
-				"ms-azuretools.vscode-containers"
+				"ms-python.isort"
+				// "ms-azuretools.vscode-containers"
 			]
 		}
 	}
