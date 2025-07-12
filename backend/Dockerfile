@@ -6,6 +6,9 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir --upgrade pip
 
+RUN adduser -u 5678 --disabled-password --gecos "" lifted && chown -R lifted /app
+USER lifted
+
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 RUN echo 'alias devserver="uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"' >> ~/.bashrc
