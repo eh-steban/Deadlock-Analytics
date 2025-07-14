@@ -3,9 +3,10 @@ import aiofiles
 import logging
 import textwrap
 from httpx import AsyncClient, Response, Timeout
-from app.config import settings
+from app.config import get_settings
 from app.domain.deadlock_api import MatchMetadata, MatchSummary
 
+settings = get_settings()
 logger = logging.getLogger(__name__)
 class DeadlockAPIClient:
     def __init__(self):

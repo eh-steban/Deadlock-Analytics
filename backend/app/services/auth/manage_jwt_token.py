@@ -1,11 +1,15 @@
 import jwt
-from datetime import datetime, timedelta, timezone
-from typing import Optional
-from app.config import settings
+from datetime import timedelta
+from typing import Optional, Annotated
+from fastapi import Depends
+from app.config import Settings, get_settings
+from app.utils.datetime_utils import utcnow
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+SettingsDep = Annotated[Settings, Depends(get_settings)]
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None, settings: SettingsDep = Depends(get_settings)) -> str:
     to_encode = data.copy()
-    now = datetime.now(timezone.utc)
+    now = utcnow()
     expire = now + (expires_delta or timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({
         "iat": now,
@@ -18,8 +22,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     )
     return encoded_jwt
 
-
-def decode_access_token(token: str) -> str:
+def decode_access_token(token: str, settings: SettingsDep = Depends(get_settings)) -> str:
     try:
         payload = jwt.decode(
             token,
@@ -28,7 +31,7 @@ def decode_access_token(token: str) -> str:
             options={"require": ["exp", "iat"]},
         )
         steam_id: str = payload["steam_id"]
-        if not steam_id:
+        if steam_id is None:
             raise ValueError("Missing steam_id in token")
         return steam_id
     except jwt.ExpiredSignatureError:
