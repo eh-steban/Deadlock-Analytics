@@ -1,26 +1,33 @@
 import pytest
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import SQLModel, create_engine
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+import pytest_asyncio
+from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlmodel import SQLModel, select
 from app.domain.user import User
 from app.repo.users_repo import UserRepository
 from app.infra.db.models import UserTable
+from app.config import Settings, get_settings
+from app.main import app
 
-DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+client = TestClient(app)
 
-@pytest.fixture
+def get_settings_override():
+    return Settings(environment="test")
+
+app.dependency_overrides[get_settings] = get_settings_override
+
+@pytest_asyncio.fixture
 async def async_session():
-    engine = create_async_engine(DATABASE_URL, echo=True, future=True)
-    async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    settings = get_settings_override()
+    engine = create_async_engine(settings.DATABASE_URL, echo=True)
+    async_session = async_sessionmaker(engine, expire_on_commit=False)
+
     async with async_session() as session:
         yield session
     await engine.dispose()
 
 @pytest.fixture
-async def repo():
+def repo():
     return UserRepository()
 
 @pytest.mark.asyncio
@@ -28,14 +35,13 @@ async def test_create_user_success(repo, async_session):
     user = User(id=None, email="test@example.com")
     created = await repo.create_user(user, async_session)
     assert isinstance(created, User)
-    assert created.id is not None
+    assert created.id
     assert created.email == "test@example.com"
-    # Check persisted
     result = await async_session.execute(
-        UserTable.__table__.select().where(UserTable.email == "test@example.com")
+        select(UserTable).where(UserTable.email == "test@example.com")
     )
-    db_user = result.fetchone()
-    assert db_user is not None
+    db_user = result.scalar_one_or_none()
+    assert db_user
 
 @pytest.mark.asyncio
 async def test_create_user_fail_duplicate(repo, async_session):
