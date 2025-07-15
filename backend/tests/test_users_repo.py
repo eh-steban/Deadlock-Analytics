@@ -57,3 +57,22 @@ async def test_get_user_by_id_success(repo, async_session):
 async def test_get_user_by_id_not_found(repo, async_session):
     found = await repo.get_user_by_id(9999, async_session)
     assert found is None
+
+# Generated ChatGPT code:
+# tests/test_user_repo.py
+# import pytest
+# from app.repo.users_repo import UserRepository
+# from app.domain.user import User  # or however your models are structured
+
+# @pytest.mark.asyncio
+# async def test_create_and_get_user(async_session):
+#     repo = UserRepository(session=async_session)
+
+#     # Create
+#     user = await repo.create_user(steam_id="STEAM_12345", email="test@example.com")
+#     assert user.user_id is not None
+
+#     # Fetch
+#     fetched = await repo.get_user_by_id(user.user_id)
+#     assert fetched is not None
+#     assert fetched.steam_id == "STEAM_12345"
