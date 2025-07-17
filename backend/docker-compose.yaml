@@ -27,7 +27,8 @@ services:
     # and to initialize the database with a SQL script.
     # If you have an init.sql file, you can mount it to initialize the database.
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      # - postgres_data:/var/lib/postgresql/data
+      - ./docker/db/:/docker-entrypoint-initdb.d/
     #   - ${PWD}/db_data:/var/lib/postgresql/data
     #   - ${PWD}/init.sql:/docker-entrypoint-initdb.d/init.sql
 

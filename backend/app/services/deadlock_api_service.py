@@ -1,4 +1,3 @@
-from typing import Any
 from app.infra.deadlock_api.deadlock_api_client import DeadlockAPIClient
 from app.domain.deadlock_api import MatchMetadata, MatchSummary
 
