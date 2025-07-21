@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/app/
+      - ./docker/.bash_history:/home/lifted/.bash_history
+      - ./docker/.bashrc:/home/lifted/.bashrc.project
     ports:
       - "8000:8000"
     tty: true
