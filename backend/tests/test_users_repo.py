@@ -1,10 +1,10 @@
 import pytest
 
 from sqlmodel import select
-from app.domain.user import User
 from app.repo.users_repo import UserRepository
-from app.infra.db.models import UserTable
+from app.infra.db.models import User
 from tests.test_helper import setup_database, async_session
+from sqlalchemy.exc import IntegrityError
 
 @pytest.fixture
 def repo():
@@ -18,7 +18,7 @@ async def test_create_user_success(repo, async_session):
     assert created.id
     assert created.email == "test@example.com"
     result = await async_session.execute(
-        select(UserTable).where(UserTable.email == "test@example.com")
+        select(User).where(User.email == "test@example.com")
     )
     db_user = result.scalar_one_or_none()
     assert db_user
@@ -27,7 +27,7 @@ async def test_create_user_success(repo, async_session):
 async def test_create_user_fail_duplicate_email(repo, async_session):
     user = User(id=None, email="test@example.com")
     await repo.create_user(user, async_session)
-    with pytest.raises(Exception):
+    with pytest.raises(IntegrityError):
         await repo.create_user(user, async_session)
 
 @pytest.mark.asyncio
