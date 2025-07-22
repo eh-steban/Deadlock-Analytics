@@ -1,6 +1,7 @@
 */__pycache__/
 */*/__pycache__/
 */*/*/__pycache__/
+*/*/*/*/__pycache__/
 app/replays/*
 !app/replays/.gitkeep
 docker/.bash_aliases
