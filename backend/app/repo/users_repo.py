@@ -17,8 +17,6 @@ class UserRepository:
 
     async def get_user_by_id(self, id: int, session: Annotated[AsyncSession, Depends(get_session)]) -> Optional[User]:
         stmt = select(User).where(User.id == id)
-        # email = "test@email.com"
-        # stmt = select(User).where(User.email == email)
         result = await session.execute(stmt)
         db_user = result.scalar_one_or_none()
         if db_user:
