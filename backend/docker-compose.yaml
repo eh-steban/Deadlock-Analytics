@@ -6,9 +6,9 @@ services:
     # command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--log-level", "debug"]
       dockerfile: Dockerfile
     volumes:
-      - .:/app/
+      - .:/backend/
       - ./docker/.bash_history:/home/lifted/.bash_history
-      - ./docker/.bashrc:/home/lifted/.bashrc.project
+      - ./docker/.bash_aliases:/home/lifted/.bash_aliases
     ports:
       - "8000:8000"
     tty: true

@@ -4,11 +4,10 @@
 	"name": "Deadlock Analytics Backend",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	// "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
-	"workspaceFolder": "/app",
+	"workspaceFolder": "/backend",
 	"dockerComposeFile": "../docker-compose.yaml",
 	"service": "api",
 	"runServices": [
-		"api",
 		"db"
 	],
 	// "build": {
