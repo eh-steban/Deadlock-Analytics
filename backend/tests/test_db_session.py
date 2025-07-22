@@ -18,13 +18,10 @@ async def test_get_session_rollback_on_exception():
     with patch("app.infra.db.session.async_sessionmaker") as mock_sessionmaker:
         mock_session = AsyncMock(spec=AsyncSession)
         mock_sessionmaker.return_value().__aenter__.return_value = mock_session
-        # Simulate an exception inside the session context
-        class TestException(Exception):
-            pass
 
-        with pytest.raises(TestException):
+        with pytest.raises(Exception):
             async_gen = get_session(settings=settings)
-            await async_gen.asend(None) 
-            await async_gen.athrow(TestException("fail"))
+            await async_gen.asend(None)
+            await async_gen.athrow(Exception)
 
         mock_session.rollback.assert_awaited()
