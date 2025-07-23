@@ -9,7 +9,6 @@ from app.services.auth.manage_jwt_token import create_access_token
 from app.services.user_service import UserService
 from app.infra.db.session import get_session
 from app.config import Settings, get_settings
-from app.utils.fernet_utils import encrypt_steam_id
 
 router = APIRouter()
 
@@ -40,11 +39,10 @@ async def callback(request: Request, session: SessionDep, settings: SettingsDep)
 
     identity_url = response.identity_url
     steam_id: str = extract_steam_id(identity_url)
-    encrypted_steam_id: str = encrypt_steam_id(steam_id)
-    user = await UserService().find_user_by_steam_id(encrypted_steam_id, session)
+    user = await UserService().find_user_by_steam_id(steam_id, session)
 
     if user is None:
-        user = await UserService().create_user(encrypted_steam_id, session)
+        user = await UserService().create_user(steam_id, session)
         logger.info(f"User created with Steam ID: {steam_id}")
 
     assert user.id is not None, "User ID should never be None after creation"

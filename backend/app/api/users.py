@@ -1,6 +1,5 @@
 from typing import Optional, Annotated
-from fastapi import APIRouter, HTTPException, status
-from fastapi import Depends
+from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infra.db.models import User
 from app.infra.db.session import get_session

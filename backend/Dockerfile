@@ -3,7 +3,9 @@ FROM python:latest
 WORKDIR /backend
 
 # RUN apt-get update && apt-get install -y libpq-dev gcc && apt-get clean
-
+# NOTE: Might need to change this for production
+# I'm considering versioning issues here
+RUN apt-get update && apt-get install -y postgresql-client
 RUN pip install --no-cache-dir --upgrade pip
 
 RUN adduser -u 5678 --disabled-password --gecos "" lifted && chown -R lifted /backend
