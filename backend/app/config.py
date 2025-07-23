@@ -19,5 +19,6 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "password"
     POSTGRES_DB: str = "db"
     DATABASE_URL: str = "url"
+    FERNET_SECRET_KEY: str = "key"
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)

@@ -21,6 +21,7 @@ def upgrade():
     op.create_table(
         'user',
         sa.Column('id', sa.Integer, primary_key=True, autoincrement=True),
+        sa.Column('steam_id', sa.String(255), index=True, nullable=False, unique=True),
         sa.Column('email', sa.String(50), nullable=True, unique=True),
         sa.Column('created_at', sa.DateTime, nullable=False, default=sa.func.now()),
         sa.Column('updated_at', sa.DateTime, nullable=False, default=sa.func.now(), onupdate=sa.func.now()),

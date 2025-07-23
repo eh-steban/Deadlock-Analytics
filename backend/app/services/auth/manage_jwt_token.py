@@ -7,14 +7,15 @@ from app.utils.datetime_utils import utcnow
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None, settings: SettingsDep = Depends(get_settings)) -> str:
-    to_encode = data.copy()
+def create_access_token(user_id: int, steam_id: str, settings: SettingsDep, expires_delta: Optional[timedelta] = None) -> str:
     now = utcnow()
     expire = now + (expires_delta or timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES))
-    to_encode.update({
+    to_encode = {
+        "id": user_id,
+        "steam_id": steam_id,
         "iat": now,
         "exp": expire
-    })
+    }
     encoded_jwt = jwt.encode(
         to_encode,
         settings.JWT_SECRET_KEY,
@@ -22,7 +23,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None, s
     )
     return encoded_jwt
 
-def decode_access_token(token: str, settings: SettingsDep = Depends(get_settings)) -> str:
+def decode_access_token(token: str, settings: SettingsDep) -> str:
     try:
         payload = jwt.decode(
             token,
