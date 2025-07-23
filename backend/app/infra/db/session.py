@@ -17,4 +17,4 @@ async def get_session(settings: Annotated[Settings, Depends(get_settings)]) -> A
             yield session
         except Exception:
             await session.rollback()
-            raise Exception("An error occurred while processing the session")
+            raise
