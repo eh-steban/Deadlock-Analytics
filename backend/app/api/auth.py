@@ -46,7 +46,7 @@ async def callback(request: Request, session: SessionDep, settings: SettingsDep)
         logger.info(f"User created with Steam ID: {steam_id}")
 
     assert user.id is not None, "User ID should never be None after creation"
-    access_token = create_access_token(user_id=user.id, steam_id=steam_id, settings=settings)
+    access_token = create_access_token(user_id=user.id, settings=settings)
     logger.info(f"User logged in with Steam ID: {steam_id}")
     return {"access_token": access_token, "token_type": "bearer"}
 

@@ -7,12 +7,11 @@ from app.utils.datetime_utils import utcnow
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
-def create_access_token(user_id: int, steam_id: str, settings: SettingsDep, expires_delta: Optional[timedelta] = None) -> str:
+def create_access_token(user_id: int, settings: SettingsDep, expires_delta: Optional[timedelta] = None) -> str:
     now = utcnow()
     expire = now + (expires_delta or timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode = {
         "id": user_id,
-        "steam_id": steam_id,
         "iat": now,
         "exp": expire
     }
@@ -31,10 +30,10 @@ def decode_access_token(token: str, settings: SettingsDep) -> str:
             algorithms=[settings.JWT_ALGORITHM],
             options={"require": ["exp", "iat"]},
         )
-        steam_id: str = payload["steam_id"]
-        if steam_id is None:
-            raise ValueError("Missing steam_id in token")
-        return steam_id
+        user_id: str = payload["user_id"]
+        if user_id is None:
+            raise ValueError("Missing user_id in token")
+        return user_id
     except jwt.ExpiredSignatureError:
         raise ValueError("Token has expired")
     except jwt.MissingRequiredClaimError as e:
