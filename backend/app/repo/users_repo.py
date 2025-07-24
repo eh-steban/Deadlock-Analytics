@@ -34,12 +34,7 @@ class UserRepository:
         result = await session.execute(stmt)
         db_user = result.scalar_one_or_none()
         if db_user:
-            return User(
-            id=db_user.id,
-            hashed_steam_id=db_user.hashed_steam_id,
-            encrypted_steam_id=db_user.encrypted_steam_id,
-            email=db_user.email
-        )
+            return db_user
         return None
 
     async def get_user_by_steam_id(self, hashed_steam_id: str, session: Annotated[AsyncSession, Depends(get_db_session)]) -> Optional[User]:
@@ -47,10 +42,5 @@ class UserRepository:
         result = await session.execute(stmt)
         db_user = result.scalar_one_or_none()
         if db_user:
-            return User(
-            id=db_user.id,
-            hashed_steam_id=db_user.hashed_steam_id,
-            encrypted_steam_id=db_user.encrypted_steam_id,
-            email=db_user.email
-        )
+            return db_user
         return None
