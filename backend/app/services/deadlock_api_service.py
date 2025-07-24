@@ -13,7 +13,7 @@ class DeadlockAPIService:
     async def get_demo_url(self, match_id: int) -> dict[str, str]:
         salts_response = await self.get_salts(match_id)
         return {"demo_url": salts_response["demo_url"]}
-    
+
     # DLAPIService#fetch_salts returns a response that looks like:
     # {
     #     match_id (int): Unique identifier for the match.
