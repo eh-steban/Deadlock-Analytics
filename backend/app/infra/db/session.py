@@ -3,8 +3,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from fastapi import Depends
 from app.config import Settings, get_settings
 
-async def get_session(settings: Annotated[Settings, Depends(get_settings)]) -> AsyncGenerator[AsyncSession, None]:
-    connect_args = {"check_same_thread": False}
+async def get_db_session(settings: Annotated[Settings, Depends(get_settings)]) -> AsyncGenerator[AsyncSession, None]:
     database_url = settings.DATABASE_URL
 
     # FIXME: This runs in any env, but should only run in dev/test

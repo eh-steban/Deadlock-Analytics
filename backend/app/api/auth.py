@@ -7,7 +7,7 @@ from openid.consumer.consumer import Consumer
 from typing import Annotated
 from app.services.auth.manage_jwt_token import create_access_token
 from app.services.user_service import UserService
-from app.infra.db.session import get_session
+from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
 
 router = APIRouter()
@@ -16,9 +16,9 @@ STEAM_OPENID_ENDPOINT = "https://steamcommunity.com/openid"
 STEAM_OPENID_IDENTITY_PATTERN = r".*\/(?P<steam_id>[^/]+)$"
 REALM = "http://localhost:8000"
 RETURN_TO = f"{REALM}/auth/callback"
-logger = logging.getLogger("uvicorn.error")
+logger = logging.getLogger(__name__)
 
-SessionDep = Annotated[AsyncSession, Depends(get_session)]
+SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 @router.get("/login")

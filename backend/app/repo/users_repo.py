@@ -4,13 +4,13 @@ from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from psycopg.errors import UniqueViolation
-from app.infra.db.session import get_session
+from app.infra.db.session import get_db_session
 from app.infra.db.models import User
 
 class UserRepository:
-    async_session: Annotated[AsyncSession, Depends(get_session)]
+    async_session: Annotated[AsyncSession, Depends(get_db_session)]
 
-    async def create_user(self, hashed_steam_id: str, encrypted_steam_id: str, session: Annotated[AsyncSession, Depends(get_session)]) -> User:
+    async def create_user(self, hashed_steam_id: str, encrypted_steam_id: str, session: Annotated[AsyncSession, Depends(get_db_session)]) -> User:
         db_user = User(hashed_steam_id=hashed_steam_id, encrypted_steam_id=encrypted_steam_id)
         try:
             session.add(db_user)
@@ -29,7 +29,7 @@ class UserRepository:
             email=db_user.email
         )
 
-    async def get_user_by_id(self, id: int, session: Annotated[AsyncSession, Depends(get_session)]) -> Optional[User]:
+    async def get_user_by_id(self, id: int, session: Annotated[AsyncSession, Depends(get_db_session)]) -> Optional[User]:
         stmt = select(User).where(User.id == id)
         result = await session.execute(stmt)
         db_user = result.scalar_one_or_none()
@@ -42,7 +42,7 @@ class UserRepository:
         )
         return None
 
-    async def get_user_by_steam_id(self, hashed_steam_id: str, session: Annotated[AsyncSession, Depends(get_session)]) -> Optional[User]:
+    async def get_user_by_steam_id(self, hashed_steam_id: str, session: Annotated[AsyncSession, Depends(get_db_session)]) -> Optional[User]:
         stmt = select(User).where(User.hashed_steam_id == hashed_steam_id)
         result = await session.execute(stmt)
         db_user = result.scalar_one_or_none()
