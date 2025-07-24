@@ -83,6 +83,7 @@ This project follows **Domain-Driven Design (DDD)** principles:
 - Use **type annotations** wherever possible, especially in public methods
 - Prefer list/dict comprehensions over manual loops for readability
 - Use `typing.Annotated` or `Annotated[...]` with `Depends(...)` for route params when needed
+- Use positive language in code where possible (e.g., `is_active` instead of `is_not_inactive`)
 
 ## 🔁 Reusability & Dependencies
 
