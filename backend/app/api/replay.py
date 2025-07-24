@@ -6,7 +6,7 @@ from app.services.deadlock_api_service import DeadlockAPIService
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-@router.get("match_replay_url/{match_id}")
+@router.get("/match_replay_url/{match_id}")
 async def get_match_replay_url(match_id: int) -> str:
     api_service = DeadlockAPIService()
     demo_url_dict = await api_service.get_demo_url(match_id)
