@@ -46,11 +46,9 @@ async def callback(request: Request, session: SessionDep, settings: SettingsDep)
         logger.info(f"User created with Steam ID: {steam_id}")
 
     assert user.id is not None, "User ID should never be None after creation"
-    access_token = create_access_token(user_id=user.id, settings=settings)
+    jwt = create_access_token(user_id=user.id, settings=settings)
     logger.info(f"User logged in with Steam ID: {steam_id}")
-    # return {"access_token": access_token, "token_type": "bearer"}
-    redirect_url = f"{settings.FRONTEND_BASE_URL}/profile/{user.id}"
-    return RedirectResponse(url=redirect_url)
+    return {"jwt": jwt}
 
 @router.post("/logout")
 async def logout(response: JSONResponse):
