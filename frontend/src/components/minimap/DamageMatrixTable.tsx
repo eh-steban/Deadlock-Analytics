@@ -1,7 +1,7 @@
 import React from 'react';
-import { PlayerPath } from '../types/PlayerPath';
-import { PlayerInfo } from '../types/PlayerInfo';
-import { StatType } from '../types/StatType';
+import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerInfo } from '../../types/PlayerInfo';
+import { StatType } from '../../types/StatType';
 
 interface DamageMatrixTableProps {
   matchData: any;

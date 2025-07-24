@@ -21,5 +21,6 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "url"
     FERNET_SECRET_KEY: str = "key"
     STEAM_HASH_SALT: str = "salt"
+    FRONTEND_BASE_URL: str = "url"
 
     model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)

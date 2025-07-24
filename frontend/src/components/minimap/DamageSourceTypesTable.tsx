@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatType } from '../types/StatType';
+import { StatType } from '../../types/StatType';
 
 interface DamageSourceTypesTableProps {
   sourceDetails: {

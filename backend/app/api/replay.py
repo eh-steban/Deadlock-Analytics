@@ -12,8 +12,6 @@ router = APIRouter()
 
 @router.get("/{match_id}/download_match_replay")
 async def download_match_replay_for(match_id: int, session: Annotated[AsyncSession, Depends(get_session)]) -> str:
-    # FIXME: Hardcoding a match_id for testing purposes
-    match_id = 38108272
     api_service = DeadlockAPIService()
     demo_url_dict = await api_service.get_demo_url(match_id)
     demo_url = demo_url_dict.get("demo_url")

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DestroyedObjective } from '../types/DestroyedObjective';
+import { DestroyedObjective } from '../../types/DestroyedObjective';
 
 interface ObjectiveCoordinate {
   label: string;

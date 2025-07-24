@@ -1,7 +1,7 @@
 import React from 'react';
-import { PlayerPath } from '../types/PlayerPath';
-import { PlayerInfo } from '../types/PlayerInfo';
-import { Hero } from '../types/Hero';
+import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerInfo } from '../../types/PlayerInfo';
+import { Hero } from '../../types/Hero';
 
 interface PlayerCardsProps {
   playerPaths: PlayerPath[];

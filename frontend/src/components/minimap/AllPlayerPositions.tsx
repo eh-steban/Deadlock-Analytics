@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlayerPath } from '../types/PlayerPath';
+import { PlayerPath } from '../../types/PlayerPath';
 import { getPlayerMinimapPosition } from './PlayerPositions';
 
 interface AllPlayerPositionsProps {

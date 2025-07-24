@@ -1,6 +1,6 @@
 import React from 'react';
-import { PlayerPath } from '../types/PlayerPath';
-import { PlayerInfo } from '../types/PlayerInfo';
+import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerInfo } from '../../types/PlayerInfo';
 
 interface PerPlayerWindowTableProps {
   playerPaths: PlayerPath[];

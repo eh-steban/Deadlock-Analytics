@@ -5,21 +5,21 @@ import PerPlayerWindowTable from './PerPlayerWindowTable';
 import DamageEventsTable from './DamageEventsTable';
 import DamageMatrixTable from './DamageMatrixTable';
 import DamageSourceTypesTable from './DamageSourceTypesTable';
-import { PlayerPath } from '../types/PlayerPath';
-import { PlayerInfo } from '../types/PlayerInfo';
-import { DestroyedObjective } from '../types/DestroyedObjective';
-import { Hero } from '../types/Hero';
+import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerInfo } from '../../types/PlayerInfo';
+import { DestroyedObjective } from '../../types/DestroyedObjective';
+import { Hero } from '../../types/Hero';
 import Objectives from './Objectives';
-import { objectiveCoordinates } from '../data/objectiveCoordinates';
+import { objectiveCoordinates } from '../../data/objectiveCoordinates';
 import ObjectiveInfoPanel from './ObjectiveInfoPanel';
 import PlayerCards from './PlayerCards';
 import PlayerPositions from './PlayerPositions';
 import Grid from './Grid';
 import RegionsMapping from './RegionsMapping';
-import { regions } from '../data/Regions';
+import { regions } from '../../data/Regions';
 import RegionToggle from './RegionToggle';
 import GameTimeViewer from './GameTimeViewer';
-import { standardizePlayerPosition } from '../components/PlayerPositions';
+import { standardizePlayerPosition } from './PlayerPositions';
 
 var pointInPolygon = require('point-in-polygon')
 
