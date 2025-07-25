@@ -10,7 +10,7 @@ settings = get_settings()
 logger = logging.getLogger(__name__)
 class DeadlockAPIClient:
     def __init__(self):
-        self.api_key = settings.API_KEY
+        self.api_key = settings.DEADLOCK_API_KEY
         self.replay_file_path = settings.REPLAY_FILE_PATH
         self.timeout = Timeout(300.0, connect=30.0)
         self.client = AsyncClient(timeout=self.timeout)
