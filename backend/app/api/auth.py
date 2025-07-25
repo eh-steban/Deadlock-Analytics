@@ -14,27 +14,29 @@ router = APIRouter()
 
 STEAM_OPENID_ENDPOINT = "https://steamcommunity.com/openid"
 STEAM_OPENID_IDENTITY_PATTERN = r".*\/(?P<steam_id>[^/]+)$"
-REALM = "http://localhost:8000"
-RETURN_TO = f"{REALM}/auth/callback"
 logger = logging.getLogger(__name__)
 
 SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 @router.get("/login")
-async def login():
+async def login(settings: SettingsDep):
     consumer = Consumer({}, None)
     auth_begin = consumer.begin(STEAM_OPENID_ENDPOINT)
-    redirect_url = auth_begin.redirectURL(REALM, RETURN_TO)
-    
+
+    return_url = f"{settings.BACKEND_BASE_URL}/auth/callback"
+    redirect_url = auth_begin.redirectURL(settings.BACKEND_BASE_URL, return_url)
+
     response = RedirectResponse(url=redirect_url)
     return response
 
 @router.get("/callback")
 async def callback(request: Request, session: SessionDep, settings: SettingsDep):
     consumer = Consumer({}, None)
-    response = consumer.complete(request.query_params, RETURN_TO)
+    return_url = f"{settings.BACKEND_BASE_URL}/auth/callback"
+    response = consumer.complete(request.query_params, return_url)
     if response.status != "success" or not response.identity_url:
+        logger.error(f"Steam login failed: {response.status} - {response.message}")
         raise HTTPException(status_code=403, detail="Steam login failed")
 
     identity_url = response.identity_url
@@ -48,7 +50,18 @@ async def callback(request: Request, session: SessionDep, settings: SettingsDep)
     assert user.id is not None, "User ID should never be None after creation"
     jwt = create_access_token(user_id=user.id, settings=settings)
     logger.info(f"User logged in with Steam ID: {steam_id}")
-    return {"jwt": jwt}
+
+    redirect_url = f"{settings.FRONTEND_BASE_URL}/profile/{steam_id}"
+    response = RedirectResponse(url=redirect_url)
+    response.set_cookie(
+        key="access_token",
+        value=jwt,
+        httponly=True,
+        secure=False,  # FIXME: Set to True in production
+        samesite="strict",
+        max_age=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60
+    )
+    return response
 
 @router.post("/logout")
 async def logout(response: JSONResponse):
