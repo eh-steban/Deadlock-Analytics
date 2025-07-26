@@ -1,27 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import PerSecondTable from './PerSecondTable';
-import AllPlayerPositions from './AllPlayerPositions';
-import PerPlayerWindowTable from './PerPlayerWindowTable';
-import DamageEventsTable from './DamageEventsTable';
-import DamageMatrixTable from './DamageMatrixTable';
-import DamageSourceTypesTable from './DamageSourceTypesTable';
+import Minimap from './Minimap';
+import PlayerCards from './PlayerCards';
+import ObjectiveInfoPanel from './ObjectiveInfoPanel';
+import { standardizePlayerPosition } from './PlayerPositions';
+import { Hero } from '../../types/Hero';
+import { Region } from '../../types/Region';
+import { regions } from '../../data/Regions';
 import { PlayerPath } from '../../types/PlayerPath';
 import { PlayerInfo } from '../../types/PlayerInfo';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
-import { Hero } from '../../types/Hero';
-import Objectives from './Objectives';
-import { objectiveCoordinates } from '../../data/objectiveCoordinates';
-import ObjectiveInfoPanel from './ObjectiveInfoPanel';
-import PlayerCards from './PlayerCards';
-import PlayerPositions from './PlayerPositions';
-import Grid from './Grid';
-import RegionsMapping from './RegionsMapping';
-import { regions } from '../../data/Regions';
-import RegionToggle from './RegionToggle';
-import GameTimeViewer from './GameTimeViewer';
-import { standardizePlayerPosition } from './PlayerPositions';
-
 
 var pointInPolygon = require('point-in-polygon')
 
@@ -64,9 +52,6 @@ const defaultMatchData: MatchData = {
     game_mode_version: 0,
   }
 };
-
-const MINIMAP_SIZE = 768;
-const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
 
 interface MatchInfoFields {
   duration_s: number;
@@ -119,40 +104,68 @@ interface MatchData {
   match_info: MatchInfoFields;
 }
 
-interface ObjectiveCoordinate {
-  label: string;
-  x: number;
-  y: number;
-  team_id?: number;
-  team_objective_id?: number;
-}
-
-const Minimap = () => {
-  const mapRef = useRef<HTMLImageElement>(null);
+const MatchAnalysis = () => {
   const [matchData, setMatchData] = useState<MatchData>(defaultMatchData);
   const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
   const [error, setError] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const { match_id } = useParams();
+
+  // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
+  // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
+  // the minimap. It may be worth revisiting later.
+  const destroyedObjectivesSorted: Array<DestroyedObjective> = matchData.match_info.objectives
+    .filter(obj => obj.destroyed_time_s !== 0)
+    .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
+  const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
   // x/yResolution comes from match_metadata response returned from
   // Deadlock API (https://api.deadlock-api.com/v1/matches/{match_id}/metadata)
   // and looks something like: "match_info": { "match_paths": "x_resolution": 16383, "y_resolution": 16383 }
+  const playerPaths = matchData.match_info.match_paths.paths;
   const xResolution = matchData.match_info.match_paths.x_resolution;
   const yResolution = matchData.match_info.match_paths.y_resolution;
-  const playerPaths = matchData.match_info.match_paths.paths;
+  const players = matchData.match_info.players;
 
-  const scaleToMinimap = (x: number, y: number): { left: number; top: number } => {
-    const xOffset = -75;
-    const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
-    const top = y * MINIMAP_SIZE;
-    return { left, top };
+  function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number, debug: boolean = false): string[] {
+    const foundRegions: string[] = regions.filter((region: Region) => isPlayerInRegion(
+      x_max,
+      x_min,
+      y_max,
+      y_min,
+      [x, y],
+      region.polygon,
+      xResolution,
+      yResolution,
+    )).map<string>((region): string => { return region.label ? region.label : 'None' });
+    return foundRegions;
   };
 
-  // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
-  const renderObjectiveDot = (obj: ObjectiveCoordinate) => { return scaleToMinimap(obj.x, 1 - obj.y) };
-  const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y)};
+  function isPlayerInRegion(
+    x_max: number,
+    x_min: number,
+    y_max: number,
+    y_min: number,
+    point: [number, number],
+    polygon: [number, number][],
+    xResolution: number,
+    yResolution: number,
+    ): boolean {
+      const [playerX, playerY] = point;
+      const { standPlayerX, standPlayerY } = standardizePlayerPosition(
+        x_max,
+        x_min,
+        y_max,
+        y_min,
+        playerX,
+        playerY,
+        playerPaths,
+        xResolution,
+        yResolution,
+      );
 
-  const { match_id } = useParams();
+      return pointInPolygon([standPlayerX, standPlayerY], polygon);
+  };
 
   useEffect(() => {
     // For local testing, you can uncomment one of these:
@@ -182,107 +195,6 @@ const Minimap = () => {
         setError(true);
       });
   }, [match_id]);
-
-  // NOTE: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
-  // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
-  const repeatRef = useRef<NodeJS.Timeout | null>(null);
-  const repeatDirection = useRef<'left' | 'right' | null>(null);
-
-  const startRepeat = (direction: 'left' | 'right') => {
-    if (repeatRef.current) return;
-    repeatDirection.current = direction;
-    repeatRef.current = setInterval(() => {
-      setCurrentTime(t => {
-        if (direction === 'left') {
-          if (t <= 0) return 0;
-          return t - 1;
-        } else {
-          const maxTick = playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0;
-          if (t >= maxTick) return maxTick;
-          return t + 1;
-        }
-      });
-    }, 80);
-  };
-
-  const stopRepeat = () => {
-    if (repeatRef.current) {
-      clearInterval(repeatRef.current);
-      repeatRef.current = null;
-      repeatDirection.current = null;
-    }
-  };
-
-  // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
-  // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
-  // the minimap. It may be worth revisiting later.
-  const destroyedObjectivesSorted = matchData.match_info.objectives
-    .filter(obj => obj.destroyed_time_s !== 0)
-    .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
-  const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
-  const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(null);
-
-  function isPlayerInRegion(
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-    point: [number, number],
-    polygon: [number, number][],
-    xResolution: number,
-    yResolution: number,
-    ): boolean {
-      const [playerX, playerY] = point;
-      const { standPlayerX, standPlayerY } = standardizePlayerPosition(
-        x_max,
-        x_min,
-        y_max,
-        y_min,
-        playerX,
-        playerY,
-        playerPaths,
-        xResolution,
-        yResolution,
-      );
-
-      return pointInPolygon([standPlayerX, standPlayerY], polygon);
-  };
-
-  function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number, debug: boolean = false): string[] {
-    const foundRegions: string[] = regions.filter(region => isPlayerInRegion(
-      x_max,
-      x_min,
-      y_max,
-      y_min,
-      [x, y],
-      region.polygon,
-      xResolution,
-      yResolution,
-    )).map<string>((region): string => { return region.label ? region.label : 'None' });
-    return foundRegions;
-  };
-
-  useEffect(() => {
-    let lastActiveKey: string | null = null;
-    let currentIdx = -1;
-    destroyedObjectivesSorted.forEach((obj, idx) => {
-      if (currentTime >= obj.destroyed_time_s) {
-        lastActiveKey = `${obj.team}_${obj.team_objective_id}`;
-        currentIdx = idx;
-      }
-    });
-    setActiveObjectiveKey(lastActiveKey);
-    setCurrentObjectiveIndex(currentIdx);
-  }, [destroyedObjectivesSorted, currentTime]);
-
-  const [visibleRegions, setVisibleRegions] = useState<{ [label: string]: boolean }>(
-    () => Object.fromEntries(regions.map(r => [r.label, true]))
-  );
-  const handleRegionToggle = (label: string) => {
-    setVisibleRegions(v => ({ ...v, [label]: !v[label] }));
-  };
-
-  const visibleRegionList = regions.filter(r => visibleRegions[r.label]);
 
   return (
     <>
@@ -330,70 +242,24 @@ const Minimap = () => {
           />
           <PlayerCards
             playerPaths={playerPaths}
-            players={matchData.match_info.players}
+            players={players}
             currentTime={currentTime}
             heros={heroData}
             getPlayerRegionLabels={getPlayerRegionLabels}
           />
         </div>
-        {/* Minimap and slider */}
-        <div title='MinimapPanel' style={{ position: 'absolute', right: 0, width: `${MINIMAP_SIZE}px`, flexShrink: 0, marginLeft: '24px', marginTop: '1rem', background: '#fafbfc', boxShadow: '-2px 0 8px rgba(0,0,0,0.07)' }}>
-          <div
-            style={{
-              position: 'relative',
-              width: `${MINIMAP_SIZE}px`,
-              height: `${MINIMAP_SIZE}px`,
-              pointerEvents: 'none',
-            }}
-          >
-            {/* <Grid MINIMAP_SIZE={MINIMAP_SIZE} /> */}
-            <RegionsMapping MINIMAP_SIZE={MINIMAP_SIZE} regions={visibleRegionList} />
-            <img
-              ref={mapRef}
-              src={MINIMAP_URL}
-              alt="Minimap"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 0,
-                pointerEvents: 'none',
-              }}
-            />
-            <Objectives
-              objectiveCoordinates={objectiveCoordinates}
-              destroyedObjectives={destroyedObjectivesSorted}
-              currentTime={currentTime}
-              renderObjectiveDot={renderObjectiveDot}
-              activeObjectiveKey={activeObjectiveKey}
-            />
-          </div>
-          <PlayerPositions
-            playerPaths={playerPaths}
-            players={matchData.match_info.players}
-            currentTime={currentTime}
-            xResolution={xResolution}
-            yResolution={yResolution}
-            heros={heroData}
-            renderPlayerDot={renderPlayerDot}
-          />
-          <div style={{ width: '100%', background: '#f7f7f7', borderTop: '1px solid #ccc', display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 0, padding: 0 }}>
-            <GameTimeViewer
-              currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
-              maxTime={playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0}
-              startRepeat={startRepeat}
-              stopRepeat={stopRepeat}
-            />
-            <RegionToggle
-              regions={regions}
-              visibleRegions={visibleRegions}
-              onToggle={handleRegionToggle}
-            />
-          </div>
-        </div>
+        <Minimap
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          heroes={heroData}
+          players={players}
+          playerPaths={playerPaths}
+          destroyedObjectivesSorted={destroyedObjectivesSorted}
+          setCurrentObjectiveIndex={setCurrentObjectiveIndex}
+          regions={regions}
+          xResolution={xResolution}
+          yResolution={yResolution}
+        />
       </div>
 
       {/* Player combat type/health Table */}
@@ -436,4 +302,4 @@ const Minimap = () => {
   );
 };
 
-export default Minimap;
+export default MatchAnalysis;

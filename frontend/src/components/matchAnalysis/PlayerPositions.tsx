@@ -9,7 +9,7 @@ interface PlayerPositionsProps {
   currentTime: number;
   xResolution: number;
   yResolution: number;
-  heros: Hero[];
+  heroes: Hero[];
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
 }
 
@@ -19,7 +19,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   currentTime,
   xResolution,
   yResolution,
-  heros,
+  heroes,
   renderPlayerDot,
 }) => {
   return (
@@ -27,7 +27,7 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
       {playerPaths.map(player => {
         const playerInfo = players?.find((p: PlayerInfo) => p.player_slot === player.player_slot);
         if (!playerInfo) return null;
-        const hero = heros.find(h => h.id === playerInfo.hero_id);
+        const hero = heroes.find(h => h.id === playerInfo.hero_id);
         const heroName = hero?.name || `Hero ${playerInfo.hero_id}`;
         const minimapImg = hero?.images?.minimap_image_webp;
         const team = playerInfo.team;
