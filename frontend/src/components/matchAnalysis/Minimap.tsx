@@ -15,19 +15,12 @@ import { Hero } from '../../types/Hero';
 import { Region } from '../../types/Region';
 import { PlayerPath } from '../../types/PlayerPath';
 import { PlayerInfo } from '../../types/PlayerInfo';
+import { ObjectiveCoordinate } from '../../types/ObjectiveCoordinate';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { objectiveCoordinates } from '../../data/objectiveCoordinates';
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
-
-interface ObjectiveCoordinate {
-  label: string;
-  x: number;
-  y: number;
-  team_id?: number;
-  team_objective_id?: number;
-}
 
 const Minimap = ({
   currentTime,

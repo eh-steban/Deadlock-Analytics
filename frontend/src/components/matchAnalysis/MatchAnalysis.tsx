@@ -7,13 +7,12 @@ import { standardizePlayerPosition } from './PlayerPositions';
 import { Hero } from '../../types/Hero';
 import { Region } from '../../types/Region';
 import { regions } from '../../data/Regions';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 
 var pointInPolygon = require('point-in-polygon')
 
-const defaultMatchData: MatchData = {
+const defaultMatchMetadata: MatchMetadata = {
   match_info: {
     duration_s: 0,
     match_outcome: 0,
@@ -53,59 +52,8 @@ const defaultMatchData: MatchData = {
   }
 };
 
-interface MatchInfoFields {
-  duration_s: number;
-  match_outcome: number;
-  winning_team: number;
-  players: Array<PlayerInfo>;
-  start_time: number;
-  match_id: number;
-  legacy_objectives_mask: any;
-  game_mode: number;
-  match_mode: number;
-  objectives: Array<DestroyedObjective>;
-  match_paths: {
-    x_resolution: number;
-    y_resolution: number;
-    paths: Array<PlayerPath>;
-  };
-  damage_matrix: {
-    sample_time_s: number[];
-    source_details: {
-      stat_type: number[];
-      source_name: string[];
-    };
-    damage_dealers: Array<{
-      dealer_player_slot?: number;
-      damage_sources: Array<Array<{
-        source_details_index: number;
-        damage_to_players: Array<{
-          target_player_slot?: number;
-          damage: Array<number>;
-        }>;
-      }>>;
-    }>;
-  };
-  match_pauses: any[];
-  customer_user_stats?: Record<string, any>;
-  watched_death_replays: any[];
-  objectives_mark_team0?: Record<string, any>;
-  objectives_mark_team1?: Record<string, any>;
-  mid_boss: Array<Record<string, any>>;
-  is_high_skill_range_parties: boolean;
-  low_pri_pool: boolean;
-  new_player_pool: boolean;
-  average_badge_team0: number;
-  average_badge_team1: number;
-  game_mode_version: number;
-}
-
-interface MatchData {
-  match_info: MatchInfoFields;
-}
-
 const MatchAnalysis = () => {
-  const [matchData, setMatchData] = useState<MatchData>(defaultMatchData);
+  const [matchData, setMatchMetadata] = useState<MatchMetadata>(defaultMatchMetadata);
   const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -177,7 +125,7 @@ const MatchAnalysis = () => {
       .then(res => res.json())
       .then(data => {
         console.log('Loaded match data from backend:', data);
-        setMatchData(data);
+        setMatchMetadata(data);
       })
       .catch(err => {
         console.error('Error fetching match data from backend:', err);
