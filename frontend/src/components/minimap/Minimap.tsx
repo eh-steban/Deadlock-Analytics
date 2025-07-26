@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import PerSecondTable from './PerSecondTable';
 import AllPlayerPositions from './AllPlayerPositions';
 import PerPlayerWindowTable from './PerPlayerWindowTable';
@@ -21,39 +22,101 @@ import RegionToggle from './RegionToggle';
 import GameTimeViewer from './GameTimeViewer';
 import { standardizePlayerPosition } from './PlayerPositions';
 
+
 var pointInPolygon = require('point-in-polygon')
+
+const defaultMatchData: MatchData = {
+  match_info: {
+    duration_s: 0,
+    match_outcome: 0,
+    winning_team: 0,
+    players: [],
+    start_time: 0,
+    match_id: 0,
+    legacy_objectives_mask: null,
+    game_mode: 0,
+    match_mode: 0,
+    objectives: [],
+    match_paths: {
+      x_resolution: 0,
+      y_resolution: 0,
+      paths: [],
+    },
+    damage_matrix: {
+      sample_time_s: [],
+      source_details: {
+        stat_type: [],
+        source_name: [],
+      },
+      damage_dealers: [],
+    },
+    match_pauses: [],
+    customer_user_stats: undefined,
+    watched_death_replays: [],
+    objectives_mark_team0: undefined,
+    objectives_mark_team1: undefined,
+    mid_boss: [],
+    is_high_skill_range_parties: false,
+    low_pri_pool: false,
+    new_player_pool: false,
+    average_badge_team0: 0,
+    average_badge_team1: 0,
+    game_mode_version: 0,
+  }
+};
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL = 'https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png';
 
-interface MatchData {
-  match_info: {
-    duration_s: number;
-    objectives: DestroyedObjective[],
-    match_paths: {
-      x_resolution: number;
-      y_resolution: number;
-      paths: Array<PlayerPath>;
-    };
-    damage_matrix: {
-      sample_time_s: number[];
-      source_details: {
-        stat_type: number[];
-        source_name: string[];
-      };
-      damage_dealers: {
-        dealer_player_slot?: number;
-        damage_sources: Array<Array<{
-          source_details_index: number;
-          damage_to_players: Array<{
-            target_player_slot?: number;
-            damage: Array<number>;
-          }>;
-        }>>;
-      }[];
-    }
-    players: PlayerInfo[];
+interface MatchInfoFields {
+  duration_s: number;
+  match_outcome: number;
+  winning_team: number;
+  players: Array<PlayerInfo>;
+  start_time: number;
+  match_id: number;
+  legacy_objectives_mask: any;
+  game_mode: number;
+  match_mode: number;
+  objectives: Array<DestroyedObjective>;
+  match_paths: {
+    x_resolution: number;
+    y_resolution: number;
+    paths: Array<PlayerPath>;
   };
+  damage_matrix: {
+    sample_time_s: number[];
+    source_details: {
+      stat_type: number[];
+      source_name: string[];
+    };
+    damage_dealers: Array<{
+      dealer_player_slot?: number;
+      damage_sources: Array<Array<{
+        source_details_index: number;
+        damage_to_players: Array<{
+          target_player_slot?: number;
+          damage: Array<number>;
+        }>;
+      }>>;
+    }>;
+  };
+  match_pauses: any[];
+  customer_user_stats?: Record<string, any>;
+  watched_death_replays: any[];
+  objectives_mark_team0?: Record<string, any>;
+  objectives_mark_team1?: Record<string, any>;
+  mid_boss: Array<Record<string, any>>;
+  is_high_skill_range_parties: boolean;
+  low_pri_pool: boolean;
+  new_player_pool: boolean;
+  average_badge_team0: number;
+  average_badge_team1: number;
+  game_mode_version: number;
+}
+
+interface MatchData {
+  match_info: MatchInfoFields;
 }
 
 interface ObjectiveCoordinate {
@@ -66,7 +129,7 @@ interface ObjectiveCoordinate {
 
 const Minimap = () => {
   const mapRef = useRef<HTMLImageElement>(null);
-  const [matchData, setMatchData] = useState<MatchData>({ match_info: { duration_s: 0, objectives: [], match_paths: { x_resolution: 0, y_resolution: 0, paths: [] }, damage_matrix: { sample_time_s: [], source_details: { stat_type: [], source_name: [] }, damage_dealers: []}, players: [] } });
+  const [matchData, setMatchData] = useState<MatchData>(defaultMatchData);
   const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -89,17 +152,22 @@ const Minimap = () => {
   const renderObjectiveDot = (obj: ObjectiveCoordinate) => { return scaleToMinimap(obj.x, 1 - obj.y) };
   const renderPlayerDot = (x: number, y: number) => { return scaleToMinimap(x, y)};
 
+  const { match_id } = useParams();
+
   useEffect(() => {
+    // For local testing, you can uncomment one of these:
     // fetch('/match_metadata.json')
-    fetch('/match_metadataNew.json')
+    // fetch('/match_metadataNew.json')
     // fetch('/match_metadataNew2.json')
+
+    fetch(`http://${process.env.REACT_APP_BACKEND_DOMAIN}/match/analysis/${match_id}`)
       .then(res => res.json())
       .then(data => {
-        console.log('Loaded match data:');
+        console.log('Loaded match data from backend:', data);
         setMatchData(data);
       })
       .catch(err => {
-        console.error('Error fetching match data:', err)
+        console.error('Error fetching match data from backend:', err);
         setError(true);
       });
 
@@ -113,7 +181,7 @@ const Minimap = () => {
         console.error('Error fetching hero data:', err);
         setError(true);
       });
-  }, []);
+  }, [match_id]);
 
   // NOTE: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
@@ -218,6 +286,8 @@ const Minimap = () => {
 
   return (
     <>
+      <h1>Deadlock Minimap</h1>
+      <h3>Match ID: {match_id}</h3>
       <div style={{ width: '100vw', minHeight: '100vh', display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
         <div
           title='InformationPanel'

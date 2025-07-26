@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const backendDomain = process.env.REACT_APP_BACKEND_DOMAIN || "domain";
 
@@ -86,7 +86,7 @@ const ProfilePage: React.FC = () => {
       <ul>
         {matchHistory.map((match) => (
           <li key={match.match_id}>
-            Match ID: {match.match_id} | Hero ID: {match.hero_id} | K/D/A: {match.player_kills}/{match.player_deaths}/{match.player_assists} | Result: {match.match_result} | Duration: {match.match_duration_s}s
+            Match ID: <Link to={`/match/analysis/${match.match_id}`}>{match.match_id}</Link> | Hero ID: {match.hero_id} | K/D/A: {match.player_kills}/{match.player_deaths}/{match.player_assists} | Result: {match.match_result} | Duration: {match.match_duration_s}s
           </li>
         ))}
       </ul>

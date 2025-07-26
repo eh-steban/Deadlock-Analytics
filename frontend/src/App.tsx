@@ -7,16 +7,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App: React.FC = () => {
   return (
-    <Router>
-      {/* <div className="App">
-        <h1>Deadlock Minimap</h1>
-        <Minimap />
-      </div> */}
-      <Routes>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/profile/:steam_id" element={<ProfilePage />} />
-      </Routes>
-    </Router>
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/profile/:steam_id" element={<ProfilePage />} />
+          <Route path="/match/analysis/:match_id" element={<Minimap />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 
