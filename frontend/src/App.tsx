@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Minimap from "./components/minimap/Minimap";
+import Minimap from "./components/matchAnalysis/MatchAnalysis";
 import Login from "./components/login/Login";
 import ProfilePage from "./components/profile/ProfilePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
