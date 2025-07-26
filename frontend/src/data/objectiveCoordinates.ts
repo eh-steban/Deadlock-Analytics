@@ -12,11 +12,11 @@ export const objectiveCoordinates: ObjectiveCoordinate[] = [
   { team_id: 0, team_objective_id: 3, label: 'k_eCitadelTeamObjective_Tier1_Lane2', x: 0.605, y: 0.4125 },
   { team_id: 0, team_objective_id: 7, label: 'k_eCitadelTeamObjective_Tier2_Lane2', x: 0.535, y: 0.35 },
   { team_id: 0, team_objective_id: 14, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane2', x: 0.6, y: 0.225 },
-  { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.935, y: 0.4 },
-  { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.86, y: 0.275 },
-  { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.7, y: 0.2 },
-  { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.5375, y: 0.15 },
-  { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.6625, y: 0.15 },
+  { team_id: 0, team_objective_id: 4, label: 'k_eCitadelTeamObjective_Tier1_Lane3', x: 0.935, y: 0.4 },
+  { team_id: 0, team_objective_id: 8, label: 'k_eCitadelTeamObjective_Tier2_Lane3', x: 0.86, y: 0.275 },
+  { team_id: 0, team_objective_id: 15, label: 'k_eCitadelTeamObjective_BarrackBoss_Lane3', x: 0.7, y: 0.2 },
+  { team_id: 0, team_objective_id: 10, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_1', x: 0.5375, y: 0.15 },
+  { team_id: 0, team_objective_id: 11, label: 'k_eCitadelTeamObjective_TitanShieldGenerator_2', x: 0.6625, y: 0.15 },
 
   // Team 1 Objectives
   { team_id: 1, team_objective_id: 0, label: 'k_eCitadelTeamObjective_Core', x: 0.6, y: 0.87 },
