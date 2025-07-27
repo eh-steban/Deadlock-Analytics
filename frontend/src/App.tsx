@@ -10,7 +10,7 @@ const App: React.FC = () => {
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/auth/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/profile/:steam_id" element={<ProfilePage />} />
           <Route path="/match/analysis/:match_id" element={<MatchAnalysis />} />
         </Routes>
