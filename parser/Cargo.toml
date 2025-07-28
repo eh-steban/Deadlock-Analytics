@@ -13,3 +13,5 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 bzip2 = "0.6"
 haste = { git = "https://github.com/blukai/haste.git", features = ["deadlock"] }
+base64 = "0.22.1"
+regex = "1.11.1"

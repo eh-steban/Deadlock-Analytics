@@ -949,8 +949,10 @@ name = "parser"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "base64",
  "bzip2",
  "haste",
+ "regex",
  "reqwest",
  "serde",
  "serde_json",
