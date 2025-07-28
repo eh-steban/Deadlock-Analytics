@@ -1,4 +1,5 @@
 use axum::{routing::post, Router, Json, http::StatusCode};
+use bzip2::read::BzDecoder;
 use tracing::{info, error};
 use tracing_subscriber;
 use serde::Deserialize;
@@ -105,13 +106,48 @@ async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::I
         );
     }
 
+    // Decompress the .bz2 file
+    let decompressed_filename = filename.file_stem().unwrap_or_else(|| filename.as_os_str());
+    let decompressed_path = PathBuf::from("/workspaces/Deadlock-Stats/parser/src/replays").join(decompressed_filename);
+    info!("[parse_demo] Decompressing replay to {}", decompressed_path.display());
+    let compressed_file = match File::open(&replay_path) {
+        Ok(f) => f,
+        Err(e) => {
+            error!("[parse_demo] Failed to open compressed file: {}", e);
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({"error": format!("Failed to open compressed file: {}", e)})),
+            );
+        }
+    };
+    let mut decoder = BzDecoder::new(compressed_file);
+    let mut decompressed_file = match File::create(&decompressed_path) {
+        Ok(f) => f,
+        Err(e) => {
+            error!("[parse_demo] Failed to create decompressed file: {}", e);
+            return (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({"error": format!("Failed to create decompressed file: {}", e)})),
+            );
+        }
+    };
+    if let Err(e) = std::io::copy(&mut decoder, &mut decompressed_file) {
+        error!("[parse_demo] Failed to decompress file: {}", e);
+        return (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(serde_json::json!({"error": format!("Failed to decompress file: {}", e)})),
+        );
+    }
+    info!("[parse_demo] Successfully decompressed replay to {}", decompressed_path.display());
+
     // Return status
     info!("[parse_demo] Successfully downloaded and saved replay to {}", replay_path.display());
     (
         StatusCode::OK,
         Json(serde_json::json!({
-            "status": "downloaded",
-            "saved_to": replay_path.to_string_lossy()
+            "status": "downloaded and decompressed",
+            "saved_to": replay_path.to_string_lossy(),
+            "decompressed_to": decompressed_path.to_string_lossy()
         })),
     )
 }
