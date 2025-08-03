@@ -9,51 +9,60 @@ import { Region } from '../../types/Region';
 import { regions } from '../../data/Regions';
 import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
+import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
 
 var pointInPolygon = require('point-in-polygon')
 
-const defaultMatchMetadata: MatchMetadata = {
-  match_info: {
-    duration_s: 0,
-    match_outcome: 0,
-    winning_team: 0,
-    players: [],
-    start_time: 0,
-    match_id: 0,
-    legacy_objectives_mask: null,
-    game_mode: 0,
-    match_mode: 0,
-    objectives: [],
-    match_paths: {
-      x_resolution: 0,
-      y_resolution: 0,
-      paths: [],
-    },
-    damage_matrix: {
-      sample_time_s: [],
-      source_details: {
-        stat_type: [],
-        source_name: [],
+const defaultMatchAnalysis: MatchAnalysisResponse = {
+  match_metadata: {
+    match_info: {
+      duration_s: 0,
+      match_outcome: 0,
+      winning_team: 0,
+      players: [],
+      start_time: 0,
+      match_id: 0,
+      legacy_objectives_mask: null,
+      game_mode: 0,
+      match_mode: 0,
+      objectives: [],
+      match_paths: {
+        x_resolution: 0,
+        y_resolution: 0,
+        paths: [],
       },
-      damage_dealers: [],
+      damage_matrix: {
+        sample_time_s: [],
+        source_details: {
+          stat_type: [],
+          source_name: [],
+        },
+        damage_dealers: [],
+      },
+      match_pauses: [],
+      customer_user_stats: undefined,
+      watched_death_replays: [],
+      objectives_mark_team0: undefined,
+      objectives_mark_team1: undefined,
+      mid_boss: [],
+      is_high_skill_range_parties: false,
+      low_pri_pool: false,
+      new_player_pool: false,
+      average_badge_team0: 0,
+      average_badge_team1: 0,
+      game_mode_version: 0,
     },
-    match_pauses: [],
-    customer_user_stats: undefined,
-    watched_death_replays: [],
-    objectives_mark_team0: undefined,
-    objectives_mark_team1: undefined,
-    mid_boss: [],
-    is_high_skill_range_parties: false,
-    low_pri_pool: false,
-    new_player_pool: false,
-    average_badge_team0: 0,
-    average_badge_team1: 0,
-    game_mode_version: 0,
-  }
+  },
+  parsed_game_data: {
+    damage_done: [] as [],
+    players: [],
+    entity_id_to_custom_player_id: {},
+  },
 };
 
 const MatchAnalysis = () => {
-  const [matchData, setMatchMetadata] = useState<MatchMetadata>(defaultMatchMetadata);
+  const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisResponse>(defaultMatchAnalysis);
+  const [matchData, setMatchMetadata] = useState<MatchMetadata>(defaultMatchAnalysis.match_metadata);
   const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -125,7 +134,8 @@ const MatchAnalysis = () => {
       .then(res => res.json())
       .then(data => {
         console.log('Loaded match data from backend:', data);
-        setMatchMetadata(data);
+        setMatchAnalysis(data);
+        setMatchMetadata(data.match_metadata);
       })
       .catch(err => {
         console.error('Error fetching match data from backend:', err);
@@ -194,6 +204,7 @@ const MatchAnalysis = () => {
             currentTime={currentTime}
             heros={heroData}
             getPlayerRegionLabels={getPlayerRegionLabels}
+            gameData={matchAnalysis.parsed_game_data}
           />
         </div>
         <Minimap

@@ -5,6 +5,8 @@ services:
       context: .
     # command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--reload", "--log-level", "debug"]
       dockerfile: Dockerfile
+    networks:
+      - deadlock_network
     volumes:
       - .:/backend/
       - ./docker/.bash_history:/home/lifted/.bash_history
@@ -25,6 +27,8 @@ services:
       - .env
     ports:
       - "5432:5432"
+    networks:
+    - deadlock_network
     # Uncomment the following lines to persist data locally (not in container)
     # and to initialize the database with a SQL script.
     # If you have an init.sql file, you can mount it to initialize the database.
@@ -36,3 +40,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  deadlock_network:
+    external: true

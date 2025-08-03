@@ -29,7 +29,7 @@ class DeadlockAPIClient:
         response = await self.call_api(url)
         return response.json()
 
-    async def fetch_match_metadata(self, match_id: str) -> MatchMetadata:
+    async def fetch_match_metadata(self, match_id: int) -> MatchMetadata:
         url = self.api_url(f"/v1/matches/{match_id}/metadata")
         response = await self.call_api(url)
         return MatchMetadata(**response.json())

@@ -7,7 +7,7 @@ class DeadlockAPIService:
     async def get_account_match_history_for(self, account_id: str) -> list[MatchSummary]:
         return await api_client.fetch_account_match_history(account_id)
 
-    async def get_match_metadata_for(self, match_id: str) -> MatchMetadata:
+    async def get_match_metadata_for(self, match_id: int) -> MatchMetadata:
         return await api_client.fetch_match_metadata(match_id)
 
     async def get_demo_url(self, match_id: int) -> dict[str, str]:

@@ -2,12 +2,14 @@ import React from 'react';
 import { PlayerPath } from '../../types/PlayerPath';
 import { PlayerInfo } from '../../types/PlayerInfo';
 import { Hero } from '../../types/Hero';
+import { MatchAnalysisResponse, DamageRecord, Player } from '../../types/MatchAnalysis';
 
 interface PlayerCardsProps {
   playerPaths: PlayerPath[];
   players: PlayerInfo[];
   currentTime: number;
   heros: Hero[];
+  gameData: MatchAnalysisResponse['parsed_game_data'];
   getPlayerRegionLabels: (
     x_max: number,
     x_min: number,
@@ -30,11 +32,28 @@ enum MoveType {
   AirDash = 8,
 }
 
-const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, currentTime, heros, getPlayerRegionLabels }) => {
+const PlayerCards: React.FC<PlayerCardsProps> = ({
+  playerPaths,
+  players,
+  currentTime,
+  heros,
+  gameData,
+  getPlayerRegionLabels
+}) => {
   return (
     <>
       <h3 style={{ margin: '0 0 0.5rem 0' }}>Player Info</h3>
-      <div title='playerCards' style={{ overflowY: 'auto', background: 'none', border: 'none', borderRadius: 0, padding: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', width: '100%', gap: '0.25rem' }}>
+      <div title='playerCards' style={{
+        overflowY: 'auto',
+        background: 'none',
+        border: 'none',
+        borderRadius: 0,
+        padding: 0,
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        width: '100%',
+        gap: '0.25rem'
+      }}>
         {playerPaths.map(player => {
           const playerInfo = players.find((p: any) => p.player_slot === player.player_slot);
           if (!playerInfo) return null;
@@ -58,8 +77,36 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
             player.y_pos[currentTime],
           );
 
+          // TODO: player is actually a bunch of player paths, not a single player
+          // Need to rename this to something more appropriate
+          console.log('Player:', player);
+          
+          // Find the index in ParsedGameData.players that matches this player
+          const playerIndex = gameData.players.findIndex(p => {
+            console.log('Player Info:', playerInfo);
+            console.log('p', p);
+            return p.steam_id_32 === playerInfo.account_id;
+          });
+          const damageWindow = gameData.damage_done[currentTime] || {};
+          
+          // If found, get the victim map for this attacker
+          const victimMap = playerIndex !== -1 ? damageWindow[playerIndex] : undefined;
+          
+          // Flatten all DamageRecords for this attacker at this time
+          // Example: victimMap = { 'victimId1': [rec1, rec2], 'victimId2': [rec3] }
+          // Object.values(victimMap) = [ [rec1, rec2], [rec3] ]
+          // .flat() = [ rec1, rec2, rec3 ]
+          const allDamageRecords: DamageRecord[] = victimMap
+            ? Object.values(victimMap).flat()
+            : [];
+          
+          console.log('Player Index:', playerIndex);
+          console.log('Damage Window:', damageWindow);
+          console.log('Victim Map:', victimMap);
+          console.log('All Damage Records:', allDamageRecords);
+
           return (
-            <div key={`player-card-${player.player_slot}`} style={{ background: '#fff', border: '1px solid #ccc', borderRadius: '0.5rem', padding: '0.5rem 0.75rem', boxShadow: '0 0.0625rem 0.125rem rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'row', alignItems: 'center', minHeight: '11.5rem', gap: '0.025rem' }}>
+            <div key={`player-card-${player.player_slot}`} style={{ background: '#fff', border: '1px solid #ccc', borderRadius: '0.5rem', padding: '0.5rem 0.75rem', boxShadow: '0 0.0625rem 0.125rem rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: '0.025rem' }}>
               {heroImg && (
                 <img src={heroImg} alt={heroName} style={{ width: '4rem', height: '4rem', borderRadius: '1rem', objectFit: 'cover', background: '#eee', border: '1px solid #ddd' }} />
               )}
@@ -70,6 +117,29 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({ playerPaths, players, current
                   <div><strong>Move Type:</strong> {moveTypeLabel !== undefined ? moveTypeLabel : '-'}</div>
                   <div><strong>Combat Type:</strong> {combatTypeLabelList || '-'}</div>
                   <div><strong>Current Region:</strong> {regionLabels.join(', ')}</div>
+                  <div><strong>Victims:</strong>
+                    {victimMap && Object.entries(victimMap).length > 0 ? (
+                      <ul style={{ margin: 0, paddingLeft: 18 }}>
+                        {Object.entries(victimMap).map(([victimIdx, records]) => {
+                          const victimPlayer = gameData.players[Number(victimIdx)];
+                          return (
+                            <li key={victimIdx}>
+                              {victimPlayer ? victimPlayer.name : `Victim ${victimIdx}`}
+                              <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                {records.map((rec, idx) => (
+                                  <li key={idx}>
+                                    Damage: {rec.damage}, Type: {rec.type}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      '-'
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

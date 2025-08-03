@@ -1,0 +1,20 @@
+services:
+  # Parser API service
+  replay_parser:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - deadlock_network
+    volumes:
+      - .:/parser/
+      - ./docker/.bash_history:/home/lifted/.bash_history
+      - ./docker/.bash_aliases:/home/lifted/.bash_aliases
+    ports:
+      - "9000:9000"
+    tty: true
+    stdin_open: true
+
+networks:
+  deadlock_network:
+    external: true

@@ -3,10 +3,12 @@ use bzip2::read::BzDecoder;
 use tracing::{info, error};
 use tracing_subscriber;
 use serde::Deserialize;
-use std::{net::SocketAddr, fs::File, io::Write, path::PathBuf};
+use std::{net::SocketAddr, fs::File, io::Write, path::PathBuf, path::Path};
 use regex::Regex;
 use base64::engine::general_purpose::URL_SAFE;
 use base64::Engine;
+
+mod replay_parser;
 
 #[derive(Deserialize)]
 struct ParseRequest {
@@ -28,6 +30,7 @@ async fn main() {
 }
 
 async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::IntoResponse {
+    info!("[parse_demo] Received request to parse demo with URL: {}", payload.demo_url);
     let decoded_url = match decode_demo_url(&payload.demo_url) {
         Ok(url) => url,
         Err(e) => return e,
@@ -47,15 +50,19 @@ async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::I
         Err(e) => return e,
     };
 
-    info!("[parse_demo] Successfully downloaded and saved replay to {}", replay_path.display());
-    (
-        StatusCode::OK,
-        Json(serde_json::json!({
-            "status": "downloaded and decompressed",
-            "saved_to": replay_path.to_string_lossy(),
-            "decompressed_to": decompressed_path.to_string_lossy()
-        })),
-    )
+    let result = replay_parser::parse_replay(decompressed_path.to_str().unwrap());
+    match result {
+        Ok(json) => {
+            info!("[parse_demo] Replay parsed successfully.");
+            (StatusCode::OK, Json(json))
+        },
+        Err(e) => {
+            error!("[parse_demo] replay_parser::parse_replay failed: {:?}", e);
+            (StatusCode::INTERNAL_SERVER_ERROR, Json(serde_json::json!({
+                "error": format!("Failed to parse replay: {}", e)
+            })))
+        }
+    }
 }
 
 fn decode_demo_url(demo_url: &str) -> Result<String, (StatusCode, Json<serde_json::Value>)> {
@@ -96,7 +103,7 @@ fn setup_compressed_replay_path(decoded_url: &str) -> Result<(PathBuf, PathBuf),
             ));
         }
     };
-    let replay_path = PathBuf::from("/workspaces/Deadlock-Stats/parser/src/compressed-replays").join(&filename);
+    let replay_path = PathBuf::from("/parser/src/compressed-replays").join(&filename);
     Ok((filename, replay_path))
 }
 
@@ -105,6 +112,10 @@ async fn download_compressed_replay_file(
     decoded_url: &str,
     replay_path: &PathBuf,
 ) -> Result<(), (StatusCode, Json<serde_json::Value>)> {
+    if Path::new(replay_path).exists() {
+        info!("[parse_demo] Replay file already exists at {}. Skipping download.", replay_path.display());
+        return Ok(());
+    }
     info!("[parse_demo] Downloading replay from URL: {} to the replay path: {}", decoded_url, replay_path.display());
     let bytes = match reqwest::get(decoded_url).await {
         Ok(resp) => match resp.bytes().await {
@@ -142,8 +153,12 @@ fn decompress_replay_file(
     filename: &PathBuf,
 ) -> Result<PathBuf, (StatusCode, Json<serde_json::Value>)> {
     let decompressed_filename = filename.file_stem().unwrap_or_else(|| filename.as_os_str());
-    let decompressed_path = PathBuf::from("/workspaces/Deadlock-Stats/parser/src/replays").join(decompressed_filename);
+    let decompressed_path = PathBuf::from("/parser/src/replays").join(decompressed_filename);
 
+    if Path::new(&decompressed_path).exists() {
+        info!("[parse_demo] Decompressed replay file already exists at {}. Skipping decompression.", decompressed_path.display());
+        return Ok(decompressed_path);
+    }
     info!("[parse_demo] Decompressing replay to {}", decompressed_path.display());
 
     let compressed_file = match File::open(replay_path) {
