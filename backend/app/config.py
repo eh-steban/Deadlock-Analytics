@@ -21,10 +21,9 @@ class Settings(BaseSettings):
     DEADLOCK_API_KEY: str = "key"
     DEADLOCK_API_DOMAIN: str = "apiDomain"
 
-    REPLAY_FILE_PATH: str = "filePath"
-
     FRONTEND_BASE_URL: str = "url"
     BACKEND_BASE_URL: str = "url"
+    PARSER_SERVICE_URL: str = "url"
 
     STEAM_WEB_API_KEY: str = "key"
     STEAM_HASH_SALT: str = "salt"

@@ -25,10 +25,3 @@ class DeadlockAPIService:
     # }
     async def get_salts(self, match_id: int) -> dict[str, str]:
         return await api_client.fetch_salts(match_id)
-
-    async def get_and_download_replay(self, demo_url: str, match_id: int) -> str:
-        print(f"Starting download from {demo_url}")
-        replay_file_stream = await api_client.get_new_stream(demo_url)
-        output_file_path = await api_client.download_from_stream(replay_file_stream, match_id)
-        print(f"Download complete: {output_file_path}")
-        return output_file_path

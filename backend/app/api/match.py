@@ -3,11 +3,12 @@ from fastapi import APIRouter, HTTPException
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.domain.match_analysis import MatchAnalysis
 from app.api.replay import get_match_replay_url
+from app.config import get_settings
 
 router = APIRouter()
 api_service = DeadlockAPIService()
-
-RUST_SERVICE_URL = "http://replay_parser:9000/parse"
+settings = get_settings()
+PARSER_SERVICE_URL = settings.PARSER_SERVICE_URL
 
 @router.get("/analysis/{match_id}", response_model=MatchAnalysis)
 async def get_match_analysis(match_id: int):
@@ -16,7 +17,7 @@ async def get_match_analysis(match_id: int):
     async with httpx.AsyncClient(timeout=300.0) as client:
         try:
             game_data = await client.post(
-                RUST_SERVICE_URL,
+                PARSER_SERVICE_URL,
                 json={"demo_url": replay_url},
                 headers={"Content-Type": "application/json"}
             )

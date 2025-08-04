@@ -1,5 +1,3 @@
-import os
-import aiofiles
 import logging
 import textwrap
 from httpx import AsyncClient, Response, Timeout
@@ -11,7 +9,6 @@ logger = logging.getLogger(__name__)
 class DeadlockAPIClient:
     def __init__(self):
         self.api_key = settings.DEADLOCK_API_KEY
-        self.replay_file_path = settings.REPLAY_FILE_PATH
         self.timeout = Timeout(300.0, connect=30.0)
         self.client = AsyncClient(timeout=self.timeout)
 
@@ -38,17 +35,6 @@ class DeadlockAPIClient:
         url = self.api_url(f"/v1/matches/{match_id}/salts")
         response = await self.call_api(url)
         return response.json()
-
-    async def get_new_stream(self, url: str):
-        response = await self.call_api(url)
-        return response.aiter_bytes()
-
-    async def download_from_stream(self, replay_file_stream, match_id: int) -> str:
-        output_file_path = os.path.join(self.replay_file_path, f"{match_id}.dem.bz2")
-        async with aiofiles.open(output_file_path, 'wb') as out_file:
-            async for chunk in replay_file_stream:
-                await out_file.write(chunk)
-        return output_file_path
 
     @staticmethod
     def api_url(path: str) -> str:
