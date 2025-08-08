@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import Minimap from './Minimap';
 import PlayerCards from './PlayerCards';
 import ObjectiveInfoPanel from './ObjectiveInfoPanel';
 import { standardizePlayerPosition } from './PlayerPositions';
-import { Hero } from '../../types/Hero';
 import { Region } from '../../types/Region';
 import { regions } from '../../data/Regions';
 import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
-import { NPC, Player } from '../../types/Player';
+import { NPC, Player, Hero } from '../../types/Player';
 
 var pointInPolygon = require('point-in-polygon')
 
@@ -160,6 +159,20 @@ const MatchAnalysis = () => {
       });
   }, [match_id]);
 
+  // Attach hero data directly to each player in the players array
+  useEffect(() => {
+    if (!players || !heroData) return;
+    const heroIdToHero: Record<number, Hero> = {};
+    heroData.forEach((h) => {
+      heroIdToHero[h.id] = h;
+      console.log(`Hero ID ${h.id} mapped to hero:`, h);
+    });
+    players.forEach((player) => {
+      console.log(`Hero ID ${player.player_info.hero_id} mapped to hero:`, player.hero);
+      player.hero = heroIdToHero[player.player_info.hero_id];
+    });
+  }, [players, heroData]);
+
   return (
     <>
       <h1>Deadlock Minimap</h1>
@@ -208,7 +221,6 @@ const MatchAnalysis = () => {
             players={players}
             npcs={npcs}
             currentTime={currentTime}
-            heros={heroData}
             getPlayerRegionLabels={getPlayerRegionLabels}
             gameData={matchAnalysis.parsed_game_data}
           />

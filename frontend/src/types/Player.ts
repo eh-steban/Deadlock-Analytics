@@ -22,9 +22,16 @@ export interface Player {
   entity_id: number;
   custom_id: number;
   name: string;
+  hero: Hero;
   steam_id_32: number;
   player_info: PlayerInfo;
   path_state: PlayerPathState;
+}
+
+export interface Hero {
+  id: number;
+  name: string;
+  images: { [key: string]: string };
 }
 
 export interface NPC {

@@ -1,6 +1,5 @@
 import React from 'react';
-import { PlayerPathState, PlayerInfo } from '../../types/Player';
-import { Hero } from '../../types/Hero';
+import { Hero, PlayerPathState, PlayerInfo } from '../../types/Player';
 
 interface PlayerPositionsProps {
   playerPaths: PlayerPathState[];

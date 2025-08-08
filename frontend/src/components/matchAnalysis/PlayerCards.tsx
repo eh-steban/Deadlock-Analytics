@@ -1,14 +1,12 @@
 import React from 'react';
-import { Hero } from '../../types/Hero';
+import { Hero } from '../../types/Player';
 import { MatchAnalysisResponse, ParsedGameData, DamageRecord } from '../../types/MatchAnalysis';
 import { NPC, Player } from '../../types/Player';
-
 
 interface PlayerCardsProps {
   players: Player[];
   npcs: NPC[];
   currentTime: number;
-  heros: Hero[];
   gameData: ParsedGameData;
   getPlayerRegionLabels: (
     x_max: number,
@@ -36,19 +34,9 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
   players,
   npcs,
   currentTime,
-  heros,
   gameData,
   getPlayerRegionLabels
 }) => {
-  // Build a lookup map for hero_id to Hero for O(1) access
-  const heroIdToHero: Record<number, Hero> = React.useMemo(() => {
-    const map: Record<number, Hero> = {};
-    heros.forEach((h) => {
-      map[h.id] = h;
-    });
-    return map;
-  }, [heros]);
-
   return (
     <>
       <h3 style={{ margin: '0 0 0.5rem 0' }}>Player Info</h3>
@@ -67,7 +55,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           const playerInfo = player.player_info
           const playerPathState = player.path_state;
           const team = playerInfo.team;
-          const hero = heroIdToHero[playerInfo.hero_id];
+          const hero = player.hero;
           const heroName = hero ? hero.name : `Hero ${playerInfo.hero_id}`;
           const heroImg = hero && hero.images && hero.images.icon_hero_card_webp;
           const health = playerPathState.health[currentTime];
