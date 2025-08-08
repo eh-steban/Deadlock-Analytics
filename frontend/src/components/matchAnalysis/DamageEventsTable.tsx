@@ -1,6 +1,5 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { PlayerPathState, PlayerInfo } from '../../types/Player';
 
 interface DamageEventsTableProps {
   matchData: any;
@@ -21,8 +20,8 @@ const DamageEventsTable: React.FC<DamageEventsTableProps> = ({ matchData, heros 
   const { damage_matrix, match_paths, players } = match_info;
   const { sample_time_s, damage_dealers, source_details } = damage_matrix;
   const { stat_type, source_name } = source_details;
-  const playerPathMap: { [slot: number]: PlayerPath } = {};
-  (match_paths.paths || []).forEach((p: PlayerPath) => { playerPathMap[p.player_slot] = p; });
+  const playerPathMap: { [slot: number]: PlayerPathState } = {};
+  (match_paths.paths || []).forEach((p: PlayerPathState) => { playerPathMap[p.player_slot] = p; });
   const playerInfoMap: { [slot: number]: PlayerInfo } = {};
   (players || []).forEach((p: PlayerInfo) => { playerInfoMap[p.player_slot] = p; });
   let sampleWindow = 180;

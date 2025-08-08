@@ -1,6 +1,5 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { PlayerPathState, PlayerInfo } from '../../types/Player';
 import { StatType } from '../../types/StatType';
 
 interface DamageMatrixTableProps {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerPathState } from '../../types/Player';
 
 interface PerSecondTableProps {
-  playerPaths: PlayerPath[];
+  playerPaths: PlayerPathState[];
 }
 
 /**

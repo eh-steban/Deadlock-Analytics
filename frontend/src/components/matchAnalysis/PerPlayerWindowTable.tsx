@@ -1,9 +1,8 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { PlayerPathState, PlayerInfo } from '../../types/Player';
 
 interface PerPlayerWindowTableProps {
-  playerPaths: PlayerPath[];
+  playerPaths: PlayerPathState[];
   matchData: any;
   playerTime: number;
   heros: { [key: number]: string };

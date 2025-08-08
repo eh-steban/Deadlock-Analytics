@@ -1,4 +1,6 @@
+import { isDataView } from 'util/types';
 import { MatchMetadata } from './MatchMetadata';
+import { Player, NPC } from './Player';
 
 export interface DamageRecord {
   damage: number;
@@ -17,13 +19,7 @@ type DamageWindow = {
 
 type DamageDone = DamageWindow[];
 
-export interface Player {
-  id: number;
-  name: string;
-  steam_id_32: number;
-}
-
-interface ParsedGameData {
+export interface ParsedGameData {
   damage_done: DamageDone;
   players: Player[];
   entity_id_to_custom_player_id: { [entityId: string]: string };
@@ -32,4 +28,6 @@ interface ParsedGameData {
 export interface MatchAnalysisResponse {
   match_metadata: MatchMetadata;
   parsed_game_data: ParsedGameData;
+  players: Player[];
+  npcs: NPC[];
 }

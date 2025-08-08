@@ -1,6 +1,5 @@
-import { PlayerPath } from './PlayerPath';
-import { PlayerInfo } from './PlayerInfo';
 import { DestroyedObjective } from './DestroyedObjective';
+import { PlayerPathState, PlayerInfo } from './Player';
 
 export interface MatchMetadata {
   match_info: MatchInfoFields;
@@ -20,7 +19,7 @@ export interface MatchInfoFields {
   match_paths: {
     x_resolution: number;
     y_resolution: number;
-    paths: Array<PlayerPath>;
+    paths: Array<PlayerPathState>;
   };
   damage_matrix: {
     sample_time_s: number[];

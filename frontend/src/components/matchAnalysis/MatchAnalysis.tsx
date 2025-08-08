@@ -10,6 +10,7 @@ import { regions } from '../../data/Regions';
 import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
+import { NPC, Player } from '../../types/Player';
 
 var pointInPolygon = require('point-in-polygon')
 
@@ -58,6 +59,8 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
     players: [],
     entity_id_to_custom_player_id: {},
   },
+  players: [],
+  npcs: [],
 };
 
 const MatchAnalysis = () => {
@@ -67,6 +70,8 @@ const MatchAnalysis = () => {
   const [error, setError] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const { match_id } = useParams();
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [npcs, setNPCs] = useState<NPC[]>([]);
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -82,7 +87,7 @@ const MatchAnalysis = () => {
   const playerPaths = matchData.match_info.match_paths.paths;
   const xResolution = matchData.match_info.match_paths.x_resolution;
   const yResolution = matchData.match_info.match_paths.y_resolution;
-  const players = matchData.match_info.players;
+  const players_metadata = matchData.match_info.players;
 
   function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number, debug: boolean = false): string[] {
     const foundRegions: string[] = regions.filter((region: Region) => isPlayerInRegion(
@@ -135,6 +140,7 @@ const MatchAnalysis = () => {
       .then(data => {
         console.log('Loaded match data from backend:', data);
         setMatchAnalysis(data);
+        setPlayers(data.players);
         setMatchMetadata(data.match_metadata);
       })
       .catch(err => {
@@ -199,8 +205,8 @@ const MatchAnalysis = () => {
             currentObjectiveIndex={currentObjectiveIndex}
           />
           <PlayerCards
-            playerPaths={playerPaths}
             players={players}
+            npcs={npcs}
             currentTime={currentTime}
             heros={heroData}
             getPlayerRegionLabels={getPlayerRegionLabels}
@@ -211,7 +217,7 @@ const MatchAnalysis = () => {
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}
           heroes={heroData}
-          players={players}
+          players={players_metadata}
           playerPaths={playerPaths}
           destroyedObjectivesSorted={destroyedObjectivesSorted}
           setCurrentObjectiveIndex={setCurrentObjectiveIndex}

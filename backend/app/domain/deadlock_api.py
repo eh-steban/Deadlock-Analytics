@@ -1,18 +1,28 @@
 from typing import Optional, Any
-from pydantic import BaseModel
+from sqlmodel import SQLModel
+from app.domain.player import PlayerInfo, PlayerPathState
 
-class MatchInfoFields(BaseModel):
+from typing import Optional
+from sqlmodel import SQLModel
+from app.domain.player import PlayerInfo, PlayerPathState
+
+class MatchPaths(SQLModel):
+    x_resolution: int
+    y_resolution: int
+    paths: list[PlayerPathState]
+
+class MatchInfoFields(SQLModel):
     duration_s: int
     match_outcome: int
     winning_team: int
-    players: list[dict[str, Any]]
+    players: list[PlayerInfo]
     start_time: int
     match_id: int
     legacy_objectives_mask: Any
     game_mode: int
     match_mode: int
     objectives: list[dict[str, Any]]
-    match_paths: dict[str, Any]
+    match_paths: MatchPaths
     damage_matrix: dict[str, Any]
     match_pauses: list
     customer_user_stats: Optional[dict[str, Any]] = None
@@ -27,10 +37,10 @@ class MatchInfoFields(BaseModel):
     average_badge_team1: int
     game_mode_version: int
 
-class MatchMetadata(BaseModel):
+class MatchMetadata(SQLModel):
     match_info: MatchInfoFields
 
-class MatchSummary(BaseModel):
+class MatchSummary(SQLModel):
     account_id: int
     match_id: int
     hero_id: int

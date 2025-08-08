@@ -1,9 +1,9 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
+import { PlayerPathState } from '../../types/Player';
 import { getPlayerMinimapPosition } from './PlayerPositions';
 
 interface AllPlayerPositionsProps {
-  playerPaths: PlayerPath[];
+  playerPaths: PlayerPathState[];
   matchData: any;
   xResolution: number;
   yResolution: number;

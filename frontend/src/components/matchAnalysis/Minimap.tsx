@@ -13,8 +13,7 @@ import PerPlayerWindowTable from './PerPlayerWindowTable';
 import DamageSourceTypesTable from './DamageSourceTypesTable';
 import { Hero } from '../../types/Hero';
 import { Region } from '../../types/Region';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { PlayerPathState, PlayerInfo } from '../../types/Player';
 import { ObjectiveCoordinate } from '../../types/ObjectiveCoordinate';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { objectiveCoordinates } from '../../data/objectiveCoordinates';
@@ -36,7 +35,7 @@ const Minimap = ({
 }: {
   currentTime: number,
   setCurrentTime: Dispatch<SetStateAction<number>>,
-  playerPaths: PlayerPath[],
+  playerPaths: PlayerPathState[],
   destroyedObjectivesSorted: Array<DestroyedObjective>,
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>,
   regions: Region[],

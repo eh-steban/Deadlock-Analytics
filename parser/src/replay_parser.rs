@@ -45,7 +45,7 @@ use haste::valveprotos::prost::Message;
 
 #[derive(Default, Debug, Serialize)]
 struct Player {
-    id: i32,
+    entity_id: i32,
     name: String,
     steam_id_32: u32,
 }
@@ -119,20 +119,15 @@ fn get_entity_name<'a>(entity_class: u32, entity: &'a Entity, entities: &'a Enti
     }
 }
 
-fn steamid64_to_accountid(steamid64: u64) -> u32 {
-    if steamid64 == 0 {
-        // println!("SteamID64 is 0, returning 0 as AccountID");
-        return 0;
-    } else {
-        // The formula to convert SteamID64 to AccountID is:
-        let id = (steamid64 - 76561197960265728) as u32;
-        // println!("Converted SteamID64: {} to AccountID: {}", steamid64, id);
-        return id;
+fn steamid64_to_accountid(steamid64: Option<u64>) -> u32 {
+    match steamid64 {
+        Some(id) => (id - 76561197960265728) as u32,
+        _ => 0,
     }
 }
 
 fn get_steam_id32(entity: &Entity) -> Option<u32> {
-    let steamid64 = entity.get_value::<u64>(&STEAM_ID_KEY)?;
+    let steamid64 = entity.get_value::<u64>(&STEAM_ID_KEY);
     return Some(steamid64_to_accountid(steamid64));
 }
 
@@ -187,7 +182,7 @@ impl MyVisitor {
                         .unwrap();
 
                     self.players.push(Player {
-                        id: entity.index() as i32,
+                        entity_id: entity.index() as i32,
                         name: entity.get_value(&PLAYER_NAME_KEY).unwrap_or("<unknown>".to_string()),
                         steam_id_32: get_steam_id32(owner_entity).unwrap_or(0),
                     });

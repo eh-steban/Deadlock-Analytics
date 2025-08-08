@@ -1,10 +1,9 @@
 import React from 'react';
-import { PlayerPath } from '../../types/PlayerPath';
-import { PlayerInfo } from '../../types/PlayerInfo';
+import { PlayerPathState, PlayerInfo } from '../../types/Player';
 import { Hero } from '../../types/Hero';
 
 interface PlayerPositionsProps {
-  playerPaths: PlayerPath[];
+  playerPaths: PlayerPathState[];
   players: PlayerInfo[];
   currentTime: number;
   xResolution: number;
@@ -106,7 +105,7 @@ export function standardizePlayerPosition(
   y_min: number,
   playerX: number,
   playerY: number,
-  playerPaths: Array<PlayerPath>,
+  playerPaths: Array<PlayerPathState>,
   xResolution: number,
   yResolution: number,
 ): { standPlayerX: number; standPlayerY: number } {
@@ -117,10 +116,10 @@ export function standardizePlayerPosition(
 
   // Find the min/max coordinates across all player paths
   // to scale the normalized position correctly
-  const allPlayerXMin = Math.min(...playerPaths.map((p: PlayerPath) => p.x_min));
-  const allPlayerXMax = Math.max(...playerPaths.map((p: PlayerPath) => p.x_max));
-  const allPlayerYMin = Math.min(...playerPaths.map((p: PlayerPath) => p.y_min));
-  const allPlayerYMax = Math.max(...playerPaths.map((p: PlayerPath) => p.y_max));
+  const allPlayerXMin = Math.min(...playerPaths.map((p: PlayerPathState) => p.x_min));
+  const allPlayerXMax = Math.max(...playerPaths.map((p: PlayerPathState) => p.x_max));
+  const allPlayerYMin = Math.min(...playerPaths.map((p: PlayerPathState) => p.y_min));
+  const allPlayerYMax = Math.max(...playerPaths.map((p: PlayerPathState) => p.y_max));
 
   // Scale the normalized position to (0,1) range based on the overall min/max
   // This ensures that the player position is correctly represented on the minimap
@@ -136,7 +135,7 @@ export function getPlayerMinimapPosition(
   y_min: number,
   playerX: number,
   playerY: number,
-  playerPaths: Array<PlayerPath>,
+  playerPaths: Array<PlayerPathState>,
   xResolution: number,
   yResolution: number,
   renderPlayerDot: (x: number, y: number) => { left: number; top: number },

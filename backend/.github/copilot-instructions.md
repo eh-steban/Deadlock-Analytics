@@ -24,7 +24,8 @@ This project follows **Domain-Driven Design (DDD)** principles:
 
 ### `/domain/{context}/`
 - Contains only business logic
-- Define `BaseModel` classes here (e.g., `User`, `Match`)
+- Define `SQLModel` classes here (e.g., `User`, `Match`)
+- When defining a `SQLModel` class here, don't use the table property
 - Validate inputs, enforce invariants, encapsulate rules
 
 ### `/services/{context}/`

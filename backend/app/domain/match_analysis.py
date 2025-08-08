@@ -1,11 +1,7 @@
-from typing import List, Dict, Optional
+from typing import Optional
 from sqlmodel import SQLModel
 from app.domain.deadlock_api import MatchMetadata
-
-class Player(SQLModel):
-    id: int
-    name: str
-    steam_id_32: int
+from app.domain.player import Player, ParsedPlayer, NPC
 
 class DamageRecord(SQLModel):
     ability_id: Optional[int] = None
@@ -15,14 +11,18 @@ class DamageRecord(SQLModel):
     type: Optional[int] = None
     victim_class: Optional[int] = None
 
-DamageWindow = Dict[int, Dict[int, List[DamageRecord]]]
-DamageDone = List[DamageWindow]
+DamageWindow = dict[int, dict[int, list[DamageRecord]]]
+DamageDone = list[DamageWindow]
 
+# TODO: Created a temporary ParsedPlayer class to make this happy
+# Might change this later
 class ParsedGameData(SQLModel):
     damage_done: DamageDone
-    players: List[Player]
-    entity_id_to_custom_player_id: Dict[int, int]
+    players: list[ParsedPlayer]
+    entity_id_to_custom_player_id: dict[str, int]
 
 class MatchAnalysis(SQLModel):
     match_metadata: MatchMetadata
     parsed_game_data: ParsedGameData
+    players: list[Player]
+    npcs: list[NPC]
