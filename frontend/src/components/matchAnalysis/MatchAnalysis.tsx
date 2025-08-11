@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Minimap from './Minimap';
 import PlayerCards from './PlayerCards';
@@ -9,7 +9,7 @@ import { regions } from '../../data/Regions';
 import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
-import { NPC, Player, Hero } from '../../types/Player';
+import { NPC, Hero } from '../../types/Player';
 
 var pointInPolygon = require('point-in-polygon')
 
@@ -54,7 +54,7 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
     },
   },
   parsed_game_data: {
-    damage_done: [] as [],
+    damage_per_tick: [] as [],
     players: [],
     entity_id_to_custom_player_id: {},
   },
@@ -65,12 +65,12 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
 const MatchAnalysis = () => {
   const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisResponse>(defaultMatchAnalysis);
   const [matchData, setMatchMetadata] = useState<MatchMetadata>(defaultMatchAnalysis.match_metadata);
-  const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Yo Momma', images: {} }]);
-  const [error, setError] = useState(false);
+  const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Default', images: {} }]);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const { match_id } = useParams();
-  const [players, setPlayers] = useState<Player[]>([]);
   const [npcs, setNPCs] = useState<NPC[]>([]);
+  const [error, setError] = useState(false);
+  const { match_id } = useParams();
+  const isMounted = useRef(true);
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -129,20 +129,18 @@ const MatchAnalysis = () => {
   };
 
   useEffect(() => {
-    // For local testing, you can uncomment one of these:
-    // fetch('/match_metadata.json')
-    // fetch('/match_metadataNew.json')
-    // fetch('/match_metadataNew2.json')
+    isMounted.current = true;
 
     fetch(`http://${process.env.REACT_APP_BACKEND_DOMAIN}/match/analysis/${match_id}`)
       .then(res => res.json())
       .then(data => {
+        if (!isMounted.current) return;
         console.log('Loaded match data from backend:', data);
         setMatchAnalysis(data);
-        setPlayers(data.players);
         setMatchMetadata(data.match_metadata);
       })
       .catch(err => {
+        if (!isMounted.current) return;
         console.error('Error fetching match data from backend:', err);
         setError(true);
       });
@@ -150,28 +148,33 @@ const MatchAnalysis = () => {
     fetch('https://assets.deadlock-api.com/v2/heroes?only_active=true')
       .then(res => res.json())
       .then(data => {
+        if (!isMounted.current) return;
         console.log('Loaded hero data:', data);
         setHeroData(data);
       })
       .catch(err => {
+        if (!isMounted.current) return;
         console.error('Error fetching hero data:', err);
         setError(true);
       });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [match_id]);
 
-  // Attach hero data directly to each player in the players array
-  useEffect(() => {
-    if (!players || !heroData) return;
+
+  const players = useMemo(() => {
+    if (!matchAnalysis.players || !heroData) return [];
     const heroIdToHero: Record<number, Hero> = {};
     heroData.forEach((h) => {
       heroIdToHero[h.id] = h;
-      console.log(`Hero ID ${h.id} mapped to hero:`, h);
     });
-    players.forEach((player) => {
-      console.log(`Hero ID ${player.player_info.hero_id} mapped to hero:`, player.hero);
-      player.hero = heroIdToHero[player.player_info.hero_id];
-    });
-  }, [players, heroData]);
+    return matchAnalysis.players.map((player) => ({
+      ...player,
+      hero: heroIdToHero[player.player_info.hero_id] || null,
+    }));
+  }, [matchAnalysis.players, heroData]);
 
   return (
     <>

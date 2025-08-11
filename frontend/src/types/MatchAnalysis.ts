@@ -1,4 +1,3 @@
-import { isDataView } from 'util/types';
 import { MatchMetadata } from './MatchMetadata';
 import { Player, NPC } from './Player';
 
@@ -17,10 +16,10 @@ type DamageWindow = {
   };
 };
 
-type DamageDone = DamageWindow[];
+type DamagePerTick = DamageWindow[];
 
 export interface ParsedGameData {
-  damage_done: DamageDone;
+  damage_per_tick: DamagePerTick;
   players: Player[];
   entity_id_to_custom_player_id: { [entityId: string]: string };
 }

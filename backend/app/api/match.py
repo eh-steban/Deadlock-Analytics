@@ -37,7 +37,6 @@ async def get_match_analysis(match_id: int):
     player_paths_list = match_info.match_paths.paths
     parsed_players = [ParsedPlayer(**p) for p in game_data.json().get("players", [])]
     entity_to_custom_id_list = game_data.json().get("entity_id_to_custom_player_id", {})
-    print(f"Entity to custom ID list: {entity_to_custom_id_list}")
 
     player_list, npc_list = await PlayerService().map_player_data(parsed_players, entity_to_custom_id_list, player_info_list, player_paths_list)
 

@@ -65,7 +65,7 @@ struct DamageRecord {
 #[derive(Default, Debug)]
 struct MyVisitor {
     damage_window: HashMap<i32, HashMap<i32, Vec<DamageRecord>>>,
-    damage_done: Vec<HashMap<i32, HashMap<i32, Vec<DamageRecord>>>>,
+    damage_per_tick: Vec<HashMap<i32, HashMap<i32, Vec<DamageRecord>>>>,
     players: Vec<Player>,
     entity_id_to_custom_player_id: HashMap<i32, i32>,
 }
@@ -160,7 +160,7 @@ fn get_steamid_from_pawn(pawn: &Entity, entities: &EntityContainer) -> Option<u6
 impl MyVisitor {
     pub fn get_game_data_json(&self) -> serde_json::Value {
         serde_json::json!({
-            "damage_done": self.damage_done,
+            "damage_per_tick": self.damage_per_tick,
             "players": self.players,
             "entity_id_to_custom_player_id": self.entity_id_to_custom_player_id
         })
@@ -248,7 +248,7 @@ impl Visitor for &mut MyVisitor {
             // restart the current window
             // println!("Damage Window: {:?}", self.damage_window);
             // println!("Players: {:?}", self.players);
-            self.damage_done.push(std::mem::replace(&mut self.damage_window, HashMap::new()));
+            self.damage_per_tick.push(std::mem::replace(&mut self.damage_window, HashMap::new()));
         }
 
         Ok(())

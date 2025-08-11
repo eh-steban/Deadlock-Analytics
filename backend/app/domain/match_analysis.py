@@ -12,12 +12,12 @@ class DamageRecord(SQLModel):
     victim_class: Optional[int] = None
 
 DamageWindow = dict[int, dict[int, list[DamageRecord]]]
-DamageDone = list[DamageWindow]
+DamagePerTick = list[DamageWindow]
 
 # TODO: Created a temporary ParsedPlayer class to make this happy
 # Might change this later
 class ParsedGameData(SQLModel):
-    damage_done: DamageDone
+    damage_per_tick: DamagePerTick
     players: list[ParsedPlayer]
     entity_id_to_custom_player_id: dict[str, int]
 

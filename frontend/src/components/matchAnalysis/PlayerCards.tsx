@@ -1,6 +1,5 @@
 import React from 'react';
-import { Hero } from '../../types/Player';
-import { MatchAnalysisResponse, ParsedGameData, DamageRecord } from '../../types/MatchAnalysis';
+import { ParsedGameData, DamageRecord } from '../../types/MatchAnalysis';
 import { NPC, Player } from '../../types/Player';
 
 interface PlayerCardsProps {
@@ -74,29 +73,17 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
             playerPathState.y_pos[currentTime],
           );
 
-          // TODO: player is actually a bunch of player paths, not a single player
-          // Need to rename this to something more appropriate
           console.log('Player:', player);
-          console.log("game data: ", gameData);
           console.log("currentTime: ", currentTime);
 
-          const damageWindow = gameData.damage_done[currentTime] || {};
+          const damageWindow = gameData.damage_per_tick[currentTime] || {};
 
           // If found, get the victim map for this attacker
-          const victimMap = damageWindow[player.custom_id];
-          
-          // Flatten all DamageRecords for this attacker at this time
-          // Example: victimMap = { 'victimId1': [rec1, rec2], 'victimId2': [rec3] }
-          // Object.values(victimMap) = [ [rec1, rec2], [rec3] ]
-          // .flat() = [ rec1, rec2, rec3 ]
-          const allDamageRecords: DamageRecord[] = victimMap
-            ? Object.values(victimMap).flat()
-            : [];
+          const attackerVictimMap = damageWindow[player.custom_id];
 
           console.log('damageWindow[player.custom_id]:', damageWindow[player.custom_id]);
           console.log('Damage Window:', damageWindow);
-          console.log('Victim Map:', victimMap);
-          console.log('All Damage Records:', allDamageRecords);
+          console.log('Attacker Victim Map:', attackerVictimMap);
 
           return (
             <div key={`player-card-${playerInfo.player_slot}`} style={{ background: '#fff', border: '1px solid #ccc', borderRadius: '0.5rem', padding: '0.5rem 0.75rem', boxShadow: '0 0.0625rem 0.125rem rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: '0.025rem' }}>
@@ -111,15 +98,15 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                   <div><strong>Combat Type:</strong> {combatTypeLabelList || '-'}</div>
                   <div><strong>Current Region:</strong> {regionLabels.join(', ')}</div>
                   <div><strong>Victims:</strong>
-                    {victimMap && Object.entries(victimMap).length > 0 ? (
+                    {attackerVictimMap && Object.entries(attackerVictimMap).length > 0 ? (
                       <ul style={{ margin: 0, paddingLeft: 18 }}>
-                        {Object.entries(victimMap).map(([victimIdx, records]) => {
+                        {Object.entries(attackerVictimMap).map(([victimIdx, damageRecords]) => {
                           const victimPlayer = players[Number(victimIdx)];
                           return (
                             <li key={victimIdx}>
                               {victimPlayer ? victimPlayer.name : `Victim ${victimIdx}`}
                               <ul style={{ margin: 0, paddingLeft: 18 }}>
-                                {records.map((rec, idx) => (
+                                {damageRecords.map((rec, idx) => (
                                   <li key={idx}>
                                     Damage: {rec.damage}, Type: {rec.type}
                                   </li>
