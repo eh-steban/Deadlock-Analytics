@@ -7,8 +7,14 @@ use std::{net::SocketAddr, fs::File, io::Write, path::PathBuf, path::Path};
 use regex::Regex;
 use base64::engine::general_purpose::URL_SAFE;
 use base64::Engine;
+use dashmap::DashMap;
+use once_cell::sync::Lazy;
+use tokio::sync::Mutex;
+use std::sync::Arc;
 
 mod replay_parser;
+
+static FILE_MUTEXES: Lazy<DashMap<String, Arc<Mutex<()>>>> = Lazy::new(DashMap::new);
 
 #[derive(Deserialize)]
 struct ParseRequest {
@@ -40,6 +46,14 @@ async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::I
         Ok((filename, replay_path)) => (filename, replay_path),
         Err(e) => return e,
     };
+
+    // Acquire the mutex for this file
+    let key = filename.to_string_lossy().to_string();
+    let mutex = FILE_MUTEXES
+        .entry(key.clone())
+        .or_insert_with(|| Arc::new(Mutex::new(())))
+        .clone();
+    let _guard = mutex.lock().await;
 
     if let Err(e) = download_compressed_replay_file(&decoded_url, &replay_path).await {
         return e;

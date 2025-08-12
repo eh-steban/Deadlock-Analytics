@@ -35,7 +35,6 @@ class NPC(SQLModel):
 
 class Player(SQLModel):
     entity_id: int
-    custom_id: int
     name: str
     steam_id_32: int
     player_info: PlayerInfo

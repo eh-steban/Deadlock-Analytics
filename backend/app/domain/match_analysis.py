@@ -19,10 +19,9 @@ DamagePerTick = list[DamageWindow]
 class ParsedGameData(SQLModel):
     damage_per_tick: DamagePerTick
     players: list[ParsedPlayer]
-    entity_id_to_custom_player_id: dict[str, int]
 
 class MatchAnalysis(SQLModel):
     match_metadata: MatchMetadata
     parsed_game_data: ParsedGameData
     players: list[Player]
-    npcs: list[NPC]
+    npcs: dict[int, NPC]

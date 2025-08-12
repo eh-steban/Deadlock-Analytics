@@ -56,10 +56,9 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
   parsed_game_data: {
     damage_per_tick: [] as [],
     players: [],
-    entity_id_to_custom_player_id: {},
   },
   players: [],
-  npcs: [],
+  npcs: {},
 };
 
 const MatchAnalysis = () => {
@@ -70,7 +69,7 @@ const MatchAnalysis = () => {
   const [npcs, setNPCs] = useState<NPC[]>([]);
   const [error, setError] = useState(false);
   const { match_id } = useParams();
-  const isMounted = useRef(true);
+  const isMounted = useRef(false);
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -137,6 +136,7 @@ const MatchAnalysis = () => {
         if (!isMounted.current) return;
         console.log('Loaded match data from backend:', data);
         setMatchAnalysis(data);
+        setNPCs(data.npcs);
         setMatchMetadata(data.match_metadata);
       })
       .catch(err => {

@@ -36,9 +36,7 @@ async def get_match_analysis(match_id: int):
     player_info_list = match_info.players
     player_paths_list = match_info.match_paths.paths
     parsed_players = [ParsedPlayer(**p) for p in game_data.json().get("players", [])]
-    entity_to_custom_id_list = game_data.json().get("entity_id_to_custom_player_id", {})
-
-    player_list, npc_list = await PlayerService().map_player_data(parsed_players, entity_to_custom_id_list, player_info_list, player_paths_list)
+    player_list, npc_list = await PlayerService().map_player_data(parsed_players, player_info_list, player_paths_list)
 
     try:
         analysis = MatchAnalysis(match_metadata=match_metadata, parsed_game_data=game_data.json(), players=player_list, npcs=npc_list)

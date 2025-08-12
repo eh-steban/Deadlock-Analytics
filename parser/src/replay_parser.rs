@@ -75,50 +75,6 @@ const PLAYER_NAME_KEY: u64 = entities::fkey_from_path(&["m_iszPlayerName"]);
 const STEAM_ID_KEY: u64 = entities::fkey_from_path(&["m_steamID"]);
 const CONTROLLER_HANDLE_KEY: u64 = entities::fkey_from_path(&["m_hPawn"]);
 
-fn get_entity_name_legacy<'a>(entity: &'a Entity, entity_names: &'a StringTable) -> Option<&'a str> {
-    const NAME_STRINGTABLE_INDEX_KEY: u64 =
-        entities::fkey_from_path(&["m_pEntity", "m_nameStringableIndex"]);
-    let name_stringtable_index: i32 = entity.get_value(&NAME_STRINGTABLE_INDEX_KEY)?;
-    let name_stringtable_item = entity_names.get_item(&name_stringtable_index)?;
-    let raw_string = name_stringtable_item.string.as_ref()?;
-    std::str::from_utf8(raw_string).ok()
-}
-
-fn get_entity_name<'a>(entity_class: u32, entity: &'a Entity, entities: &'a EntityContainer) -> std::string::String {
-    // Note: I'm not sure which one is mid boss, maybe the game I was testing with didn't ever attack mid boss
-    // entity_class may be one of these:
-    // 1 = CCitadelPlayerPawn
-    // 4 = CNPC_Trooper
-    // 5 = CNPC_TrooperBoss
-    // 6 = CNPC_TrooperNeutral (I think these are the jungle camps)
-    // 7 = CBaseEntity  (it seems to be an entity that's owned by a human player, like a turret; I'm not sure yet. But would be interesting to print out (<ownerName>s minion))
-    // 30 this is sometimes CItemXP, but is it always?
-    // 33 CCitadel_Destroyable_Building  (the shrines in each base? EntityNames rebels_t3_generator_yellow, rebels_t3_generator_purple, combine_t3_generator_purple, combine_t3_generator_yellow) 
-    // 34 CNPC_Boss_Tier2
-    // 35 CNPC_TrooperBarrackBoss
-    // 36 CNPC_Boss_Tier3
-    match entity_class {
-        1 => {
-            let owner_entity_index: u32 = entity.get_value::<u32>(&OWNER_ENTITY_KEY).unwrap();
-            let owner_entity = entities
-                .get(&ehandle_to_index(owner_entity_index))
-                .unwrap();
-
-            owner_entity.get_value::<String>(&PLAYER_NAME_KEY).unwrap()
-        },
-        4 => "<Trooper>".to_string(),
-        5 => "<TrooperBoss>".to_string(),
-        6 => "<TrooperNeutral>".to_string(),
-        7 => "<?PlayerMinion?>".to_string(),
-        30 => "<?ExpOrb?>".to_string(),
-        33 => "<Destroyable_Building>".to_string(),
-        34 => "<Boss_Tier2>".to_string(),
-        35 => "<TrooperBarrackBoss>".to_string(),
-        36 => "<Boss_Tier3>".to_string(),
-        _ => "<ERROR_UNKNOWN_UNIT>".to_string()
-    }
-}
-
 fn steamid64_to_accountid(steamid64: Option<u64>) -> u32 {
     match steamid64 {
         Some(id) => (id - 76561197960265728) as u32,
@@ -136,7 +92,6 @@ fn print_citadel_player_controller_index(entities: &EntityContainer) {
         let serializer_name = &entity.serializer().serializer_name.str;
         if serializer_name.as_ref() == "CCitadelPlayerController" {
             println!("Found CCitadelPlayerController at index: {}", entity.index());
-            const STEAM_ID_KEY: u64 = entities::fkey_from_path(&["m_steamID"]);
             if let Some(steamid64) = entity.get_value::<u64>(&STEAM_ID_KEY) {
                 println!("  m_steamID: {}", steamid64);
             } else {
@@ -162,7 +117,6 @@ impl MyVisitor {
         serde_json::json!({
             "damage_per_tick": self.damage_per_tick,
             "players": self.players,
-            "entity_id_to_custom_player_id": self.entity_id_to_custom_player_id
         })
     }
 
@@ -183,7 +137,7 @@ impl MyVisitor {
 
                     self.players.push(Player {
                         entity_id: entity.index() as i32,
-                        name: entity.get_value(&PLAYER_NAME_KEY).unwrap_or("<unknown>".to_string()),
+                        name: owner_entity.get_value(&PLAYER_NAME_KEY).unwrap(),
                         steam_id_32: get_steam_id32(owner_entity).unwrap_or(0),
                     });
 
@@ -294,11 +248,6 @@ impl Visitor for &mut MyVisitor {
 
                     let string_tables = ctx.string_tables().unwrap();
                     let entity_names = string_tables.find_table("EntityNames").unwrap();
-
-                    let attacker_name = entities
-                        .get(&msg.entindex_attacker())
-                        .and_then(|entindex| get_entity_name_legacy(entindex, entity_names))
-                        .unwrap_or("<some-other-unit>");
 
                     let attacker = entities
                         .get(&msg.entindex_attacker());

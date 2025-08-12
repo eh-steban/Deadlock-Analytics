@@ -50,7 +50,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
         width: '100%',
         gap: '0.25rem'
       }}>
-        {players.map(player => {
+        {players.map((player, index) => {
           const playerInfo = player.player_info
           const playerPathState = player.path_state;
           const team = playerInfo.team;
@@ -73,17 +73,10 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
             playerPathState.y_pos[currentTime],
           );
 
-          console.log('Player:', player);
-          console.log("currentTime: ", currentTime);
-
           const damageWindow = gameData.damage_per_tick[currentTime] || {};
 
           // If found, get the victim map for this attacker
-          const attackerVictimMap = damageWindow[player.custom_id];
-
-          console.log('damageWindow[player.custom_id]:', damageWindow[player.custom_id]);
-          console.log('Damage Window:', damageWindow);
-          console.log('Attacker Victim Map:', attackerVictimMap);
+          const attackerVictimMap = damageWindow[index];
 
           return (
             <div key={`player-card-${playerInfo.player_slot}`} style={{ background: '#fff', border: '1px solid #ccc', borderRadius: '0.5rem', padding: '0.5rem 0.75rem', boxShadow: '0 0.0625rem 0.125rem rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'row', alignItems: 'stretch', gap: '0.025rem' }}>
@@ -102,9 +95,13 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                       <ul style={{ margin: 0, paddingLeft: 18 }}>
                         {Object.entries(attackerVictimMap).map(([victimIdx, damageRecords]) => {
                           const victimPlayer = players[Number(victimIdx)];
+                          const victimNPC = npcs[Number(victimIdx)];
+                          console.log("victimNPC: ", victimNPC);
+                          console.log("victimIDX: ", victimIdx);
+                          let victimName = victimPlayer ? victimPlayer.name : victimNPC ? victimNPC.name : `Victim ${victimIdx}`;
                           return (
                             <li key={victimIdx}>
-                              {victimPlayer ? victimPlayer.name : `Victim ${victimIdx}`}
+                              {victimName}
                               <ul style={{ margin: 0, paddingLeft: 18 }}>
                                 {damageRecords.map((rec, idx) => (
                                   <li key={idx}>

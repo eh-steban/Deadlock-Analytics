@@ -21,12 +21,11 @@ type DamagePerTick = DamageWindow[];
 export interface ParsedGameData {
   damage_per_tick: DamagePerTick;
   players: Player[];
-  entity_id_to_custom_player_id: { [entityId: string]: string };
 }
 
 export interface MatchAnalysisResponse {
   match_metadata: MatchMetadata;
   parsed_game_data: ParsedGameData;
   players: Player[];
-  npcs: NPC[];
+  npcs: { [key: number]: NPC };
 }
