@@ -46,33 +46,22 @@ async def sample_player_paths_list():
     ]
 
 @pytest_asyncio.fixture
-async def sample_entity_to_custom_id_list():
-    return {
-        "100": 10,
-        "101": 11,
-        "102": 12,
-    }
-
-@pytest_asyncio.fixture
 async def sample_parsed_players():
     return [
         ParsedPlayer(entity_id=100, name="Alice", steam_id_32=1234567),
         ParsedPlayer(entity_id=101, name="Bob", steam_id_32=2234567),
-        ParsedPlayer(entity_id=102, name="Eve", steam_id_32=0),  # NPC
     ]
 
 @pytest.mark.asyncio
-async def test_map_entities_success(sample_parsed_players, sample_entity_to_custom_id_list, sample_player_info_list, sample_player_paths_list):
+async def test_map_entities_success(sample_parsed_players, sample_player_info_list, sample_player_paths_list):
     players, npcs = await PlayerAnalytics().map_entities(
         sample_parsed_players,
-        sample_entity_to_custom_id_list,
         sample_player_info_list,
         sample_player_paths_list
     )
     assert isinstance(players, list)
-    assert isinstance(npcs, list)
+    assert isinstance(npcs, dict)
     assert all(isinstance(p, Player) for p in players)
-    assert all(isinstance(n, NPC) for n in npcs)
 
     for p in players:
         assert hasattr(p, 'entity_id')
@@ -82,7 +71,3 @@ async def test_map_entities_success(sample_parsed_players, sample_entity_to_cust
         assert hasattr(p, 'path_state')
         assert isinstance(p.player_info, PlayerInfo)
         assert isinstance(p.path_state, PlayerPathState)
-
-    for n in npcs:
-        assert hasattr(n, 'entity_id')
-        assert hasattr(n, 'name')
