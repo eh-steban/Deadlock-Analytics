@@ -14,7 +14,7 @@ from app.domain.exceptions import (
 class ParsedMatchesRepo:
     async_session: Annotated[AsyncSession, Depends(get_db_session)]
 
-    async def get_payload(self, match_id: str, schema_version: int, session: Annotated[AsyncSession, Depends(get_db_session)]) -> dict:
+    async def get_payload(self, match_id: int, schema_version: int, session: Annotated[AsyncSession, Depends(get_db_session)]) -> dict:
         try:
             stmt = select(ParsedMatchPayload).where(
                 ParsedMatchPayload.match_id == match_id,
@@ -34,7 +34,7 @@ class ParsedMatchesRepo:
         except SQLAlchemyError as e:
             raise MatchDataUnavailableException(f"DB error: {str(e)}")
 
-    async def upsert_payload(self, match_id: str, schema_version: int, payload: dict, etag: str, session: Annotated[AsyncSession, Depends(get_db_session)]) -> None:
+    async def upsert_payload(self, match_id: int, schema_version: int, payload: dict, etag: str, session: Annotated[AsyncSession, Depends(get_db_session)]) -> None:
         try:
             stmt = select(ParsedMatchPayload).where(
                 ParsedMatchPayload.match_id == match_id,
@@ -57,7 +57,7 @@ class ParsedMatchesRepo:
         except SQLAlchemyError as e:
             raise MatchDataIntegrityException(f"Upsert failed: {str(e)}")
 
-    async def exists(self, match_id: str, schema_version: int, session: Annotated[AsyncSession, Depends(get_db_session)]) -> bool:
+    async def exists(self, match_id: int, schema_version: int, session: Annotated[AsyncSession, Depends(get_db_session)]) -> bool:
         stmt = select(ParsedMatchPayload.match_id).where(
             ParsedMatchPayload.match_id == match_id,
             ParsedMatchPayload.schema_version == schema_version
