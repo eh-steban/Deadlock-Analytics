@@ -3,7 +3,7 @@ import pytest_asyncio
 import httpx
 from tests.test_helper import setup_database, async_session
 from app.main import app
-from app.domain.match_analysis import ParsedGameData, MatchAnalysis, DamageRecord
+from app.domain.match_analysis import ParsedGameData, DamageRecord
 from app.domain.player import ParsedPlayer
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.config import Settings, get_settings
@@ -138,7 +138,6 @@ def mock_parser_call(httpx_mock):
 
 @pytest_asyncio.fixture
 async def setup_db_payload(async_session):
-    # Insert a valid payload for MATCH_ID
     repo = ParsedMatchesRepo()
     player_one = ParsedPlayer(entity_id=1, name="bar", steam_id_32=100)
     player_two = ParsedPlayer(entity_id=2, name="baz", steam_id_32=200)
@@ -166,14 +165,19 @@ async def test_get_match_analysis_match_not_found(async_client, mock_deadlock_ap
     assert "detail" in response.json()
 
 @pytest.mark.asyncio
-async def test_get_match_analysis_etag(async_client, mock_deadlock_api_call, async_session, setup_database, setup_db_payload):
-    # First request to get ETag
-    response = await async_client.get(f"/match/analysis/{MATCH_ID}")
-    assert response.status_code == 200
-    etag = response.headers.get("ETag")
-    # Second request with If-None-Match
-    response2 = await async_client.get(f"/match/analysis/{MATCH_ID}", headers={"If-None-Match": etag})
-    assert response2.status_code == 304
+async def test_if_none_match_returns_304_with_headers(async_client, mock_deadlock_api_call, async_session, setup_database, setup_db_payload):
+    # Prime cache and get ETag from a 200 response
+    first = await async_client.get(f"/match/analysis/{MATCH_ID}")
+    assert first.status_code == 200
+    etag = first.headers.get("ETag")
+    assert etag
+
+    # Conditional request should return 304 Not Modified
+    second = await async_client.get(f"/match/analysis/{MATCH_ID}", headers={"If-None-Match": etag})
+    assert second.status_code == 304
+    assert second.headers.get("ETag") == etag
+    assert "Cache-Control" in second.headers
+    assert second.text == ""
 
 @pytest.mark.asyncio
 async def test_get_match_analysis_from_db_success(async_client, mock_deadlock_api_call, async_session, setup_database, setup_db_payload):
@@ -185,7 +189,6 @@ async def test_get_match_analysis_from_db_success(async_client, mock_deadlock_ap
     assert "parsed_game_data" in data
     assert "players" in data
     assert "npcs" in data
-    # Should match the payload inserted
     assert data["parsed_game_data"]["players"][0]["entity_id"] == 1
 
 @pytest.mark.asyncio

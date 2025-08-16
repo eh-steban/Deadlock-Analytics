@@ -1,7 +1,14 @@
 import httpx
 import json
 from typing import Annotated
-from fastapi import APIRouter, HTTPException, Request, Response, Depends
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    Request,
+    Response,
+    status,
+    Depends
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.services.player_service import PlayerService
@@ -10,7 +17,7 @@ from app.domain.match_analysis import MatchAnalysis, ParsedGameData
 from app.domain.player import ParsedPlayer
 from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
-from app.utils.http_cache import compute_etag, respond_if_not_modified
+from app.utils.http_cache import compute_etag, check_if_not_modified
 from app.domain.exceptions import (
     MatchDataUnavailableException,
     MatchParseException,
@@ -39,20 +46,31 @@ async def get_match_analysis(
     schema_version = 1
     repo = ParsedMatchesRepo()
     etag = ""
-    match_metadata = await deadlock_api_service.get_match_metadata_for(match_id)
-    analysis = MatchAnalysis.model_construct(match_metadata=match_metadata)
 
     try:
         # Fetch existing payload from DB
         if payload_dict := await repo.get_payload(match_id, schema_version, session):
             etag = compute_etag(payload_dict, schema_version)
+            # Check for `if-none-match` header and return a response that includes
+            # data from the Deadlock API. ParsedGameData is cached in the FE
+            if request_etag := request.headers.get("If-None-Match"):
+                not_modified_response = check_if_not_modified(request_etag, etag)
+                if not_modified_response:
+                    response = Response(
+                        status_code=status.HTTP_304_NOT_MODIFIED,
+                        headers={"ETag": etag, "Cache-Control": "public, max-age=300"}
+                    )
+                    return response
         else:
             # If we don't have a payload, get replay URL and parse it
             demo = await deadlock_api_service.get_demo_url(match_id)
             replay_url = demo.get("demo_url")
 
             if not replay_url:
-                raise HTTPException(status_code=404, detail="Replay URL not found for the match")
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="Replay URL not found for the match"
+                )
 
             # Send `replay_url` to parser service
             async with httpx.AsyncClient(timeout=300.0) as client:
@@ -65,46 +83,51 @@ async def get_match_analysis(
                     parse_resp.raise_for_status()
                     payload_dict = parse_resp.json()
                 except httpx.HTTPStatusError as e:
-                    raise HTTPException(status_code=e.response.status_code, detail=f"Rust service error: {e.response.status_code} - {e.response.text}")
+                    raise HTTPException(
+                        status_code=e.response.status_code,
+                        detail=f"Rust service error: {e.response.status_code} - {e.response.text}"
+                    )
 
             # Upsert new payload into DB
             etag = compute_etag(payload_dict, schema_version)
-
             await repo.upsert_payload(match_id, schema_version, payload_dict, etag, session)
 
     except MatchDataUnavailableException:
-        raise HTTPException(status_code=500, detail="Parsed payload missing in DB")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Parsed payload missing in DB"
+        )
     except MatchDataIntegrityException:
-        raise HTTPException(status_code=500, detail="Failed to store parsed payload in DB")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to store parsed payload in DB"
+        )
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error"
+        )
 
-    # Check for `if-none-match` header and return a response that includes
-    # data from the Deadlock API. ParsedGameData is cached in the FE
-    if request_etag := request.headers.get("If-None-Match"):
-        not_modified_response = respond_if_not_modified(request_etag, etag)
-        if not_modified_response:
-            not_modified_response.body = json.dumps(analysis.model_dump()).encode("utf-8")
-            not_modified_response.media_type = "application/json"
-            not_modified_response.headers["ETag"] = etag
-            not_modified_response.headers["Cache-Control"] = "public, max-age=300"
-            return not_modified_response
+    match_metadata = await deadlock_api_service.get_match_metadata_for(match_id)
 
     # Prepare analysis
     match_info = match_metadata.match_info
     player_info_list = match_info.players
     player_paths_list = match_info.match_paths.paths
     parsed_players = [ParsedPlayer(**p) for p in payload_dict.get("players", [])]
-    analysis.parsed_game_data = ParsedGameData.model_validate(payload_dict)
-    analysis.players, analysis.npcs = await PlayerService().map_player_data(
+    player_list, npc_list = await PlayerService().map_player_data(
         parsed_players,
         player_info_list,
         player_paths_list
     )
-
-    MatchAnalysis.model_validate(analysis)
+    analysis = MatchAnalysis(
+        match_metadata=match_metadata,
+        parsed_game_data=ParsedGameData(**payload_dict),
+        players=player_list,
+        npcs=npc_list
+    )
 
     response = Response(content=json.dumps(analysis.model_dump()), media_type="application/json")
     response.headers["ETag"] = etag
