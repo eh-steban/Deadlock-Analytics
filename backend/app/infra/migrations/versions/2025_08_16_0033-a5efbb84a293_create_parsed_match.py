@@ -1,19 +1,26 @@
+"""create parsed match payload
+
+Revision ID: a5efbb84a293
+Revises: 8cfb023f5d33
+Create Date: 2025-08-16 00:33:10.537867+00:00
+
 """
-Alembic migration to create parsed_match_payload table
-"""
+from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
-revision = '2025_08_13_0000'
-down_revision = None
-branch_labels = None
-depends_on = None
+
+# revision identifiers, used by Alembic.
+revision: str = 'a5efbb84a293'
+down_revision: Union[str, Sequence[str], None] = '8cfb023f5d33'
+branch_labels: Union[str, Sequence[str], None] = None
+depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade():
     op.create_table(
-        'parsedmatchpayload',
-        sa.Column('match_id', sa.String(), primary_key=True, nullable=False),
+        'parsedmatch',
+        sa.Column('match_id', sa.Integer(), primary_key=True, nullable=False),
         sa.Column('schema_version', sa.Integer(), nullable=False, default=1),
         sa.Column('payload_json', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
         sa.Column('etag', sa.String(), nullable=True),
@@ -23,4 +30,4 @@ def upgrade():
     )
 
 def downgrade():
-    op.drop_table('parsedmatchpayload')
+    op.drop_table('parsedmatch')

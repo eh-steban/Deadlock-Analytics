@@ -1,80 +1,112 @@
 import httpx
-from fastapi import APIRouter, HTTPException
+import json
+from typing import Annotated
+from fastapi import APIRouter, HTTPException, Request, Response, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.services.player_service import PlayerService
-from app.domain.match_analysis import MatchAnalysis
+from app.repo.parsed_matches_repo import ParsedMatchesRepo
+from app.domain.match_analysis import MatchAnalysis, ParsedGameData
 from app.domain.player import ParsedPlayer
-from app.api.replay import get_match_replay_url
-from app.config import get_settings
+from app.infra.db.session import get_db_session
+from app.config import Settings, get_settings
+from app.utils.http_cache import compute_etag, respond_if_not_modified
+from app.domain.exceptions import (
+    MatchDataUnavailableException,
+    MatchParseException,
+    MatchDataIntegrityException
+)
 
 router = APIRouter()
-api_service = DeadlockAPIService()
-settings = get_settings()
-PARSER_BASE_URL = settings.PARSER_BASE_URL
+
+SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
+SettingsDep = Annotated[Settings, Depends(get_settings)]
+
+def get_deadlock_service() -> DeadlockAPIService:
+    return DeadlockAPIService()
+
+ServiceDep = Annotated[DeadlockAPIService, Depends(get_deadlock_service)]
 
 @router.get("/analysis/{match_id}", response_model=MatchAnalysis)
-async def get_match_analysis(match_id: int):
-    # At the top, check if ParsedMatchPayload exists in DB for match_id and schema_version
-    # If it exists:
-    #     - Use repo.get_payload to fetch the parsed payload
-    #     - Set game_data to the fetched payload
-    #     - Continue with analysis logic below using game_data
-    # If it does not exist:
-    #     - Continue with current flow: get replay_url, call Rust Haste service, fetch match payload
-    #     - After fetching, use repo.upsert_payload to store the payload in DB
-    #     - Continue with analysis logic using the new payload
-    replay_url = await get_match_replay_url(match_id)
+async def get_match_analysis(
+    request: Request,
+    match_id: int,
+    session: SessionDep,
+    settings: SettingsDep,
+    deadlock_api_service: ServiceDep,
+):
 
-    if not replay_url:
-        raise HTTPException(status_code=404, detail="Replay URL not found for the match")
-    # If we did not find a parsed payload, this is where we fetch the replay and call the Rust service
-    # After fetching and parsing, upsert the payload into the DB using repo.upsert_payload
-    # Call Haste Parser service to parse the replay
-    async with httpx.AsyncClient(timeout=300.0) as client:
-        try:
-            game_data = await client.post(
-                f"{PARSER_BASE_URL}/parse",
-                json={"demo_url": replay_url},
-                headers={"Content-Type": "application/json"}
-            )
-            game_data.raise_for_status()
-        except httpx.HTTPStatusError as e:
-            raise HTTPException(status_code=e.response.status_code, detail=f"Rust service error: {e.response.status_code} - {e.response.text}")
-    # After successful parse, upsert the new payload into the DB
+    schema_version = 1
+    repo = ParsedMatchesRepo()
+    etag = ""
+    match_metadata = await deadlock_api_service.get_match_metadata_for(match_id)
+    analysis = MatchAnalysis.model_construct(match_metadata=match_metadata)
 
-    match_metadata = await api_service.get_match_metadata_for(match_id)
+    try:
+        # Fetch existing payload from DB
+        if payload_dict := await repo.get_payload(match_id, schema_version, session):
+            etag = compute_etag(payload_dict, schema_version)
+        else:
+            # If we don't have a payload, get replay URL and parse it
+            demo = await deadlock_api_service.get_demo_url(match_id)
+            replay_url = demo.get("demo_url")
 
+            if not replay_url:
+                raise HTTPException(status_code=404, detail="Replay URL not found for the match")
+
+            # Send `replay_url` to parser service
+            async with httpx.AsyncClient(timeout=300.0) as client:
+                try:
+                    parse_resp = await client.post(
+                        f"{settings.PARSER_BASE_URL}/parse",
+                        json={"demo_url": replay_url},
+                        headers={"Content-Type": "application/json"}
+                    )
+                    parse_resp.raise_for_status()
+                    payload_dict = parse_resp.json()
+                except httpx.HTTPStatusError as e:
+                    raise HTTPException(status_code=e.response.status_code, detail=f"Rust service error: {e.response.status_code} - {e.response.text}")
+
+            # Upsert new payload into DB
+            etag = compute_etag(payload_dict, schema_version)
+
+            await repo.upsert_payload(match_id, schema_version, payload_dict, etag, session)
+
+    except MatchDataUnavailableException:
+        raise HTTPException(status_code=500, detail="Parsed payload missing in DB")
+    except MatchDataIntegrityException:
+        raise HTTPException(status_code=500, detail="Failed to store parsed payload in DB")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
+    # Check for `if-none-match` header and return a response that includes
+    # data from the Deadlock API. ParsedGameData is cached in the FE
+    if request_etag := request.headers.get("If-None-Match"):
+        not_modified_response = respond_if_not_modified(request_etag, etag)
+        if not_modified_response:
+            not_modified_response.body = json.dumps(analysis.model_dump()).encode("utf-8")
+            not_modified_response.media_type = "application/json"
+            not_modified_response.headers["ETag"] = etag
+            not_modified_response.headers["Cache-Control"] = "public, max-age=300"
+            return not_modified_response
+
+    # Prepare analysis
     match_info = match_metadata.match_info
     player_info_list = match_info.players
     player_paths_list = match_info.match_paths.paths
-    parsed_players = [ParsedPlayer(**p) for p in game_data.json().get("players", [])]
-    player_list, npc_list = await PlayerService().map_player_data(parsed_players, player_info_list, player_paths_list)
+    parsed_players = [ParsedPlayer(**p) for p in payload_dict.get("players", [])]
+    analysis.parsed_game_data = ParsedGameData.model_validate(payload_dict)
+    analysis.players, analysis.npcs = await PlayerService().map_player_data(
+        parsed_players,
+        player_info_list,
+        player_paths_list
+    )
 
-    try:
-        analysis = MatchAnalysis(match_metadata=match_metadata, parsed_game_data=game_data.json(), players=player_list, npcs=npc_list)
-    except Exception as e:
-        print(f"Error occurred while creating MatchAnalysis: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+    MatchAnalysis.model_validate(analysis)
 
-    # --- ETag integration ---
-    from fastapi import Request, Response
-    from app.utils.http_cache import compute_etag, respond_if_not_modified
-    schema_version = 1  # Replace with actual version if needed
-    payload_dict = game_data.json()  # Use the canonical payload
-    etag = compute_etag(payload_dict, schema_version)
-    # Accept If-None-Match header
-    request_etag = None
-    import inspect
-    for frame in inspect.stack():
-        if 'request' in frame.frame.f_locals:
-            request = frame.frame.f_locals['request']
-            request_etag = request.headers.get('if-none-match')
-            break
-    not_modified_response = respond_if_not_modified(request_etag or "", etag)
-    if not_modified_response:
-        return not_modified_response
-    response = Response(content=game_data.text, media_type="application/json")
+    response = Response(content=json.dumps(analysis.model_dump()), media_type="application/json")
     response.headers["ETag"] = etag
     response.headers["Cache-Control"] = "public, max-age=300"
     return response
-    # At the end, consider ETag integration for response caching and 304 support
