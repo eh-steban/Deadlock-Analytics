@@ -1,5 +1,7 @@
+import base64
 import httpx
 import json
+import logging
 from typing import Annotated
 from fastapi import (
     APIRouter,
@@ -25,6 +27,7 @@ from app.domain.exceptions import (
 )
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
 
 SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 SettingsDep = Annotated[Settings, Depends(get_settings)]
@@ -72,12 +75,15 @@ async def get_match_analysis(
                     detail="Replay URL not found for the match"
                 )
 
+            logger.info(f"Replay url ({replay_url}) for match ID: {match_id}")
+            encoded_replay_url = base64.urlsafe_b64encode(replay_url.encode()).decode()
+
             # Send `replay_url` to parser service
             async with httpx.AsyncClient(timeout=300.0) as client:
                 try:
                     parse_resp = await client.post(
                         f"{settings.PARSER_BASE_URL}/parse",
-                        json={"demo_url": replay_url},
+                        json={"demo_url": encoded_replay_url},
                         headers={"Content-Type": "application/json"}
                     )
                     parse_resp.raise_for_status()
