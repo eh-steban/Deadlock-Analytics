@@ -6,10 +6,10 @@ import ObjectiveInfoPanel from './ObjectiveInfoPanel';
 import { standardizePlayerPosition } from './PlayerPositions';
 import { Region } from '../../types/Region';
 import { regions } from '../../data/Regions';
-import { MatchMetadata } from '../../types/MatchMetadata';
 import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
 import { NPC, Hero } from '../../types/Player';
+import { useMatchAnalysis } from '../../hooks/UseMatchAnalysis';
 
 var pointInPolygon = require('point-in-polygon')
 
@@ -58,23 +58,24 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
     players: [],
   },
   players: [],
-  npcs: {},
+  npcs: [],
 };
 
 const MatchAnalysis = () => {
-  const [matchAnalysis, setMatchAnalysis] = useState<MatchAnalysisResponse>(defaultMatchAnalysis);
-  const [matchData, setMatchMetadata] = useState<MatchMetadata>(defaultMatchAnalysis.match_metadata);
+  const { match_id } = useParams();
+  // Fetch match analysis via ETag-aware hook
+  const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
+  const matchAnalysis: MatchAnalysisResponse = matchAnalysisData ?? defaultMatchAnalysis;
+  const matchMetadata = matchAnalysis.match_metadata;
   const [heroData, setHeroData] = useState<Hero[]>([{ id: 0, name: 'Default', images: {} }]);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [npcs, setNPCs] = useState<NPC[]>([]);
   const [error, setError] = useState(false);
-  const { match_id } = useParams();
   const isMounted = useRef(false);
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
   // the minimap. It may be worth revisiting later.
-  const destroyedObjectivesSorted: Array<DestroyedObjective> = matchData.match_info.objectives
+  const destroyedObjectivesSorted: Array<DestroyedObjective> = matchMetadata.match_info.objectives
     .filter(obj => obj.destroyed_time_s !== 0)
     .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
@@ -82,10 +83,10 @@ const MatchAnalysis = () => {
   // x/yResolution comes from match_metadata response returned from
   // Deadlock API (https://api.deadlock-api.com/v1/matches/{match_id}/metadata)
   // and looks something like: "match_info": { "match_paths": "x_resolution": 16383, "y_resolution": 16383 }
-  const playerPaths = matchData.match_info.match_paths.paths;
-  const xResolution = matchData.match_info.match_paths.x_resolution;
-  const yResolution = matchData.match_info.match_paths.y_resolution;
-  const players_metadata = matchData.match_info.players;
+  const playerPaths = matchMetadata.match_info.match_paths.paths;
+  const xResolution = matchMetadata.match_info.match_paths.x_resolution;
+  const yResolution = matchMetadata.match_info.match_paths.y_resolution;
+  const players_metadata = matchMetadata.match_info.players;
 
   function getPlayerRegionLabels(x_max: number, x_min: number, y_max: number, y_min: number, x: number, y: number, debug: boolean = false): string[] {
     const foundRegions: string[] = regions.filter((region: Region) => isPlayerInRegion(
@@ -129,21 +130,6 @@ const MatchAnalysis = () => {
 
   useEffect(() => {
     isMounted.current = true;
-
-    fetch(`http://${process.env.REACT_APP_BACKEND_DOMAIN}/match/analysis/${match_id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!isMounted.current) return;
-        console.log('Loaded match data from backend:', data);
-        setMatchAnalysis(data);
-        setNPCs(data.npcs);
-        setMatchMetadata(data.match_metadata);
-      })
-      .catch(err => {
-        if (!isMounted.current) return;
-        console.error('Error fetching match data from backend:', err);
-        setError(true);
-      });
 
     fetch('https://assets.deadlock-api.com/v2/heroes?only_active=true')
       .then(res => res.json())
@@ -222,7 +208,7 @@ const MatchAnalysis = () => {
           />
           <PlayerCards
             players={players}
-            npcs={npcs}
+            npcs={matchAnalysis.npcs as NPC[]}
             currentTime={currentTime}
             getPlayerRegionLabels={getPlayerRegionLabels}
             gameData={matchAnalysis.parsed_game_data}
@@ -249,18 +235,18 @@ const MatchAnalysis = () => {
       */}
       {/* <PerPlayerWindowTable
         playerPaths={playerPaths}
-        matchData={matchData}
+        matchMetadata={matchMetadata}
         playerTime={playerTime}
         heros={heros}
       /> */}
 
       {/* Damage Source Types Table */}
       {/* <DamageSourceTypesTable
-        sourceDetails={matchData.match_info.damage_matrix.source_details}
+        sourceDetails={matchMetadata.match_info.damage_matrix.source_details}
       /> */}
 
       {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
-      {/* <DamageMatrixTable matchData={matchData} /> */}
+      {/* <DamageMatrixTable matchMetadata={matchMetadata} /> */}
 
       <div style={{ marginTop: 40 }}>
         <h3>All Hero Images (from API)</h3>
