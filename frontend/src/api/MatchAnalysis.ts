@@ -55,8 +55,8 @@ export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnE
   if (cached?.etag) {
     headers['If-None-Match'] = cached.etag;
   }
-
-  const url = `http://${process.env.REACT_APP_BACKEND_DOMAIN}/match/analysis/${matchId}`;
+  const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
+  const url = `http://${backendDomain}/match/analysis/${matchId}`;
   let res: Response;
   try {
     res = await fetch(url, { headers });

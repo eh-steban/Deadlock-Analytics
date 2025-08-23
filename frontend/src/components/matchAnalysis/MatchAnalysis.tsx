@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import pointInPolygon from 'point-in-polygon';
 import Minimap from './Minimap';
 import PlayerCards from './PlayerCards';
 import ObjectiveInfoPanel from './ObjectiveInfoPanel';
@@ -10,8 +11,6 @@ import { DestroyedObjective } from '../../types/DestroyedObjective';
 import { MatchAnalysisResponse } from '../../types/MatchAnalysis';
 import { NPC, Hero } from '../../types/Player';
 import { useMatchAnalysis } from '../../hooks/UseMatchAnalysis';
-
-var pointInPolygon = require('point-in-polygon')
 
 const defaultMatchAnalysis: MatchAnalysisResponse = {
   match_metadata: {

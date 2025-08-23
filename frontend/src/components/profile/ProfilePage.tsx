@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-const backendDomain = process.env.REACT_APP_BACKEND_DOMAIN || "domain";
+const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
 
 interface User {
   steamid: string;
