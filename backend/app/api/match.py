@@ -12,6 +12,7 @@ from fastapi import (
     Depends
 )
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import SQLAlchemyError
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.services.player_service import PlayerService
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
@@ -52,10 +53,11 @@ async def get_match_analysis(
 
     try:
         # Fetch existing payload from DB
-        if payload_dict := await repo.get_payload(match_id, schema_version, session):
+        payload_dict = await repo.get_payload(match_id, schema_version, session)
+
+        if payload_dict:
             etag = compute_etag(payload_dict, schema_version)
-            # Check for `if-none-match` header and return a response that includes
-            # data from the Deadlock API. ParsedGameData is cached in the FE
+            # Check for `if-none-match` header and return a 304 if the client's ETag matches
             if request_etag := request.headers.get("If-None-Match"):
                 not_modified_response = check_if_not_modified(request_etag, etag)
                 if not_modified_response:
@@ -108,9 +110,16 @@ async def get_match_analysis(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to store parsed payload in DB"
         )
+    except SQLAlchemyError as db_err:
+        logger.exception("Database error while fetching parsed payload for match_id=%s", match_id)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database error while fetching parsed payload"
+        )
     except HTTPException:
         raise
     except Exception as e:
+        logger.exception("Unhandled error while building match analysis for match_id=%s", match_id)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal Server Error"
