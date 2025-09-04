@@ -156,6 +156,10 @@ impl MyVisitor {
                 36 => 28, // "<CNPC_Boss_Tier3>".to_string(),
                 27 => 29, // *****FIXME: Not sure what entity this is*****
                 26 => 30, // *****FIXME: Not sure what entity this is*****
+                29 => 31, // *****FIXME: Not sure what entity this is*****
+                31 => 32, // *****FIXME: Not sure what entity this is*****
+                28 => 33, // *****FIXME: Not sure what entity this is*****
+                23 => 34, // *****FIXME: Not sure what entity this is*****
                 _ => panic!("Unknown value: {}", entity_class),
             }
         }
