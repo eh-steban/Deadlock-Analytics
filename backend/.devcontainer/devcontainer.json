@@ -28,8 +28,8 @@
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.black-formatter",
-				"ms-python.isort"
-				// "ms-azuretools.vscode-containers"
+				"ms-python.isort",
+				"eamodio.gitlens"
 			]
 		}
 	}
