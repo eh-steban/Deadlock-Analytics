@@ -10,6 +10,8 @@ body {
 }
 
 @layer base {
+  @reference "tailwindcss";
+
   h1 {
     @apply mb-6 text-3xl font-bold text-shadow-lg;
   }
@@ -17,9 +19,9 @@ body {
     @apply mb-4 text-xl font-semibold text-shadow-lg;
   }
   h3 {
-    @apply mb-2 text-lg font-semibold text-shadow-md;
+    @apply mb-2 text-lg font-semibold text-shadow-sm;
   }
   h4 {
-    @apply mb-2 text-base font-semibold text-shadow-md;
+    @apply mb-2 text-base font-semibold text-shadow-sm;
   }
 }
