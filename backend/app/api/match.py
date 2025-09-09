@@ -22,6 +22,7 @@ from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
 from app.utils.http_cache import compute_etag, check_if_not_modified
 from app.domain.exceptions import (
+    DeadlockAPIError,
     MatchDataUnavailableException,
     MatchParseException,
     MatchDataIntegrityException
@@ -115,6 +116,11 @@ async def get_match_analysis(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Database error while fetching parsed payload"
+        )
+    except DeadlockAPIError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Deadlock API error occurred. Check logs for details."
         )
     except HTTPException:
         raise

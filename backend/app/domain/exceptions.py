@@ -9,3 +9,7 @@ class MatchParseException(Exception):
 class MatchDataIntegrityException(Exception):
     """Raised when stored match data is corrupted or cannot be deserialized."""
     pass
+
+class DeadlockAPIError(Exception):
+    """Raised when there is an error involving the Deadlock API."""
+    pass

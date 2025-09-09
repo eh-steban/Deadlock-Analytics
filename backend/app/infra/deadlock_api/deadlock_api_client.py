@@ -3,6 +3,7 @@ import textwrap
 from httpx import AsyncClient, Response, Timeout
 from app.config import get_settings
 from app.domain.deadlock_api import MatchMetadata, MatchSummary
+from app.domain.exceptions import DeadlockAPIError
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ class DeadlockAPIClient:
         if response.is_error:
             truncated_text = textwrap.shorten(response.text, width=200, placeholder='...')
             logger.error(f"DeadlockAPIClient#call_api({url}) failed: {response.status_code} - {truncated_text}")
-            raise Exception(f"#call_api({url}) Failed: HTTP {response.status_code} - {truncated_text}")
+            raise DeadlockAPIError(f"#call_api({url}) Failed: HTTP {response.status_code} - {truncated_text}")
         return response
 
     async def fetch_account_match_history(self, steam_id: str) -> list[MatchSummary]:
