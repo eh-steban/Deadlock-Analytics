@@ -71,9 +71,13 @@ const MatchAnalysis = () => {
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
   ]);
-  const [currentTime, setCurrentTime] = useState<number>(0);
   const [error, setError] = useState(false);
   const isMounted = useRef(false);
+
+  const [currentTick, setCurrentTick] = useState<number>(0);
+  const minutes = Math.floor(Number(currentTick) / 60);
+  const seconds = Math.floor(Number(currentTick) % 60);
+  const matchTime = `${minutes}:${String(seconds).padStart(2, "0")}`;
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -181,45 +185,38 @@ const MatchAnalysis = () => {
 
   return (
     <>
-      <div className='match-analysis flex w-full flex-col'>
-        <div className='match-stats grid grid-cols-2'>
-          <h1 className='col-span-2 text-center'>Match Stats</h1>
-          <h3 className='col-span-2 text-center'>Match ID: {match_id}</h3>
+      <div className='match-analysis'>
+        <div className='w-full bg-white/80'>
+          <div className='mx-auto flex max-w-screen-lg flex-col items-center gap-1 py-4 text-center'>
+            <h1>Match Stats</h1>
+            <h2>Match ID: {match_id}</h2>
+            <h3>Match Time: {matchTime}</h3>
+          </div>
+        </div>
+        <div className='grid grid-cols-[1fr_47vw] gap-3'>
           <div
             title='InformationPanel'
-            style={{
-              width: "45vw",
-              backgroundColor: "#f0f0f0",
-              borderRight: "1px solid #ddd",
-              height: "100vh",
-              overflowY: "auto",
-              boxSizing: "border-box",
-              gap: "1rem",
-            }}
+            className='box-border gap-2 border-2 border-black bg-gray-300'
           >
-            <h3>
-              Current Time: {Math.floor(currentTime / 60)}:
-              {(currentTime % 60).toString().padStart(2, "0")}
-            </h3>
             {/* <div style={{ marginBottom: 0, padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px', width: 180, alignSelf: 'flex-start' }}>
-              <strong>Legend</strong>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,128,255,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #0070c0' }}></span>
-                Team 0 Player
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,200,0,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #008000' }}></span>
-                Team 1 Player
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                <span style={{ display: 'inline-block', width: 16, height: 16, background: 'red', borderRadius: '50%', marginRight: 8, border: '1px solid #a00' }}></span>
-                Objective (Active)
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                <span style={{ display: 'inline-block', width: 16, height: 16, background: 'black', borderRadius: '50%', marginRight: 8, border: '1px solid #333' }}></span>
-                Objective (Destroyed)
-              </div>
-            </div> */}
+                <strong>Legend</strong>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,128,255,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #0070c0' }}></span>
+                  Team 0 Player
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,200,0,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #008000' }}></span>
+                  Team 1 Player
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'red', borderRadius: '50%', marginRight: 8, border: '1px solid #a00' }}></span>
+                  Objective (Active)
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
+                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'black', borderRadius: '50%', marginRight: 8, border: '1px solid #333' }}></span>
+                  Objective (Destroyed)
+                </div>
+              </div> */}
             <ObjectiveInfoPanel
               destroyedObjectives={destroyedObjectivesSorted}
               currentObjectiveIndex={currentObjectiveIndex}
@@ -227,14 +224,14 @@ const MatchAnalysis = () => {
             <PlayerCards
               players={players}
               npcs={matchAnalysis.npcs as NPC[]}
-              currentTime={currentTime}
+              currentTick={currentTick}
               getPlayerRegionLabels={getPlayerRegionLabels}
               gameData={matchAnalysis.parsed_game_data}
             />
           </div>
           <Minimap
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
+            currentTick={currentTick}
+            setCurrentTick={setCurrentTick}
             heroes={heroData}
             players={players_metadata}
             playerPaths={playerPaths}
@@ -245,29 +242,29 @@ const MatchAnalysis = () => {
             yResolution={yResolution}
           />
         </div>
+      </div>
 
-        {/* Player combat type/health Table */}
-        {/*
+      {/* Player combat type/health Table */}
+      {/*
           The buttons that control the time windows has been removed, but I may have use for some of the
           code in here so I'm keeping it for now
         */}
-        {/* <PerPlayerWindowTable
+      {/* <PerPlayerWindowTable
           playerPaths={playerPaths}
           matchMetadata={matchMetadata}
           playerTime={playerTime}
           heros={heros}
         /> */}
 
-        {/* Damage Source Types Table */}
-        {/* <DamageSourceTypesTable
+      {/* Damage Source Types Table */}
+      {/* <DamageSourceTypesTable
           sourceDetails={matchMetadata.match_info.damage_matrix.source_details}
         /> */}
 
-        {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
-        {/* <DamageMatrixTable matchMetadata={matchMetadata} /> */}
+      {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
+      {/* <DamageMatrixTable matchMetadata={matchMetadata} /> */}
 
-        <PrintHeroImageData heroData={heroData} />
-      </div>
+      <PrintHeroImageData heroData={heroData} />
     </>
   );
 };

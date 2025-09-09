@@ -9,11 +9,11 @@ const PrintHeroImageData: React.FC<Props> = ({ heroData }) => {
   return (
     <div className='hero-image-data col-span-2 mt-40 gap-4'>
       <h3>All Hero Images (from API)</h3>
-      <div className='g-24 flex'>
+      <div className='g-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'>
         {heroData.map((hero) => (
           <div
             key={hero.id}
-            className='mb-24 min-w-200'
+            className='mb-24'
           >
             <div className='mb-2 font-semibold'>{hero.name}</div>
             {hero.images &&

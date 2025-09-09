@@ -22,8 +22,8 @@ const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
 
 const Minimap = ({
-  currentTime,
-  setCurrentTime,
+  currentTick,
+  setCurrentTick,
   playerPaths,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
@@ -33,8 +33,8 @@ const Minimap = ({
   xResolution,
   yResolution,
 }: {
-  currentTime: number;
-  setCurrentTime: Dispatch<SetStateAction<number>>;
+  currentTick: number;
+  setCurrentTick: Dispatch<SetStateAction<number>>;
   playerPaths: PlayerPathState[];
   destroyedObjectivesSorted: Array<DestroyedObjective>;
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
@@ -47,7 +47,7 @@ const Minimap = ({
   // NOTE: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
-  const repeatDirection = useRef<"left" | "right" | null>(null);
+  const repeatDirection = useRef<"back" | "forward" | null>(null);
   const mapRef = useRef<HTMLImageElement>(null);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(
     null
@@ -68,7 +68,8 @@ const Minimap = ({
     x: number,
     y: number
   ): { left: number; top: number } => {
-    const xOffset = -75;
+    // const xOffset = -75;
+    const xOffset = 0;
     const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
     const top = y * MINIMAP_SIZE;
     return { left, top };
@@ -77,12 +78,12 @@ const Minimap = ({
     setVisibleRegions((v) => ({ ...v, [label]: !v[label] }));
   };
 
-  const startRepeat = (direction: "left" | "right") => {
+  const startRepeat = (direction: "back" | "forward") => {
     if (repeatRef.current) return;
     repeatDirection.current = direction;
     repeatRef.current = setInterval(() => {
-      setCurrentTime((t) => {
-        if (direction === "left") {
+      setCurrentTick((t) => {
+        if (direction === "back") {
           if (t <= 0) return 0;
           return t - 1;
         } else {
@@ -107,35 +108,25 @@ const Minimap = ({
     let lastActiveKey: string | null = null;
     let currentIdx = -1;
     destroyedObjectivesSorted.forEach((obj, idx) => {
-      if (currentTime >= obj.destroyed_time_s) {
+      if (currentTick >= obj.destroyed_time_s) {
         lastActiveKey = `${obj.team}_${obj.team_objective_id}`;
         currentIdx = idx;
       }
     });
     setActiveObjectiveKey(lastActiveKey);
     setCurrentObjectiveIndex(currentIdx);
-  }, [destroyedObjectivesSorted, currentTime]);
+  }, [destroyedObjectivesSorted, currentTick]);
 
   return (
     <>
       {/* Minimap and slider */}
       <div
         title='MinimapPanel'
-        style={{
-          position: "relative",
-          // width: `${MINIMAP_SIZE}px`,
-          flexShrink: 0,
-          background: "#fafbfc",
-          boxShadow: "-2px 0 8px rgba(0,0,0,0.07)",
-        }}
+        className='h-fit shadow shadow-black/50'
       >
         <div
-          style={{
-            position: "relative",
-            width: `${MINIMAP_SIZE}px`,
-            height: `${MINIMAP_SIZE}px`,
-            pointerEvents: "none",
-          }}
+          className={`pointer-events-none relative`}
+          style={{ width: `${MINIMAP_SIZE}px`, height: `${MINIMAP_SIZE}px` }}
         >
           {/* <Grid MINIMAP_SIZE={MINIMAP_SIZE} /> */}
           <RegionsMapping
@@ -146,47 +137,29 @@ const Minimap = ({
             ref={mapRef}
             src={MINIMAP_URL}
             alt='Minimap'
-            style={{
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              zIndex: 0,
-              pointerEvents: "none",
-            }}
+            className='pointer-events-none z-0 h-full w-full object-cover'
           />
           <Objectives
             objectiveCoordinates={objectiveCoordinates}
             destroyedObjectives={destroyedObjectivesSorted}
-            currentTime={currentTime}
+            currentTick={currentTick}
             renderObjectiveDot={renderObjectiveDot}
             activeObjectiveKey={activeObjectiveKey}
           />
+          <PlayerPositions
+            playerPaths={playerPaths}
+            players={players}
+            currentTick={currentTick}
+            xResolution={xResolution}
+            yResolution={yResolution}
+            heroes={heroes}
+            renderPlayerDot={renderPlayerDot}
+          />
         </div>
-        <PlayerPositions
-          playerPaths={playerPaths}
-          players={players}
-          currentTime={currentTime}
-          xResolution={xResolution}
-          yResolution={yResolution}
-          heroes={heroes}
-          renderPlayerDot={renderPlayerDot}
-        />
-        <div
-          style={{
-            width: "100%",
-            background: "#f7f7f7",
-            borderTop: "1px solid #ccc",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "stretch",
-            gap: 0,
-            padding: 0,
-          }}
-        >
+        <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>
           <GameTimeViewer
-            currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
+            currentTick={currentTick}
+            setCurrentTick={setCurrentTick}
             maxTime={
               playerPaths[0]?.x_pos?.length ?
                 playerPaths[0].x_pos.length - 1
