@@ -12,6 +12,7 @@ import { MatchAnalysisResponse } from "../../types/MatchAnalysis";
 import { NPC, Hero } from "../../types/Player";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
+import { formatSecondstoMMSS } from "../../utils/time";
 
 const defaultMatchAnalysis: MatchAnalysisResponse = {
   match_metadata: {
@@ -75,9 +76,7 @@ const MatchAnalysis = () => {
   const isMounted = useRef(false);
 
   const [currentTick, setCurrentTick] = useState<number>(0);
-  const minutes = Math.floor(Number(currentTick) / 60);
-  const seconds = Math.floor(Number(currentTick) % 60);
-  const matchTime = `${minutes}:${String(seconds).padStart(2, "0")}`;
+  const matchTime = formatSecondstoMMSS(currentTick);
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -220,6 +219,7 @@ const MatchAnalysis = () => {
             <ObjectiveInfoPanel
               destroyedObjectives={destroyedObjectivesSorted}
               currentObjectiveIndex={currentObjectiveIndex}
+              matchTime={matchTime}
             />
             <PlayerCards
               players={players}

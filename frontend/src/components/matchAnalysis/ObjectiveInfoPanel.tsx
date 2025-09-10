@@ -1,5 +1,6 @@
 import React from "react";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
+import { formatSecondstoMMSS } from "../../utils/time";
 
 interface ObjectiveInfoPanelProps {
   destroyedObjectives: DestroyedObjective[];
@@ -62,7 +63,8 @@ const ObjectiveInfoPanel: React.FC<ObjectiveInfoPanelProps> = ({
               }}
             >
               <div>
-                <strong>Destroyed Time (s):</strong> {obj.destroyed_time_s}
+                <strong>Destroyed Time:</strong>{" "}
+                {formatSecondstoMMSS(obj.destroyed_time_s)}
               </div>
               <div>
                 <strong>Creep Damage:</strong> {obj.creep_damage}
@@ -80,7 +82,7 @@ const ObjectiveInfoPanel: React.FC<ObjectiveInfoPanelProps> = ({
               </div>
               <div>
                 <strong>First Damage Time (s):</strong>{" "}
-                {obj.first_damage_time_s}
+                {formatSecondstoMMSS(obj.first_damage_time_s)}
               </div>
             </div>
           </div>
