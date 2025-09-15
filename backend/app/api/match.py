@@ -106,7 +106,8 @@ async def get_match_analysis(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Parsed payload missing in DB"
         )
-    except MatchDataIntegrityException:
+    except MatchDataIntegrityException as e:
+        logger.exception("Failed to store parsed payload in DB: %s", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to store parsed payload in DB"

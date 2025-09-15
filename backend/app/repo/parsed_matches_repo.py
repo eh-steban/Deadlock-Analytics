@@ -22,9 +22,13 @@ class ParsedMatchesRepo:
             )
             result = await session.execute(stmt)
             record = result.scalar_one_or_none()
-            if record is None or not record.payload_json:
+            if record is None or not record.players or not record.damage or not record.positions:
                 return None
-            return record.payload_json
+            return {
+                "players": record.players,
+                "damage": record.damage,
+                "positions": record.positions
+            }
         except SQLAlchemyError as e:
             raise SQLAlchemyError(f"DB error: {str(e)}")
 
@@ -37,13 +41,17 @@ class ParsedMatchesRepo:
             result = await session.execute(stmt)
             record = result.scalar_one_or_none()
             if record:
-                record.payload_json = payload
+                record.players = payload.get("players")
+                record.damage = payload.get("damage")
+                record.positions = payload.get("positions")
                 record.etag = etag
             else:
                 record = ParsedMatch(
                     match_id=match_id,
                     schema_version=schema_version,
-                    payload_json=payload,
+                    players=payload.get("players"),
+                    damage=payload.get("damage"),
+                    positions=payload.get("positions"),
                     etag=etag
                 )
                 session.add(record)
