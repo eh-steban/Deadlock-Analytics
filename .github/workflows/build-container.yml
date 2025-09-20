@@ -1,0 +1,38 @@
+name: Build Container Image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: lab
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install buildah
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y buildah
+
+    - name: Build container image
+      run: |
+        buildah build -t myapp:latest .
+
+    - name: List images
+      run: buildah images
+
+#    - name: Save image (optional)
+#      run: |
+#        buildah push myapp:latest oci-archive:myapp-latest.tar
+
+#    - name: Upload image artifact (optional)
+#      uses: actions/upload-artifact@v4
+#      with:
+#        name: container-image
+#        path: myapp-latest.tar
+#        retention-days: 7
