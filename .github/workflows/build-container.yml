@@ -1,0 +1,40 @@
+name: Build Container Image
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: lab
+
+    steps:
+    - name: Install buildah
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y buildah uidmap fuse-overlayfs
+        sudo apt-get clean
+        echo "$(whoami):100000:65536" | sudo tee -a /etc/subuid
+        echo "$(whoami):100000:65536" | sudo tee -a /etc/subgid
+        sudo chmod 0644 /etc/sub*id
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build multi-architecture image
+      run: |
+        buildah manifest create registry.hazerd.dev/deadlock-stats/backend:latest
+        buildah bud --isolation=chroot --platform linux/amd64 --manifest registry.hazerd.dev/deadlock-stats/backend:latest ./backend
+        buildah bud --isolation=chroot --platform linux/arm64 --manifest registry.hazerd.dev/deadlock-stats/backend:latest ./backend
+
+    - name: List images and manifests
+      run: |
+        buildah images
+        buildah manifest inspect registry.hazerd.dev/deadlock-stats/backend:latest
+
+    - name: Save manifest
+      run: |
+        ls
+        buildah manifest push registry.hazerd.dev/deadlock-stats/backend:latest oci-archive:deadlock-stats-backend-multiarch.tar
