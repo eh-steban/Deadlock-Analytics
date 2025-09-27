@@ -16,7 +16,7 @@ use haste::valveprotos::prost::Message;
 //const DEADLOCK_PLAYERPAWN_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelPlayerPawn");
 
 // player = [
-//   
+//
 // ]
 //
 // window = [
@@ -46,14 +46,15 @@ use haste::valveprotos::prost::Message;
 
 #[derive(Default, Debug, Serialize)]
 struct Player {
-    entity_id: i32,
+    entity_id: String,
+    custom_player_id: String,
     name: String,
     steam_id_32: u32,
 }
 
 #[derive(Default, Debug, Serialize)]
 struct PlayerPosition {
-  player_id: i32,
+  player_id: String,
   x: f32,
   y: f32,
   z: f32,
@@ -73,6 +74,7 @@ struct DamageRecord {
 
 #[derive(Default, Debug)]
 struct MyVisitor {
+    seconds: i32,
     damage_window: HashMap<i32, HashMap<i32, Vec<DamageRecord>>>,
     damage: Vec<HashMap<i32, HashMap<i32, Vec<DamageRecord>>>>,
     players: Vec<Player>,
@@ -129,7 +131,7 @@ fn get_steamid_from_pawn(pawn: &Entity, entities: &EntityContainer) -> Option<u6
 
     // Get the controller entity
     let player_controller = entities.get(&controller_index)?;
-    
+
     // Get the steamID from the controller
     player_controller.get_value::<u64>(&STEAM_ID_KEY)
 }
@@ -163,6 +165,7 @@ fn get_entity_position(entity: &Entity) -> [f32; 3] {
 impl MyVisitor {
     pub fn get_game_data_json(&self) -> serde_json::Value {
         serde_json::json!({
+            "seconds": self.seconds,
             "damage": self.damage,
             "players": self.players,
             "positions": self.positions,
@@ -200,13 +203,15 @@ impl MyVisitor {
                         .get(&ehandle_to_index(owner_entity_index))
                         .unwrap();
 
+                    let player_id = self.players.len() as i32;
                     self.players.push(Player {
-                        entity_id: entity.index() as i32,
+                        entity_id: entity.index().to_string(),
+                        custom_player_id: player_id.to_string(),
                         name: owner_entity.get_value(&PLAYER_NAME_KEY).unwrap(),
                         steam_id_32: get_steam_id32(owner_entity).unwrap_or(0),
                     });
 
-                    self.players.len() as i32 - 1
+                    player_id
                 });
         } else {
             return match entity_class {
@@ -251,7 +256,7 @@ impl MyVisitor {
             .or_insert(Vec::new());
 
         //println!("Damage Record: {:?}", record);
-        
+
         victim_damage.push(record);
 
         Ok(())
@@ -260,7 +265,7 @@ impl MyVisitor {
 
 impl Visitor for &mut MyVisitor {
     fn on_tick_end(
-        &mut self, 
+        &mut self,
         ctx: &Context
     ) -> Result<()> {
         //println!("on_tick_end \t\t new: {:?} \t interval: {:?}  \t time?: {:?}", ctx.tick(), ctx.tick_interval(), ctx.tick() as f32 * ctx.tick_interval());
@@ -279,7 +284,7 @@ impl Visitor for &mut MyVisitor {
 
                 let custom_player_id = self.get_custom_player_id(ctx, entity_class, entity);
                 self.positions_window.push(PlayerPosition {
-                    player_id: custom_player_id,
+                    player_id: custom_player_id.to_string(),
                     x: position[0],
                     y: position[1],
                     z: position[2],
@@ -289,6 +294,7 @@ impl Visitor for &mut MyVisitor {
             // restart the current window
             // println!("Damage Window: {:?}", self.damage_window);
             // println!("Players: {:?}", self.players);
+            self.seconds = this_window;
             self.damage.push(std::mem::replace(&mut self.damage_window, HashMap::new()));
             self.positions.push(std::mem::replace(&mut self.positions_window, Vec::new()));
         }
@@ -318,7 +324,7 @@ impl Visitor for &mut MyVisitor {
     }
 
     fn on_cmd(
-        &mut self, 
+        &mut self,
         ctx: &Context,
         cmd_header: &CmdHeader,
         data: &[u8]

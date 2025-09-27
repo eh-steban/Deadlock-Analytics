@@ -1,4 +1,4 @@
-use axum::{routing::post, Router, Json, http::StatusCode};
+use axum::{routing::post, Router, Json, http::{StatusCode, header, HeaderValue}, response::Response};
 use bzip2::read::BzDecoder;
 use tracing::{info, error};
 use tracing_subscriber;
@@ -11,6 +11,7 @@ use dashmap::DashMap;
 use once_cell::sync::Lazy;
 use tokio::sync::Mutex;
 use std::sync::Arc;
+use tower_http::compression::CompressionLayer;
 
 mod replay_parser;
 
@@ -26,7 +27,8 @@ async fn main() {
     tracing_subscriber::fmt::init();
 
     let app = Router::new()
-        .route("/parse", post(parse_demo));
+        .route("/parse", post(parse_demo))
+        .layer(CompressionLayer::new());
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 9000));
     info!("listening on {}", addr);
@@ -35,16 +37,16 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::IntoResponse {
+async fn parse_demo(Json(payload): Json<ParseRequest>) -> Response {
     info!("[parse_demo] Received request to parse demo with URL: {}", payload.demo_url);
     let decoded_url = match decode_demo_url(&payload.demo_url) {
         Ok(url) => url,
-        Err(e) => return e,
+        Err((status, Json(val))) => return build_response(status, &val),
     };
 
     let (filename, replay_path) = match setup_compressed_replay_path(&decoded_url) {
         Ok((filename, replay_path)) => (filename, replay_path),
-        Err(e) => return e,
+        Err((status, Json(val))) => return build_response(status, &val),
     };
 
     // Acquire the mutex for this file
@@ -55,28 +57,43 @@ async fn parse_demo(Json(payload): Json<ParseRequest>) -> impl axum::response::I
         .clone();
     let _guard = mutex.lock().await;
 
-    if let Err(e) = download_compressed_replay_file(&decoded_url, &replay_path).await {
-        return e;
+    if let Err((status, Json(val))) = download_compressed_replay_file(&decoded_url, &replay_path).await {
+        return build_response(status, &val);
     }
 
     let decompressed_path = match decompress_replay_file(&replay_path, &filename) {
         Ok(path) => path,
-        Err(e) => return e,
+        Err((status, Json(val))) => return build_response(status, &val),
     };
 
     let result = replay_parser::parse_replay(decompressed_path.to_str().unwrap());
     match result {
         Ok(json) => {
             info!("[parse_demo] Replay parsed successfully.");
-            (StatusCode::OK, Json(json))
+            build_response(StatusCode::OK, &json)
         },
         Err(e) => {
             error!("[parse_demo] replay_parser::parse_replay failed: {:?}", e);
-            (StatusCode::INTERNAL_SERVER_ERROR, Json(serde_json::json!({
+            let val = serde_json::json!({
                 "error": format!("Failed to parse replay: {}", e)
-            })))
+            });
+            build_response(StatusCode::INTERNAL_SERVER_ERROR, &val)
         }
     }
+}
+
+fn build_response(status: StatusCode, value: &serde_json::Value) -> Response {
+    // Pre-serialize to capture uncompressed size; CompressionLayer will handle gzip/deflate based on Accept-Encoding
+    let body_str = serde_json::to_string(value).unwrap_or_else(|_| "{}".to_string());
+    let uncompressed_len = body_str.len();
+    let resp = Response::builder()
+        .status(status)
+        .header(header::CONTENT_TYPE, HeaderValue::from_static("application/json"))
+        .header("X-Uncompressed-Size", HeaderValue::from_str(&uncompressed_len.to_string()).unwrap_or(HeaderValue::from_static("0")))
+        .body(axum::body::Body::from(body_str))
+        .unwrap();
+    // Note: Content-Encoding will be added automatically by CompressionLayer when appropriate
+    resp
 }
 
 fn decode_demo_url(demo_url: &str) -> Result<String, (StatusCode, Json<serde_json::Value>)> {

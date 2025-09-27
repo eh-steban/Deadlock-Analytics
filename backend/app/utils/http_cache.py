@@ -2,7 +2,7 @@ import hashlib
 import orjson
 
 def serialize_payload(payload: dict) -> bytes:
-    return orjson.dumps(payload)
+    return orjson.dumps(payload, option=orjson.OPT_NON_STR_KEYS | orjson.OPT_SORT_KEYS)
 
 def compute_etag(payload: dict, schema_version: int) -> str:
     payload_bytes = serialize_payload(payload)

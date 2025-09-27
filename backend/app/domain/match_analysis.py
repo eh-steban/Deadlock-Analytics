@@ -11,26 +11,43 @@ class DamageRecord(SQLModel):
     type: Optional[int] = None
     victim_class: Optional[int] = None
 
-DamageWindow = dict[int, dict[int, list[DamageRecord]]]
-Damage = list[DamageWindow]
+DamageWindow = dict[str, list[DamageRecord]]
+Damage = list[Optional[DamageWindow]]
+ParsedVictimDamage = DamageWindow
+ParsedAttackerVictimMap = dict[str, ParsedVictimDamage]
 
 class PlayerPosition(SQLModel):
-    player_id: int
+    player_id: str
     x: float
     y: float
     z: float
 
-PositionWindow = list[list[PlayerPosition]]
+PositionWindow = list[Optional[PlayerPosition]]
+Positions = list[PositionWindow]
+
+class ParsedMatchResponse(SQLModel):
+    seconds: int
+    # Shape of damage data from parser:
+    # Vec<HashMap<i32, HashMap<i32, Vec<DamageRecord>>>> (tick -> attacker -> victim -> Vec<DamageRecord>)
+    # The parser puts i32 values as keys into our json, but they get converted to strings in Python
+    # when parsed from JSON. So we use str keys here.
+    #
+    damage: list[ParsedAttackerVictimMap]
+    players: list[ParsedPlayer]
+    positions: Positions
+
+class PlayerData(SQLModel):
+    positions: PositionWindow
+    damage: Damage
 
 # TODO: Created a temporary ParsedPlayer class to make this happy
 # Might change this later
 class ParsedGameData(SQLModel):
-    damage: Damage
     players: list[ParsedPlayer]
-    positions: PositionWindow
+    per_player_data: dict[str, PlayerData]
 
 class MatchAnalysis(SQLModel):
     match_metadata: MatchMetadata
     parsed_game_data: ParsedGameData
     players: list[Player]
-    npcs: dict[int, NPC]
+    npcs: dict[str, NPC]

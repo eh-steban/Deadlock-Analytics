@@ -1,4 +1,3 @@
-from typing import Any
 from sqlmodel import SQLModel
 
 # PlayerPathState is pulled from Deadlock API (match_metadata call)
@@ -25,17 +24,18 @@ class PlayerInfo(SQLModel):
     hero_id: int
 
 class ParsedPlayer(SQLModel):
-    entity_id: int
+    entity_id: str  # Ensure this stays a string for TransformService
+    custom_player_id: str
     name: str
     steam_id_32: int
 
 class NPC(SQLModel):
-    entity_id: int
+    entity_id: str  # Ensure this stays a string for TransformService
     name: str
 
 class Player(SQLModel):
-    entity_id: int
+    entity_id: str
     name: str
     steam_id_32: int
     player_info: PlayerInfo
-    path_state: PlayerPathState
+    # path_state: PlayerPathState

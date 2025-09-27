@@ -6,9 +6,7 @@ from app.config import Settings, get_settings
 async def get_db_session(settings: Annotated[Settings, Depends(get_settings)]) -> AsyncGenerator[AsyncSession, None]:
     database_url = settings.DATABASE_URL
 
-    # FIXME: This runs in any env, but should only run in dev/test
-    # In production, we'll likely want `echo=False`
-    engine = create_async_engine(database_url, echo=True)
+    engine = create_async_engine(database_url, echo=False)
     async_session = async_sessionmaker(engine, expire_on_commit=False)
 
     async with async_session() as session:
