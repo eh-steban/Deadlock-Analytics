@@ -1,3 +1,5 @@
+import gzip
+import json
 import pytest
 import pytest_asyncio
 import httpx
@@ -13,6 +15,40 @@ from app.domain.deadlock_api import MatchMetadata, MatchInfoFields, MatchPaths
 
 MATCH_ID = 1
 SCHEMA_VERSION = 1
+PLAYER_ONE = ParsedPlayer(entity_id="1", custom_player_id="11", name="bar", steam_id_32=100)
+PLAYER_TWO = ParsedPlayer(entity_id="2", custom_player_id="12", name="baz", steam_id_32=200)
+DAMAGE_RECORD_ONE = DamageRecord(ability_id=1, attacker_class=2, citadel_type=3, damage=100, type=1, victim_class=2)
+DAMAGE_RECORD_TWO = DamageRecord(ability_id=2, attacker_class=3, citadel_type=4, damage=200, type=2, victim_class=3)
+PER_PLAYER_DATA = {
+    "players": [PLAYER_ONE.model_dump(), PLAYER_TWO.model_dump()],
+    "per_player_data": {
+        # custom_player_id "11"
+        "11": {
+            "positions": [],
+            "damage": [
+                # Tick 0: attacker "11" did damage to victim "2"
+                {
+                    "2": [
+                        DAMAGE_RECORD_ONE.model_dump(),
+                        DAMAGE_RECORD_TWO.model_dump(),
+                    ]
+                },
+                # Tick 1: no damage
+                {},
+            ],
+        },
+        # custom_player_id "12"
+        "12": {
+            "positions": [],
+            "damage": [
+                {},  # Tick 0 no damage
+                {},  # Tick 1 no damage
+            ],
+        },
+    },
+}
+
+PARSED_GAME_DATA = ParsedGameData(**PER_PLAYER_DATA)
 
 # Ensure API uses the test session/DB for all requests
 @pytest_asyncio.fixture(autouse=True)
@@ -139,14 +175,20 @@ def mock_parser_call(httpx_mock):
 @pytest_asyncio.fixture
 async def setup_db_payload(async_session):
     repo = ParsedMatchesRepo()
-    player_one = ParsedPlayer(entity_id=1, name="bar", steam_id_32=100)
-    player_two = ParsedPlayer(entity_id=2, name="baz", steam_id_32=200)
-    damage_record = DamageRecord(ability_id=1, attacker_class=2, citadel_type=3, damage=100, type=1, victim_class=2)
-    damage_window = {1: {2: [damage_record]}}
-    damage_per_tick = [damage_window]
-    payload = ParsedGameData(damage_per_tick=damage_per_tick, players=[player_one, player_two])
+    damage_window = {1: {2: [DAMAGE_RECORD_ONE.model_dump()]}}
+    damage_list = [damage_window]
+    raw_json = {"players": [PLAYER_ONE.model_dump(), PLAYER_TWO.model_dump()], "damage": damage_list, "positions": []}
+    raw_gzip = gzip.compress(json.dumps(raw_json).encode())
     etag = "etag123"
-    await repo.upsert_payload(MATCH_ID, SCHEMA_VERSION, payload.model_dump(), etag, async_session)
+    await repo.create_parsed_match(
+        MATCH_ID,
+        SCHEMA_VERSION,
+        raw_gzip,
+        20,
+        PER_PLAYER_DATA,
+        etag,
+        async_session
+    )
 
 @pytest.mark.asyncio
 async def test_get_match_analysis_success(async_client, mock_deadlock_api_call, async_session, setup_database, setup_db_payload):
@@ -189,7 +231,7 @@ async def test_get_match_analysis_from_db_success(async_client, mock_deadlock_ap
     assert "parsed_game_data" in data
     assert "players" in data
     assert "npcs" in data
-    assert data["parsed_game_data"]["players"][0]["entity_id"] == 1
+    assert data["parsed_game_data"]["players"][0]["entity_id"] == "1"
 
 @pytest.mark.asyncio
 async def test_get_match_analysis_db_create_success(async_client, mock_deadlock_api_call, mock_parser_call, async_session, setup_database):
