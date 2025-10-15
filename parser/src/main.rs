@@ -13,6 +13,7 @@ use tokio::sync::Mutex;
 use std::sync::Arc;
 use tower_http::compression::CompressionLayer;
 
+mod health_routes;
 mod replay_parser;
 
 static FILE_MUTEXES: Lazy<DashMap<String, Arc<Mutex<()>>>> = Lazy::new(DashMap::new);
@@ -28,6 +29,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/parse", post(parse_demo))
+        .merge(health_routes::routes())
         .layer(CompressionLayer::new());
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 9000));

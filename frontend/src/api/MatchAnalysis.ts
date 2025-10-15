@@ -56,7 +56,7 @@ export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnE
     headers['If-None-Match'] = cached.etag;
   }
   const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
-  const url = `http://${backendDomain}/match/analysis/${matchId}`;
+  const url = `https://${backendDomain}/match/analysis/${matchId}`;
   let res: Response;
   try {
     res = await fetch(url, { headers });

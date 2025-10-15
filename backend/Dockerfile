@@ -13,8 +13,10 @@ USER lifted
 
 COPY requirements.txt /backend/
 RUN pip install -r requirements.txt
+
+ENV PATH="$PATH:/home/lifted/.local/bin"
 RUN echo 'alias devserver="uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --reload --log-level debug"' >> ~/.bashrc
 
 COPY . /backend/
 
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0"]

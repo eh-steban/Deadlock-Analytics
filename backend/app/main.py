@@ -4,7 +4,7 @@ import logging
 # from app.api import auth, internal
 # Only need the line below for now. Uncomment the line above
 # when we implement internal API endpoints.
-from app.api import auth, account, match, users, replay, session
+from app.api import auth, account, health, match, users, replay, session
 
 app = FastAPI()
 logging.basicConfig(level=logging.INFO)
@@ -24,6 +24,7 @@ app.add_middleware(
 # Mount routers
 # app.include_router(internal.router, prefix="/internal", tags=["Internal"])
 app.include_router(auth.router, prefix="/auth")
+app.include_router(health.router, prefix="/health")
 app.include_router(users.router, prefix="/users")
 app.include_router(account.router, prefix="/account")
 app.include_router(match.router, prefix="/match")

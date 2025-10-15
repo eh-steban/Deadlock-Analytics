@@ -49,13 +49,13 @@ const ProfilePage: React.FC = () => {
   const [matchHistory, setMatchHistory] = useState<MatchSummary[]>([]);
 
   useEffect(() => {
-    fetch(`http://${backendDomain}/account/steam/${steam_id}`)
+    fetch(`https://${backendDomain}/account/steam/${steam_id}`)
       .then((res) => res.json())
       .then((data) => setUser(data));
   }, [steam_id]);
 
   useEffect(() => {
-    fetch(`http://${backendDomain}/account/match_history/${steam_id}`)
+    fetch(`https://${backendDomain}/account/match_history/${steam_id}`)
       .then((res) => res.json())
       .then((data) => setMatchHistory(data));
   }, [steam_id]);
