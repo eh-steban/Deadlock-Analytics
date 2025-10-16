@@ -11,7 +11,12 @@ use haste::fxhash;
 use haste::entities::{self, ehandle_to_index, DeltaHeader, Entity, EntityContainer, fkey_from_path, deadlock_coord_from_cell};
 use haste::parser::{Context, Parser, Visitor};
 use haste::stringtables::StringTable;
-use haste::valveprotos::deadlock::{CitadelUserMessageIds, CCitadelUserMessageDamage};
+use haste::valveprotos::deadlock::{
+    CitadelUserMessageIds,
+    CCitadelUserMessageDamage,
+    CCitadelUserMsgPostMatchDetails,
+    CMsgMatchMetaDataContents,
+};
 use haste::valveprotos::prost::Message;
 
 //const DEADLOCK_PLAYERPAWN_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelPlayerPawn");
@@ -60,26 +65,44 @@ struct Player {
 
 #[derive(Default, Debug, Serialize)]
 struct PlayerPosition {
-  player_id: String,
-  x: f32,
-  y: f32,
-  z: f32,
+    player_id: String,
+    x: f32,
+    y: f32,
+    z: f32,
+}
+
+#[derive(Clone, Copy, Debug, Default, Serialize)]
+struct Vector4 {
+    x: Option<f32>,
+    y: Option<f32>,
+    z: Option<f32>,
+    w: Option<f32>,
 }
 
 #[derive(Default, Debug, Serialize)]
 struct DamageRecord {
-   damage: i32,
-   r#type: i32,
-   citadel_type: i32,
-   entindex_attacker: i32,
-   entindex_victim: i32,
-   entindex_inflictor: i32,
-   entindex_ability: i32,
-//   inflictor_name: String,
-   ability_id: u32,
-   attacker_class: u32,
-   victim_class: u32,
-//    effectiveness: f32,
+    damage: i32,
+    pre_damage: i32,
+    r#type: i32,
+    citadel_type: i32,
+    // origin: Option<Vector4>,
+    // entindex_victim: i32,
+    entindex_inflictor: i32,
+    // entindex_attacker: i32,
+    entindex_ability: i32,
+    damage_absorbed: i32,
+    victim_health_max: i32,
+    victim_health_new: i32,
+    flags: u64,
+    ability_id: u32,
+    attacker_class: u32,
+    victim_class: u32,
+    victim_shield_max: i32,
+    victim_shield_new: i32,
+    hits: i32,
+    health_lost: i32,
+    //  inflictor_name: String,
+    //  effectiveness: f32,
 }
 
 #[derive(Default, Debug)]
@@ -115,6 +138,7 @@ const CNPC_BOSS_TIER2_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Boss_Tier2");
 const CNPC_TROOPERBARRACKBOSS_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_TrooperBarrackBoss");
 const CNPC_BOSS_TIER3_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Boss_Tier3");
 const CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Neutral_SinnersSacrifice");
+const CNPC_BASE_DEFENSE_SENTRY_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_BaseDefenseSentry");
 
 fn steamid64_to_accountid(steamid64: Option<u64>) -> u32 {
     match steamid64 {
@@ -197,32 +221,31 @@ impl MyVisitor {
         })
     }
 
-    fn get_class_for_entity(&mut self, entity: &Entity) -> u32 {
-        // let serializer_name = &entity.serializer().serializer_name.str;
-        // println!("#get_class_for_entity: entity index={} name={}", entity.index(), serializer_name);
-        return match entity.serializer().serializer_name.hash {
-            CCITADELPLAYERPAWN_ENTITY => 1,
-            CNPC_TROOPER_ENTITY => 4,
-            CNPC_TROOPERBOSS_ENTITY => 5,
-            CNPC_TROOPERNEUTRAL_ENTITY => 6,
-            CNPC_MIDBOSS_ENTITY => 7,
-            // CITEMXP_ENTITY => [26, 30],
-            CITEMXP_ENTITY => 26,
-            CCITADEL_DESTROYABLE_BUILDING_ENTITY => 33,
-            CNPC_BOSS_TIER2_ENTITY => 34,
-            CNPC_TROOPERBARRACKBOSS_ENTITY => 35,
-            CNPC_BOSS_TIER3_ENTITY => 36,
-            _ => 0
-        };
+    fn should_track_position(&self, entity: &Entity) -> bool {
+        matches!(
+            entity.serializer().serializer_name.hash,
+            CCITADELPLAYERPAWN_ENTITY
+                | CNPC_TROOPER_ENTITY
+                | CNPC_TROOPERBOSS_ENTITY
+                | CNPC_TROOPERNEUTRAL_ENTITY
+                | CNPC_MIDBOSS_ENTITY
+                | CITEMXP_ENTITY
+                | CCITADEL_DESTROYABLE_BUILDING_ENTITY
+                | CNPC_BOSS_TIER2_ENTITY
+                | CNPC_TROOPERBARRACKBOSS_ENTITY
+                | CNPC_BOSS_TIER3_ENTITY
+                | CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY
+                | CNPC_BASE_DEFENSE_SENTRY_ENTITY
+        )
     }
 
     fn get_custom_player_id(
         &mut self,
         ctx: &Context,
-        entity_class: u32,
         entity: &Entity
     ) -> u32 {
-        if entity_class == 1 {
+        let serializer_name = &entity.serializer().serializer_name;
+        if serializer_name.hash == CCITADELPLAYERPAWN_ENTITY {
             return *self.entity_id_to_custom_player_id
                 .entry(entity.index() as u32)
                 .or_insert_with(|| {
@@ -252,27 +275,19 @@ impl MyVisitor {
                     lobby_player_slot
                 });
         } else {
-            // FIXME: Need to improve on this functionality so we have proper/reliable IDs for NPCs
-            return match entity_class {
-                4 => 20, // "<CNPC_Trooper>".to_string(),
-                5 => 21, // "<CNPC_TrooperBoss>".to_string(),
-                6 => 22, // "<CNPC_TrooperNeutral>".to_string(),
-                7 => 23, // "<CNPC_MidBoss>".to_string(),
-                30 => 24, // "<CItemXP>".to_string(),
-                33 => 25, // "<CCitadel_Destroyable_Building>".to_string(),
-                34 => 26, // "<CNPC_Boss_Tier2>".to_string(),
-                35 => 27, // "<CNPC_TrooperBarrackBoss>".to_string(),
-                36 => 28, // "<CNPC_Boss_Tier3>".to_string(),
-                26 => 30, // Separate/Second instance of "<CItemXP>".to_string(),
-                // 27 => 29, // *****FIXME: Not sure what entity this is*****
-                29 => 31, // "<CNPC_Boss_Tier2>".to_string(),
-                // 31 => 32, // *****FIXME: Not sure what entity this is*****
-                // 28 => 33, // *****FIXME: Not sure what entity this is*****
-                // 23 => 34, // *****FIXME: Not sure what entity this is*****
-                // 8 => 35, // *****FIXME: Not sure what entity this is*****
-                // 0 => 36, // "<CNPC_Neutral_SinnersSacrifice>".to_string()
-                // 99999999 => 99999999, // "<CWorld>".to_string(),
-                _ => panic!("Unknown value: {}", entity_class),
+            return match serializer_name.hash {
+                CNPC_TROOPER_ENTITY => 20, // "<CNPC_Trooper>".to_string(),
+                CNPC_TROOPERBOSS_ENTITY => 21, // "<CNPC_TrooperBoss>".to_string(),
+                CNPC_TROOPERNEUTRAL_ENTITY => 22, // "<CNPC_TrooperNeutral>".to_string(),
+                CNPC_MIDBOSS_ENTITY => 23, // "<CNPC_MidBoss>".to_string(),
+                CITEMXP_ENTITY => 24, // "<CItemXP>".to_string(),
+                CCITADEL_DESTROYABLE_BUILDING_ENTITY => 25, // "<CCitadel_Destroyable_Building>".to_string(),
+                CNPC_BOSS_TIER2_ENTITY => 26, // "<CNPC_Boss_Tier2>".to_string(),
+                CNPC_TROOPERBARRACKBOSS_ENTITY => 27, // "<CNPC_TrooperBarrackBoss>".to_string(),
+                CNPC_BOSS_TIER3_ENTITY => 28, // "<CNPC_Boss_Tier3>".to_string(),
+                CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY => 29, // "<CNPC_Neutral_SinnersSacrifice>".to_string(),
+                CNPC_BASE_DEFENSE_SENTRY_ENTITY => 30, // "<CNPC_BaseDefenseSentry>".to_string(),
+                _ => panic!("Unknown entity - Name: {}, Hash: {}", serializer_name.str, serializer_name.hash),
             }
         }
     }
@@ -284,16 +299,8 @@ impl MyVisitor {
         victim: &Entity,
         record: DamageRecord
     ) -> Result<()> {
-
-        let serializer_name = &attacker.serializer().serializer_name.str;
-        println!("#push_damage_record: attacker entity index={} name={} attacker_class={}", attacker.index(), serializer_name, record.attacker_class);
-
-        let custom_attacker_id = self.get_custom_player_id(ctx, record.attacker_class, attacker);
-
-        let serializer_name = &victim.serializer().serializer_name.str;
-        println!("#push_damage_record: victim entity index={} name={} victim_class={}", victim.index(), serializer_name, record.victim_class);
-
-        let custom_victim_id = self.get_custom_player_id(ctx, record.victim_class, victim);
+        let custom_attacker_id = self.get_custom_player_id(ctx, attacker);
+        let custom_victim_id = self.get_custom_player_id(ctx, victim);
 
         let victims_list = self.damage_window
             .entry(custom_attacker_id)
@@ -323,45 +330,17 @@ impl Visitor for &mut MyVisitor {
 
         if next_window != this_window {
             for (_index, entity) in ctx.entities().unwrap().iter() {
-
-                let entity_class = self.get_class_for_entity(entity);
-                if entity_class == 0 {
-                    // FIXME: Print the entity name and ID maybe?
+                if !self.should_track_position(entity) {
                     continue;
                 }
                 let position = get_entity_position(entity);
-
-                // let serializer_name = &entity.serializer().serializer_name.str;
-                // println!("#on_tick_end: entity position index={} name={} entity_class={}", entity.index(), serializer_name, entity_class);
-
-                let custom_player_id = self.get_custom_player_id(ctx, entity_class, entity);
+                let custom_player_id = self.get_custom_player_id(ctx, entity);
                 self.positions_window.push(PlayerPosition {
                     player_id: custom_player_id.to_string(),
                     x: position[0],
                     y: position[1],
                     z: position[2],
                 });
-            }
-
-            if this_window >= 60 {
-                unsafe {
-                    for (attacker_id, victims) in self.damage_window.iter() {
-                        for (victim_id, record) in victims {
-                            let class_thing = ctx.entity_classes().unwrap().by_id_unckecked(record[0].attacker_class as i32);
-                            println!("entity_class stuff: {:#?}", class_thing.network_name_hash);
-                            let serializer = ctx.serializers().unwrap().by_name_hash_unckecked(class_thing.network_name_hash);
-                            println!("serialized entity_class thing: {:?}", serializer.serializer_name.str);
-                        }
-                    }
-
-                    // let ability_class_thing = ctx.entity_classes().unwrap().by_id_unckecked(msg.ability_id() as i32);
-                    // println!("ability_class stuff: {:#?}", msg.ability_id());
-
-                    // let class_thing_two = ctx.entity_classes().unwrap().by_id_unckecked(msg.victim_class() as i32);
-                    // println!("victim_class stuff: {:#?}", class_thing_two.network_name_hash);
-                    // let serializer_two = ctx.serializers().unwrap().by_name_hash_unckecked(class_thing_two.network_name_hash);
-                    // println!("serialized victim class thing: {:?}", serializer_two.serializer_name.str);
-                }
             }
 
             // restart the current window
@@ -440,34 +419,62 @@ impl Visitor for &mut MyVisitor {
                         return Ok(())
                     }
 
-                    println!("inflictor stuff: {:?}", inflictor.unwrap().serializer().serializer_name.str);
-                    println!("ability stuff: {:?}", ability.unwrap().serializer().serializer_name.str);
-
-                    // panic!("Debug panic to inspect state");
-
                     // FIXME: Need to change this so we're not sending entity indexes
                     // Also need a system to map entity hashes to string names that we can
                     // save in our backend DB so our frontend can cache/display them properly
-                    if let Err(error) = self.push_damage_record(ctx, attacker.unwrap(), victim.unwrap(), DamageRecord {
+                    let record = DamageRecord {
                         damage: msg.damage(),
+                        pre_damage: msg.pre_damage(),
                         r#type: msg.r#type(),
                         citadel_type: msg.citadel_type(),
-                        entindex_attacker: msg.entindex_attacker(),
-                        entindex_victim: msg.entindex_victim(),
+                        // origin: msg.origin.as_ref().map(|v| Vector4 { x: v.x, y: v.y, z: v.z, w: v.w }) ,
+                        // entindex_victim: get_custom_player_id(msg.entindex_victim()),
                         entindex_inflictor: msg.entindex_inflictor(),
+                        // entindex_attacker: get_custom_player_id(msg.entindex_attacker()),
                         entindex_ability: msg.entindex_ability(),
-
-                        // inflictor_name: todo!(),
+                        damage_absorbed: msg.damage_absorbed(),
+                        victim_health_max: msg.victim_health_max(),
+                        victim_health_new: msg.victim_health_new(),
+                        flags: msg.flags(),
                         ability_id: msg.ability_id(),
                         attacker_class: msg.attacker_class(),
                         victim_class: msg.victim_class(),
+                        victim_shield_max: msg.victim_shield_max(),
+                        victim_shield_new: msg.victim_shield_new(),
+                        hits: msg.hits(),
+                        health_lost: msg.health_lost(),
                         // effectiveness: msg.effectiveness()
-                    }) {
+                        // inflictor_name: todo!(),
+                    };
+
+                    // panic!("Debug panic to inspect state");
+                    if let Err(error) = self.push_damage_record(ctx, attacker.unwrap(), victim.unwrap(), record) {
                         println!("Failed to push damage record: {:?}", error);
                         return Err(error);
                     };
                 // }
             //}
+        }
+        // Damage matrix is not a user message ID; it's embedded in PostMatchDetails.
+        if packet_type == CitadelUserMessageIds::KEUserMsgPostMatchDetails as u32 {
+            let details_msg = CCitadelUserMsgPostMatchDetails::decode(data)?;
+            if let Some(bytes) = details_msg.match_details {
+                // This blob is a CMsgMatchMetaDataContents message.
+                let mut cursor = std::io::Cursor::new(bytes);
+                if let Ok(meta) = CMsgMatchMetaDataContents::decode(&mut cursor) {
+                    if let Some(match_info) = meta.match_info {
+                        if let Some(damage_matrix) = match_info.damage_matrix {
+                            // Minimal sanity log so we know we can access it.
+                            println!(
+                                "PostMatch damage_matrix: dealers={} samples={}",
+                                damage_matrix.damage_dealers.len(),
+                                damage_matrix.sample_time_s.len()
+                            );
+                            // TODO: store/use this structure as needed.
+                        }
+                    }
+                }
+            }
         }
         Ok(())
     }
@@ -481,4 +488,87 @@ pub fn parse_replay(replay_full_path: &str) -> Result<serde_json::Value> {
     let mut parser = Parser::from_stream_with_visitor(demo_file, &mut visitor)?;
     parser.run_to_end()?;
     Ok(visitor.get_game_data_json())
+}
+
+pub fn debug_print_stuff(msg: CCitadelUserMessageDamage, ctx: &Context, attacker: Option<&Entity>, victim: Option<&Entity>, inflictor: Option<&Entity>, ability: Option<&Entity>, record: &DamageRecord) {
+    if let Some(vic) = victim {
+        let att_class = msg.attacker_class() as i32;
+        let vic_class = msg.victim_class() as i32;
+        println!("victim.serializer().serializer_name.str = {}", victim.unwrap().serializer().serializer_name.str);
+        println!("attacker.serializer().serializer_name.str = {}", attacker.unwrap().serializer().serializer_name.str);
+        println!("attacker index={} class={} victim index={} class={}", msg.entindex_attacker(), att_class, msg.entindex_victim(), vic_class);
+
+        let att_class_thing = unsafe { ctx.entity_classes().unwrap().by_id_unckecked(att_class) };
+        // let att_class_serializer_thing = attacker.unwrap().serializer_name_heq(att_class_thing.network_name_hash);
+        let att_class_serializer_thing = attacker.unwrap().serializer_name_heq(CNPC_TROOPER_ENTITY);
+        let vic_class_thing = unsafe { ctx.entity_classes().unwrap().by_id_unckecked(vic_class) };
+        let vic_class_serializer_thing = victim.unwrap().serializer_name_heq(vic_class_thing.network_name_hash);
+        // let value = attacker.iter().find(|e| e.serializer_name.hash == att_class_thing.network_name_hash);
+        // println!("attacker.iter().find(att_class_serializer_thing): {:#?}", value);
+
+        // Unwrap first
+        if let Some(att) = attacker {
+            let matches = att.serializer().serializer_name.hash == att_class_thing.network_name_hash;
+            println!("attacker class hash matches? {}", matches);
+        } else {
+            println!("no attacker entity");
+        }
+
+        // Or stay in Option-land
+        let matches = attacker
+            .map(|att| att.serializer().serializer_name.hash == att_class_thing.network_name_hash)
+            .unwrap_or(false);
+        println!("attacker class hash matches? {}", matches);
+
+        let sers = ctx.serializers().unwrap();
+        if let Some(s) = sers.by_name_hash(att_class_thing.network_name_hash) {
+            // println!("serialized class values: {:#?}", sers.values());
+            println!("class name = {}", s.serializer_name.str);
+        }
+        if let Some(s) = sers.by_name_hash(vic_class_thing.network_name_hash) {
+            // println!("serialized class values: {:#?}", sers.values());
+            println!("class name = {}", s.serializer_name.str);
+        }
+
+        println!("class_serializer_thing: {:#?}", att_class_serializer_thing);
+        println!("entity_class stuff: {:#?}", att_class_thing.network_name_hash);
+
+        let att_ent_serializer = attacker.unwrap().serializer();
+        let vic_ent_serializer = victim.unwrap().serializer();
+        let att_ent_serializer_name = &att_ent_serializer.serializer_name;
+        let vic_ent_serializer_name = &vic_ent_serializer.serializer_name;
+        let att_ent_serializer_symbol = &att_ent_serializer.serializer_name.hash;
+        let vic_ent_serializer_symbol = &vic_ent_serializer.serializer_name.hash;
+
+        println!("att_ent_serializer_name: {:#?}", att_ent_serializer_name);
+        println!("vic_ent_serializer_name: {:#?}", vic_ent_serializer_name);
+        println!("att_ent_serializer_symbol: {:#?}", att_ent_serializer_symbol);
+        println!("vic_ent_serializer_symbol: {:#?}", vic_ent_serializer_symbol);
+
+        let ability_id  = msg.ability_id();
+        panic!("*****Debug panic******");
+    }
+    println!("damage record: {:?}", record);
+    println!("inflictor stuff: {:?}", inflictor.unwrap().serializer().serializer_name.str);
+    if ability.is_some() {
+        println!("ability stuff: {:?}", ability.unwrap().serializer().serializer_name.str);
+    }
+    println!("attacker stuff: {:?}", attacker.unwrap().serializer().serializer_name.str);
+    println!("victim stuff: {:?}", victim.unwrap().serializer().serializer_name.str);
+
+    // Do NOT use ability_id as a class index; it's an opaque id and may be 0 or large.
+    // If you want readable names for attacker/victim classes, resolve those ids via entity_classes:
+    if let Some(ec) = ctx.entity_classes() {
+        let serializers = ctx.serializers().unwrap();
+        for (label, class_id) in [("attacker_class", msg.attacker_class()), ("victim_class", msg.victim_class())] {
+            let idx = class_id as usize;
+            if idx < ec.classes && idx <= i32::MAX as usize {
+                let class_info = unsafe { ec.by_id_unckecked(class_id as i32) };
+                if let Some(s) = serializers.by_name_hash(class_info.network_name_hash) {
+                    println!("{} => {}", label, s.serializer_name.str);
+                }
+            }
+        }
+    }
+
 }
