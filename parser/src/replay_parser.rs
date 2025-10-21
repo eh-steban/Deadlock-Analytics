@@ -53,7 +53,7 @@ use haste::valveprotos::prost::Message;
 #[derive(Default, Debug, Serialize)]
 struct Player {
     entity_id: String,
-    custom_player_id: String,
+    custom_id: String,
     name: String,
     steam_id_32: u32,
     hero_id: u32,
@@ -65,19 +65,20 @@ struct Player {
 
 #[derive(Default, Debug, Serialize)]
 struct PlayerPosition {
-    player_id: String,
+    custom_id: String,
     x: f32,
     y: f32,
     z: f32,
+    is_npc: bool,
 }
 
-#[derive(Clone, Copy, Debug, Default, Serialize)]
-struct Vector4 {
-    x: Option<f32>,
-    y: Option<f32>,
-    z: Option<f32>,
-    w: Option<f32>,
-}
+// #[derive(Clone, Copy, Debug, Default, Serialize)]
+// struct Vector4 {
+//     x: Option<f32>,
+//     y: Option<f32>,
+//     z: Option<f32>,
+//     w: Option<f32>,
+// }
 
 #[derive(Default, Debug, Serialize)]
 struct DamageRecord {
@@ -239,6 +240,10 @@ impl MyVisitor {
         )
     }
 
+    fn is_npc_entity(&self, entity: &Entity) -> bool {
+        entity.serializer().serializer_name.hash != CCITADELPLAYERPAWN_ENTITY
+    }
+
     fn get_custom_player_id(
         &mut self,
         ctx: &Context,
@@ -246,6 +251,8 @@ impl MyVisitor {
     ) -> u32 {
         let serializer_name = &entity.serializer().serializer_name;
         if serializer_name.hash == CCITADELPLAYERPAWN_ENTITY {
+            // FIXME: Do we use `entity_id_to_custom_player_id`? It's not used on the Python side.
+            // So do we need it here?
             return *self.entity_id_to_custom_player_id
                 .entry(entity.index() as u32)
                 .or_insert_with(|| {
@@ -254,11 +261,11 @@ impl MyVisitor {
                         .get(&ehandle_to_index(owner_entity_index))
                         .unwrap();
 
-                    let player_id = self.players.len() as u32;
+                    let custom_id = self.players.len() as u32;
                     let lobby_player_slot = owner_entity.get_value(&LOBBY_PLAYER_SLOT_KEY).unwrap_or(0);
                     self.players.push(Player {
                         entity_id: entity.index().to_string(),
-                        custom_player_id: player_id.to_string(),
+                        custom_id: custom_id.to_string(),
                         name: owner_entity.get_value(&PLAYER_NAME_KEY).unwrap(),
                         steam_id_32: get_steam_id32(owner_entity).unwrap_or(0),
                         hero_id: entity.get_value(&HERO_ID_KEY).unwrap_or(0),
@@ -334,12 +341,13 @@ impl Visitor for &mut MyVisitor {
                     continue;
                 }
                 let position = get_entity_position(entity);
-                let custom_player_id = self.get_custom_player_id(ctx, entity);
+                let custom_id = self.get_custom_player_id(ctx, entity);
                 self.positions_window.push(PlayerPosition {
-                    player_id: custom_player_id.to_string(),
+                    custom_id: custom_id.to_string(),
                     x: position[0],
                     y: position[1],
                     z: position[2],
+                    is_npc: self.is_npc_entity(entity),
                 });
             }
 
