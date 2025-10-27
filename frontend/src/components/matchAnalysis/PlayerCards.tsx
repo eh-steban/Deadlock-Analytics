@@ -1,20 +1,27 @@
 import React from "react";
-import { ParsedGameData, DamageRecord } from "../../types/MatchAnalysis";
-import { NPC, Player } from "../../types/Player";
+import { ParsedGameData } from "../../types/MatchAnalysis";
+import {
+  NPC,
+  PlayerData,
+  PlayerGameData,
+  PlayerPosition,
+} from "../../types/Player";
 
 interface PlayerCardsProps {
-  players: Player[];
-  npcs: NPC[];
+  playersData: PlayerData[];
+  per_player_data: Record<string, PlayerGameData>;
+  // npcs: Record<string, NPC>;
+  // positions: PlayerPosition[][];
   currentTick: number;
   gameData: ParsedGameData;
-  getPlayerRegionLabels: (
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-    playerX: number,
-    playerY: number
-  ) => string[];
+  // getPlayerRegionLabels: (
+  //   x_max: number,
+  //   x_min: number,
+  //   y_max: number,
+  //   y_min: number,
+  //   playerX: number,
+  //   playerY: number
+  // ) => string[];
 }
 
 enum MoveType {
@@ -29,12 +36,15 @@ enum MoveType {
   AirDash = 8,
 }
 
+// TODO: Add typechecking?
 const PlayerCards: React.FC<PlayerCardsProps> = ({
-  players,
-  npcs,
+  playersData,
+  per_player_data,
+  // npcs,
+  // positions,
   currentTick,
   gameData,
-  getPlayerRegionLabels,
+  // getPlayerRegionLabels,
 }) => {
   return (
     <>
@@ -53,52 +63,56 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           gap: "0.25rem",
         }}
       >
-        {players.map((player, index) => {
-          const playerInfo = player.player_info;
-          const playerPathState = player.path_state;
-          const team = playerInfo.team;
+        {playersData.map((player) => {
+          // const playerInfo = player.player_info;
+          // const playerPathState = player.path_state;
+          const player_id = player.custom_id;
+          const team = player.team;
           const hero = player.hero;
-          const heroName = hero ? hero.name : `Hero ${playerInfo.hero_id}`;
+          const heroName = hero ? hero.name : `Hero ${player.hero_id}`;
           const heroImg =
             hero && hero.images && hero.images.icon_hero_card_webp;
-          const health = playerPathState.health[currentTick];
-          const moveType = playerPathState.move_type[currentTick];
-          const moveTypeLabel =
-            moveType !== undefined && MoveType[moveType] !== undefined ?
-              MoveType[moveType]
-            : moveType;
-          const combatTypes =
-            playerPathState.combat_type.slice(currentTick, currentTick + 1) ||
-            [];
-          const combatTypeSet = Array.from(
-            new Set(combatTypes.filter((x) => x !== undefined))
-          );
-          const combatTypeLabels = [
-            "Out of Combat",
-            "Player",
-            "Enemy NPC",
-            "Neutral",
-          ];
-          const combatTypeLabelList = combatTypeSet
-            .map((type) => combatTypeLabels[type] || type)
-            .join(", ");
-          const regionLabels: string[] = getPlayerRegionLabels(
-            playerPathState.x_max,
-            playerPathState.x_min,
-            playerPathState.y_max,
-            playerPathState.y_min,
-            playerPathState.x_pos[currentTick],
-            playerPathState.y_pos[currentTick]
-          );
+          const health = 0;
+          const moveType = "Moving";
+          const combatType = "Pew pew";
+          // const health = playerPathState.health[currentTick];
+          // const moveType = playerPathState.move_type[currentTick];
+          // const moveTypeLabel =
+          //   moveType !== undefined && MoveType[moveType] !== undefined ?
+          //     MoveType[moveType]
+          //   : moveType;
+          // const combatTypes =
+          //   playerPathState.combat_type.slice(currentTick, currentTick + 1) ||
+          //   [];
+          // const combatTypeSet = Array.from(
+          //   new Set(combatTypes.filter((x) => x !== undefined))
+          // );
+          // const combatTypeLabels = [
+          //   "Out of Combat",
+          //   "Player",
+          //   "Enemy NPC",
+          //   "Neutral",
+          // ];
+          // const combatTypeLabelList = combatTypeSet
+          //   .map((type) => combatTypeLabels[type] || type)
+          //   .join(", ");
+          // const regionLabels: string[] = getPlayerRegionLabels(
+          //   playerPathState.x_max,
+          //   playerPathState.x_min,
+          //   playerPathState.y_max,
+          //   playerPathState.y_min,
+          //   playerPathState.x_pos[currentTick],
+          //   playerPathState.y_pos[currentTick]
+          // );
 
-          const damageWindow = gameData.damage_per_tick[currentTick] || {};
+          // const damageWindow = gameData.damage[currentTick] || {};
 
           // If found, get the victim map for this attacker
-          const attackerVictimMap = damageWindow[index];
+          // const attackerVictimMap = damageWindow[index];
 
           return (
             <div
-              key={`player-card-${playerInfo.player_slot}`}
+              key={`player-card-${player.lobby_player_slot}`}
               style={{
                 background: "#fff",
                 border: "1px solid #ccc",
@@ -148,7 +162,8 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                       fontSize: "0.95em",
                     }}
                   >
-                    (Slot {playerInfo.player_slot}, Team {team})
+                    (Name: {player.name}, Slot: {player.lobby_player_slot},
+                    Team: {team})
                   </span>
                 </div>
                 <div
@@ -165,45 +180,58 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                   </div>
                   <div>
                     <strong>Move Type:</strong>{" "}
-                    {moveTypeLabel !== undefined ? moveTypeLabel : "-"}
+                    {moveType !== undefined ? moveType : "-"}
                   </div>
                   <div>
-                    <strong>Combat Type:</strong> {combatTypeLabelList || "-"}
+                    <strong>Combat Type:</strong>{" "}
+                    {combatType !== undefined ? combatType : "-"}
                   </div>
                   <div>
+                    <strong>Position:</strong>{" "}
+                    {per_player_data[player_id].positions[currentTick] ?
+                      `X: ${per_player_data[player_id].positions[currentTick].x.toFixed(2)}, Y: ${per_player_data[player_id].positions[currentTick].y.toFixed(2)}, Z: ${per_player_data[player_id].positions[currentTick].z.toFixed(2)}`
+                    : "-"}
+                  </div>
+                  {/* <div>
                     <strong>Current Region:</strong> {regionLabels.join(", ")}
-                  </div>
+                  </div> */}
                   <div>
                     <strong>Victims:</strong>
                     {(
-                      attackerVictimMap &&
-                      Object.entries(attackerVictimMap).length > 0
+                      per_player_data[player_id].damage &&
+                      Object.entries(per_player_data[player_id].damage).length >
+                        0
                     ) ?
                       <ul style={{ margin: 0, paddingLeft: 18 }}>
-                        {Object.entries(attackerVictimMap).map(
-                          ([victimIdx, damageRecords]) => {
-                            const victimPlayer = players[Number(victimIdx)];
-                            const victimNPC = npcs[Number(victimIdx)];
-                            console.log("victimNPC: ", victimNPC);
-                            console.log("victimIDX: ", victimIdx);
-                            let victimName =
-                              victimPlayer ? victimPlayer.name
-                              : victimNPC ? victimNPC.name
-                              : `Victim ${victimIdx}`;
-                            return (
-                              <li key={victimIdx}>
-                                {victimName}
-                                <ul style={{ margin: 0, paddingLeft: 18 }}>
-                                  {damageRecords.map((rec, idx) => (
-                                    <li key={idx}>
-                                      Damage: {rec.damage}, Type: {rec.type}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </li>
-                            );
-                          }
-                        )}
+                        {Object.entries(
+                          per_player_data[player_id].damage[currentTick]
+                        ).map(([victimIdx, damageRecords]) => {
+                          const victimPlayer = playersData[Number(victimIdx)];
+                          // const victimNPC = npcs[Number(victimIdx)];
+                          // console.log("victimNPC: ", victimNPC);
+                          console.log("victimIDX: ", victimIdx);
+                          let victimName =
+                            victimPlayer ?
+                              victimPlayer.name
+                              // : victimNPC ? victimNPC.name
+                            : `Victim ${victimIdx}`;
+                          return (
+                            <li key={victimIdx}>
+                              {victimName}
+                              <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                {damageRecords.map((rec, idx) => (
+                                  <li key={idx}>
+                                    Damage: {rec.damage} | Type: {rec.type} |
+                                    ability_id: {rec.ability_id} |
+                                    attacker_class: {rec.attacker_class} |
+                                    citadel_type: {rec.citadel_type} |
+                                    victim_class: {rec.victim_class}
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          );
+                        })}
                       </ul>
                     : "-"}
                   </div>

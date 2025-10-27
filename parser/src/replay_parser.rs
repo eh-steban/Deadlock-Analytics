@@ -108,15 +108,17 @@ struct DamageRecord {
 
 #[derive(Default, Debug)]
 struct MyVisitor {
-    seconds: u32,
+    total_game_time_s: u32,
+    game_start_time_s: Option<u32>,
     damage_window: HashMap<u32, HashMap<u32, Vec<DamageRecord>>>,
     damage: Vec<HashMap<u32, HashMap<u32, Vec<DamageRecord>>>>,
     players: Vec<Player>,
-    entity_id_to_custom_player_id: HashMap<u32, u32>,
+    entity_name_hash_to_player_slot: HashMap<u32, u32>,
     positions_window: Vec<PlayerPosition>,
     positions: Vec<Vec<PlayerPosition>>,
 }
 
+const DEADLOCK_GAMERULES_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelGameRulesProxy");
 const OWNER_ENTITY_KEY: u64 = entities::fkey_from_path(&["m_hOwnerEntity"]);
 const PLAYER_NAME_KEY: u64 = entities::fkey_from_path(&["m_iszPlayerName"]);
 const STEAM_ID_KEY: u64 = entities::fkey_from_path(&["m_steamID"]);
@@ -140,6 +142,7 @@ const CNPC_TROOPERBARRACKBOSS_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_TrooperBar
 const CNPC_BOSS_TIER3_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Boss_Tier3");
 const CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Neutral_SinnersSacrifice");
 const CNPC_BASE_DEFENSE_SENTRY_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_BaseDefenseSentry");
+const CNPC_SHIELDEDSENTRY_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_ShieldedSentry");
 
 fn steamid64_to_accountid(steamid64: Option<u64>) -> u32 {
     match steamid64 {
@@ -215,7 +218,8 @@ fn get_entity_position(entity: &Entity) -> [f32; 3] {
 impl MyVisitor {
     pub fn get_game_data_json(&self) -> serde_json::Value {
         serde_json::json!({
-            "seconds": self.seconds,
+            "total_game_time_s": self.total_game_time_s,
+            "game_start_time_s": self.game_start_time_s,
             "damage": self.damage,
             "players": self.players,
             "positions": self.positions,
@@ -237,6 +241,7 @@ impl MyVisitor {
                 | CNPC_BOSS_TIER3_ENTITY
                 | CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY
                 | CNPC_BASE_DEFENSE_SENTRY_ENTITY
+                | CNPC_SHIELDEDSENTRY_ENTITY
         )
     }
 
@@ -244,45 +249,66 @@ impl MyVisitor {
         entity.serializer().serializer_name.hash != CCITADELPLAYERPAWN_ENTITY
     }
 
-    fn get_custom_player_id(
+    fn handle_game_rules(&mut self, entity: &Entity) -> anyhow::Result<()> {
+        debug_assert!(entity.serializer_name_heq(DEADLOCK_GAMERULES_ENTITY));
+
+        let game_start_time_s_f: f32 =
+            entity.try_get_value(&fkey_from_path(&["m_pGameRules", "m_flGameStartTime"]))?;
+        // NOTE: 0.001 is an arbitrary number; nothing special.
+        if game_start_time_s_f < 0.001 {
+            return Ok(());
+        }
+
+        let rounded: u32 = game_start_time_s_f.ceil() as u32;
+        self.game_start_time_s = Some(rounded);
+
+        Ok(())
+    }
+
+    fn get_custom_id(
         &mut self,
         ctx: &Context,
         entity: &Entity
     ) -> u32 {
-        let serializer_name = &entity.serializer().serializer_name;
-        if serializer_name.hash == CCITADELPLAYERPAWN_ENTITY {
-            // FIXME: Do we use `entity_id_to_custom_player_id`? It's not used on the Python side.
+        // NOTE: This function returns a `custom_id` which is either:
+        // - for players: their lobby player slot
+        // - for NPCs: a unique ID starting from 20 upwards
+
+        let serializer_entity_name = &entity.serializer().serializer_name;
+        if serializer_entity_name.hash == CCITADELPLAYERPAWN_ENTITY {
+            // FIXME: Do we use `entity_name_hash_to_player_slot`? It's not used on the Python side.
             // So do we need it here?
-            return *self.entity_id_to_custom_player_id
+            return *self.entity_name_hash_to_player_slot
                 .entry(entity.index() as u32)
                 .or_insert_with(|| {
                     let owner_entity_index: u32 = entity.get_value::<u32>(&OWNER_ENTITY_KEY).unwrap();
                     let owner_entity = ctx.entities().unwrap()
                         .get(&ehandle_to_index(owner_entity_index))
                         .unwrap();
+                    let lobby_player_slot = owner_entity.get_value(&LOBBY_PLAYER_SLOT_KEY).unwrap_or(999999);
 
-                    let custom_id = self.players.len() as u32;
-                    let lobby_player_slot = owner_entity.get_value(&LOBBY_PLAYER_SLOT_KEY).unwrap_or(0);
                     self.players.push(Player {
                         entity_id: entity.index().to_string(),
-                        custom_id: custom_id.to_string(),
+                        custom_id: lobby_player_slot.to_string(),
                         name: owner_entity.get_value(&PLAYER_NAME_KEY).unwrap(),
-                        steam_id_32: get_steam_id32(owner_entity).unwrap_or(0),
-                        hero_id: entity.get_value(&HERO_ID_KEY).unwrap_or(0),
+                        steam_id_32: get_steam_id32(owner_entity).unwrap_or(999999),
+                        hero_id: owner_entity.get_value(&HERO_ID_KEY).unwrap_or(999999),
                         lobby_player_slot: lobby_player_slot,
-                        team: owner_entity.get_value(&TEAM_KEY).unwrap_or(0),
+                        team: owner_entity.get_value(&TEAM_KEY).unwrap_or(999999),
+                        // FIXME: The next 2 fields need to be updated further into the game. Currently returns 999999
+                        // Unsure which time window but I'd guess around 30 - 45 seconds into the game it updates.
                         lane: owner_entity
                             .get_value(&ASSIGNED_LANE_KEY)
                             .filter(|&v| v != 0)
                             .or_else(|| owner_entity.get_value(&ORIGINAL_LANE_ASSIGNMENT_KEY))
-                            .unwrap_or(0),
-                        zipline_lane_color: entity.get_value(&ZIPLINE_LANE_COLOR_KEY).unwrap_or(0),
+                            .unwrap_or(999999),
+                        zipline_lane_color: owner_entity.get_value(&ZIPLINE_LANE_COLOR_KEY).unwrap_or(999999),
                     });
 
                     lobby_player_slot
                 });
         } else {
-            return match serializer_name.hash {
+            return match serializer_entity_name.hash {
                 CNPC_TROOPER_ENTITY => 20, // "<CNPC_Trooper>".to_string(),
                 CNPC_TROOPERBOSS_ENTITY => 21, // "<CNPC_TrooperBoss>".to_string(),
                 CNPC_TROOPERNEUTRAL_ENTITY => 22, // "<CNPC_TrooperNeutral>".to_string(),
@@ -294,7 +320,8 @@ impl MyVisitor {
                 CNPC_BOSS_TIER3_ENTITY => 28, // "<CNPC_Boss_Tier3>".to_string(),
                 CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY => 29, // "<CNPC_Neutral_SinnersSacrifice>".to_string(),
                 CNPC_BASE_DEFENSE_SENTRY_ENTITY => 30, // "<CNPC_BaseDefenseSentry>".to_string(),
-                _ => panic!("Unknown entity - Name: {}, Hash: {}", serializer_name.str, serializer_name.hash),
+                CNPC_SHIELDEDSENTRY_ENTITY => 31, // "<CNPC_ShieldedSentry>".to_string(),
+                _ => panic!("Unknown entity - Name: {}, Hash: {}", serializer_entity_name.str, serializer_entity_name.hash),
             }
         }
     }
@@ -306,15 +333,15 @@ impl MyVisitor {
         victim: &Entity,
         record: DamageRecord
     ) -> Result<()> {
-        let custom_attacker_id = self.get_custom_player_id(ctx, attacker);
-        let custom_victim_id = self.get_custom_player_id(ctx, victim);
+        let attacker_player_slot = self.get_custom_id(ctx, attacker);
+        let victim_player_slot = self.get_custom_id(ctx, victim);
 
         let victims_list = self.damage_window
-            .entry(custom_attacker_id)
+            .entry(attacker_player_slot)
             .or_insert(HashMap::new());
 
         let victim_damage = victims_list
-            .entry(custom_victim_id)
+            .entry(victim_player_slot)
             .or_insert(Vec::new());
 
         //println!("Damage Record: {:?}", record);
@@ -334,6 +361,11 @@ impl Visitor for &mut MyVisitor {
 
         let next_window = (((1 + ctx.tick()) as f32) * ctx.tick_interval()).round() as u32;
         let this_window = ((ctx.tick() as f32) * ctx.tick_interval()).round() as u32;
+        let game_started = self.game_start_time_s.is_some() && (this_window >= (self.game_start_time_s.unwrap()));
+
+        if !game_started {
+            return Ok(());
+        }
 
         if next_window != this_window {
             for (_index, entity) in ctx.entities().unwrap().iter() {
@@ -341,7 +373,8 @@ impl Visitor for &mut MyVisitor {
                     continue;
                 }
                 let position = get_entity_position(entity);
-                let custom_id = self.get_custom_player_id(ctx, entity);
+                let custom_id = self.get_custom_id(ctx, entity);
+
                 self.positions_window.push(PlayerPosition {
                     custom_id: custom_id.to_string(),
                     x: position[0],
@@ -354,7 +387,7 @@ impl Visitor for &mut MyVisitor {
             // restart the current window
             // println!("Damage Window: {:?}", self.damage_window);
             // println!("Players: {:?}", self.players);
-            self.seconds = this_window;
+            self.total_game_time_s = this_window;
             self.damage.push(std::mem::replace(&mut self.damage_window, HashMap::new()));
             self.positions.push(std::mem::replace(&mut self.positions_window, Vec::new()));
         }
@@ -369,6 +402,14 @@ impl Visitor for &mut MyVisitor {
         entity: &Entity
     ) -> Result<()> {
         // println!("on_entity \t\t prev: {:?} \t new: {:?}", delta_header, entity);
+
+        // TODO: This looks like it's checked on *every* entity event.
+        // Optimize by checking only when this entity is created?
+        // Or updated? Or when the game starts timestamp on this entity is updated?
+        if entity.serializer_name_heq(DEADLOCK_GAMERULES_ENTITY) {
+            self.handle_game_rules(entity)?;
+        }
+
         if delta_header == DeltaHeader::CREATE {
             // ***Do things on entity created ***
         }
@@ -436,9 +477,9 @@ impl Visitor for &mut MyVisitor {
                         r#type: msg.r#type(),
                         citadel_type: msg.citadel_type(),
                         // origin: msg.origin.as_ref().map(|v| Vector4 { x: v.x, y: v.y, z: v.z, w: v.w }) ,
-                        // entindex_victim: get_custom_player_id(msg.entindex_victim()),
+                        // entindex_victim: get_custom_id(msg.entindex_victim()),
                         entindex_inflictor: msg.entindex_inflictor(),
-                        // entindex_attacker: get_custom_player_id(msg.entindex_attacker()),
+                        // entindex_attacker: get_custom_id(msg.entindex_attacker()),
                         entindex_ability: msg.entindex_ability(),
                         damage_absorbed: msg.damage_absorbed(),
                         victim_health_max: msg.victim_health_max(),
@@ -464,6 +505,11 @@ impl Visitor for &mut MyVisitor {
             //}
         }
         // Damage matrix is not a user message ID; it's embedded in PostMatchDetails.
+        // NOTE: I'm trying to be pedantic about the usage of "game" vs "match" in our code.
+        // The only reason we're referring to a "game" here as a "match" is because
+        // that's the terminology used in the protos. However, in typical tournament play
+        // a "match" consists of multiple "games". This is the only section of code where
+        // we refer to a "game" as a"match".
         if packet_type == CitadelUserMessageIds::KEUserMsgPostMatchDetails as u32 {
             let details_msg = CCitadelUserMsgPostMatchDetails::decode(data)?;
             if let Some(bytes) = details_msg.match_details {

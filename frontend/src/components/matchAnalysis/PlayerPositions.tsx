@@ -1,9 +1,17 @@
-import React from "react";
-import { Hero, PlayerPathState, PlayerInfo } from "../../types/Player";
+import React, { useMemo } from "react";
+import {
+  Hero,
+  PlayerData,
+  PlayerGameData,
+  PlayerPosition,
+  PositionWindow,
+} from "../../types/Player";
+import { Position } from "postcss";
 
 interface PlayerPositionsProps {
-  playerPaths: PlayerPathState[];
-  players: PlayerInfo[];
+  // playerPositions: PositionWindow[];
+  perPlayerData: Record<string, PlayerGameData>;
+  playersData: PlayerData[];
   currentTick: number;
   xResolution: number;
   yResolution: number;
@@ -12,58 +20,61 @@ interface PlayerPositionsProps {
 }
 
 const PlayerPositions: React.FC<PlayerPositionsProps> = ({
-  playerPaths,
-  players,
+  // playerPositions,
+  perPlayerData,
+  playersData,
   currentTick,
   xResolution,
   yResolution,
   heroes,
   renderPlayerDot,
 }) => {
+  const playerPositions: PositionWindow[] = Object.entries(perPlayerData).map(
+    ([playerIdx, playerGameData]) => playerGameData.positions
+  );
+
+  const allPlayerBounds = useMemo(
+    () => computeAllPlayerBounds(playerPositions),
+    [playerPositions]
+  );
+
   return (
     <>
-      {playerPaths.map((player) => {
-        const playerInfo = players?.find(
-          (p: PlayerInfo) => p.player_slot === player.player_slot
+      {playerPositions.map((playerPosition) => {
+        const customId = Number(playerPosition[currentTick].custom_id);
+        const playerData = playersData?.find(
+          (player: PlayerData) => player.lobby_player_slot === customId
         );
-        if (!playerInfo) return null;
-        const hero = heroes.find((h) => h.id === playerInfo.hero_id);
-        const heroName = hero?.name || `Hero ${playerInfo.hero_id}`;
+        if (!playerData) return null;
+
+        const hero = heroes.find((h) => h.id === playerData.hero_id);
+        const heroName = hero?.name || `Hero ${playerData.hero_id}`;
         const minimapImg = hero?.images?.minimap_image_webp;
-        const team = playerInfo.team;
+        const team = playerData.team;
         // NOTE: If we don't have a minimap image, we use the color based on the team
-        const color = team === 0 ? "rgba(0,128,255,0.7)" : "rgba(0,200,0,0.7)";
-        const playerX = player.x_pos[currentTick];
-        const playerY = player.y_pos[currentTick];
-        const x_max = player.x_max;
-        const x_min = player.x_min;
-        const y_max = player.y_max;
-        const y_min = player.y_min;
-        if (playerX !== undefined && playerY !== undefined) {
+        const color = team === 2 ? "rgba(0,128,255,0.7)" : "rgba(0,200,0,0.7)";
+        const playerPos = playerPosition[currentTick];
+
+        if (playerPos) {
           const { left, top } = getPlayerMinimapPosition(
-            x_max,
-            x_min,
-            y_max,
-            y_min,
-            playerX,
-            playerY,
-            playerPaths,
+            playerPos,
+            allPlayerBounds,
             xResolution,
             yResolution,
             renderPlayerDot
           );
           return minimapImg ?
               <img
-                key={`${heroName} Player-${player.player_slot}`}
-                title={`${heroName} Player ${player.player_slot} left: ${left} top: ${top}`}
+                key={`${heroName} Player-${customId}`}
+                title={`${heroName} Player ${customId} left: ${left} top: ${top}`}
                 src={minimapImg}
                 alt={`${heroName}`}
-                className='pointer-events-auto absolute z-[99] h-[20px] w-[20px] translate-x-1/2 translate-y-1/2 rounded-full border-2 border-white object-contain'
+                className='pointer-events-auto absolute z-[99] h-[20px] w-[20px] rounded-full border-2 border-white object-contain'
                 style={{ left, top, background: color }}
               />
             : <div
-                key={`${heroName} Player-${player.player_slot}`}
-                title={`${heroName} Player ${player.player_slot}`}
+                key={`${heroName} Player-${customId}`}
+                title={`${heroName} Player ${customId} left: ${left} top: ${top}`}
                 className='pointer-events-auto absolute z-2 h-[10px] w-[10px] translate-x-1/2 translate-y-1/2 rounded-full border-2 border-red-600'
                 style={{ left, top, backgroundColor: color }}
               />;
@@ -74,70 +85,72 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   );
 };
 
-export function standardizePlayerPosition(
-  x_max: number,
-  x_min: number,
-  y_max: number,
-  y_min: number,
-  playerX: number,
-  playerY: number,
-  playerPaths: Array<PlayerPathState>,
+export function computeAllPlayerBounds(playerPositions: PositionWindow[]) {
+  let xMin = Infinity;
+  let xMax = -Infinity;
+  let yMin = Infinity;
+  let yMax = -Infinity;
+  for (const pdata of playerPositions) {
+    for (const pos of pdata) {
+      if (!pos) continue;
+      if (pos.x < xMin) xMin = pos.x;
+      if (pos.x > xMax) xMax = pos.x;
+      if (pos.y < yMin) yMin = pos.y;
+      if (pos.y > yMax) yMax = pos.y;
+    }
+  }
+
+  // NOTE: These values came from the Haste github.
+  // This might be more reliable than computing from player data
+  // since players might not cover the entire map area.
+  // m_pGameRules.m_vMinimapMins:Vector = [-8960.0, -8960.005, 0.0]
+  // m_pGameRules.m_vMinimapMaxs:Vector = [8960.0, 8960.0, 0.0]
+  // return { xMin: -8960, xMax: 8960, yMin: -8960, yMax: 8960 };
+  return { xMin, xMax, yMin, yMax };
+}
+
+export function scalePlayerPosition(
+  playerPos: PlayerPosition,
+  allPlayerBounds: {
+    xMin: number;
+    xMax: number;
+    yMin: number;
+    yMax: number;
+  },
   xResolution: number,
   yResolution: number
-): { standPlayerX: number; standPlayerY: number } {
-  // Normalize player position to (0,1) range based on the minimap dimensions
-  // and the player paths' min/max coordinates
-  const normPlayerX = x_min + (playerX / xResolution) * (x_max - x_min);
-  const normPlayerY = y_min + (playerY / yResolution) * (y_max - y_min);
-
-  // Find the min/max coordinates across all player paths
-  // to scale the normalized position correctly
-  const allPlayerXMin = Math.min(
-    ...playerPaths.map((p: PlayerPathState) => p.x_min)
-  );
-  const allPlayerXMax = Math.max(
-    ...playerPaths.map((p: PlayerPathState) => p.x_max)
-  );
-  const allPlayerYMin = Math.min(
-    ...playerPaths.map((p: PlayerPathState) => p.y_min)
-  );
-  const allPlayerYMax = Math.max(
-    ...playerPaths.map((p: PlayerPathState) => p.y_max)
-  );
-
-  // Scale the normalized position to (0,1) range based on the overall min/max
+): { scaledPlayerX: number; scaledPlayerY: number } {
+  // Scale the normalized position to (0, MAP_SIZE) range based on the overall min/max
   // This ensures that the player position is correctly represented on the minimap
   const scaledPlayerX =
-    (normPlayerX - allPlayerXMin) / (allPlayerXMax - allPlayerXMin);
+    (playerPos.x - allPlayerBounds.xMin) /
+    (allPlayerBounds.xMax - allPlayerBounds.xMin);
   const scaledPlayerY =
-    (normPlayerY - allPlayerYMin) / (allPlayerYMax - allPlayerYMin);
-  return { standPlayerX: scaledPlayerX, standPlayerY: 1 - scaledPlayerY };
+    (playerPos.y - allPlayerBounds.yMin) /
+    (allPlayerBounds.yMax - allPlayerBounds.yMin);
+
+  return { scaledPlayerX: scaledPlayerX, scaledPlayerY: scaledPlayerY };
 }
 
 export function getPlayerMinimapPosition(
-  x_max: number,
-  x_min: number,
-  y_max: number,
-  y_min: number,
-  playerX: number,
-  playerY: number,
-  playerPaths: Array<PlayerPathState>,
+  playerPos: PlayerPosition,
+  allPlayerBounds: {
+    xMin: number;
+    xMax: number;
+    yMin: number;
+    yMax: number;
+  },
   xResolution: number,
   yResolution: number,
   renderPlayerDot: (x: number, y: number) => { left: number; top: number }
 ): { left: number; top: number } {
-  const { standPlayerX, standPlayerY } = standardizePlayerPosition(
-    x_max,
-    x_min,
-    y_max,
-    y_min,
-    playerX,
-    playerY,
-    playerPaths,
+  const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
+    playerPos,
+    allPlayerBounds,
     xResolution,
     yResolution
   );
-  return renderPlayerDot(standPlayerX, standPlayerY);
+  return renderPlayerDot(scaledPlayerX, scaledPlayerY);
 }
 
 export default PlayerPositions;

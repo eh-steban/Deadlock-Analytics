@@ -1,31 +1,26 @@
-import { MatchMetadata } from './MatchMetadata';
-import { Player, NPC } from './Player';
+import { MatchMetadata } from "./MatchMetadata";
+import {
+  PlayerData,
+  PlayerPosition,
+  NPC,
+  Damage,
+  ParsedPlayer,
+  PlayerGameData,
+} from "./Player";
 
-export interface DamageRecord {
-  damage: number;
-  type: number;
-  citadel_type: number;
-  ability_id: number;
-  attacker_class: number;
-  victim_class: number;
-}
-
-type DamageWindow = {
-  [attackerId: number]: {
-    [victimId: number]: DamageRecord[];
-  };
-};
-
-type DamagePerTick = DamageWindow[];
-
+// Parsed game data (aggregated by player, per backend ParsedGameData)
 export interface ParsedGameData {
-  damage_per_tick: DamagePerTick;
-  players: Player[];
+  total_game_time_s: number;
+  game_start_time_s: number;
+  players_data: ParsedPlayer[];
+  per_player_data: Record<string, PlayerGameData>; // key = player_id
 }
 
-export interface MatchAnalysisResponse {
+// Full match analysis response (backend MatchAnalysis)
+// Note: npc keys are strings (backend returns dict[str, NPC])
+export interface GameAnalysisResponse {
   match_metadata: MatchMetadata;
   parsed_game_data: ParsedGameData;
-  players: Player[];
-  npcs: { [key: number]: NPC };
+  // players: Player[];
+  // npcs: Record<string, NPC>;
 }

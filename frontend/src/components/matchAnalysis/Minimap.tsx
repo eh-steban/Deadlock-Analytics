@@ -1,4 +1,11 @@
-import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+} from "react";
 import Grid from "./Grid";
 import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
@@ -12,39 +19,100 @@ import AllPlayerPositions from "./AllPlayerPositions";
 import PerPlayerWindowTable from "./PerPlayerWindowTable";
 import DamageSourceTypesTable from "./DamageSourceTypesTable";
 import { Region } from "../../types/Region";
-import { Hero, PlayerPathState, PlayerInfo } from "../../types/Player";
+import {
+  Hero,
+  PlayerInfo,
+  PlayerGameData,
+  PositionWindow,
+  PlayerPosition,
+  ParsedVictimDamage,
+  DamageRecord,
+  PlayerData,
+} from "../../types/Player";
 import { ObjectiveCoordinate } from "../../types/ObjectiveCoordinate";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { objectiveCoordinates } from "../../data/objectiveCoordinates";
+
+interface TickDamageEvent {
+  tick: number;
+  attackerId: string;
+  victimId: string;
+  record: DamageRecord;
+}
 
 const MINIMAP_SIZE = 768;
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
 
+function useCurrentTickData(
+  per_player_data: Record<string, PlayerGameData>,
+  currentTick: number
+) {
+  // Damage events for this tick.
+  // Each player's damage[currentTick] is a victim map: victimId -> DamageRecord[]
+  const currentDamageEvents = useMemo(() => {
+    const damageEvents: TickDamageEvent[] = [];
+    for (const [attackerId, pdata] of Object.entries(per_player_data)) {
+      const victimMap: ParsedVictimDamage | undefined =
+        pdata.damage[currentTick];
+      if (!victimMap) continue;
+
+      for (const [victimId, records] of Object.entries(victimMap)) {
+        for (const record of records) {
+          damageEvents.push({
+            tick: currentTick,
+            attackerId,
+            victimId,
+            record,
+          });
+        }
+      }
+    }
+    return damageEvents;
+  }, [per_player_data, currentTick]);
+
+  // Example aggregate: total damage dealt this tick per attacker
+  const damageByAttacker = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const e of currentDamageEvents) {
+      map[e.attackerId] = (map[e.attackerId] ?? 0) + (e.record.damage ?? 0);
+    }
+    return Object.entries(map).sort((a, b) => b[1] - a[1]); // [attackerId, total]
+  }, [currentDamageEvents]);
+
+  return { currentDamageEvents, damageByAttacker };
+}
+
 const Minimap = ({
   currentTick,
   setCurrentTick,
-  playerPaths,
+  total_game_time_s,
+  game_start_time_s,
+  // playerPaths,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
   regions,
-  players,
+  playersData,
+  per_player_data,
   heroes,
   xResolution,
   yResolution,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
-  playerPaths: PlayerPathState[];
+  total_game_time_s: number;
+  game_start_time_s: number;
+  // playerPaths: PlayerPathState[];
   destroyedObjectivesSorted: Array<DestroyedObjective>;
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
   regions: Region[];
-  players: PlayerInfo[];
+  playersData: PlayerData[];
+  per_player_data: Record<string, PlayerGameData>;
   heroes: Hero[];
   xResolution: number;
   yResolution: number;
 }) => {
-  // NOTE: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
+  // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
   const repeatDirection = useRef<"back" | "forward" | null>(null);
@@ -57,18 +125,23 @@ const Minimap = ({
   }>(() => Object.fromEntries(regions.map((r) => [r.label, true])));
   const visibleRegionList = regions.filter((r) => visibleRegions[r.label]);
 
+  const { currentDamageEvents, damageByAttacker } = useCurrentTickData(
+    per_player_data,
+    currentTick
+  );
+
   // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
   const renderObjectiveDot = (obj: ObjectiveCoordinate) => {
     return scaleToMinimap(obj.x, 1 - obj.y);
   };
   const renderPlayerDot = (x: number, y: number) => {
-    return scaleToMinimap(x, y);
+    return scaleToMinimap(1 - x, y);
   };
   const scaleToMinimap = (
     x: number,
     y: number
   ): { left: number; top: number } => {
-    // const xOffset = -75;
+    // const xOffset = -18;
     const xOffset = 0;
     const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
     const top = y * MINIMAP_SIZE;
@@ -87,9 +160,7 @@ const Minimap = ({
           if (t <= 0) return 0;
           return t - 1;
         } else {
-          const maxTick =
-            playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0;
-          if (t >= maxTick) return maxTick;
+          if (t >= total_game_time_s) return total_game_time_s;
           return t + 1;
         }
       });
@@ -147,8 +218,9 @@ const Minimap = ({
             activeObjectiveKey={activeObjectiveKey}
           />
           <PlayerPositions
-            playerPaths={playerPaths}
-            players={players}
+            // playerPositions={playerPositions}
+            perPlayerData={per_player_data}
+            playersData={playersData}
             currentTick={currentTick}
             xResolution={xResolution}
             yResolution={yResolution}
@@ -160,11 +232,7 @@ const Minimap = ({
           <GameTimeViewer
             currentTick={currentTick}
             setCurrentTick={setCurrentTick}
-            maxTime={
-              playerPaths[0]?.x_pos?.length ?
-                playerPaths[0].x_pos.length - 1
-              : 0
-            }
+            total_game_time_s={total_game_time_s}
             startRepeat={startRepeat}
             stopRepeat={stopRepeat}
           />

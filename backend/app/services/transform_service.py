@@ -1,43 +1,45 @@
 import logging
 from app.domain.match_analysis import (
-    ParsedMatchResponse,
-    PlayerData,
-    ParsedGameData,
+    ParsedGameResponse,
+    PlayerGameData,
+    TransformedGameData,
 )
 
 logger = logging.getLogger(__name__)
 
 class TransformService:
     @staticmethod
-    def to_per_player_data(parsed_match: ParsedMatchResponse) -> ParsedGameData:
-        data = ParsedGameData(
-            players=parsed_match.players,
+    def to_game_data(parsed_game: ParsedGameResponse) -> TransformedGameData:
+        game_data = TransformedGameData(
+            total_game_time_s=parsed_game.total_game_time_s,
+            game_start_time_s=parsed_game.game_start_time_s,
+            players_data=parsed_game.players_data,
             per_player_data={},
         )
 
-        for player in parsed_match.players:
-            data.per_player_data[str(player.custom_player_id)] = PlayerData.model_construct(
+        for player in parsed_game.players_data:
+            game_data.per_player_data[player.custom_id] = PlayerGameData.model_construct(
                 positions=[], damage=[]
             )
 
-        for i in range(0, parsed_match.seconds):
-            for player_position in getattr(parsed_match, "positions", [])[i]:
-                custom_player_id = player_position.player_id
+        for i in range(0, (parsed_game.total_game_time_s - parsed_game.game_start_time_s)):
+            for player_position in getattr(parsed_game, "positions", [])[i]:
+                custom_id = player_position.custom_id
 
-                is_human_player = int(custom_player_id) < 20
+                is_human_player = int(custom_id) < 20
                 if is_human_player:
-                    data.per_player_data[str(custom_player_id)].positions.append(player_position)
+                    game_data.per_player_data[str(custom_id)].positions.append(player_position)
 
-            for player in getattr(parsed_match, "players", []):
-                custom_player_id = player.custom_player_id
+            for player in getattr(parsed_game, "players_data", []):
+                custom_id = player.custom_id
 
-                damage = getattr(parsed_match, "damage", [])[i]
-                damage_by_player = damage.get(custom_player_id, None)
+                damage = getattr(parsed_game, "damage", [])[i]
+                damage_by_player = damage.get(custom_id, None)
                 if damage_by_player:
-                    data.per_player_data[custom_player_id].damage.append(
-                        damage[custom_player_id]
+                    game_data.per_player_data[custom_id].damage.append(
+                        damage[custom_id]
                     )
                 else:
-                    data.per_player_data[custom_player_id].damage.append({})
+                    game_data.per_player_data[custom_id].damage.append({})
 
-        return data
+        return game_data
