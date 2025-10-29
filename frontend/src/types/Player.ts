@@ -1,33 +1,41 @@
+export interface DRTypeAggregateBySec {
+  agg_damage: number;
+  agg_pre_damage: number;
+  type: number;
+  citadel_type: number;
+  entindex_inflictor: number;
+  entindex_ability: number;
+  agg_damage_absorbed: number;
+  victim_health_max: number;
+  victim_health_new: number;
+  flags: number;
+  ability_id: number;
+  attacker_class: number;
+  victim_class: number;
+  victim_shield_max: number;
+  agg_victim_shield_new: number;
+  agg_hits: number;
+  agg_health_lost: number;
+}
+
 export interface DamageRecord {
+  damage?: number;
+  pre_damage?: number;
+  type?: number;
+  citadel_type?: number;
+  entindex_inflictor?: number;
+  entindex_ability?: number;
+  damage_absorbed?: number;
+  victim_health_max?: number;
+  victim_health_new?: number;
+  flags?: number;
   ability_id?: number;
   attacker_class?: number;
-  citadel_type?: number;
-  damage?: number;
-  type?: number;
   victim_class?: number;
-}
-
-interface TickDamageEvent {
-  tick: number;
-  attackerId: string;
-  victimId: string;
-  record: DamageRecord;
-}
-
-// type DamageWindow = {
-//   [attackerId: number]: {
-//     [victimId: number]: DamageRecord[];
-//   };
-// };
-
-// type Damage = DamageWindow[];
-
-// Comes from DeadlockAPI
-export interface PlayerInfo {
-  account_id: number;
-  player_slot: number;
-  team: number;
-  hero_id: number;
+  victim_shield_max?: number;
+  victim_shield_new?: number;
+  hits?: number;
+  health_lost?: number;
 }
 
 // Comes from DeadlockAPI
@@ -47,12 +55,6 @@ export interface PlayerInfo {
 // victim_id -> DamageRecord[]
 export type ParsedVictimDamage = Record<string, DamageRecord[]>;
 /**
- * attacker_id -> (victim_id -> DamageRecord[])
- * One entry per attacker for a single tick.
- */
-export type ParsedAttackerVictimMap = Record<string, ParsedVictimDamage>;
-
-/**
  * Damage timeline:
  * Index = tick (second). Each element is either:
  *  - ParsedVictimDamage (victim -> damage records)
@@ -71,8 +73,14 @@ export interface PlayerPosition {
 
 // All positions for one tick (can contain nulls if a player absent that tick)
 export type PositionWindow = PlayerPosition[];
-// Timeline of position windows
-// export type Positions = PositionWindow[];
+
+// Comes from DeadlockAPI
+export interface PlayerInfo {
+  account_id: number;
+  player_slot: number;
+  team: number;
+  hero_id: number;
+}
 
 // Comes from parser
 export interface PlayerData {
