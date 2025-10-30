@@ -38,20 +38,6 @@ export interface DamageRecord {
   health_lost?: number;
 }
 
-// Comes from DeadlockAPI
-// export interface PlayerPathState {
-//   player_slot: number;
-//   x_min: number;
-//   y_min: number;
-//   x_max: number;
-//   y_max: number;
-//   x_pos: number[];
-//   y_pos: number[];
-//   health: number[];
-//   move_type: number[];
-//   combat_type: number[];
-// }
-
 // victim_id -> DamageRecord[]
 export type ParsedVictimDamage = Record<string, DamageRecord[]>;
 /**
@@ -61,6 +47,13 @@ export type ParsedVictimDamage = Record<string, DamageRecord[]>;
  *  - null (no damage that tick)
  */
 export type Damage = ParsedVictimDamage[];
+
+export interface AllPlayerBounds {
+  xMin: number;
+  xMax: number;
+  yMin: number;
+  yMax: number;
+}
 
 // Comes from parser
 export interface PlayerPosition {
@@ -94,8 +87,6 @@ export interface PlayerData {
   team: number;
   zipline_lane_color: number;
   hero: Hero; // FIXME: temporary, to hold hero data
-  // player_info: PlayerInfo;
-  // path_state: PlayerPathState;
 }
 
 // Per-player aggregated data (damage + positions windows)

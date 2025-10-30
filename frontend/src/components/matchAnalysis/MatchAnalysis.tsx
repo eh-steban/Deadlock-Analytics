@@ -1,15 +1,12 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
-import pointInPolygon from "point-in-polygon";
 import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
-import { scalePlayerPosition, computeAllPlayerBounds } from "./PlayerPositions";
-import { Region } from "../../types/Region";
 import { regions } from "../../data/Regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
-import { GameAnalysisResponse } from "../../types/MatchAnalysis";
-import { NPC, Hero, PositionWindow } from "../../types/Player";
+import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
+import { Hero, PlayerPosition } from "../../types/Player";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
 import { formatSecondstoMMSS } from "../../utils/time";
@@ -29,11 +26,6 @@ const defaultMatchAnalysis: GameAnalysisResponse = {
       game_mode: 0,
       match_mode: 0,
       objectives: [],
-      match_paths: {
-        x_resolution: 0,
-        y_resolution: 0,
-        paths: [],
-      },
       damage_matrix: {
         sample_time_s: [],
         source_details: {
@@ -91,70 +83,31 @@ const MatchAnalysis = () => {
       .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
-  // x/yResolution comes from match_metadata response returned from
-  // Deadlock API (https://api.deadlock-api.com/v1/matches/{match_id}/metadata)
-  // and looks something like: "match_info": { "match_paths": "x_resolution": 16383, "y_resolution": 16383 }
-  // const playerPaths = matchMetadata.match_info.match_paths.paths;
-  const xResolution = matchMetadata.match_info.match_paths.x_resolution;
-  const yResolution = matchMetadata.match_info.match_paths.y_resolution;
-  // const players_metadata = matchMetadata.match_info.players;
+  const players = useMemo(() => {
+    if (!playersData || !heroData) return [];
+    const heroIdToHero: Record<number, Hero> = {};
+    heroData.forEach((h) => {
+      heroIdToHero[h.id] = h;
+    });
+    return playersData.map((player) => ({
+      ...player,
+      hero: heroIdToHero[player.hero_id] || null,
+    }));
+  }, [playersData, heroData]);
 
-  // function getPlayerRegionLabels(
-  //   x_max: number,
-  //   x_min: number,
-  //   y_max: number,
-  //   y_min: number,
-  //   x: number,
-  //   y: number,
-  //   debug: boolean = false
-  // ): string[] {
-  //   const foundRegions: string[] = regions
-  //     .filter((region: Region) =>
-  //       isPlayerInRegion(
-  //         x_max,
-  //         x_min,
-  //         y_max,
-  //         y_min,
-  //         [x, y],
-  //         region.polygon,
-  //         xResolution,
-  //         yResolution
-  //       )
-  //     )
-  //     .map<string>((region): string => {
-  //       return region.label ? region.label : "None";
-  //     });
-  //   return foundRegions;
-  // }
+  function scalePlayerPosition(playerPos: PlayerPosition): {
+    scaledPlayerX: number;
+    scaledPlayerY: number;
+  } {
+    // Scale the normalized position to (0, MAP_SIZE) range based on the overall min/max
+    // This ensures that the player position is correctly represented on the minimap
+    const spanX = Math.max(1e-6, WORLD_BOUNDS.xMax - WORLD_BOUNDS.xMin);
+    const spanY = Math.max(1e-6, WORLD_BOUNDS.yMax - WORLD_BOUNDS.yMin);
+    const scaledPlayerX = (playerPos.x - WORLD_BOUNDS.xMin) / spanX;
+    const scaledPlayerY = 1 - (playerPos.y - WORLD_BOUNDS.yMin) / spanY;
 
-  // const { allPlayerXMin, allPlayerXMax, allPlayerYMin, allPlayerYMax } =
-  //     computeGlobalBounds(playerPositions);
-
-  // function isPlayerInRegion(
-  //   x_max: number,
-  //   x_min: number,
-  //   y_max: number,
-  //   y_min: number,
-  //   point: [number, number],
-  //   polygon: [number, number][],
-  //   xResolution: number,
-  //   yResolution: number
-  // ): boolean {
-  //   const [playerX, playerY] = point;
-  //   const { standPlayerX, standPlayerY } = standardizePlayerPosition(
-  //     x_max,
-  //     x_min,
-  //     y_max,
-  //     y_min,
-  //     playerX,
-  //     playerY,
-  //     playerPaths,
-  //     xResolution,
-  //     yResolution
-  //   );
-
-  //   return pointInPolygon([standPlayerX, standPlayerY], polygon);
-  // }
+    return { scaledPlayerX: scaledPlayerX, scaledPlayerY: scaledPlayerY };
+  }
 
   useEffect(() => {
     isMounted.current = true;
@@ -176,20 +129,6 @@ const MatchAnalysis = () => {
       isMounted.current = false;
     };
   }, [match_id]);
-
-  const players = useMemo(() => {
-    const parsed_players = matchAnalysis.parsed_game_data.players_data;
-
-    if (!parsed_players || !heroData) return [];
-    const heroIdToHero: Record<number, Hero> = {};
-    heroData.forEach((h) => {
-      heroIdToHero[h.id] = h;
-    });
-    return parsed_players.map((player) => ({
-      ...player,
-      hero: heroIdToHero[player.hero_id] || null,
-    }));
-  }, [matchAnalysis.parsed_game_data.players_data, heroData]);
 
   return (
     <>
@@ -232,12 +171,11 @@ const MatchAnalysis = () => {
             <PlayerCards
               playersData={players}
               per_player_data={matchAnalysis.parsed_game_data.per_player_data}
-              // npcs={matchAnalysis.npcs}
               // positions={
               //   matchAnalysis.parsed_game_data.per_player_data.positions
               // }
               currentTick={currentTick}
-              // getPlayerRegionLabels={getPlayerRegionLabels}
+              scalePlayerPosition={scalePlayerPosition}
               gameData={matchAnalysis.parsed_game_data}
             />
           </div>
@@ -253,8 +191,7 @@ const MatchAnalysis = () => {
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}
-            xResolution={xResolution}
-            yResolution={yResolution}
+            scalePlayerPosition={scalePlayerPosition}
           />
         </div>
       </div>

@@ -1,30 +1,25 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { ParsedGameData } from "../../types/MatchAnalysis";
+import { Region } from "../../types/Region";
+import { regions } from "../../data/Regions";
 import {
-  NPC,
   PlayerData,
   PlayerGameData,
-  Damage,
   PlayerPosition,
-  PositionWindow,
   DRTypeAggregateBySec,
 } from "../../types/Player";
+import { WORLD_BOUNDS } from "../../types/MatchAnalysis";
+import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
   playersData: PlayerData[];
   per_player_data: Record<string, PlayerGameData>;
-  // npcs: Record<string, NPC>;
-  // positions: PlayerPosition[][];
   currentTick: number;
   gameData: ParsedGameData;
-  // getPlayerRegionLabels: (
-  //   x_max: number,
-  //   x_min: number,
-  //   y_max: number,
-  //   y_min: number,
-  //   playerX: number,
-  //   playerY: number
-  // ) => string[];
+  scalePlayerPosition: (
+    pos: PlayerPosition,
+    worldBounds: { xMin: number; xMax: number; yMin: number; yMax: number }
+  ) => { scaledPlayerX: number; scaledPlayerY: number };
 }
 
 enum MoveType {
@@ -39,15 +34,25 @@ enum MoveType {
   AirDash = 8,
 }
 
+function getPlayerRegionLabels(
+  x: number,
+  y: number,
+  debug: boolean = false
+): string[] {
+  const foundRegions: string[] = regions
+    .filter((region: Region) => pointInPolygon([x, y], region.polygon))
+    .map<string>((region): string => {
+      return region.label ? region.label : "None";
+    });
+  return foundRegions;
+}
+
 // TODO: Add typechecking?
 const PlayerCards: React.FC<PlayerCardsProps> = ({
   playersData,
   per_player_data,
-  // npcs,
-  // positions,
   currentTick,
-  gameData,
-  // getPlayerRegionLabels,
+  scalePlayerPosition,
 }) => {
   return (
     <>
@@ -67,8 +72,6 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
         }}
       >
         {playersData.map((player) => {
-          // const playerInfo = player.player_info;
-          // const playerPathState = player.path_state;
           const customId = Number(player.custom_id);
           const pdata = per_player_data[customId];
           const playerPosition = pdata.positions[currentTick];
@@ -102,14 +105,14 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           // const combatTypeLabelList = combatTypeSet
           //   .map((type) => combatTypeLabels[type] || type)
           //   .join(", ");
-          // const regionLabels: string[] = getPlayerRegionLabels(
-          //   playerPathState.x_max,
-          //   playerPathState.x_min,
-          //   playerPathState.y_max,
-          //   playerPathState.y_min,
-          //   playerPathState.x_pos[currentTick],
-          //   playerPathState.y_pos[currentTick]
-          // );
+          const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
+            playerPosition,
+            WORLD_BOUNDS
+          );
+          const regionLabels: string[] = getPlayerRegionLabels(
+            scaledPlayerX,
+            scaledPlayerY
+          );
 
           // Summarize: victimId -> (type -> totalDamage)
           // FIXME: Just for display purposes, but this should be done
@@ -122,6 +125,8 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
             const aggByType: Record<number, DRTypeAggregateBySec> = {};
             for (const rec of records) {
               const t = rec.type ?? -1;
+              // FIXME: Not all the fields below are being displayed/used.
+              // Need to update this to show this data somewhere.
               const entry = (aggByType[t] ??= {
                 type: t,
                 agg_damage: 0,
@@ -233,9 +238,9 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                       `X: ${playerPosition.x.toFixed(2)}, Y: ${playerPosition.y.toFixed(2)}, Z: ${playerPosition.z.toFixed(2)}`
                     : "-"}
                   </div>
-                  {/* <div>
+                  <div>
                     <strong>Current Region:</strong> {regionLabels.join(", ")}
-                  </div> */}
+                  </div>
                   <div>
                     {Object.keys(victimDamageMap).length === 0 ?
                       <strong>Out of combat</strong>

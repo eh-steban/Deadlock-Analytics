@@ -1,11 +1,4 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-} from "react";
+import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import Grid from "./Grid";
 import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
@@ -21,11 +14,8 @@ import DamageSourceTypesTable from "./DamageSourceTypesTable";
 import { Region } from "../../types/Region";
 import {
   Hero,
-  PlayerInfo,
   PlayerGameData,
-  PositionWindow,
   PlayerPosition,
-  ParsedVictimDamage,
   DamageRecord,
   PlayerData,
 } from "../../types/Player";
@@ -41,62 +31,23 @@ interface TickDamageEvent {
 }
 
 const MINIMAP_SIZE = 768;
+// FIXME: Use this value once we're confident in how our map
+// looks at bigger sizes.
+// const MINIMAP_SIZE = 512;
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
-
-function useCurrentTickData(
-  per_player_data: Record<string, PlayerGameData>,
-  currentTick: number
-) {
-  // Damage events for this tick.
-  // Each player's damage[currentTick] is a victim map: victimId -> DamageRecord[]
-  const currentDamageEvents = useMemo(() => {
-    const damageEvents: TickDamageEvent[] = [];
-    for (const [attackerId, pdata] of Object.entries(per_player_data)) {
-      const victimMap: ParsedVictimDamage | undefined =
-        pdata.damage[currentTick];
-      if (!victimMap) continue;
-
-      for (const [victimId, records] of Object.entries(victimMap)) {
-        for (const record of records) {
-          damageEvents.push({
-            tick: currentTick,
-            attackerId,
-            victimId,
-            record,
-          });
-        }
-      }
-    }
-    return damageEvents;
-  }, [per_player_data, currentTick]);
-
-  // Example aggregate: total damage dealt this tick per attacker
-  const damageByAttacker = useMemo(() => {
-    const map: Record<string, number> = {};
-    for (const e of currentDamageEvents) {
-      map[e.attackerId] = (map[e.attackerId] ?? 0) + (e.record.damage ?? 0);
-    }
-    return Object.entries(map).sort((a, b) => b[1] - a[1]); // [attackerId, total]
-  }, [currentDamageEvents]);
-
-  return { currentDamageEvents, damageByAttacker };
-}
 
 const Minimap = ({
   currentTick,
   setCurrentTick,
   total_game_time_s,
-  game_start_time_s,
-  // playerPaths,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
   regions,
   playersData,
   per_player_data,
   heroes,
-  xResolution,
-  yResolution,
+  scalePlayerPosition,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
@@ -109,8 +60,10 @@ const Minimap = ({
   playersData: PlayerData[];
   per_player_data: Record<string, PlayerGameData>;
   heroes: Hero[];
-  xResolution: number;
-  yResolution: number;
+  scalePlayerPosition: (playerPos: PlayerPosition) => {
+    scaledPlayerX: number;
+    scaledPlayerY: number;
+  };
 }) => {
   // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
@@ -125,24 +78,20 @@ const Minimap = ({
   }>(() => Object.fromEntries(regions.map((r) => [r.label, true])));
   const visibleRegionList = regions.filter((r) => visibleRegions[r.label]);
 
-  const { currentDamageEvents, damageByAttacker } = useCurrentTickData(
-    per_player_data,
-    currentTick
-  );
-
   // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
   const renderObjectiveDot = (obj: ObjectiveCoordinate) => {
+    // TODO: When we pull objective coordinates from the backend, ensure y-axis is inverted
+    // in scalePlayerPosition (but we'll likely rename this to scalePosition)
     return scaleToMinimap(obj.x, 1 - obj.y);
   };
   const renderPlayerDot = (x: number, y: number) => {
-    return scaleToMinimap(1 - x, y);
+    return scaleToMinimap(x, y);
   };
   const scaleToMinimap = (
     x: number,
     y: number
   ): { left: number; top: number } => {
-    // const xOffset = -18;
-    const xOffset = 0;
+    const xOffset = -10;
     const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
     const top = y * MINIMAP_SIZE;
     return { left, top };
@@ -222,10 +171,9 @@ const Minimap = ({
             perPlayerData={per_player_data}
             playersData={playersData}
             currentTick={currentTick}
-            xResolution={xResolution}
-            yResolution={yResolution}
             heroes={heroes}
             renderPlayerDot={renderPlayerDot}
+            scalePlayerPosition={scalePlayerPosition}
           />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>

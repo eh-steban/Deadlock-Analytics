@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   Hero,
   PlayerData,
@@ -13,10 +13,12 @@ interface PlayerPositionsProps {
   perPlayerData: Record<string, PlayerGameData>;
   playersData: PlayerData[];
   currentTick: number;
-  xResolution: number;
-  yResolution: number;
   heroes: Hero[];
   renderPlayerDot: (x: number, y: number) => { left: number; top: number };
+  scalePlayerPosition: (playerPos: PlayerPosition) => {
+    scaledPlayerX: number;
+    scaledPlayerY: number;
+  };
 }
 
 const PlayerPositions: React.FC<PlayerPositionsProps> = ({
@@ -24,18 +26,12 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
   perPlayerData,
   playersData,
   currentTick,
-  xResolution,
-  yResolution,
   heroes,
   renderPlayerDot,
+  scalePlayerPosition,
 }) => {
   const playerPositions: PositionWindow[] = Object.entries(perPlayerData).map(
     ([playerIdx, playerGameData]) => playerGameData.positions
-  );
-
-  const allPlayerBounds = useMemo(
-    () => computeAllPlayerBounds(playerPositions),
-    [playerPositions]
   );
 
   return (
@@ -56,13 +52,10 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
         const playerPos = playerPosition[currentTick];
 
         if (playerPos) {
-          const { left, top } = getPlayerMinimapPosition(
-            playerPos,
-            allPlayerBounds,
-            xResolution,
-            yResolution,
-            renderPlayerDot
-          );
+          const { scaledPlayerX, scaledPlayerY } =
+            scalePlayerPosition(playerPos);
+          const { left, top } = renderPlayerDot(scaledPlayerX, scaledPlayerY);
+
           return minimapImg ?
               <img
                 key={`${heroName} Player-${customId}`}
@@ -84,73 +77,5 @@ const PlayerPositions: React.FC<PlayerPositionsProps> = ({
     </>
   );
 };
-
-export function computeAllPlayerBounds(playerPositions: PositionWindow[]) {
-  let xMin = Infinity;
-  let xMax = -Infinity;
-  let yMin = Infinity;
-  let yMax = -Infinity;
-  for (const pdata of playerPositions) {
-    for (const pos of pdata) {
-      if (!pos) continue;
-      if (pos.x < xMin) xMin = pos.x;
-      if (pos.x > xMax) xMax = pos.x;
-      if (pos.y < yMin) yMin = pos.y;
-      if (pos.y > yMax) yMax = pos.y;
-    }
-  }
-
-  // NOTE: These values came from the Haste github.
-  // This might be more reliable than computing from player data
-  // since players might not cover the entire map area.
-  // m_pGameRules.m_vMinimapMins:Vector = [-8960.0, -8960.005, 0.0]
-  // m_pGameRules.m_vMinimapMaxs:Vector = [8960.0, 8960.0, 0.0]
-  // return { xMin: -8960, xMax: 8960, yMin: -8960, yMax: 8960 };
-  return { xMin, xMax, yMin, yMax };
-}
-
-export function scalePlayerPosition(
-  playerPos: PlayerPosition,
-  allPlayerBounds: {
-    xMin: number;
-    xMax: number;
-    yMin: number;
-    yMax: number;
-  },
-  xResolution: number,
-  yResolution: number
-): { scaledPlayerX: number; scaledPlayerY: number } {
-  // Scale the normalized position to (0, MAP_SIZE) range based on the overall min/max
-  // This ensures that the player position is correctly represented on the minimap
-  const scaledPlayerX =
-    (playerPos.x - allPlayerBounds.xMin) /
-    (allPlayerBounds.xMax - allPlayerBounds.xMin);
-  const scaledPlayerY =
-    (playerPos.y - allPlayerBounds.yMin) /
-    (allPlayerBounds.yMax - allPlayerBounds.yMin);
-
-  return { scaledPlayerX: scaledPlayerX, scaledPlayerY: scaledPlayerY };
-}
-
-export function getPlayerMinimapPosition(
-  playerPos: PlayerPosition,
-  allPlayerBounds: {
-    xMin: number;
-    xMax: number;
-    yMin: number;
-    yMax: number;
-  },
-  xResolution: number,
-  yResolution: number,
-  renderPlayerDot: (x: number, y: number) => { left: number; top: number }
-): { left: number; top: number } {
-  const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
-    playerPos,
-    allPlayerBounds,
-    xResolution,
-    yResolution
-  );
-  return renderPlayerDot(scaledPlayerX, scaledPlayerY);
-}
 
 export default PlayerPositions;
