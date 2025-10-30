@@ -310,13 +310,19 @@ impl MyVisitor {
         } else {
             return match serializer_entity_name.hash {
                 CNPC_TROOPER_ENTITY => 20, // "<CNPC_Trooper>".to_string(),
+                // Guardians
                 CNPC_TROOPERBOSS_ENTITY => 21, // "<CNPC_TrooperBoss>".to_string(),
                 CNPC_TROOPERNEUTRAL_ENTITY => 22, // "<CNPC_TrooperNeutral>".to_string(),
                 CNPC_MIDBOSS_ENTITY => 23, // "<CNPC_MidBoss>".to_string(),
+                // *Really* looks like souls...
                 CITEMXP_ENTITY => 24, // "<CItemXP>".to_string(),
+                // Shrines
                 CCITADEL_DESTROYABLE_BUILDING_ENTITY => 25, // "<CCitadel_Destroyable_Building>".to_string(),
+                // Walkers
                 CNPC_BOSS_TIER2_ENTITY => 26, // "<CNPC_Boss_Tier2>".to_string(),
+                // Base Guardians
                 CNPC_TROOPERBARRACKBOSS_ENTITY => 27, // "<CNPC_TrooperBarrackBoss>".to_string(),
+                // Patrons
                 CNPC_BOSS_TIER3_ENTITY => 28, // "<CNPC_Boss_Tier3>".to_string(),
                 CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY => 29, // "<CNPC_Neutral_SinnersSacrifice>".to_string(),
                 CNPC_BASE_DEFENSE_SENTRY_ENTITY => 30, // "<CNPC_BaseDefenseSentry>".to_string(),
