@@ -22,18 +22,6 @@ interface PlayerCardsProps {
   ) => { scaledPlayerX: number; scaledPlayerY: number };
 }
 
-enum MoveType {
-  Normal = 0,
-  Ability = 1,
-  AbilityDebuff = 2,
-  GroundDash = 3,
-  Slide = 4,
-  RopeClimbing = 5,
-  Ziplining = 6,
-  InAir = 7,
-  AirDash = 8,
-}
-
 function getPlayerRegionLabels(
   x: number,
   y: number,
@@ -82,14 +70,8 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           const heroImg =
             hero && hero.images && hero.images.icon_hero_card_webp;
           const health = 0;
-          const moveType = "Moving";
           const combatType = "Pew pew";
           // const health = playerPathState.health[currentTick];
-          // const moveType = playerPathState.move_type[currentTick];
-          // const moveTypeLabel =
-          //   moveType !== undefined && MoveType[moveType] !== undefined ?
-          //     MoveType[moveType]
-          //   : moveType;
           // const combatTypes =
           //   playerPathState.combat_type.slice(currentTick, currentTick + 1) ||
           //   [];
@@ -223,10 +205,6 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                   <div>
                     <strong>Health:</strong>{" "}
                     {health !== undefined ? health : "-"}
-                  </div>
-                  <div>
-                    <strong>Move Type:</strong>{" "}
-                    {moveType !== undefined ? moveType : "-"}
                   </div>
                   <div>
                     <strong>Combat Type:</strong>{" "}
