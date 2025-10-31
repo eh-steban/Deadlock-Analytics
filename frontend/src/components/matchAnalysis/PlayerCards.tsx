@@ -70,23 +70,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           const heroImg =
             hero && hero.images && hero.images.icon_hero_card_webp;
           const health = 0;
-          const combatType = "Pew pew";
           // const health = playerPathState.health[currentTick];
-          // const combatTypes =
-          //   playerPathState.combat_type.slice(currentTick, currentTick + 1) ||
-          //   [];
-          // const combatTypeSet = Array.from(
-          //   new Set(combatTypes.filter((x) => x !== undefined))
-          // );
-          // const combatTypeLabels = [
-          //   "Out of Combat",
-          //   "Player",
-          //   "Enemy NPC",
-          //   "Neutral",
-          // ];
-          // const combatTypeLabelList = combatTypeSet
-          //   .map((type) => combatTypeLabels[type] || type)
-          //   .join(", ");
           const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
             playerPosition,
             WORLD_BOUNDS
@@ -205,16 +189,6 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                   <div>
                     <strong>Health:</strong>{" "}
                     {health !== undefined ? health : "-"}
-                  </div>
-                  <div>
-                    <strong>Combat Type:</strong>{" "}
-                    {combatType !== undefined ? combatType : "-"}
-                  </div>
-                  <div>
-                    <strong>Position:</strong>{" "}
-                    {playerPosition ?
-                      `X: ${playerPosition.x.toFixed(2)}, Y: ${playerPosition.y.toFixed(2)}, Z: ${playerPosition.z.toFixed(2)}`
-                    : "-"}
                   </div>
                   <div>
                     <strong>Current Region:</strong> {regionLabels.join(", ")}
