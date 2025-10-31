@@ -1,7 +1,7 @@
 import React from "react";
 import { ParsedGameData } from "../../types/MatchAnalysis";
 import { Region } from "../../types/Region";
-import { regions } from "../../data/Regions";
+import { regions } from "../../data/regions";
 import {
   PlayerData,
   PlayerGameData,

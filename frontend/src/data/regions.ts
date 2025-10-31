@@ -1,16 +1,20 @@
-import { Region } from '../types/Region';
+import { Region } from "../types/Region";
 
 export const regions: Region[] = [
   {
-    label: 'Team 0 Side',
+    label: "Team 0 Side",
     polygon: [
-      [0, 0.5], [1, 0.5], [1, 1], [0, 1], [0, 0.5]
+      [0, 0.5],
+      [1, 0.5],
+      [1, 1],
+      [0, 1],
+      [0, 0.5],
     ],
-    color: 'rgba(255,200,0,0.10)',
-    border: 'rgba(255,200,0,0.3)'
+    color: "rgba(255,200,0,0.10)",
+    border: "rgba(255,200,0,0.3)",
   },
   {
-    label: 'Team 0 Base (Amber)',
+    label: "Team 0 Base (Amber)",
     polygon: [
       [0.43, 0.78],
       [0.57, 0.78],
@@ -20,19 +24,22 @@ export const regions: Region[] = [
       [0.39, 0.83],
       [0.43, 0.78],
     ],
-    color: 'rgba(255,200,0,0.10)',
-    border: 'rgba(255, 200, 0, 0.79)'
+    color: "rgba(255,200,0,0.10)",
+    border: "rgba(255, 200, 0, 0.79)",
   },
   {
-    label: 'Team 1 Side',
+    label: "Team 1 Side",
     polygon: [
-      [0, 0], [1, 0], [1, 0.5], [0, 0.5]
+      [0, 0],
+      [1, 0],
+      [1, 0.5],
+      [0, 0.5],
     ],
-    color: 'rgba(0,128,255,0.08)',
-    border: 'rgba(0,128,255,0.3)'
+    color: "rgba(0,128,255,0.08)",
+    border: "rgba(0,128,255,0.3)",
   },
   {
-    label: 'Team 1 Base (Sapphire)',
+    label: "Team 1 Base (Sapphire)",
     polygon: [
       [0.4, 0.06],
       [0.6, 0.06],
@@ -42,19 +49,23 @@ export const regions: Region[] = [
       [0.4, 0.16],
       [0.4, 0.06],
     ],
-    color: 'rgba(0, 26, 255, 0.1)',
-    border: 'rgba(21, 0, 255, 0.79)'
+    color: "rgba(0, 26, 255, 0.1)",
+    border: "rgba(21, 0, 255, 0.79)",
   },
   {
-    label: 'Center Area',
+    label: "Center Area",
     polygon: [
-      [0.3, 0.3], [0.7, 0.3], [0.7, 0.7], [0.3, 0.7], [0.3, 0.3],
+      [0.3, 0.3],
+      [0.7, 0.3],
+      [0.7, 0.7],
+      [0.3, 0.7],
+      [0.3, 0.3],
     ],
-    color: 'rgba(0,200,0,0.08)',
-    border: 'rgba(0,200,0,0.3)'
+    color: "rgba(0,200,0,0.08)",
+    border: "rgba(0,200,0,0.3)",
   },
   {
-    label: 'Lane 1 (Left)',
+    label: "Lane 1 (Left)",
     polygon: [
       [0.4, 0.16],
       [0.432, 0.21],
@@ -71,11 +82,11 @@ export const regions: Region[] = [
       [0.2, 0.2],
       [0.4, 0.16],
     ],
-    color: 'rgba(200, 147, 0, 0.08)',
-    border: 'rgba(227, 160, 25, 0.93)'
+    color: "rgba(200, 147, 0, 0.08)",
+    border: "rgba(227, 160, 25, 0.93)",
   },
   {
-    label: 'Lane 2 (Mid)',
+    label: "Lane 2 (Mid)",
     polygon: [
       [0.432, 0.21],
       [0.568, 0.21],
@@ -87,11 +98,11 @@ export const regions: Region[] = [
       [0.3, 0.3],
       [0.432, 0.21],
     ],
-    color: 'rgba(35, 99, 236, 0.15)',
-    border: 'rgba(43, 117, 253, 0.93)'
+    color: "rgba(35, 99, 236, 0.15)",
+    border: "rgba(43, 117, 253, 0.93)",
   },
   {
-    label: 'Lane 3 (Right)',
+    label: "Lane 3 (Right)",
     polygon: [
       [0.6, 0.16],
       [0.7, 0.16],
@@ -106,11 +117,11 @@ export const regions: Region[] = [
       [0.568, 0.21],
       [0.6, 0.16],
     ],
-    color: 'rgba(177, 0, 200, 0.15)',
-    border: 'rgba(183, 25, 227, 0.93)'
+    color: "rgba(177, 0, 200, 0.15)",
+    border: "rgba(183, 25, 227, 0.93)",
   },
   {
-    label: 'Sapphire Left Bodega',
+    label: "Sapphire Left Bodega",
     polygon: [
       [0.253, 0.3],
       [0.375, 0.235],
@@ -127,11 +138,11 @@ export const regions: Region[] = [
       [0.185, 0.4],
       [0.253, 0.3],
     ],
-    color: 'rgba(255, 47, 0, 0.1)',
-    border: 'rgba(255, 55, 0, 0.79)'
+    color: "rgba(255, 47, 0, 0.1)",
+    border: "rgba(255, 55, 0, 0.79)",
   },
   {
-    label: 'Sapphire Right Bodega',
+    label: "Sapphire Right Bodega",
     polygon: [
       [0.634, 0.22],
       [0.655, 0.22],
@@ -159,11 +170,11 @@ export const regions: Region[] = [
       [0.634, 0.234],
       [0.634, 0.22],
     ],
-    color: 'rgba(255, 47, 0, 0.1)',
-    border: 'rgba(255, 55, 0, 0.79)'
+    color: "rgba(255, 47, 0, 0.1)",
+    border: "rgba(255, 55, 0, 0.79)",
   },
   {
-    label: 'Amber Left Bodega',
+    label: "Amber Left Bodega",
     polygon: [
       [0.369, 0.775],
       [0.35, 0.775],
@@ -191,11 +202,11 @@ export const regions: Region[] = [
       [0.369, 0.761],
       [0.369, 0.775],
     ],
-    color: 'rgba(255, 47, 0, 0.1)',
-    border: 'rgba(255, 55, 0, 0.79)'
+    color: "rgba(255, 47, 0, 0.1)",
+    border: "rgba(255, 55, 0, 0.79)",
   },
   {
-    label: 'Amber Right Bodega',
+    label: "Amber Right Bodega",
     polygon: [
       [0.578, 0.52],
       [0.814, 0.52],
@@ -212,7 +223,7 @@ export const regions: Region[] = [
       [0.578, 0.61],
       [0.578, 0.52],
     ],
-    color: 'rgba(255, 47, 0, 0.1)',
-    border: 'rgba(255, 55, 0, 0.79)'
+    color: "rgba(255, 47, 0, 0.1)",
+    border: "rgba(255, 55, 0, 0.79)",
   },
 ];

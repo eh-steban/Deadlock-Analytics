@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
-import { regions } from "../../data/Regions";
+import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
 import { Hero, PlayerPosition } from "../../types/Player";
