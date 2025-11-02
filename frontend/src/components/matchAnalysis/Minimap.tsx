@@ -12,39 +12,60 @@ import AllPlayerPositions from "./AllPlayerPositions";
 import PerPlayerWindowTable from "./PerPlayerWindowTable";
 import DamageSourceTypesTable from "./DamageSourceTypesTable";
 import { Region } from "../../types/Region";
-import { Hero, PlayerPathState, PlayerInfo } from "../../types/Player";
+import {
+  Hero,
+  PlayerGameData,
+  PlayerPosition,
+  DamageRecord,
+  PlayerData,
+} from "../../types/Player";
 import { ObjectiveCoordinate } from "../../types/ObjectiveCoordinate";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { objectiveCoordinates } from "../../data/objectiveCoordinates";
 
+interface TickDamageEvent {
+  tick: number;
+  attackerId: string;
+  victimId: string;
+  record: DamageRecord;
+}
+
 const MINIMAP_SIZE = 768;
+// FIXME: Use this value once we're confident in how our map
+// looks at bigger sizes.
+// const MINIMAP_SIZE = 512;
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
 
 const Minimap = ({
   currentTick,
   setCurrentTick,
-  playerPaths,
+  total_game_time_s,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
   regions,
-  players,
+  playersData,
+  per_player_data,
   heroes,
-  xResolution,
-  yResolution,
+  scalePlayerPosition,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
-  playerPaths: PlayerPathState[];
+  total_game_time_s: number;
+  game_start_time_s: number;
+  // playerPaths: PlayerPathState[];
   destroyedObjectivesSorted: Array<DestroyedObjective>;
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
   regions: Region[];
-  players: PlayerInfo[];
+  playersData: PlayerData[];
+  per_player_data: Record<string, PlayerGameData>;
   heroes: Hero[];
-  xResolution: number;
-  yResolution: number;
+  scalePlayerPosition: (playerPos: PlayerPosition) => {
+    scaledPlayerX: number;
+    scaledPlayerY: number;
+  };
 }) => {
-  // NOTE: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
+  // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
   const repeatDirection = useRef<"back" | "forward" | null>(null);
@@ -59,6 +80,8 @@ const Minimap = ({
 
   // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
   const renderObjectiveDot = (obj: ObjectiveCoordinate) => {
+    // TODO: When we pull objective coordinates from the backend, ensure y-axis is inverted
+    // in scalePlayerPosition (but we'll likely rename this to scalePosition)
     return scaleToMinimap(obj.x, 1 - obj.y);
   };
   const renderPlayerDot = (x: number, y: number) => {
@@ -68,8 +91,7 @@ const Minimap = ({
     x: number,
     y: number
   ): { left: number; top: number } => {
-    // const xOffset = -75;
-    const xOffset = 0;
+    const xOffset = -10;
     const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
     const top = y * MINIMAP_SIZE;
     return { left, top };
@@ -87,9 +109,7 @@ const Minimap = ({
           if (t <= 0) return 0;
           return t - 1;
         } else {
-          const maxTick =
-            playerPaths[0]?.x_pos?.length ? playerPaths[0].x_pos.length - 1 : 0;
-          if (t >= maxTick) return maxTick;
+          if (t >= total_game_time_s) return total_game_time_s;
           return t + 1;
         }
       });
@@ -147,24 +167,20 @@ const Minimap = ({
             activeObjectiveKey={activeObjectiveKey}
           />
           <PlayerPositions
-            playerPaths={playerPaths}
-            players={players}
+            // playerPositions={playerPositions}
+            perPlayerData={per_player_data}
+            playersData={playersData}
             currentTick={currentTick}
-            xResolution={xResolution}
-            yResolution={yResolution}
             heroes={heroes}
             renderPlayerDot={renderPlayerDot}
+            scalePlayerPosition={scalePlayerPosition}
           />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>
           <GameTimeViewer
             currentTick={currentTick}
             setCurrentTick={setCurrentTick}
-            maxTime={
-              playerPaths[0]?.x_pos?.length ?
-                playerPaths[0].x_pos.length - 1
-              : 0
-            }
+            total_game_time_s={total_game_time_s}
             startRepeat={startRepeat}
             stopRepeat={stopRepeat}
           />

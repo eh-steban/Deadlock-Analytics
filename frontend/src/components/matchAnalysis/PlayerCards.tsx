@@ -1,40 +1,46 @@
 import React from "react";
-import { ParsedGameData, DamageRecord } from "../../types/MatchAnalysis";
-import { NPC, Player } from "../../types/Player";
+import { ParsedGameData } from "../../types/MatchAnalysis";
+import { Region } from "../../types/Region";
+import { regions } from "../../data/regions";
+import {
+  PlayerData,
+  PlayerGameData,
+  PlayerPosition,
+  DRTypeAggregateBySec,
+} from "../../types/Player";
+import { WORLD_BOUNDS } from "../../types/MatchAnalysis";
+import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
-  players: Player[];
-  npcs: NPC[];
+  playersData: PlayerData[];
+  per_player_data: Record<string, PlayerGameData>;
   currentTick: number;
   gameData: ParsedGameData;
-  getPlayerRegionLabels: (
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-    playerX: number,
-    playerY: number
-  ) => string[];
+  scalePlayerPosition: (
+    pos: PlayerPosition,
+    worldBounds: { xMin: number; xMax: number; yMin: number; yMax: number }
+  ) => { scaledPlayerX: number; scaledPlayerY: number };
 }
 
-enum MoveType {
-  Normal = 0,
-  Ability = 1,
-  AbilityDebuff = 2,
-  GroundDash = 3,
-  Slide = 4,
-  RopeClimbing = 5,
-  Ziplining = 6,
-  InAir = 7,
-  AirDash = 8,
+function getPlayerRegionLabels(
+  x: number,
+  y: number,
+  debug: boolean = false
+): string[] {
+  const foundRegions: string[] = regions
+    .filter((region: Region) => pointInPolygon([x, y], region.polygon))
+    .map<string>((region): string => {
+      return region.label ? region.label : "None";
+    });
+  return foundRegions;
 }
 
+// TODO: Add typechecking?
 const PlayerCards: React.FC<PlayerCardsProps> = ({
-  players,
-  npcs,
+  playersData,
+  per_player_data,
   currentTick,
-  gameData,
-  getPlayerRegionLabels,
+  scalePlayerPosition,
 }) => {
   return (
     <>
@@ -53,52 +59,72 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           gap: "0.25rem",
         }}
       >
-        {players.map((player, index) => {
-          const playerInfo = player.player_info;
-          const playerPathState = player.path_state;
-          const team = playerInfo.team;
+        {playersData.map((player) => {
+          const customId = Number(player.custom_id);
+          const pdata = per_player_data[customId];
+          const playerPosition = pdata.positions[currentTick];
+          const victimDamageMap = pdata.damage[currentTick];
+          const team = player.team;
           const hero = player.hero;
-          const heroName = hero ? hero.name : `Hero ${playerInfo.hero_id}`;
+          const heroName = hero ? hero.name : `Hero ${player.hero_id}`;
           const heroImg =
             hero && hero.images && hero.images.icon_hero_card_webp;
-          const health = playerPathState.health[currentTick];
-          const moveType = playerPathState.move_type[currentTick];
-          const moveTypeLabel =
-            moveType !== undefined && MoveType[moveType] !== undefined ?
-              MoveType[moveType]
-            : moveType;
-          const combatTypes =
-            playerPathState.combat_type.slice(currentTick, currentTick + 1) ||
-            [];
-          const combatTypeSet = Array.from(
-            new Set(combatTypes.filter((x) => x !== undefined))
+          const health = 0;
+          // const health = playerPathState.health[currentTick];
+          const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
+            playerPosition,
+            WORLD_BOUNDS
           );
-          const combatTypeLabels = [
-            "Out of Combat",
-            "Player",
-            "Enemy NPC",
-            "Neutral",
-          ];
-          const combatTypeLabelList = combatTypeSet
-            .map((type) => combatTypeLabels[type] || type)
-            .join(", ");
           const regionLabels: string[] = getPlayerRegionLabels(
-            playerPathState.x_max,
-            playerPathState.x_min,
-            playerPathState.y_max,
-            playerPathState.y_min,
-            playerPathState.x_pos[currentTick],
-            playerPathState.y_pos[currentTick]
+            scaledPlayerX,
+            scaledPlayerY
           );
 
-          const damageWindow = gameData.damage_per_tick[currentTick] || {};
-
-          // If found, get the victim map for this attacker
-          const attackerVictimMap = damageWindow[index];
+          // Summarize: victimId -> (type -> totalDamage)
+          // FIXME: Just for display purposes, but this should be done
+          // in our backend or data processing steps ideally
+          const totalsByVictim: Record<
+            string,
+            Record<number, DRTypeAggregateBySec>
+          > = {};
+          for (const [victimId, records] of Object.entries(victimDamageMap)) {
+            const aggByType: Record<number, DRTypeAggregateBySec> = {};
+            for (const rec of records) {
+              const t = rec.type ?? -1;
+              // FIXME: Not all the fields below are being displayed/used.
+              // Need to update this to show this data somewhere.
+              const entry = (aggByType[t] ??= {
+                type: t,
+                agg_damage: 0,
+                agg_pre_damage: 0,
+                citadel_type: rec.citadel_type ?? 0,
+                entindex_inflictor: rec.entindex_inflictor ?? 0,
+                entindex_ability: rec.entindex_ability ?? 0,
+                agg_damage_absorbed: 0,
+                victim_health_max: 0,
+                victim_health_new: 0,
+                flags: rec.flags ?? 0,
+                ability_id: rec.ability_id ?? 0,
+                attacker_class: rec.attacker_class ?? 0,
+                victim_class: rec.victim_class ?? 0,
+                victim_shield_max: 0,
+                agg_victim_shield_new: 0,
+                agg_hits: 0,
+                agg_health_lost: 0,
+              });
+              entry.agg_damage += rec.damage ?? 0;
+              entry.agg_pre_damage += rec.pre_damage ?? 0;
+              entry.agg_damage_absorbed += rec.damage_absorbed ?? 0;
+              entry.agg_victim_shield_new += rec.victim_shield_new ?? 0;
+              entry.agg_hits += rec.hits ?? 0;
+              entry.agg_health_lost += rec.health_lost ?? 0;
+            }
+            totalsByVictim[victimId] = aggByType;
+          }
 
           return (
             <div
-              key={`player-card-${playerInfo.player_slot}`}
+              key={`player-card-${player.lobby_player_slot}`}
               style={{
                 background: "#fff",
                 border: "1px solid #ccc",
@@ -148,7 +174,8 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                       fontSize: "0.95em",
                     }}
                   >
-                    (Slot {playerInfo.player_slot}, Team {team})
+                    (Name: {player.name}, Slot: {player.lobby_player_slot},
+                    Team: {team})
                   </span>
                 </div>
                 <div
@@ -164,48 +191,74 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                     {health !== undefined ? health : "-"}
                   </div>
                   <div>
-                    <strong>Move Type:</strong>{" "}
-                    {moveTypeLabel !== undefined ? moveTypeLabel : "-"}
-                  </div>
-                  <div>
-                    <strong>Combat Type:</strong> {combatTypeLabelList || "-"}
-                  </div>
-                  <div>
                     <strong>Current Region:</strong> {regionLabels.join(", ")}
                   </div>
                   <div>
-                    <strong>Victims:</strong>
-                    {(
-                      attackerVictimMap &&
-                      Object.entries(attackerVictimMap).length > 0
-                    ) ?
-                      <ul style={{ margin: 0, paddingLeft: 18 }}>
-                        {Object.entries(attackerVictimMap).map(
-                          ([victimIdx, damageRecords]) => {
-                            const victimPlayer = players[Number(victimIdx)];
-                            const victimNPC = npcs[Number(victimIdx)];
-                            console.log("victimNPC: ", victimNPC);
-                            console.log("victimIDX: ", victimIdx);
-                            let victimName =
-                              victimPlayer ? victimPlayer.name
-                              : victimNPC ? victimNPC.name
-                              : `Victim ${victimIdx}`;
-                            return (
-                              <li key={victimIdx}>
-                                {victimName}
-                                <ul style={{ margin: 0, paddingLeft: 18 }}>
-                                  {damageRecords.map((rec, idx) => (
-                                    <li key={idx}>
-                                      Damage: {rec.damage}, Type: {rec.type}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </li>
-                            );
-                          }
-                        )}
-                      </ul>
-                    : "-"}
+                    {Object.keys(victimDamageMap).length === 0 ?
+                      <strong>Out of combat</strong>
+                    : <>
+                        <strong>Victims:</strong>
+                        <ul style={{ margin: 0, paddingLeft: 18 }}>
+                          {Object.entries(totalsByVictim).map(
+                            ([victimId, typeTotals]) => {
+                              const victimPlayer = playersData.find(
+                                (p) => String(p.custom_id) === victimId
+                              );
+                              const victimName =
+                                victimPlayer ?
+                                  victimPlayer.name
+                                : `Victim ${victimId}`;
+                              return (
+                                <li key={victimId}>
+                                  {victimName}
+                                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                    {Object.entries(typeTotals).map(
+                                      ([type, DRAgg]) => (
+                                        <li key={type}>
+                                          Type {type}: {DRAgg.agg_damage}
+                                        </li>
+                                      )
+                                    )}
+                                  </ul>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                        {/*
+                          FIXME: The below block is being kept for debugging in dev.
+                          This should be removed later.
+                        */}
+                        {/* <ul style={{ margin: 0, paddingLeft: 18 }}>
+                          {Object.entries(victimDamageMap).map(
+                            ([victimIdx, damageRecords]) => {
+                              const victimPlayer =
+                                playersData[Number(victimIdx)];
+                              let victimName =
+                                victimPlayer ?
+                                  victimPlayer.name
+                                : `Victim ${victimIdx}`;
+                              return (
+                                <li key={victimIdx}>
+                                  {victimName}
+                                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                    {damageRecords.map((rec, idx) => (
+                                      <li key={idx}>
+                                        Damage: {rec.damage} | Type: {rec.type}{" "}
+                                        | ability_id: {rec.ability_id} |
+                                        attacker_class: {rec.attacker_class} |
+                                        citadel_type: {rec.citadel_type} |
+                                        victim_class: {rec.victim_class}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul> */}
+                      </>
+                    }
                   </div>
                 </div>
               </div>

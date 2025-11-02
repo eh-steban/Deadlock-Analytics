@@ -1,20 +1,19 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
-import pointInPolygon from "point-in-polygon";
 import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
-import { standardizePlayerPosition } from "./PlayerPositions";
-import { Region } from "../../types/Region";
-import { regions } from "../../data/Regions";
+import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
-import { MatchAnalysisResponse } from "../../types/MatchAnalysis";
-import { NPC, Hero } from "../../types/Player";
+import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
+import { Hero, PlayerPosition } from "../../types/Player";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
 import { formatSecondstoMMSS } from "../../utils/time";
 
-const defaultMatchAnalysis: MatchAnalysisResponse = {
+const defaultMatchAnalysis: GameAnalysisResponse = {
+  // NOTE: match references here are because it's coming from the Deadlock API.
+  // Parsed game data refers to these as "games"
   match_metadata: {
     match_info: {
       duration_s: 0,
@@ -27,11 +26,6 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
       game_mode: 0,
       match_mode: 0,
       objectives: [],
-      match_paths: {
-        x_resolution: 0,
-        y_resolution: 0,
-        paths: [],
-      },
       damage_matrix: {
         sample_time_s: [],
         source_details: {
@@ -55,20 +49,22 @@ const defaultMatchAnalysis: MatchAnalysisResponse = {
     },
   },
   parsed_game_data: {
-    damage_per_tick: [] as [],
-    players: [],
+    total_game_time_s: 0,
+    game_start_time_s: 0,
+    players_data: [],
+    per_player_data: {},
   },
-  players: [],
-  npcs: [],
 };
 
 const MatchAnalysis = () => {
   const { match_id } = useParams();
   // Fetch match analysis via ETag-aware hook
   const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
-  const matchAnalysis: MatchAnalysisResponse =
+  const matchAnalysis: GameAnalysisResponse =
     matchAnalysisData ?? defaultMatchAnalysis;
   const matchMetadata = matchAnalysis.match_metadata;
+  const parsedGameData = matchAnalysis.parsed_game_data;
+  const playersData = parsedGameData.players_data;
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
   ]);
@@ -87,66 +83,30 @@ const MatchAnalysis = () => {
       .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
-  // x/yResolution comes from match_metadata response returned from
-  // Deadlock API (https://api.deadlock-api.com/v1/matches/{match_id}/metadata)
-  // and looks something like: "match_info": { "match_paths": "x_resolution": 16383, "y_resolution": 16383 }
-  const playerPaths = matchMetadata.match_info.match_paths.paths;
-  const xResolution = matchMetadata.match_info.match_paths.x_resolution;
-  const yResolution = matchMetadata.match_info.match_paths.y_resolution;
-  const players_metadata = matchMetadata.match_info.players;
+  const players = useMemo(() => {
+    if (!playersData || !heroData) return [];
+    const heroIdToHero: Record<number, Hero> = {};
+    heroData.forEach((h) => {
+      heroIdToHero[h.id] = h;
+    });
+    return playersData.map((player) => ({
+      ...player,
+      hero: heroIdToHero[player.hero_id] || null,
+    }));
+  }, [playersData, heroData]);
 
-  function getPlayerRegionLabels(
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-    x: number,
-    y: number,
-    debug: boolean = false
-  ): string[] {
-    const foundRegions: string[] = regions
-      .filter((region: Region) =>
-        isPlayerInRegion(
-          x_max,
-          x_min,
-          y_max,
-          y_min,
-          [x, y],
-          region.polygon,
-          xResolution,
-          yResolution
-        )
-      )
-      .map<string>((region): string => {
-        return region.label ? region.label : "None";
-      });
-    return foundRegions;
-  }
+  function scalePlayerPosition(playerPos: PlayerPosition): {
+    scaledPlayerX: number;
+    scaledPlayerY: number;
+  } {
+    // Scale the normalized position to (0, MAP_SIZE) range based on the overall min/max
+    // This ensures that the player position is correctly represented on the minimap
+    const spanX = Math.max(1e-6, WORLD_BOUNDS.xMax - WORLD_BOUNDS.xMin);
+    const spanY = Math.max(1e-6, WORLD_BOUNDS.yMax - WORLD_BOUNDS.yMin);
+    const scaledPlayerX = (playerPos.x - WORLD_BOUNDS.xMin) / spanX;
+    const scaledPlayerY = 1 - (playerPos.y - WORLD_BOUNDS.yMin) / spanY;
 
-  function isPlayerInRegion(
-    x_max: number,
-    x_min: number,
-    y_max: number,
-    y_min: number,
-    point: [number, number],
-    polygon: [number, number][],
-    xResolution: number,
-    yResolution: number
-  ): boolean {
-    const [playerX, playerY] = point;
-    const { standPlayerX, standPlayerY } = standardizePlayerPosition(
-      x_max,
-      x_min,
-      y_max,
-      y_min,
-      playerX,
-      playerY,
-      playerPaths,
-      xResolution,
-      yResolution
-    );
-
-    return pointInPolygon([standPlayerX, standPlayerY], polygon);
+    return { scaledPlayerX: scaledPlayerX, scaledPlayerY: scaledPlayerY };
   }
 
   useEffect(() => {
@@ -169,18 +129,6 @@ const MatchAnalysis = () => {
       isMounted.current = false;
     };
   }, [match_id]);
-
-  const players = useMemo(() => {
-    if (!matchAnalysis.players || !heroData) return [];
-    const heroIdToHero: Record<number, Hero> = {};
-    heroData.forEach((h) => {
-      heroIdToHero[h.id] = h;
-    });
-    return matchAnalysis.players.map((player) => ({
-      ...player,
-      hero: heroIdToHero[player.player_info.hero_id] || null,
-    }));
-  }, [matchAnalysis.players, heroData]);
 
   return (
     <>
@@ -219,27 +167,31 @@ const MatchAnalysis = () => {
             <ObjectiveInfoPanel
               destroyedObjectives={destroyedObjectivesSorted}
               currentObjectiveIndex={currentObjectiveIndex}
-              matchTime={matchTime}
             />
             <PlayerCards
-              players={players}
-              npcs={matchAnalysis.npcs as NPC[]}
+              playersData={players}
+              per_player_data={matchAnalysis.parsed_game_data.per_player_data}
+              // positions={
+              //   matchAnalysis.parsed_game_data.per_player_data.positions
+              // }
               currentTick={currentTick}
-              getPlayerRegionLabels={getPlayerRegionLabels}
+              scalePlayerPosition={scalePlayerPosition}
               gameData={matchAnalysis.parsed_game_data}
             />
           </div>
           <Minimap
             currentTick={currentTick}
             setCurrentTick={setCurrentTick}
+            total_game_time_s={matchAnalysis.parsed_game_data.total_game_time_s}
+            game_start_time_s={matchAnalysis.parsed_game_data.game_start_time_s}
             heroes={heroData}
-            players={players_metadata}
-            playerPaths={playerPaths}
+            playersData={playersData}
+            per_player_data={matchAnalysis.parsed_game_data.per_player_data}
+            // playerPaths={playerPaths}
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}
-            xResolution={xResolution}
-            yResolution={yResolution}
+            scalePlayerPosition={scalePlayerPosition}
           />
         </div>
       </div>

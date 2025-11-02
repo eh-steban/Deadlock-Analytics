@@ -1,62 +1,77 @@
-import { MatchAnalysisResponse } from '../types/MatchAnalysis';
+import { GameAnalysisResponse } from "../types/MatchAnalysis";
 
-// In-memory cache: matchId -> { data, etag, expiresAt }
-const cache = new Map<number, { data: MatchAnalysisResponse; etag?: string; expiresAt: number }>();
+// In-memory cache: gameId -> { data, etag, expiresAt }
+const cache = new Map<
+  number,
+  { data: GameAnalysisResponse; etag?: string; expiresAt: number }
+>();
 
 // Optional: persist to localStorage using this namespace
-const storageNs = 'matchAnalysis';
+const storageNs = "matchAnalysis";
 
-function storageKey(matchId: number) {
-  return `${storageNs}:${matchId}`;
+function storageKey(gameId: number) {
+  return `${storageNs}:${gameId}`;
 }
 
-function parseMaxAge(cacheControl: string | null | undefined, defaultSeconds = 300): number {
+function parseMaxAge(
+  cacheControl: string | null | undefined,
+  defaultSeconds = 300
+): number {
   if (!cacheControl) return defaultSeconds;
-  const match = cacheControl.match(/max-age=(\d+)/i);
-  if (!match) return defaultSeconds;
-  const v = parseInt(match[1], 10);
+  const game = cacheControl.match(/max-age=(\d+)/i);
+  if (!game) return defaultSeconds;
+  const v = parseInt(game[1], 10);
   return Number.isFinite(v) ? v : defaultSeconds;
 }
 
-function loadFromStorage(matchId: number) {
+function loadFromStorage(gameId: number) {
   try {
-    const raw = localStorage.getItem(storageKey(matchId));
+    const raw = localStorage.getItem(storageKey(gameId));
     if (!raw) return;
-    const parsed = JSON.parse(raw) as { data: MatchAnalysisResponse; etag?: string; expiresAt: number };
-    cache.set(matchId, parsed);
+    const parsed = JSON.parse(raw) as {
+      data: GameAnalysisResponse;
+      etag?: string;
+      expiresAt: number;
+    };
+    cache.set(gameId, parsed);
   } catch {
     // ignore
   }
 }
 
-function saveToStorage(matchId: number) {
+function saveToStorage(gameId: number) {
   try {
-    const entry = cache.get(matchId);
+    const entry = cache.get(gameId);
     if (!entry) return;
-    localStorage.setItem(storageKey(matchId), JSON.stringify(entry));
+    localStorage.setItem(storageKey(gameId), JSON.stringify(entry));
   } catch {
     // ignore
   }
 }
 
-export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnError?: boolean }): Promise<MatchAnalysisResponse> {
+export async function fetchMatchAnalysis(
+  gameId: number,
+  opts?: { allowStaleOnError?: boolean }
+): Promise<GameAnalysisResponse> {
   const now = Date.now();
 
-  if (!cache.has(matchId)) {
-    loadFromStorage(matchId);
+  if (!cache.has(gameId)) {
+    loadFromStorage(gameId);
   }
 
-  const cached = cache.get(matchId);
+  const cached = cache.get(gameId);
   if (cached && now < cached.expiresAt) {
     return cached.data; // fresh cache, skip network
   }
 
   const headers: Record<string, string> = {};
   if (cached?.etag) {
-    headers['If-None-Match'] = cached.etag;
+    headers["If-None-Match"] = cached.etag;
   }
+
   const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
-  const url = `https://${backendDomain}/match/analysis/${matchId}`;
+  const url = `https://${backendDomain}/match/analysis/${gameId}`;
+
   let res: Response;
   try {
     res = await fetch(url, { headers });
@@ -67,8 +82,8 @@ export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnE
     throw err;
   }
 
-  const cacheControl = res.headers.get('Cache-Control');
-  const etag = res.headers.get('ETag') ?? undefined;
+  const cacheControl = res.headers.get("Cache-Control");
+  const etag = res.headers.get("ETag") ?? undefined;
   const maxAge = parseMaxAge(cacheControl, 300);
   const safety = Math.max(0, maxAge - 2) * 1000; // small safety buffer
   const expiresAt = Date.now() + safety;
@@ -76,10 +91,10 @@ export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnE
   if (res.status === 304) {
     if (!cached) {
       // No cached data but server says not modified; treat as error
-      throw new Error('304 Not Modified received without cached data');
+      throw new Error("304 Not Modified received without cached data");
     }
-    cache.set(matchId, { ...cached, etag: etag ?? cached.etag, expiresAt });
-    saveToStorage(matchId);
+    cache.set(gameId, { ...cached, etag: etag ?? cached.etag, expiresAt });
+    saveToStorage(gameId);
     return cached.data;
   }
 
@@ -87,14 +102,14 @@ export async function fetchMatchAnalysis(matchId: number, opts?: { allowStaleOnE
     if (opts?.allowStaleOnError && cached?.data) {
       return cached.data;
     }
-    const text = await res.text().catch(() => '');
+    const text = await res.text().catch(() => "");
     throw new Error(`Failed to fetch match analysis (${res.status}): ${text}`);
   }
 
-  const data: MatchAnalysisResponse = await res.json();
-  cache.set(matchId, { data, etag, expiresAt });
-  saveToStorage(matchId);
-  console.log('Loaded match data from backend:', data);
+  const data: GameAnalysisResponse = await res.json();
+  cache.set(gameId, { data, etag, expiresAt });
+  saveToStorage(gameId);
+  console.log("Loaded match data from backend:", data);
   return data;
 }
 

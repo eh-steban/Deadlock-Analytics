@@ -1,15 +1,15 @@
 from typing import Optional, Any
 from sqlmodel import SQLModel
-from app.domain.player import PlayerInfo, PlayerPathState
+from app.domain.player import PlayerInfo
 
-from typing import Optional
-from sqlmodel import SQLModel
-from app.domain.player import PlayerInfo, PlayerPathState
-
+# NOTE: x/y_resolution are 16383 (approx) according to Deadlock API docs
+# The Haste parser has a different resolution.
+# Some work will need to be done to reconcile to a reasonable value
+# for out mapping work.
 class MatchPaths(SQLModel):
     x_resolution: int
     y_resolution: int
-    paths: list[PlayerPathState]
+    # paths: list[PlayerPathState]
 
 class MatchInfoFields(SQLModel):
     duration_s: int

@@ -1,6 +1,9 @@
-import { DestroyedObjective } from './DestroyedObjective';
-import { PlayerPathState, PlayerInfo } from './Player';
+import { DestroyedObjective } from "./DestroyedObjective";
+import { PlayerInfo } from "./Player";
 
+// FIXME: I don't think we need this anymore?
+// It comes from the Deadlock API, but there are parser equivalents.
+// We may use those equivalents soon, so keeping this here for now.
 export interface MatchMetadata {
   match_info: MatchInfoFields;
 }
@@ -16,11 +19,6 @@ export interface MatchInfoFields {
   game_mode: number;
   match_mode: number;
   objectives: Array<DestroyedObjective>;
-  match_paths: {
-    x_resolution: number;
-    y_resolution: number;
-    paths: Array<PlayerPathState>;
-  };
   damage_matrix: {
     sample_time_s: number[];
     source_details: {
@@ -29,13 +27,15 @@ export interface MatchInfoFields {
     };
     damage_dealers: Array<{
       dealer_player_slot?: number;
-      damage_sources: Array<Array<{
-        source_details_index: number;
-        damage_to_players: Array<{
-          target_player_slot?: number;
-          damage: Array<number>;
-        }>;
-      }>>;
+      damage_sources: Array<
+        Array<{
+          source_details_index: number;
+          damage_to_players: Array<{
+            target_player_slot?: number;
+            damage: Array<number>;
+          }>;
+        }>
+      >;
     }>;
   };
   match_pauses: any[];
