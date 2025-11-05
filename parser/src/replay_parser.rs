@@ -230,15 +230,15 @@ impl MyVisitor {
         matches!(
             entity.serializer().serializer_name.hash,
             CCITADELPLAYERPAWN_ENTITY
-                | CNPC_TROOPER_ENTITY
-                | CNPC_TROOPERBOSS_ENTITY
+                | CNPC_TROOPER_ENTITY                    // Lane Troopers
+                | CNPC_TROOPERBOSS_ENTITY                // Guardians
                 | CNPC_TROOPERNEUTRAL_ENTITY
                 | CNPC_MIDBOSS_ENTITY
                 | CITEMXP_ENTITY
-                | CCITADEL_DESTROYABLE_BUILDING_ENTITY
-                | CNPC_BOSS_TIER2_ENTITY
-                | CNPC_TROOPERBARRACKBOSS_ENTITY
-                | CNPC_BOSS_TIER3_ENTITY
+                | CCITADEL_DESTROYABLE_BUILDING_ENTITY   // Shrines
+                | CNPC_BOSS_TIER2_ENTITY                 // Walkers
+                | CNPC_TROOPERBARRACKBOSS_ENTITY         // Base Guardians
+                | CNPC_BOSS_TIER3_ENTITY                 // Patrons
                 | CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY
                 | CNPC_BASE_DEFENSE_SENTRY_ENTITY
                 | CNPC_SHIELDEDSENTRY_ENTITY
