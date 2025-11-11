@@ -14,8 +14,8 @@ interface BossSnapshot {
 }
 
 export interface ScaledBossSnapshot extends BossSnapshot {
-  scaledX: number;
-  scaledY: number;
+  left: number;
+  top: number;
 }
 
 // Per-second health timeline: object mapping entity_index (as string) -> current_health

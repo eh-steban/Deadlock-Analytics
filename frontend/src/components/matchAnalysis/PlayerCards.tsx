@@ -11,7 +11,7 @@ import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
   playersData: PlayerData[];
-  per_player_data: Record<string, PlayerGameData>;
+  perPlayerData: Record<string, PlayerGameData>;
   currentTick: number;
   gameData: ParsedGameData;
   normalizePosition: (x: number, y: number) => { normX: number; normY: number };
@@ -29,7 +29,7 @@ function getPlayerRegionLabels(x: number, y: number): string[] {
 // TODO: Add typechecking?
 const PlayerCards: React.FC<PlayerCardsProps> = ({
   playersData,
-  per_player_data,
+  perPlayerData,
   currentTick,
   normalizePosition,
 }) => {
@@ -52,7 +52,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
       >
         {playersData.map((player) => {
           const customId = Number(player.custom_id);
-          const pdata = per_player_data[customId];
+          const pdata = perPlayerData[customId];
           const playerPosition = pdata.positions[currentTick];
           const victimDamageMap = pdata.damage[currentTick];
           const team = player.team;

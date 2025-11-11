@@ -6,7 +6,7 @@ import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
-import { Hero, PlayerPosition } from "../../types/Player";
+import { Hero } from "../../types/Player";
 import { ScaledBossSnapshot } from "../../types/Boss";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
@@ -80,9 +80,9 @@ const normalizePosition = (x: number, y: number) => {
 
 const normToScaledPixels = (normX: number, normY: number) => {
   const xOffset = -10;
-  const scaledX = normX * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
-  const scaledY = normY * MINIMAP_SIZE;
-  return { scaledX, scaledY };
+  const left = normX * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
+  const top = normY * MINIMAP_SIZE;
+  return { left, top };
 };
 
 const worldToMinimapPixels = (x: number, y: number) => {
@@ -100,7 +100,10 @@ const MatchAnalysis = () => {
   const matchMetadata = matchAnalysis.match_metadata;
   const parsedGameData = matchAnalysis.parsed_game_data;
   const bossSnapshots = parsedGameData.bosses.snapshots;
+  // NOTE: Contains player info
   const playersData = parsedGameData.players_data;
+  // NOTE: Contains dmg/position data per player
+  const perPlayerData = parsedGameData.per_player_data;
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
   ]);
@@ -119,15 +122,6 @@ const MatchAnalysis = () => {
       .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
-  const scaledBossSnapshots: ScaledBossSnapshot[] = useMemo(
-    () =>
-      bossSnapshots.map((snapshot) => ({
-        ...snapshot,
-        ...worldToMinimapPixels(snapshot.x, snapshot.y),
-      })),
-    [bossSnapshots]
-  );
-
   const players = useMemo(() => {
     if (!playersData || !heroData) return [];
     const heroIdToHero: Record<number, Hero> = {};
@@ -136,34 +130,51 @@ const MatchAnalysis = () => {
     });
     return playersData.map((player) => ({
       ...player,
-      hero: heroIdToHero[player.hero_id] || null,
+      hero: heroIdToHero[player.hero_id] || {
+        id: 0,
+        name: "Unknown",
+        images: {},
+      },
     }));
   }, [playersData, heroData]);
 
-  const scaleToMinimap = (
-    x: number,
-    y: number
-  ): { left: number; top: number } => {
-    const xOffset = -10;
-    const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
-    const top = y * MINIMAP_SIZE;
-    return { left, top };
-  };
+  const scaledPlayerCoords = useMemo(() => {
+    return Object.entries(perPlayerData).map(([customId, playerGameData]) => {
+      const pos = playerGameData.positions[currentTick];
+      const playerData = players.find(
+        (p) => p.lobby_player_slot === Number(customId)
+      );
 
-  // FIXME: Deprecated, use normalizePosition instead
-  function scalePlayerPosition(playerPos: PlayerPosition): {
-    scaledPlayerX: number;
-    scaledPlayerY: number;
-  } {
-    // Scale the normalized position to (0, MAP_SIZE) range based on the overall min/max
-    // This ensures that the player position is correctly represented on the minimap
-    const spanX = Math.max(1e-6, WORLD_BOUNDS.xMax - WORLD_BOUNDS.xMin);
-    const spanY = Math.max(1e-6, WORLD_BOUNDS.yMax - WORLD_BOUNDS.yMin);
-    const scaledPlayerX = (playerPos.x - WORLD_BOUNDS.xMin) / spanX;
-    const scaledPlayerY = 1 - (playerPos.y - WORLD_BOUNDS.yMin) / spanY;
+      // Return default [0,0] coordinates if position or player data is missing
+      if (!pos || !playerData) {
+        return {
+          playerId: customId,
+          left: 0,
+          top: 0,
+          team: playerData?.team ?? 0,
+          hero: playerData?.hero ?? { id: 0, name: "Unknown", images: {} },
+        };
+      }
 
-    return { scaledPlayerX: scaledPlayerX, scaledPlayerY: scaledPlayerY };
-  }
+      const { left, top } = worldToMinimapPixels(pos.x, pos.y);
+      return {
+        playerId: customId,
+        left,
+        top,
+        team: playerData.team,
+        hero: playerData.hero,
+      };
+    });
+  }, [perPlayerData, players, currentTick]);
+
+  const scaledBossSnapshots: ScaledBossSnapshot[] = useMemo(
+    () =>
+      bossSnapshots.map((snapshot) => ({
+        ...snapshot,
+        ...worldToMinimapPixels(snapshot.x, snapshot.y),
+      })),
+    [bossSnapshots]
+  );
 
   useEffect(() => {
     isMounted.current = true;
@@ -201,32 +212,13 @@ const MatchAnalysis = () => {
             title='InformationPanel'
             className='box-border gap-2 border-2 border-black bg-gray-300'
           >
-            {/* <div style={{ marginBottom: 0, padding: '0.5rem', background: '#fff', border: '1px solid #ccc', borderRadius: '6px', width: 180, alignSelf: 'flex-start' }}>
-                <strong>Legend</strong>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,128,255,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #0070c0' }}></span>
-                  Team 0 Player
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'rgba(0,200,0,0.7)', borderRadius: '50%', marginRight: 8, border: '1px solid #008000' }}></span>
-                  Team 1 Player
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'red', borderRadius: '50%', marginRight: 8, border: '1px solid #a00' }}></span>
-                  Objective (Active)
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem' }}>
-                  <span style={{ display: 'inline-block', width: 16, height: 16, background: 'black', borderRadius: '50%', marginRight: 8, border: '1px solid #333' }}></span>
-                  Objective (Destroyed)
-                </div>
-              </div> */}
             <ObjectiveInfoPanel
               destroyedObjectives={destroyedObjectivesSorted}
               currentObjectiveIndex={currentObjectiveIndex}
             />
             <PlayerCards
               playersData={players}
-              per_player_data={matchAnalysis.parsed_game_data.per_player_data}
+              perPlayerData={perPlayerData}
               currentTick={currentTick}
               normalizePosition={normalizePosition}
               gameData={matchAnalysis.parsed_game_data}
@@ -237,16 +229,12 @@ const MatchAnalysis = () => {
             setCurrentTick={setCurrentTick}
             total_game_time_s={matchAnalysis.parsed_game_data.total_game_time_s}
             game_start_time_s={matchAnalysis.parsed_game_data.game_start_time_s}
-            heroes={heroData}
-            playersData={playersData}
-            per_player_data={matchAnalysis.parsed_game_data.per_player_data}
             MINIMAP_SIZE={MINIMAP_SIZE}
-            scaleToMinimap={scaleToMinimap}
             scaledBossSnapshots={scaledBossSnapshots}
+            scaledPlayerCoords={scaledPlayerCoords}
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}
-            scalePlayerPosition={scalePlayerPosition}
           />
         </div>
       </div>

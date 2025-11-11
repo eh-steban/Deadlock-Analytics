@@ -1,11 +1,4 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-} from "react";
+import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import Grid from "./Grid";
 import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
@@ -19,17 +12,22 @@ import AllPlayerPositions from "./AllPlayerPositions";
 import PerPlayerWindowTable from "./PerPlayerWindowTable";
 import DamageSourceTypesTable from "./DamageSourceTypesTable";
 import { Region } from "../../types/Region";
-import {
-  Hero,
-  PlayerGameData,
-  PlayerPosition,
-  PlayerData,
-} from "../../types/Player";
+import { Hero } from "../../types/Player";
 import { ScaledBossSnapshot } from "../../types/Boss";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
+
+// FIXME: This should probably refactored to remove team and hero
+// At minimum renamed to be more accurate of what data this contains
+export interface ScaledPlayerCoord {
+  playerId: string;
+  left: number;
+  top: number;
+  team: number;
+  hero: Hero;
+}
 
 const Minimap = ({
   currentTick,
@@ -37,33 +35,21 @@ const Minimap = ({
   total_game_time_s,
   scaledBossSnapshots,
   MINIMAP_SIZE,
-  scaleToMinimap,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
   regions,
-  playersData,
-  per_player_data,
-  heroes,
-  scalePlayerPosition,
+  scaledPlayerCoords,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
   total_game_time_s: number;
   game_start_time_s: number;
-  // playerPaths: PlayerPathState[];
   scaledBossSnapshots: ScaledBossSnapshot[];
   MINIMAP_SIZE: number;
-  scaleToMinimap: (x: number, y: number) => { left: number; top: number };
   destroyedObjectivesSorted: Array<DestroyedObjective>;
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
   regions: Region[];
-  playersData: PlayerData[];
-  per_player_data: Record<string, PlayerGameData>;
-  heroes: Hero[];
-  scalePlayerPosition: (playerPos: PlayerPosition) => {
-    scaledPlayerX: number;
-    scaledPlayerY: number;
-  };
+  scaledPlayerCoords: ScaledPlayerCoord[];
 }) => {
   // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
@@ -77,10 +63,6 @@ const Minimap = ({
     [label: string]: boolean;
   }>(() => Object.fromEntries(regions.map((r) => [r.label, true])));
   const visibleRegionList = regions.filter((r) => visibleRegions[r.label]);
-
-  const renderPlayerDot = (x: number, y: number) => {
-    return scaleToMinimap(x, y);
-  };
 
   const handleRegionToggle = (label: string) => {
     setVisibleRegions((v) => ({ ...v, [label]: !v[label] }));
@@ -151,15 +133,7 @@ const Minimap = ({
             currentTick={currentTick}
             activeObjectiveKey={activeObjectiveKey}
           />
-          <PlayerPositions
-            // playerPositions={playerPositions}
-            perPlayerData={per_player_data}
-            playersData={playersData}
-            currentTick={currentTick}
-            heroes={heroes}
-            renderPlayerDot={renderPlayerDot}
-            scalePlayerPosition={scalePlayerPosition}
-          />
+          <PlayerPositions scaledPlayerCoords={scaledPlayerCoords} />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>
           <GameTimeViewer

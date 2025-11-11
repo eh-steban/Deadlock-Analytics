@@ -31,8 +31,8 @@ const Objectives: React.FC<ObjectivesProps> = ({
           life_state_on_create,
           death_time_s,
           life_state_on_delete,
-          scaledX,
-          scaledY,
+          left,
+          top,
         }) => {
           // const match = destroyedObjectives.find(
           //   (obj) =>
@@ -52,8 +52,8 @@ const Objectives: React.FC<ObjectivesProps> = ({
               // title={`${team_id}_${team_objective_id}`}
               className='pointer-events-auto absolute h-2.5 w-2.5 rounded-full'
               style={{
-                left: scaledX,
-                top: scaledY,
+                left,
+                top,
                 backgroundColor: "red",
               }}
             />
