@@ -5,10 +5,8 @@ import { regions } from "../../data/regions";
 import {
   PlayerData,
   PlayerGameData,
-  PlayerPosition,
   DRTypeAggregateBySec,
 } from "../../types/Player";
-import { WORLD_BOUNDS } from "../../types/MatchAnalysis";
 import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
@@ -16,17 +14,10 @@ interface PlayerCardsProps {
   per_player_data: Record<string, PlayerGameData>;
   currentTick: number;
   gameData: ParsedGameData;
-  scalePlayerPosition: (
-    pos: PlayerPosition,
-    worldBounds: { xMin: number; xMax: number; yMin: number; yMax: number }
-  ) => { scaledPlayerX: number; scaledPlayerY: number };
+  normalizePosition: (x: number, y: number) => { normX: number; normY: number };
 }
 
-function getPlayerRegionLabels(
-  x: number,
-  y: number,
-  debug: boolean = false
-): string[] {
+function getPlayerRegionLabels(x: number, y: number): string[] {
   const foundRegions: string[] = regions
     .filter((region: Region) => pointInPolygon([x, y], region.polygon))
     .map<string>((region): string => {
@@ -40,7 +31,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
   playersData,
   per_player_data,
   currentTick,
-  scalePlayerPosition,
+  normalizePosition,
 }) => {
   return (
     <>
@@ -71,14 +62,11 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
             hero && hero.images && hero.images.icon_hero_card_webp;
           const health = 0;
           // const health = playerPathState.health[currentTick];
-          const { scaledPlayerX, scaledPlayerY } = scalePlayerPosition(
-            playerPosition,
-            WORLD_BOUNDS
+          const { normX, normY } = normalizePosition(
+            playerPosition.x,
+            playerPosition.y
           );
-          const regionLabels: string[] = getPlayerRegionLabels(
-            scaledPlayerX,
-            scaledPlayerY
-          );
+          const regionLabels: string[] = getPlayerRegionLabels(normX, normY);
 
           // Summarize: victimId -> (type -> totalDamage)
           // FIXME: Just for display purposes, but this should be done

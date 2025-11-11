@@ -227,11 +227,8 @@ const MatchAnalysis = () => {
             <PlayerCards
               playersData={players}
               per_player_data={matchAnalysis.parsed_game_data.per_player_data}
-              // positions={
-              //   matchAnalysis.parsed_game_data.per_player_data.positions
-              // }
               currentTick={currentTick}
-              scalePlayerPosition={scalePlayerPosition}
+              normalizePosition={normalizePosition}
               gameData={matchAnalysis.parsed_game_data}
             />
           </div>
@@ -243,7 +240,6 @@ const MatchAnalysis = () => {
             heroes={heroData}
             playersData={playersData}
             per_player_data={matchAnalysis.parsed_game_data.per_player_data}
-            // playerPaths={playerPaths}
             MINIMAP_SIZE={MINIMAP_SIZE}
             scaleToMinimap={scaleToMinimap}
             scaledBossSnapshots={scaledBossSnapshots}
