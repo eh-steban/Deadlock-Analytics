@@ -72,6 +72,166 @@ struct PlayerPosition {
     is_npc: bool,
 }
 
+#[derive(Debug, Serialize, Clone)]
+struct BossSnapshot {
+    entity_index: i32,
+    boss_name_hash: u64,  // serializer_name.hash
+    team: u32,
+    lane: u32,
+    x: f32,
+    y: f32,
+    z: f32,
+    spawn_time_s: u32,
+    max_health: i32,
+    life_state_on_create: i32,
+    death_time_s: Option<u32>,
+    life_state_on_delete: Option<i32>,
+}
+
+#[derive(Debug)]
+struct BossTracker {
+    // Field keys (pre-computed)
+    health_key: u64,
+    max_health_key: u64,
+    life_state_key: u64,
+    lane_key: u64,
+
+    // Active bosses by entity index -> snapshot
+    bosses: HashMap<i32, BossSnapshot>,
+
+    // Sparse damage-driven health samples: entity_index -> Vec<(time_s, health)>
+    health_samples: HashMap<i32, Vec<(u32, i32)>>,
+
+    // Per-second health timeline: Vec<HashMap<entity_index_string, current_health>>
+    health_timeline: Vec<HashMap<String, i32>>,
+
+    // Boss type hashes
+    guardian_hash: u64,
+    shrine_hash: u64,
+    walker_hash: u64,
+    base_guardian_hash: u64,
+    patron_hash: u64,
+}
+
+impl BossTracker {
+    fn new() -> Self {
+        Self {
+            health_key: fkey_from_path(&["m_iHealth"]),
+            max_health_key: fkey_from_path(&["m_iMaxHealth"]),
+            life_state_key: fkey_from_path(&["m_lifeState"]),
+            lane_key: fkey_from_path(&["m_iLane"]),
+            bosses: HashMap::new(),
+            health_samples: HashMap::new(),
+            health_timeline: Vec::new(),
+            guardian_hash: CNPC_TROOPERBOSS_ENTITY,
+            shrine_hash: CCITADEL_DESTROYABLE_BUILDING_ENTITY,
+            walker_hash: CNPC_BOSS_TIER2_ENTITY,
+            base_guardian_hash: CNPC_TROOPERBARRACKBOSS_ENTITY,
+            patron_hash: CNPC_BOSS_TIER3_ENTITY,
+        }
+    }
+
+    fn is_boss_entity(&self, hash: u64) -> bool {
+        hash == self.guardian_hash
+            || hash == self.shrine_hash
+            || hash == self.walker_hash
+            || hash == self.base_guardian_hash
+            || hash == self.patron_hash
+    }
+
+    fn handle_boss_create(&mut self, entity: &Entity, current_time_s: u32) {
+        let hash = entity.serializer().serializer_name.hash;
+        if !self.is_boss_entity(hash) {
+            return;
+        }
+
+        let position = get_entity_position(entity);
+        let team = entity.get_value(&TEAM_KEY).unwrap();
+        let lane = entity.get_value(&self.lane_key).unwrap();
+        let health = entity.get_value::<i32>(&self.health_key).unwrap();
+        let max_health = entity.get_value::<i32>(&self.max_health_key).unwrap();
+        let life_state = entity.get_value::<i32>(&self.life_state_key).unwrap();
+
+        // println!("lane: {}", lane);
+        // panic!("debug panic to inspect state");
+
+        let snapshot = BossSnapshot {
+            entity_index: entity.index(),
+            boss_name_hash: hash,
+            team,
+            lane,
+            x: position[0],
+            y: position[1],
+            z: position[2],
+            spawn_time_s: current_time_s,
+            max_health,
+            life_state_on_create: life_state,
+            death_time_s: None,
+            life_state_on_delete: None,
+        };
+
+        // Record initial health sample
+        self.health_samples
+            .entry(entity.index())
+            .or_insert_with(Vec::new)
+            .push((current_time_s, health));
+
+        self.bosses.insert(entity.index(), snapshot);
+    }
+
+    fn handle_boss_delete(&mut self, entity: &Entity, current_time_s: u32) {
+        let entity_index = entity.index();
+        if let Some(boss) = self.bosses.get_mut(&entity_index) {
+            boss.death_time_s = Some(current_time_s);
+            boss.life_state_on_delete = entity.get_value::<i32>(&self.life_state_key);
+        }
+    }
+
+    fn record_boss_damage(
+        &mut self,
+        victim_entity_index: i32,
+        ctx: &Context,
+        current_time_s: u32,
+    ) -> Result<()> {
+        // Only record if this is a tracked boss
+        if !self.bosses.contains_key(&victim_entity_index) {
+            return Ok(());
+        }
+
+        let entities = ctx.entities().unwrap();
+        if let Some(victim) = entities.get(&victim_entity_index) {
+            let health = victim.get_value::<i32>(&self.health_key).unwrap_or(0);
+
+            self.health_samples
+                .entry(victim_entity_index)
+                .or_insert_with(Vec::new)
+                .push((current_time_s, health));
+        }
+
+        Ok(())
+    }
+
+    fn build_health_window(&mut self, window_s: u32) {
+        let mut window_health: HashMap<String, i32> = HashMap::new();
+
+        for (entity_index, samples) in &self.health_samples {
+            // Find the most recent sample <= window_s (carry-forward last known health)
+            if let Some((_, health)) = samples.iter().rev().find(|(time, _)| *time <= window_s) {
+                window_health.insert(entity_index.to_string(), *health);
+            }
+        }
+
+        self.health_timeline.push(window_health);
+    }
+
+    fn get_output(&self) -> serde_json::Value {
+        serde_json::json!({
+            "snapshots": self.bosses.values().collect::<Vec<_>>(),
+            "health_timeline": self.health_timeline,
+        })
+    }
+}
+
 // #[derive(Clone, Copy, Debug, Default, Serialize)]
 // struct Vector4 {
 //     x: Option<f32>,
@@ -106,7 +266,7 @@ struct DamageRecord {
     //  effectiveness: f32,
 }
 
-#[derive(Default, Debug)]
+#[derive(Debug)]
 struct MyVisitor {
     total_game_time_s: u32,
     game_start_time_s: Option<u32>,
@@ -116,6 +276,23 @@ struct MyVisitor {
     entity_name_hash_to_player_slot: HashMap<u32, u32>,
     positions_window: Vec<PlayerPosition>,
     positions: Vec<Vec<PlayerPosition>>,
+    boss_tracker: BossTracker,
+}
+
+impl Default for MyVisitor {
+    fn default() -> Self {
+        Self {
+            total_game_time_s: 0,
+            game_start_time_s: None,
+            damage_window: HashMap::new(),
+            damage: Vec::new(),
+            players: Vec::new(),
+            entity_name_hash_to_player_slot: HashMap::new(),
+            positions_window: Vec::new(),
+            positions: Vec::new(),
+            boss_tracker: BossTracker::new(),
+        }
+    }
 }
 
 const DEADLOCK_GAMERULES_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelGameRulesProxy");
@@ -223,6 +400,7 @@ impl MyVisitor {
             "damage": self.damage,
             "players": self.players,
             "positions": self.positions,
+            "bosses": self.boss_tracker.get_output(),
         })
     }
 
@@ -374,6 +552,9 @@ impl Visitor for &mut MyVisitor {
         }
 
         if next_window != this_window {
+            // Build per-second boss health timeline
+            self.boss_tracker.build_health_window(this_window);
+
             for (_index, entity) in ctx.entities().unwrap().iter() {
                 if !self.should_track_position(entity) {
                     continue;
@@ -416,17 +597,17 @@ impl Visitor for &mut MyVisitor {
             self.handle_game_rules(entity)?;
         }
 
-        if delta_header == DeltaHeader::CREATE {
-            // ***Do things on entity created ***
+        // Track boss lifecycle
+        match delta_header {
+            DeltaHeader::CREATE => {
+                self.boss_tracker.handle_boss_create(entity, self.total_game_time_s);
+            }
+            DeltaHeader::DELETE => {
+                self.boss_tracker.handle_boss_delete(entity, self.total_game_time_s);
+            }
+            _ => {}
         }
 
-        if delta_header == DeltaHeader::UPDATE {
-            // ***Do things on entity updated ***
-        }
-
-        if delta_header == DeltaHeader::CREATE {
-            // ***Do things on entity deleted ***
-        }
         Ok(())
     }
 
@@ -472,6 +653,16 @@ impl Visitor for &mut MyVisitor {
                     if attacker.is_none() || victim.is_none() {
                         // println!("Attacker or Victim was None");
                         return Ok(())
+                    }
+
+                    // Check if victim is a boss and record health sample
+                    let victim_hash = victim.unwrap().serializer().serializer_name.hash;
+                    if self.boss_tracker.is_boss_entity(victim_hash) {
+                        self.boss_tracker.record_boss_damage(
+                            msg.entindex_victim(),
+                            ctx,
+                            self.total_game_time_s,
+                        )?;
                     }
 
                     // FIXME: Need to change this so we're not sending entity indexes

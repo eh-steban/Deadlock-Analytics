@@ -1,0 +1,29 @@
+interface BossSnapshot {
+  entity_index: number;
+  boss_name_hash: number; // Will be a large integer from Rust u64
+  team: number;
+  lane: number;
+  x: number;
+  y: number;
+  z: number;
+  spawn_time_s: number;
+  max_health: number;
+  life_state_on_create: number;
+  death_time_s: number | null;
+  life_state_on_delete: number | null;
+}
+
+export interface ScaledBossSnapshot extends BossSnapshot {
+  scaledX: number;
+  scaledY: number;
+}
+
+// Per-second health timeline: object mapping entity_index (as string) -> current_health
+type BossHealthWindow = Record<string, number>;
+
+type BossHealthTimeline = BossHealthWindow[];
+
+export interface BossData {
+  snapshots: BossSnapshot[];
+  health_timeline: BossHealthTimeline;
+}

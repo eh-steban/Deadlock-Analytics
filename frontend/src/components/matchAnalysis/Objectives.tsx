@@ -1,69 +1,60 @@
 import React from "react";
+import { ScaledBossSnapshot } from "../../types/Boss";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 
-interface ObjectiveCoordinate {
-  label: string;
-  x: number;
-  y: number;
-  team_id?: number;
-  team_objective_id?: number;
-}
-
 interface ObjectivesProps {
-  objectiveCoordinates: ObjectiveCoordinate[];
+  scaledBossSnapshots: ScaledBossSnapshot[];
   destroyedObjectives: DestroyedObjective[];
   currentTick: number;
-  renderObjectiveDot: (obj: ObjectiveCoordinate) => {
-    left: number;
-    top: number;
-  };
   activeObjectiveKey?: string | null;
 }
 
 const Objectives: React.FC<ObjectivesProps> = ({
-  objectiveCoordinates,
+  scaledBossSnapshots,
   destroyedObjectives,
   currentTick,
-  renderObjectiveDot,
   activeObjectiveKey,
 }) => {
   return (
     <>
-      {objectiveCoordinates.map(
-        ({ team_id, team_objective_id, label, x, y }) => {
-          const { left, top } = renderObjectiveDot({
-            label,
-            x,
-            y,
-            team_id,
-            team_objective_id,
-          });
-          const match = destroyedObjectives.find(
-            (obj) =>
-              Number(obj.team) === team_id &&
-              Number(obj.team_objective_id) === team_objective_id
-          );
-          const isDestroyed =
-            match ? currentTick >= match.destroyed_time_s : false;
-          const isActive =
-            activeObjectiveKey === `${team_id}_${team_objective_id}`;
-          const color = isDestroyed ? "black" : "red";
+      {scaledBossSnapshots.map(
+        ({
+          entity_index,
+          boss_name_hash,
+          team,
+          lane,
+          x,
+          y,
+          z,
+          spawn_time_s,
+          max_health,
+          life_state_on_create,
+          death_time_s,
+          life_state_on_delete,
+          scaledX,
+          scaledY,
+        }) => {
+          // const match = destroyedObjectives.find(
+          //   (obj) =>
+          //     Number(obj.team) === team_id &&
+          //     Number(obj.team_objective_id) === team_objective_id
+          // );
+          // const isDestroyed =
+          //   match ? currentTick >= match.destroyed_time_s : false;
+          // const isActive =
+          //   activeObjectiveKey === `${team_id}_${team_objective_id}`;
+          // const color = isDestroyed ? "black" : "red";
 
           return (
             <div
-              key={`${team_id}_${team_objective_id}`}
-              title={`${team_id}_${team_objective_id}`}
+              // key={`${team_id}_${team_objective_id}`}
+              key={`${entity_index}`}
+              // title={`${team_id}_${team_objective_id}`}
+              className='pointer-events-auto absolute h-2.5 w-2.5 rounded-full'
               style={{
-                position: "absolute",
-                left,
-                top,
-                width: 10,
-                height: 10,
-                backgroundColor: color,
-                borderRadius: "50%",
-                border: isActive ? "2px solid yellow" : "1px solid red",
-                // transform: 'translate(-50%, -50%)',
-                pointerEvents: "auto",
+                left: scaledX,
+                top: scaledY,
+                backgroundColor: "red",
               }}
             />
           );

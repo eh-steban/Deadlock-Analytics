@@ -1,4 +1,11 @@
-import { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+} from "react";
 import Grid from "./Grid";
 import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
@@ -16,24 +23,11 @@ import {
   Hero,
   PlayerGameData,
   PlayerPosition,
-  DamageRecord,
   PlayerData,
 } from "../../types/Player";
-import { ObjectiveCoordinate } from "../../types/ObjectiveCoordinate";
+import { ScaledBossSnapshot } from "../../types/Boss";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
-import { objectiveCoordinates } from "../../data/objectiveCoordinates";
 
-interface TickDamageEvent {
-  tick: number;
-  attackerId: string;
-  victimId: string;
-  record: DamageRecord;
-}
-
-const MINIMAP_SIZE = 768;
-// FIXME: Use this value once we're confident in how our map
-// looks at bigger sizes.
-// const MINIMAP_SIZE = 512;
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
 
@@ -41,6 +35,9 @@ const Minimap = ({
   currentTick,
   setCurrentTick,
   total_game_time_s,
+  scaledBossSnapshots,
+  MINIMAP_SIZE,
+  scaleToMinimap,
   destroyedObjectivesSorted,
   setCurrentObjectiveIndex,
   regions,
@@ -54,6 +51,9 @@ const Minimap = ({
   total_game_time_s: number;
   game_start_time_s: number;
   // playerPaths: PlayerPathState[];
+  scaledBossSnapshots: ScaledBossSnapshot[];
+  MINIMAP_SIZE: number;
+  scaleToMinimap: (x: number, y: number) => { left: number; top: number };
   destroyedObjectivesSorted: Array<DestroyedObjective>;
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
   regions: Region[];
@@ -78,24 +78,10 @@ const Minimap = ({
   }>(() => Object.fromEntries(regions.map((r) => [r.label, true])));
   const visibleRegionList = regions.filter((r) => visibleRegions[r.label]);
 
-  // TODO: Not a fan of inverting the y-axis here. Can probably find a better place to do it.
-  const renderObjectiveDot = (obj: ObjectiveCoordinate) => {
-    // TODO: When we pull objective coordinates from the backend, ensure y-axis is inverted
-    // in scalePlayerPosition (but we'll likely rename this to scalePosition)
-    return scaleToMinimap(obj.x, 1 - obj.y);
-  };
   const renderPlayerDot = (x: number, y: number) => {
     return scaleToMinimap(x, y);
   };
-  const scaleToMinimap = (
-    x: number,
-    y: number
-  ): { left: number; top: number } => {
-    const xOffset = -10;
-    const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
-    const top = y * MINIMAP_SIZE;
-    return { left, top };
-  };
+
   const handleRegionToggle = (label: string) => {
     setVisibleRegions((v) => ({ ...v, [label]: !v[label] }));
   };
@@ -160,10 +146,9 @@ const Minimap = ({
             className='pointer-events-none z-0 h-full w-full object-cover'
           />
           <Objectives
-            objectiveCoordinates={objectiveCoordinates}
+            scaledBossSnapshots={scaledBossSnapshots}
             destroyedObjectives={destroyedObjectivesSorted}
             currentTick={currentTick}
-            renderObjectiveDot={renderObjectiveDot}
             activeObjectiveKey={activeObjectiveKey}
           />
           <PlayerPositions

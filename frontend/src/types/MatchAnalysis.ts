@@ -1,5 +1,6 @@
 import { MatchMetadata } from "./MatchMetadata";
 import { ParsedPlayer, PlayerGameData } from "./Player";
+import { BossData } from "./Boss";
 
 // Parsed game data (aggregated by player, per backend ParsedGameData)
 export interface ParsedGameData {
@@ -7,6 +8,7 @@ export interface ParsedGameData {
   game_start_time_s: number;
   players_data: ParsedPlayer[];
   per_player_data: Record<string, PlayerGameData>; // key = player_id
+  bosses: BossData;
 }
 
 // Full match anal\ysis response (backend MatchAnalysis)

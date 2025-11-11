@@ -14,6 +14,7 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
+from app.domain.boss import BossData
 from app.domain.player import PlayerData
 from app.services.deadlock_api_service import DeadlockAPIService
 # from app.services.player_service import PlayerService
@@ -106,15 +107,14 @@ async def get_match_analysis(
                     parsed_damage = [
                         ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})
                     ]
-                    total_game_time_s = parsed_json_resp.get("total_game_time_s", 0)
-                    game_start_time_s = parsed_json_resp.get("game_start_time_s", 0)
-                    positions = Positions(parsed_json_resp.get("positions", []))
+                    # positions =
                     parsed_game = ParsedGameResponse(
-                        total_game_time_s=total_game_time_s,
-                        game_start_time_s=game_start_time_s,
+                        total_game_time_s=parsed_json_resp.get("total_game_time_s", 0),
+                        game_start_time_s=parsed_json_resp.get("game_start_time_s", 0),
                         damage=parsed_damage,
                         players_data=players_list,
-                        positions=positions
+                        positions=Positions(parsed_json_resp.get("positions", [])),
+                        bosses=BossData(**parsed_json_resp.get("bosses", {}))
                     )
                     # player_list, npc_list = await PlayerService().map_player_data(
                     #     game_data.players, players_list

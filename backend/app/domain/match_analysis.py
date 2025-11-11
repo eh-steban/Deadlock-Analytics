@@ -5,6 +5,7 @@ from sqlmodel import SQLModel
 # However, in typical tournament play, a "match" consists of multiple "games".
 # If you see MatchMetadata, that's a Deadlock API thing. Once we have support
 # for tournament matches, there may be some naming overlap and adjustments may be needed.
+from app.domain.boss import BossData
 from app.domain.deadlock_api import MatchMetadata
 from app.domain.player import (
     PlayerData,
@@ -27,6 +28,7 @@ class ParsedGameResponse(SQLModel):
     players_data: list[PlayerData]
     # players: list[PlayerInfo]
     positions: Positions
+    bosses: BossData
 
 # TODO: Created a temporary ParsedPlayer class to make this happy
 # Might change this later
@@ -36,6 +38,7 @@ class TransformedGameData(SQLModel):
     players_data: list[PlayerData]
     # players: list[PlayerInfo]
     per_player_data: dict[str, PlayerGameData]
+    bosses: BossData
 
 class GameAnalysis(SQLModel):
     match_metadata: MatchMetadata

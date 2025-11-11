@@ -7,6 +7,7 @@ import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
 import { Hero, PlayerPosition } from "../../types/Player";
+import { ScaledBossSnapshot } from "../../types/Boss";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
 import { formatSecondstoMMSS } from "../../utils/time";
@@ -53,7 +54,40 @@ const defaultMatchAnalysis: GameAnalysisResponse = {
     game_start_time_s: 0,
     players_data: [],
     per_player_data: {},
+    bosses: {
+      snapshots: [],
+      health_timeline: [],
+    },
   },
+};
+
+const MINIMAP_SIZE = 768;
+// FIXME: Use this value once we're confident in how our map
+// looks at bigger sizes.
+// const MINIMAP_SIZE = 512;
+
+// Coordinate transformation functions
+const normalizePosition = (x: number, y: number) => {
+  const { xMin, xMax, yMin, yMax } = WORLD_BOUNDS;
+  const spanX = Math.max(1e-6, xMax - xMin);
+  const spanY = Math.max(1e-6, yMax - yMin);
+  const normX = (x - xMin) / spanX;
+  // Invert Y axis for minimap representation
+  const normY = 1 - (y - yMin) / spanY;
+
+  return { normX, normY };
+};
+
+const normToScaledPixels = (normX: number, normY: number) => {
+  const xOffset = -10;
+  const scaledX = normX * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
+  const scaledY = normY * MINIMAP_SIZE;
+  return { scaledX, scaledY };
+};
+
+const worldToMinimapPixels = (x: number, y: number) => {
+  const { normX, normY } = normalizePosition(x, y);
+  return normToScaledPixels(normX, normY);
 };
 
 const MatchAnalysis = () => {
@@ -62,8 +96,10 @@ const MatchAnalysis = () => {
   const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
   const matchAnalysis: GameAnalysisResponse =
     matchAnalysisData ?? defaultMatchAnalysis;
+  // FIXME: matchMetadata is Deadlock API stuff that we'll likely get rid of later
   const matchMetadata = matchAnalysis.match_metadata;
   const parsedGameData = matchAnalysis.parsed_game_data;
+  const bossSnapshots = parsedGameData.bosses.snapshots;
   const playersData = parsedGameData.players_data;
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
@@ -83,6 +119,15 @@ const MatchAnalysis = () => {
       .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
+  const scaledBossSnapshots: ScaledBossSnapshot[] = useMemo(
+    () =>
+      bossSnapshots.map((snapshot) => ({
+        ...snapshot,
+        ...worldToMinimapPixels(snapshot.x, snapshot.y),
+      })),
+    [bossSnapshots]
+  );
+
   const players = useMemo(() => {
     if (!playersData || !heroData) return [];
     const heroIdToHero: Record<number, Hero> = {};
@@ -95,6 +140,17 @@ const MatchAnalysis = () => {
     }));
   }, [playersData, heroData]);
 
+  const scaleToMinimap = (
+    x: number,
+    y: number
+  ): { left: number; top: number } => {
+    const xOffset = -10;
+    const left = x * MINIMAP_SIZE + xOffset; // Apply offset to x-coordinate
+    const top = y * MINIMAP_SIZE;
+    return { left, top };
+  };
+
+  // FIXME: Deprecated, use normalizePosition instead
   function scalePlayerPosition(playerPos: PlayerPosition): {
     scaledPlayerX: number;
     scaledPlayerY: number;
@@ -188,6 +244,9 @@ const MatchAnalysis = () => {
             playersData={playersData}
             per_player_data={matchAnalysis.parsed_game_data.per_player_data}
             // playerPaths={playerPaths}
+            MINIMAP_SIZE={MINIMAP_SIZE}
+            scaleToMinimap={scaleToMinimap}
+            scaledBossSnapshots={scaledBossSnapshots}
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}

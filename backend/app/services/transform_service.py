@@ -15,6 +15,7 @@ class TransformService:
             game_start_time_s=parsed_game.game_start_time_s,
             players_data=parsed_game.players_data,
             per_player_data={},
+            bosses=parsed_game.bosses,
         )
 
         for player in parsed_game.players_data:
