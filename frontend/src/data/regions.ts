@@ -2,7 +2,7 @@ import { Region } from "../types/Region";
 
 export const regions: Region[] = [
   {
-    label: "Team 0 Side",
+    label: "Team 2 Side",
     polygon: [
       [0, 0.5],
       [1, 0.5],
@@ -14,7 +14,7 @@ export const regions: Region[] = [
     border: "rgba(255,200,0,0.3)",
   },
   {
-    label: "Team 0 Base (Amber)",
+    label: "Team 2 Base (Amber)",
     polygon: [
       [0.43, 0.78],
       [0.57, 0.78],
@@ -28,7 +28,7 @@ export const regions: Region[] = [
     border: "rgba(255, 200, 0, 0.79)",
   },
   {
-    label: "Team 1 Side",
+    label: "Team 3 Side",
     polygon: [
       [0, 0],
       [1, 0],
@@ -39,7 +39,7 @@ export const regions: Region[] = [
     border: "rgba(0,128,255,0.3)",
   },
   {
-    label: "Team 1 Base (Sapphire)",
+    label: "Team 3 Base (Sapphire)",
     polygon: [
       [0.4, 0.06],
       [0.6, 0.06],
