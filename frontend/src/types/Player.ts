@@ -66,15 +66,6 @@ export interface ScaledPlayerCoord extends PlayerPosition {
 // All positions for one tick (can contain nulls if a player absent that tick)
 export type PositionWindow = PlayerPosition[];
 
-// Comes from DeadlockAPI
-// FIXME: I'm pretty sure we can remove this interface and use PlayerData below
-export interface PlayerInfo {
-  account_id: number;
-  player_slot: number;
-  team: number;
-  hero_id: number;
-}
-
 // Comes from parser
 export interface PlayerData {
   custom_id: string;
