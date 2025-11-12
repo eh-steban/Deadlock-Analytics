@@ -27,17 +27,10 @@ export interface GameAnalysisResponse {
 // ever change. For now, we'll hardcode them.
 const MINIMAP_MIN = -10752;
 const MINIMAP_MAX = 10752;
-// FIXME: This needs to be removed. It's not being used anymore
-type AllPlayerBounds = Readonly<{
-  xMin: number;
-  xMax: number;
-  yMin: number;
-  yMax: number;
-}>;
 
-export const WORLD_BOUNDS: AllPlayerBounds = Object.freeze({
+export const WORLD_BOUNDS = Object.freeze({
   xMin: MINIMAP_MIN,
   xMax: MINIMAP_MAX,
   yMin: MINIMAP_MIN,
   yMax: MINIMAP_MAX,
-});
+} as const);

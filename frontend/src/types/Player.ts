@@ -48,14 +48,6 @@ export type ParsedVictimDamage = Record<string, DamageRecord[]>;
  */
 export type Damage = ParsedVictimDamage[];
 
-// FIXME: This needs to be removed. It's not being used anymore
-export interface AllPlayerBounds {
-  xMin: number;
-  xMax: number;
-  yMin: number;
-  yMax: number;
-}
-
 // Comes from parser
 export interface PlayerPosition {
   customId: string;
