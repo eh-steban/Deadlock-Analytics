@@ -10,7 +10,7 @@ import {
 import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
-  playersData: PlayerData[];
+  players: PlayerData[];
   perPlayerData: Record<string, PlayerGameData>;
   currentTick: number;
   gameData: ParsedGameData;
@@ -28,38 +28,26 @@ function getPlayerRegionLabels(x: number, y: number): string[] {
 
 // TODO: Add typechecking?
 const PlayerCards: React.FC<PlayerCardsProps> = ({
-  playersData,
+  players,
   perPlayerData,
   currentTick,
   normalizePosition,
 }) => {
   return (
     <>
-      <h3 style={{ margin: "0 0 0.5rem 0" }}>Player Info</h3>
+      <h3 className='mt-0 mb-2'>Player Info</h3>
       <div
         title='playerCards'
-        style={{
-          overflowY: "auto",
-          background: "none",
-          border: "none",
-          borderRadius: 0,
-          padding: 0,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          width: "100%",
-          gap: "0.25rem",
-        }}
+        className='grid w-full grid-cols-2 gap-1 border-0 bg-transparent p-0'
       >
-        {playersData.map((player) => {
+        {players.map((player) => {
           const customId = Number(player.custom_id);
-          const pdata = perPlayerData[customId];
-          const playerPosition = pdata.positions[currentTick];
-          const victimDamageMap = pdata.damage[currentTick];
+          const posDmgdata = perPlayerData[customId];
+          const playerPosition = posDmgdata.positions[currentTick];
+          const victimDamageMap = posDmgdata.damage[currentTick];
           const team = player.team;
-          const hero = player.hero;
-          const heroName = hero ? hero.name : `Hero ${player.hero_id}`;
-          const heroImg =
-            hero && hero.images && hero.images.icon_hero_card_webp;
+          const heroName = player.hero.name || `Hero ${player.hero_id}`;
+          const heroImg = player.hero.images?.icon_hero_card_webp;
           const health = 0;
           // const health = playerPathState.health[currentTick];
           const { normX, normY } = normalizePosition(
@@ -113,67 +101,24 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
           return (
             <div
               key={`player-card-${player.lobby_player_slot}`}
-              style={{
-                background: "#fff",
-                border: "1px solid #ccc",
-                borderRadius: "0.5rem",
-                padding: "0.5rem 0.75rem",
-                boxShadow: "0 0.0625rem 0.125rem rgba(0,0,0,0.04)",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "stretch",
-                gap: "0.025rem",
-              }}
+              className='flex h-70 flex-row items-stretch gap-[0.025rem] rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm'
             >
               {heroImg && (
                 <img
                   src={heroImg}
                   alt={heroName}
-                  style={{
-                    width: "4rem",
-                    height: "4rem",
-                    borderRadius: "1rem",
-                    objectFit: "cover",
-                    background: "#eee",
-                    border: "1px solid #ddd",
-                  }}
+                  className='h-16 w-16 rounded-2xl border border-gray-300 bg-gray-200 object-cover'
                 />
               )}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.125rem",
-                  flex: 1,
-                }}
-              >
-                <div
-                  style={{
-                    fontWeight: 600,
-                    fontSize: "1.05em",
-                    marginBottom: "0.125rem",
-                  }}
-                >
+              <div className='flex flex-1 flex-col gap-0.5'>
+                <div className='mb-0.5 text-[1.05em] font-semibold'>
                   {heroName}{" "}
-                  <span
-                    style={{
-                      color: "#888",
-                      fontWeight: 400,
-                      fontSize: "0.95em",
-                    }}
-                  >
+                  <span className='text-[0.95em] font-normal text-gray-500'>
                     (Name: {player.name}, Slot: {player.lobby_player_slot},
                     Team: {team})
                   </span>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                    fontSize: "0.97em",
-                  }}
-                >
+                <div className='flex flex-col gap-2.5 text-[0.97em]'>
                   <div>
                     <strong>Health:</strong>{" "}
                     {health !== undefined ? health : "-"}
@@ -186,10 +131,10 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                       <strong>Out of combat</strong>
                     : <>
                         <strong>Victims:</strong>
-                        <ul style={{ margin: 0, paddingLeft: 18 }}>
+                        <ul className='m-0 pl-[18px]'>
                           {Object.entries(totalsByVictim).map(
                             ([victimId, typeTotals]) => {
-                              const victimPlayer = playersData.find(
+                              const victimPlayer = players.find(
                                 (p) => String(p.custom_id) === victimId
                               );
                               const victimName =
@@ -199,7 +144,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                               return (
                                 <li key={victimId}>
                                   {victimName}
-                                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                  <ul className='m-0 pl-[18px]'>
                                     {Object.entries(typeTotals).map(
                                       ([type, DRAgg]) => (
                                         <li key={type}>
@@ -217,11 +162,11 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                           FIXME: The below block is being kept for debugging in dev.
                           This should be removed later.
                         */}
-                        {/* <ul style={{ margin: 0, paddingLeft: 18 }}>
+                        {/* <ul className='m-0 pl-[18px]'>
                           {Object.entries(victimDamageMap).map(
                             ([victimIdx, damageRecords]) => {
                               const victimPlayer =
-                                playersData[Number(victimIdx)];
+                                players[Number(victimIdx)];
                               let victimName =
                                 victimPlayer ?
                                   victimPlayer.name
@@ -229,7 +174,7 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                               return (
                                 <li key={victimIdx}>
                                   {victimName}
-                                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                                  <ul className='m-0 pl-[18px]'>
                                     {damageRecords.map((rec, idx) => (
                                       <li key={idx}>
                                         Damage: {rec.damage} | Type: {rec.type}{" "}

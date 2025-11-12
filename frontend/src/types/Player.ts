@@ -48,6 +48,7 @@ export type ParsedVictimDamage = Record<string, DamageRecord[]>;
  */
 export type Damage = ParsedVictimDamage[];
 
+// FIXME: This needs to be removed. It's not being used anymore
 export interface AllPlayerBounds {
   xMin: number;
   xMax: number;
@@ -57,17 +58,24 @@ export interface AllPlayerBounds {
 
 // Comes from parser
 export interface PlayerPosition {
-  custom_id: string;
+  customId: string;
   x: number;
   y: number;
   z: number;
   is_npc: boolean;
 }
 
+// Scaled coordinates for minimap rendering
+export interface ScaledPlayerCoord extends PlayerPosition {
+  left: number;
+  top: number;
+}
+
 // All positions for one tick (can contain nulls if a player absent that tick)
 export type PositionWindow = PlayerPosition[];
 
 // Comes from DeadlockAPI
+// FIXME: I'm pretty sure we can remove this interface and use PlayerData below
 export interface PlayerInfo {
   account_id: number;
   player_slot: number;
@@ -79,14 +87,14 @@ export interface PlayerInfo {
 export interface PlayerData {
   custom_id: string;
   entity_id: string;
-  hero_id: number; // FIXME: ugly but needed for hero lookup
+  hero_id: number; // Raw hero ID from backend (used for initial hero lookup)
   lane: number;
   lobby_player_slot: number;
   name: string;
   steam_id_32: number;
   team: number;
   zipline_lane_color: number;
-  hero: Hero; // FIXME: temporary, to hold hero data
+  hero: Hero; // Enriched hero data (added after lookup, may be fallback if hero_id not found)
 }
 
 // Per-player aggregated data (damage + positions windows)
@@ -104,6 +112,8 @@ export interface Hero {
   id: number;
   name: string;
   images: { [key: string]: string };
+  minimapImage?: string;
+  heroCardWebp?: string;
 }
 
 // Comes from parser

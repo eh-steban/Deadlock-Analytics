@@ -12,22 +12,12 @@ import AllPlayerPositions from "./AllPlayerPositions";
 import PerPlayerWindowTable from "./PerPlayerWindowTable";
 import DamageSourceTypesTable from "./DamageSourceTypesTable";
 import { Region } from "../../types/Region";
-import { Hero } from "../../types/Player";
+import { ScaledPlayerCoord, PlayerData } from "../../types/Player";
 import { ScaledBossSnapshot } from "../../types/Boss";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
-
-// FIXME: This should probably refactored to remove team and hero
-// At minimum renamed to be more accurate of what data this contains
-export interface ScaledPlayerCoord {
-  playerId: string;
-  left: number;
-  top: number;
-  team: number;
-  hero: Hero;
-}
 
 const Minimap = ({
   currentTick,
@@ -39,6 +29,7 @@ const Minimap = ({
   setCurrentObjectiveIndex,
   regions,
   scaledPlayerCoords,
+  players,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
@@ -50,6 +41,7 @@ const Minimap = ({
   setCurrentObjectiveIndex: Dispatch<SetStateAction<number>>;
   regions: Region[];
   scaledPlayerCoords: ScaledPlayerCoord[];
+  players: PlayerData[];
 }) => {
   // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
   // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
@@ -133,7 +125,10 @@ const Minimap = ({
             currentTick={currentTick}
             activeObjectiveKey={activeObjectiveKey}
           />
-          <PlayerPositions scaledPlayerCoords={scaledPlayerCoords} />
+          <PlayerPositions
+            scaledPlayerCoords={scaledPlayerCoords}
+            players={players}
+          />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>
           <GameTimeViewer

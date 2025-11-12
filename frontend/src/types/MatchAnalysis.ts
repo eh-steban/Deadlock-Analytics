@@ -27,6 +27,7 @@ export interface GameAnalysisResponse {
 // ever change. For now, we'll hardcode them.
 const MINIMAP_MIN = -10752;
 const MINIMAP_MAX = 10752;
+// FIXME: This needs to be removed. It's not being used anymore
 type AllPlayerBounds = Readonly<{
   xMin: number;
   xMax: number;

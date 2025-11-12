@@ -6,7 +6,7 @@ import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
-import { Hero } from "../../types/Player";
+import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
 import { ScaledBossSnapshot } from "../../types/Boss";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
@@ -122,50 +122,59 @@ const MatchAnalysis = () => {
       .sort((a, b) => a.destroyed_time_s - b.destroyed_time_s);
   const [currentObjectiveIndex, setCurrentObjectiveIndex] = useState(-1);
 
-  const players = useMemo(() => {
+  const players: PlayerData[] = useMemo(() => {
     if (!playersData || !heroData) return [];
     const heroIdToHero: Record<number, Hero> = {};
     heroData.forEach((h) => {
       heroIdToHero[h.id] = h;
     });
-    return playersData.map((player) => ({
-      ...player,
-      hero: heroIdToHero[player.hero_id] || {
+    return playersData.map((player) => {
+      const hero = heroIdToHero[player.hero_id] || {
         id: 0,
         name: "Unknown",
         images: {},
-      },
-    }));
+      };
+      // Enrich hero with specific image URLs
+      return {
+        ...player,
+        hero: {
+          ...hero,
+          minimapImage: hero.images?.minimap_image_webp as string | undefined,
+          heroCardWebp: hero.images?.icon_hero_card_webp as string | undefined,
+        },
+      };
+    });
   }, [playersData, heroData]);
 
-  const scaledPlayerCoords = useMemo(() => {
+  const scaledPlayerCoords: ScaledPlayerCoord[] = useMemo(() => {
     return Object.entries(perPlayerData).map(([customId, playerGameData]) => {
       const pos = playerGameData.positions[currentTick];
-      const playerData = players.find(
-        (p) => p.lobby_player_slot === Number(customId)
-      );
 
-      // Return default [0,0] coordinates if position or player data is missing
-      if (!pos || !playerData) {
+      // Return default [0,0] coordinates if position is missing
+      if (!pos) {
         return {
-          playerId: customId,
+          customId,
+          x: 0,
+          y: 0,
+          z: 0,
+          is_npc: false,
           left: 0,
           top: 0,
-          team: playerData?.team ?? 0,
-          hero: playerData?.hero ?? { id: 0, name: "Unknown", images: {} },
         };
       }
 
       const { left, top } = worldToMinimapPixels(pos.x, pos.y);
       return {
-        playerId: customId,
+        customId,
+        x: pos.x,
+        y: pos.y,
+        z: pos.z,
+        is_npc: pos.is_npc,
         left,
         top,
-        team: playerData.team,
-        hero: playerData.hero,
       };
     });
-  }, [perPlayerData, players, currentTick]);
+  }, [perPlayerData, currentTick]);
 
   const scaledBossSnapshots: ScaledBossSnapshot[] = useMemo(
     () =>
@@ -217,7 +226,7 @@ const MatchAnalysis = () => {
               currentObjectiveIndex={currentObjectiveIndex}
             />
             <PlayerCards
-              playersData={players}
+              players={players}
               perPlayerData={perPlayerData}
               currentTick={currentTick}
               normalizePosition={normalizePosition}
@@ -232,6 +241,7 @@ const MatchAnalysis = () => {
             MINIMAP_SIZE={MINIMAP_SIZE}
             scaledBossSnapshots={scaledBossSnapshots}
             scaledPlayerCoords={scaledPlayerCoords}
+            players={players}
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}
