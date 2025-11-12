@@ -5,61 +5,16 @@ import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
-import { GameAnalysisResponse, WORLD_BOUNDS } from "../../types/MatchAnalysis";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
 import { ScaledBossSnapshot } from "../../types/Boss";
 import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "./PrintHeroImageData";
 import { formatSecondstoMMSS } from "../../utils/time";
-
-const defaultMatchAnalysis: GameAnalysisResponse = {
-  // NOTE: match references here are because it's coming from the Deadlock API.
-  // Parsed game data refers to these as "games"
-  match_metadata: {
-    match_info: {
-      duration_s: 0,
-      match_outcome: 0,
-      winning_team: 0,
-      players: [],
-      start_time: 0,
-      match_id: 0,
-      legacy_objectives_mask: null,
-      game_mode: 0,
-      match_mode: 0,
-      objectives: [],
-      damage_matrix: {
-        sample_time_s: [],
-        source_details: {
-          stat_type: [],
-          source_name: [],
-        },
-        damage_dealers: [],
-      },
-      match_pauses: [],
-      customer_user_stats: undefined,
-      watched_death_replays: [],
-      objectives_mark_team0: undefined,
-      objectives_mark_team1: undefined,
-      mid_boss: [],
-      is_high_skill_range_parties: false,
-      low_pri_pool: false,
-      new_player_pool: false,
-      average_badge_team0: 0,
-      average_badge_team1: 0,
-      game_mode_version: 0,
-    },
-  },
-  parsed_game_data: {
-    total_game_time_s: 0,
-    game_start_time_s: 0,
-    players_data: [],
-    per_player_data: {},
-    bosses: {
-      snapshots: [],
-      health_timeline: [],
-    },
-  },
-};
+import {
+  defaultMatchAnalysis,
+  GameAnalysisResponse,
+  WORLD_BOUNDS,
+} from "../../types/MatchAnalysis";
 
 const MINIMAP_SIZE = 768;
 // FIXME: Use this value once we're confident in how our map
