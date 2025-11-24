@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import logging
+from app.utils.logger import LoggerManager
 # from app.api import auth, internal
 # Only need the line below for now. Uncomment the line above
 # when we implement internal API endpoints.
 from app.api import auth, account, match, users, replay, session
 
 app = FastAPI()
-logging.basicConfig(level=logging.INFO)
+# Initialize logger manager (singleton)
+LoggerManager()
 
 # Configure CORS to work w/ React frontend
 origins = ["http://localhost:3000"]

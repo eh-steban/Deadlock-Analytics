@@ -1,4 +1,3 @@
-import logging
 from typing import Annotated
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,12 +6,13 @@ from app.config import Settings, get_settings
 from app.infra.db.session import get_db_session
 from app.infra.db.models import User
 from app.services.user_service import UserService
+from app.utils.logger import get_logger
 
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 DbSessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 @router.get("/current_user/{jwt}")
 async def current_user(jwt: str, settings: SettingsDep, session: DbSessionDep) -> User:

@@ -1,9 +1,9 @@
-import logging
 import base64
 from fastapi import APIRouter, HTTPException
 from app.services.deadlock_api_service import DeadlockAPIService
+from app.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 router = APIRouter()
 
 @router.get("/match_replay_url/{match_id}")

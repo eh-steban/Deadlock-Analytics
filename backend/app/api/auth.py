@@ -1,5 +1,4 @@
 import re
-import logging
 from fastapi import APIRouter, Request, HTTPException, Depends
 from fastapi.responses import RedirectResponse, JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,12 +8,13 @@ from app.services.auth.manage_jwt_token import create_access_token
 from app.services.user_service import UserService
 from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
+from app.utils.logger import get_logger
 
 router = APIRouter()
 
 STEAM_OPENID_ENDPOINT = "https://steamcommunity.com/openid"
 STEAM_OPENID_IDENTITY_PATTERN = r".*\/(?P<steam_id>[^/]+)$"
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 SettingsDep = Annotated[Settings, Depends(get_settings)]

@@ -2,7 +2,7 @@ import base64
 import gzip
 import httpx
 import json
-import logging
+import sys
 from typing import Annotated
 from fastapi import (
     APIRouter,
@@ -31,6 +31,7 @@ from app.domain.match_analysis import (
 from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
 from app.utils.http_cache import compute_etag, check_if_not_modified
+from app.utils.logger import get_logger
 from app.domain.exceptions import (
     DeadlockAPIError,
     MatchDataUnavailableException,
@@ -39,7 +40,7 @@ from app.domain.exceptions import (
 )
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 SettingsDep = Annotated[Settings, Depends(get_settings)]
@@ -100,6 +101,9 @@ async def get_match_analysis(
                     )
                     parsed_resp.raise_for_status()
 
+                    raw_response_size = len(parsed_resp.content)
+                    logger.info(f"Match {match_id} - Raw parser response size: {raw_response_size:,} bytes ({raw_response_size / 1024:.2f} KB, {raw_response_size / (1024 * 1024):.2f} MB)")
+
                     parsed_json_resp = parsed_resp.json()
                     players_list = (
                         [PlayerData(**p) for p in parsed_json_resp.get("players", [])]
@@ -116,10 +120,29 @@ async def get_match_analysis(
                         positions=Positions(parsed_json_resp.get("positions", [])),
                         bosses=BossData(**parsed_json_resp.get("bosses", {}))
                     )
+
+                    # Measure compressed parsed_game size
+                    compressed_parsed_game = gzip.compress(parsed_game.model_dump_json().encode("utf-8"))
+                    compressed_size = len(compressed_parsed_game)
+                    logger.info(f"Match {match_id} - Compressed parsed_game size: {compressed_size:,} bytes ({compressed_size / 1024:.2f} KB, {compressed_size / (1024 * 1024):.2f} MB)")
+
                     # player_list, npc_list = await PlayerService().map_player_data(
                     #     game_data.players, players_list
                     # )
                     game_data = TransformService.to_game_data(parsed_game)
+
+                    # Measure game_data size
+                    game_data_json = json.dumps(game_data.model_dump())
+                    game_data_size = len(game_data_json.encode("utf-8"))
+                    game_data_memory = sys.getsizeof(game_data)
+                    logger.info(f"Match {match_id} - game_data JSON size: {game_data_size:,} bytes ({game_data_size / 1024:.2f} KB, {game_data_size / (1024 * 1024):.2f} MB)")
+                    logger.info(f"Match {match_id} - game_data in-memory size: {game_data_memory:,} bytes ({game_data_memory / 1024:.2f} KB, {game_data_memory / (1024 * 1024):.2f} MB)")
+
+                    # Log compression ratio
+                    uncompressed_size = len(parsed_game.model_dump_json().encode("utf-8"))
+                    compression_ratio = (1 - compressed_size / uncompressed_size) * 100
+                    logger.info(f"Match {match_id} - Compression ratio: {compression_ratio:.1f}% (uncompressed: {uncompressed_size:,} bytes, {uncompressed_size / 1024:.2f} KB, {uncompressed_size / (1024 * 1024):.2f} MB)")
+
                 except httpx.HTTPStatusError as e:
                     raise HTTPException(
                         status_code=e.response.status_code,
@@ -183,9 +206,18 @@ async def get_match_analysis(
         parsed_game_data=game_data,
     )
 
+    response_content = json.dumps(analysis.model_dump())
     response = Response(
-        content=json.dumps(analysis.model_dump()), media_type="application/json"
+        content=response_content, media_type="application/json"
     )
     response.headers["ETag"] = etag
     response.headers["Cache-Control"] = "public, max-age=300"
+
+    response_size = len(response_content.encode('utf-8'))
+    game_time_minutes = analysis.parsed_game_data.total_game_time_s / 60
+    logger.info(
+        f"Match analysis for match_id={match_id} served with ETag={etag}. "
+        f"Game time={game_time_minutes:.2f} minutes ({analysis.parsed_game_data.total_game_time_s}s). "
+        f"Response size={response_size:,} bytes ({response_size / 1024:.2f} KB, {response_size / (1024 * 1024):.2f} MB)"
+    )
     return response

@@ -1,12 +1,12 @@
-import logging
 import textwrap
 from httpx import AsyncClient, Response, Timeout
 from app.config import get_settings
 from app.domain.deadlock_api import MatchMetadata, MatchSummary
 from app.domain.exceptions import DeadlockAPIError
+from app.utils.logger import get_logger
 
 settings = get_settings()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 class DeadlockAPIClient:
     def __init__(self):
         self.api_key = settings.DEADLOCK_API_KEY

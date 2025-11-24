@@ -1,4 +1,3 @@
-import logging
 from typing import Annotated, Optional
 from fastapi.params import Depends
 from sqlmodel import select
@@ -12,8 +11,9 @@ from app.domain.exceptions import (
     MatchParseException,
     MatchDataIntegrityException,
 )
+from app.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class ParsedMatchesRepo:
     async_session: Annotated[AsyncSession, Depends(get_db_session)]

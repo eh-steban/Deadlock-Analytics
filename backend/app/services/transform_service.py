@@ -1,11 +1,11 @@
-import logging
 from app.domain.match_analysis import (
     ParsedGameResponse,
     PlayerGameData,
     TransformedGameData,
 )
+from app.utils.logger import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class TransformService:
     @staticmethod

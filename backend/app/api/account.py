@@ -1,14 +1,14 @@
 import httpx
-import logging
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.domain.deadlock_api import MatchSummary
 from app.domain.steam_account import SteamPlayer
 from app.config import get_settings, Settings
+from app.utils.logger import get_logger
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 
 @router.get("/match_history/{steam_id}", response_model=list[MatchSummary])
