@@ -146,11 +146,11 @@ impl BossTracker {
         }
 
         let position = get_entity_position(entity);
-        let team = entity.get_value(&TEAM_KEY).unwrap();
-        let lane = entity.get_value(&self.lane_key).unwrap();
-        let health = entity.get_value::<i32>(&self.health_key).unwrap();
-        let max_health = entity.get_value::<i32>(&self.max_health_key).unwrap();
-        let life_state = entity.get_value::<i32>(&self.life_state_key).unwrap();
+        let team = entity.get_value(&TEAM_KEY).unwrap_or(0);
+        let lane = entity.get_value(&self.lane_key).unwrap_or(0);
+        let health = entity.get_value::<i32>(&self.health_key).unwrap_or(0);
+        let max_health = entity.get_value::<i32>(&self.max_health_key).unwrap_or(0);
+        let life_state = entity.get_value::<i32>(&self.life_state_key).unwrap_or(0);
 
         // println!("lane: {}", lane);
         // panic!("debug panic to inspect state");
