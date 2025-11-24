@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from app.utils.logger import LoggerManager
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 # from app.api import auth, internal
 # Only need the line below for now. Uncomment the line above
 # when we implement internal API endpoints.
@@ -21,6 +22,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=500, compresslevel=9)
 
 # Mount routers
 # app.include_router(internal.router, prefix="/internal", tags=["Internal"])
