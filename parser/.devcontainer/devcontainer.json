@@ -38,6 +38,7 @@
 		"vscode": {
 			"extensions": [
 				"rust-lang.rust-analyzer",
+				"Anthropic.claude-code"
 			]
 		}
 	},
