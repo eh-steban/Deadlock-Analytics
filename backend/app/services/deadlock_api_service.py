@@ -1,7 +1,9 @@
+from app.utils.logger import get_logger
 from app.infra.deadlock_api.deadlock_api_client import DeadlockAPIClient
 from app.domain.deadlock_api import MatchMetadata, MatchSummary
 
 api_client = DeadlockAPIClient()
+logger = get_logger(__name__)
 
 class DeadlockAPIService:
     async def get_account_match_history_for(self, account_id: str) -> list[MatchSummary]:
@@ -12,6 +14,7 @@ class DeadlockAPIService:
 
     async def get_demo_url(self, match_id: int) -> dict[str, str]:
         salts_response = await self.get_salts(match_id)
+        logger.debug(f"salts_response: ${salts_response}")
         return {"demo_url": salts_response["demo_url"]}
 
     # DLAPIService#fetch_salts returns a response that looks like:

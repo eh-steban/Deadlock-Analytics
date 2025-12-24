@@ -84,6 +84,7 @@ async def get_match_analysis(
             demo = await deadlock_api_service.get_demo_url(match_id)
             replay_url = demo.get("demo_url")
             if not replay_url:
+                logger.debug(f"Replay url for match ID ({match_id}) not found.")
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail="Replay URL not found for the match",
@@ -178,7 +179,12 @@ async def get_match_analysis(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Database error while fetching parsed payload",
         )
-    except DeadlockAPIError:
+    except DeadlockAPIError as dl_api_err:
+        logger.exception(
+            "Deadlock API error occurred for match_id=%s. Error: %s",
+            match_id,
+            dl_api_err,
+        )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Deadlock API error occurred. Check logs for details.",
