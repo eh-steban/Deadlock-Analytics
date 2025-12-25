@@ -3,7 +3,6 @@ import Grid from "./Grid";
 import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
 import RegionsMapping from "./RegionsMapping";
-import GameTimeViewer from "./GameTimeViewer";
 import PlayerPositions from "./PlayerPositions";
 import { Region } from "../../types/Region";
 import { ScaledPlayerCoord, PlayerData } from "../../types/Player";
@@ -24,6 +23,8 @@ const Minimap = ({
   regions,
   scaledPlayerCoords,
   players,
+  startRepeat,
+  stopRepeat,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
@@ -36,11 +37,9 @@ const Minimap = ({
   regions: Region[];
   scaledPlayerCoords: ScaledPlayerCoord[];
   players: PlayerData[];
+  startRepeat: (direction: "back" | "forward") => void;
+  stopRepeat: () => void;
 }) => {
-  // FIXME: NodeJS Timeout is used here for the repeat functionality, which is not ideal for React.
-  // This is just testing out the PoC so it will be replaced with a more React-friendly solution later.
-  const repeatRef = useRef<NodeJS.Timeout | null>(null);
-  const repeatDirection = useRef<"back" | "forward" | null>(null);
   const mapRef = useRef<HTMLImageElement>(null);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(
     null
@@ -52,30 +51,6 @@ const Minimap = ({
 
   const handleRegionToggle = (label: string) => {
     setVisibleRegions((v) => ({ ...v, [label]: !v[label] }));
-  };
-
-  const startRepeat = (direction: "back" | "forward") => {
-    if (repeatRef.current) return;
-    repeatDirection.current = direction;
-    repeatRef.current = setInterval(() => {
-      setCurrentTick((t) => {
-        if (direction === "back") {
-          if (t <= 0) return 0;
-          return t - 1;
-        } else {
-          if (t >= total_game_time_s) return total_game_time_s;
-          return t + 1;
-        }
-      });
-    }, 80);
-  };
-
-  const stopRepeat = () => {
-    if (repeatRef.current) {
-      clearInterval(repeatRef.current);
-      repeatRef.current = null;
-      repeatDirection.current = null;
-    }
   };
 
   useEffect(() => {
@@ -125,13 +100,6 @@ const Minimap = ({
           />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>
-          <GameTimeViewer
-            currentTick={currentTick}
-            setCurrentTick={setCurrentTick}
-            total_game_time_s={total_game_time_s}
-            startRepeat={startRepeat}
-            stopRepeat={stopRepeat}
-          />
           <RegionToggle
             regions={regions}
             visibleRegions={visibleRegions}

@@ -4,6 +4,7 @@ import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
 import TeamDisplay from "./TeamDisplay";
+import GameTimeViewer from "./GameTimeViewer";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
@@ -68,6 +69,31 @@ const MatchAnalysis = () => {
 
   const [currentTick, setCurrentTick] = useState<number>(0);
   const matchTime = formatSecondstoMMSS(currentTick);
+
+  // Timeline repeat functionality (for hold-to-scrub)
+  const repeatRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startRepeat = (direction: "back" | "forward") => {
+    if (repeatRef.current) return;
+    repeatRef.current = setInterval(() => {
+      setCurrentTick((t) => {
+        if (direction === "back") {
+          if (t <= 0) return 0;
+          return t - 1;
+        } else {
+          if (t >= parsedGameData.total_game_time_s) return parsedGameData.total_game_time_s;
+          return t + 1;
+        }
+      });
+    }, 80);
+  };
+
+  const stopRepeat = () => {
+    if (repeatRef.current) {
+      clearInterval(repeatRef.current);
+      repeatRef.current = null;
+    }
+  };
 
   // Prepare destroyed objectives: filter out those with destroyed_time_s === 0 and sort by destroyed_time_s
   // NOTE: Unsure where the objectives with destroyed_time_s === 0 come from, but they are not useful for
@@ -165,15 +191,19 @@ const MatchAnalysis = () => {
   return (
     <>
       <TeamDisplay players={players} />
+      <div className='mx-auto flex flex-col gap-1 px-8'>
+        <h2>Match ID: {match_id}</h2>
+      </div>
+
+      <GameTimeViewer
+        currentTick={currentTick}
+        setCurrentTick={setCurrentTick}
+        total_game_time_s={parsedGameData.total_game_time_s}
+        startRepeat={startRepeat}
+        stopRepeat={stopRepeat}
+      />
 
       <div className='match-analysis'>
-        <div className='w-full bg-white/80'>
-          <div className='mx-auto flex max-w-screen-lg flex-col items-center gap-1 py-4 text-center'>
-            <h1>Match Stats</h1>
-            <h2>Match ID: {match_id}</h2>
-            <h3>Match Time: {matchTime}</h3>
-          </div>
-        </div>
         <div className='grid grid-cols-[1fr_47vw] gap-3'>
           <div
             title='InformationPanel'
@@ -203,6 +233,8 @@ const MatchAnalysis = () => {
             destroyedObjectivesSorted={destroyedObjectivesSorted}
             setCurrentObjectiveIndex={setCurrentObjectiveIndex}
             regions={regions}
+            startRepeat={startRepeat}
+            stopRepeat={stopRepeat}
           />
         </div>
       </div>
