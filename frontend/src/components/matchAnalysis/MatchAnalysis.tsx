@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
+import TeamDisplay from "./TeamDisplay";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
@@ -163,6 +164,8 @@ const MatchAnalysis = () => {
 
   return (
     <>
+      <TeamDisplay players={players} />
+
       <div className='match-analysis'>
         <div className='w-full bg-white/80'>
           <div className='mx-auto flex max-w-screen-lg flex-col items-center gap-1 py-4 text-center'>

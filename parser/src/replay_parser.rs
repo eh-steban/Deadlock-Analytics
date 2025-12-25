@@ -59,8 +59,8 @@ struct Player {
     hero_id: u32,
     lobby_player_slot: u32,
     team: u32,
-    lane: u32,
-    zipline_lane_color: u32,
+    lane: i32,
+    zipline_lane_color: i32,
 }
 
 #[derive(Default, Debug, Serialize)]
@@ -277,6 +277,7 @@ struct MyVisitor {
     positions_window: Vec<PlayerPosition>,
     positions: Vec<Vec<PlayerPosition>>,
     boss_tracker: BossTracker,
+    lane_data_updated: bool,
 }
 
 impl Default for MyVisitor {
@@ -291,6 +292,7 @@ impl Default for MyVisitor {
             positions_window: Vec::new(),
             positions: Vec::new(),
             boss_tracker: BossTracker::new(),
+            lane_data_updated: false,
         }
     }
 }
@@ -303,6 +305,7 @@ const CONTROLLER_HANDLE_KEY: u64 = entities::fkey_from_path(&["m_hPawn"]);
 const TEAM_KEY: u64 = entities::fkey_from_path(&["m_iTeamNum"]);
 const ORIGINAL_LANE_ASSIGNMENT_KEY: u64 = entities::fkey_from_path(&["m_nOriginalLaneAssignment"]);
 const ASSIGNED_LANE_KEY: u64 = entities::fkey_from_path(&["m_nAssignedLane"]);
+const LANE_SWAP_LOCKED_KEY: u64 = entities::fkey_from_path(&["m_bLaneSwapLocked"]);
 const HERO_ID_KEY: u64 = entities::fkey_from_path(&["m_nHeroID"]);
 const LOBBY_PLAYER_SLOT_KEY: u64 = entities::fkey_from_path(&["m_unLobbyPlayerSlot"]);
 const ZIPLINE_LANE_COLOR_KEY: u64 = entities::fkey_from_path(&["m_eZipLineLaneColor"]);
@@ -404,6 +407,43 @@ impl MyVisitor {
         })
     }
 
+    fn check_and_update_lane_lock(&mut self, entity: &Entity) -> Result<()> {
+        if entity.serializer().serializer_name.str.as_ref() != "CCitadelPlayerController" {
+            return Ok(());
+        }
+
+        let is_locked: bool = entity.get_value(&LANE_SWAP_LOCKED_KEY).unwrap_or(false);
+        if !is_locked {
+            return Ok(());
+        }
+
+        // Player is lane swap locked. Update `player.lane`
+        let lobby_slot: u32 = entity.get_value(&LOBBY_PLAYER_SLOT_KEY).unwrap_or(9999);
+        for player in &mut self.players {
+            if player.lobby_player_slot == lobby_slot {
+                // Prefer m_nAssignedLane (final lane after swaps)
+                player.lane = entity
+                    .get_value(&ASSIGNED_LANE_KEY)
+                    .filter(|&v| v != 0)
+                    .or_else(|| entity.get_value(&ORIGINAL_LANE_ASSIGNMENT_KEY))
+                    .unwrap_or(999999);
+
+                // TODO: Future enhancement - store original_lane_assignment for lane swap tracking
+                // player.original_lane = entity.get_value(&ORIGINAL_LANE_ASSIGNMENT_KEY).unwrap_or(0);
+
+                break;
+            }
+        }
+
+        // Check if all players have lane data now (all 12 should not be 999999)
+        let all_lanes_set = self.players.iter().all(|p| p.lane != 999999);
+        if all_lanes_set {
+            self.lane_data_updated = true;
+        }
+
+        Ok(())
+    }
+
     fn should_track_position(&self, entity: &Entity) -> bool {
         matches!(
             entity.serializer().serializer_name.hash,
@@ -473,13 +513,7 @@ impl MyVisitor {
                         hero_id: owner_entity.get_value(&HERO_ID_KEY).unwrap_or(999999),
                         lobby_player_slot: lobby_player_slot,
                         team: owner_entity.get_value(&TEAM_KEY).unwrap_or(999999),
-                        // FIXME: The next 2 fields need to be updated further into the game. Currently returns 999999
-                        // Unsure which time window but I'd guess around 30 - 45 seconds into the game it updates.
-                        lane: owner_entity
-                            .get_value(&ASSIGNED_LANE_KEY)
-                            .filter(|&v| v != 0)
-                            .or_else(|| owner_entity.get_value(&ORIGINAL_LANE_ASSIGNMENT_KEY))
-                            .unwrap_or(999999),
+                        lane: 999999,
                         zipline_lane_color: owner_entity.get_value(&ZIPLINE_LANE_COLOR_KEY).unwrap_or(999999),
                     });
 
@@ -604,6 +638,12 @@ impl Visitor for &mut MyVisitor {
             }
             DeltaHeader::DELETE => {
                 self.boss_tracker.handle_boss_delete(entity, self.total_game_time_s);
+            }
+            DeltaHeader::UPDATE => {
+                // At a certain point in the game, you "can't" swap lanes and are locked in
+                if self.lane_data_updated == false {
+                    self.check_and_update_lane_lock(entity)?;
+                }
             }
             _ => {}
         }
