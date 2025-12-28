@@ -6,13 +6,11 @@ interface TeamDisplayProps {
 }
 
 const TeamDisplay: React.FC<TeamDisplayProps> = ({ players }) => {
-  // Team colors (circle backgrounds)
   const teamColors = {
     2: '#FF8C00', // Amber (Dark Orange)
     3: '#4169E1', // Sapphire (Royal Blue)
   };
 
-  // Lane colors (rectangle backgrounds)
   const laneColors: Record<number, string> = {
     1: 'bg-yellow-500',
     4: 'bg-blue-500',
@@ -24,15 +22,15 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ players }) => {
   const amberPlayers = players
     .filter(p => p.team === 2)
     .sort((a, b) => {
-      // Sort by lane: 1, 2, 4 (0 last for fallback)
-      const laneOrder = [1, 2, 4, 0];
+      // Sort by lane: 1, 4, 6 (0 last for fallback)
+      const laneOrder = [1, 4, 6, 0];
       return laneOrder.indexOf(a.lane) - laneOrder.indexOf(b.lane);
     });
 
   const sapphirePlayers = players
     .filter(p => p.team === 3)
     .sort((a, b) => {
-      const laneOrder = [1, 2, 4, 0];
+      const laneOrder = [1, 4, 6, 0];
       return laneOrder.indexOf(a.lane) - laneOrder.indexOf(b.lane);
     });
 
@@ -43,19 +41,11 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ players }) => {
     return (
       <div
         key={player.custom_id}
-        className={`${laneColor} flex items-center justify-center`}
-        style={{
-          width: '78px',   // 64px circle + ~14px padding
-          height: '94px',  // 64px circle + ~30px padding
-        }}
+        className={`${laneColor} w-20 h-28 mr-1 rounded-md flex items-start justify-center pt-2`}
       >
         <div
-          className="rounded-full overflow-hidden flex items-center justify-center"
-          style={{
-            width: '64px',
-            height: '64px',
-            backgroundColor: teamColor,
-          }}
+          className="rounded-full overflow-hidden flex size-17 justify-center"
+          style={{ backgroundColor: teamColor }}
         >
           <img
             src={player.hero.heroCardWebp || player.hero.minimapImage}
