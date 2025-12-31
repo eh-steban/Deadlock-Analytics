@@ -4,8 +4,8 @@ import Minimap from "./Minimap";
 import PlayerCards from "./PlayerCards";
 import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
 import TeamDisplay from "./TeamDisplay";
-import LaneSelector from "./LaneSelector";
 import GameTimeViewer from "./GameTimeViewer";
+import LaneAnalysis from "./LaneAnalysis";
 import { regions } from "../../data/regions";
 import { DestroyedObjective } from "../../types/DestroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
@@ -70,9 +70,6 @@ const MatchAnalysis = () => {
 
   const [currentTick, setCurrentTick] = useState<number>(0);
   const matchTime = formatSecondstoMMSS(currentTick);
-
-  // Lane selection state (null = All Lanes, 1/4/6 = specific lane)
-  const [selectedLane, setSelectedLane] = useState<number | null>(null);
 
   // Timeline repeat functionality (for hold-to-scrub)
   const repeatRef = useRef<NodeJS.Timeout | null>(null);
@@ -199,9 +196,11 @@ const MatchAnalysis = () => {
         <h2>Match ID: {match_id}</h2>
       </div>
 
-      <LaneSelector
-        selectedLane={selectedLane}
-        onLaneChange={setSelectedLane}
+      <LaneAnalysis
+        players={players}
+        perPlayerData={perPlayerData}
+        currentTick={currentTick}
+        totalGameTime={parsedGameData.total_game_time_s}
       />
 
       <GameTimeViewer

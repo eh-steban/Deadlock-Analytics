@@ -12,8 +12,8 @@ const LaneSelector: React.FC<LaneSelectorProps> = ({ selectedLane, onLaneChange 
   };
 
   return (
-    <div className="flex justify-center w-full py-4 md:py-6">
-      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white rounded-lg shadow-md p-4">
+    <div className="flex justify-center w-full">
+      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white rounded-lg shadow-md">
         <select
           value={selectedLane === null ? '' : selectedLane}
           onChange={handleChange}
