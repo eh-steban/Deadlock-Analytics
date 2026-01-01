@@ -3,6 +3,7 @@ import { ParsedPlayer, PlayerGameData } from '../../types/Player';
 import LaneSelector from './LaneSelector';
 import SankeyDiagram from './SankeyDiagram';
 
+// FIXME: This needs to be moved to types
 interface LaneAnalysisProps {
   players: ParsedPlayer[];
   perPlayerData: Record<string, PlayerGameData>;

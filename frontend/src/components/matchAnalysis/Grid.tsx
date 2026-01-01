@@ -1,5 +1,6 @@
 import React from 'react';
 
+// FIXME: This needs to be moved to types
 interface GridProps {
   MINIMAP_SIZE: number;
 }

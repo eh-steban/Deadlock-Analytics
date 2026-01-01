@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
 
+// FIXME: This needs to be moved to types
 interface User {
   steamid: string;
   communityvisibilitystate: number;

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Sankey, Tooltip, ResponsiveContainer, Rectangle, Layer } from 'recharts';
 import { ParsedPlayer, PlayerGameData } from '../../types/Player';
 
+// FIXME: This needs to be moved to domain models
 interface SankeyDiagramProps {
   selectedLane: number;
   players: ParsedPlayer[];
