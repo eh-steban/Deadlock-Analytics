@@ -1,30 +1,13 @@
 import React, { useMemo } from 'react';
 import { Sankey, Tooltip, ResponsiveContainer, Rectangle, Layer } from 'recharts';
-import { ParsedPlayer, PlayerGameData } from '../../types/Player';
+import { SankeyData, SankeyNode, SankeyLink } from '../../types/LaneAnalysis';
+import { ParsedPlayer, PlayerGameData } from "../../types/Player";
 
-// FIXME: This needs to be moved to domain models
 interface SankeyDiagramProps {
   selectedLane: number;
   players: ParsedPlayer[];
   perPlayerData: Record<string, PlayerGameData>;
   laningPhaseEndTick: number;
-}
-
-interface SankeyNode {
-  name: string;
-  heroImage: string;
-  fill?: string;
-}
-
-interface SankeyLink {
-  source: number;
-  target: number;
-  value: number;
-}
-
-interface SankeyData {
-  nodes: SankeyNode[];
-  links: SankeyLink[];
 }
 
 function entityNode({ x, y, width, height, index, payload }: any) {

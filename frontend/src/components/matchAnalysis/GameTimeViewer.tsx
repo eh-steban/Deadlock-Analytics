@@ -1,7 +1,6 @@
 import React from "react";
 import { formatSecondstoMMSS } from "../../utils/time";
 
-// FIXME: This needs to be moved to types
 interface GameTimeViewerProps {
   currentTick: number;
   setCurrentTick: (time: number | ((t: number) => number)) => void;

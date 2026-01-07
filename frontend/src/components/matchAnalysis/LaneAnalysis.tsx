@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ParsedPlayer, PlayerGameData } from '../../types/Player';
+import { NPCDamageStats } from '../../types/LaneAnalysis';
+import { ParsedPlayer, PlayerGameData } from "../../types/Player";
 import LaneSelector from './LaneSelector';
 import SankeyDiagram from './SankeyDiagram';
 
-// FIXME: This needs to be moved to types
 interface LaneAnalysisProps {
   players: ParsedPlayer[];
   perPlayerData: Record<string, PlayerGameData>;
@@ -11,20 +11,9 @@ interface LaneAnalysisProps {
   totalGameTime: number;
 }
 
-interface NPCDamageStats {
-  playerId: string;
-  playerName: string;
-  team: number;
-  heroName: string;
-  laneCreeps: number;
-  neutrals: number;
-  guardian: number;
-}
-
 const LaneAnalysis: React.FC<LaneAnalysisProps> = ({
   players,
   perPlayerData,
-  currentTick,
   totalGameTime,
 }) => {
   const [selectedLane, setSelectedLane] = useState<number | null>(null);

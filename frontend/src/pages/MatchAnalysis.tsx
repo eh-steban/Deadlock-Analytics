@@ -1,23 +1,23 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
-import Minimap from "./Minimap";
-import PlayerCards from "./PlayerCards";
-import ObjectiveInfoPanel from "./ObjectiveInfoPanel";
-import TeamDisplay from "./TeamDisplay";
-import GameTimeViewer from "./GameTimeViewer";
-import LaneAnalysis from "./LaneAnalysis";
-import { regions } from "../../data/regions";
-import { DestroyedObjective } from "../../types/DestroyedObjective";
-import { Hero, PlayerData, ScaledPlayerCoord } from "../../types/Player";
-import { ScaledBossSnapshot } from "../../types/Boss";
-import { useMatchAnalysis } from "../../hooks/UseMatchAnalysis";
-import PrintHeroImageData from "./PrintHeroImageData";
-import { formatSecondstoMMSS } from "../../utils/time";
+import Minimap from "../components/matchAnalysis/Minimap";
+import PlayerCards from "../components/matchAnalysis/PlayerCards";
+import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
+import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
+import GameTimeViewer from "../components/matchAnalysis/GameTimeViewer";
+import LaneAnalysis from "../components/matchAnalysis/LaneAnalysis";
+import { regions } from "../data/regions";
+import { DestroyedObjective } from "../types/DestroyedObjective";
+import { Hero, PlayerData, ScaledPlayerCoord } from "../types/Player";
+import { ScaledBossSnapshot } from "../types/Boss";
+import { useGameAnalysis } from "../hooks/UseMatchAnalysis";
+import PrintHeroImageData from "../components/matchAnalysis/PrintHeroImageData";
+import { formatSecondstoMMSS } from "../utils/time";
 import {
   defaultMatchAnalysis,
   GameAnalysisResponse,
   WORLD_BOUNDS,
-} from "../../types/MatchAnalysis";
+} from "../types/MatchAnalysis";
 
 const MINIMAP_SIZE = 768;
 // FIXME: Use this value once we're confident in how our map
@@ -51,7 +51,7 @@ const worldToMinimapPixels = (x: number, y: number) => {
 const MatchAnalysis = () => {
   const { match_id } = useParams();
   // Fetch match analysis via ETag-aware hook
-  const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
+  const { data: matchAnalysisData } = useGameAnalysis(Number(match_id));
   const matchAnalysis: GameAnalysisResponse =
     matchAnalysisData ?? defaultMatchAnalysis;
   // FIXME: matchMetadata is Deadlock API stuff that we'll likely get rid of later

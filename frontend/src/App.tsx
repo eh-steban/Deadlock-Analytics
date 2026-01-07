@@ -3,7 +3,7 @@ import "./App.css";
 import Login from "./components/login/Login";
 import ProfilePage from "./components/profile/ProfilePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MatchAnalysis from "./components/matchAnalysis/MatchAnalysis";
+import MatchAnalysis from "./pages/MatchAnalysis";
 import Images from "./pages/Images";
 
 const App: React.FC = () => {

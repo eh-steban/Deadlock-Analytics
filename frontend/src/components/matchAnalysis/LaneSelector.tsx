@@ -1,6 +1,5 @@
 import React from 'react';
 
-// FIXME: This needs to be moved to domain models
 interface LaneSelectorProps {
   selectedLane: number | null;
   onLaneChange: (lane: number | null) => void;
