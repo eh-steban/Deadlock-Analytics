@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Sankey, Tooltip, ResponsiveContainer, Rectangle, Layer } from 'recharts';
 import { SankeyData, SankeyNode, SankeyLink } from '../../types/LaneAnalysis';
-import { ParsedPlayer, PlayerGameData } from "../../types/Player";
+import { ParsedPlayer, PlayerMatchData } from "../../types/Player";
 
 interface SankeyDiagramProps {
   selectedLane: number;
   players: ParsedPlayer[];
-  perPlayerData: Record<string, PlayerGameData>;
+  perPlayerData: Record<string, PlayerMatchData>;
   laningPhaseEndTick: number;
 }
 
@@ -110,12 +110,12 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
       const attackerNodeIdx = getPlayerNodeIndex(player.custom_id);
       if (attackerNodeIdx === -1) return;
 
-      const playerGameData = perPlayerData[player.custom_id];
-      if (!playerGameData || !playerGameData.damage) return;
+      const playerMatchData = perPlayerData[player.custom_id];
+      if (!playerMatchData || !playerMatchData.damage) return;
 
       // Aggregate damage from tick 0 to laningPhaseEndTick
-      for (let tick = 0; tick <= laningPhaseEndTick && tick < playerGameData.damage.length; tick++) {
-        const tickDamage = playerGameData.damage[tick];
+      for (let tick = 0; tick <= laningPhaseEndTick && tick < playerMatchData.damage.length; tick++) {
+        const tickDamage = playerMatchData.damage[tick];
         if (!tickDamage) continue;
 
         // Iterate through victims

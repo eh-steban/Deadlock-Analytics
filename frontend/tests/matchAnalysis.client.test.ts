@@ -20,14 +20,14 @@ type DamageWindow = {
 
 type DamagePerTick = DamageWindow[];
 
-type ParsedGameData = {
+type ParsedMatchData = {
   damage_per_tick: DamagePerTick;
   players: AnyObject[];
 };
 
 type MatchAnalysisResponse = {
   match_metadata: AnyObject;
-  parsed_game_data: ParsedGameData;
+  parsed_match_data: ParsedMatchData;
   players: AnyObject[];
   npcs: AnyObject[];
 };
@@ -36,7 +36,7 @@ const baseUrl = `http://${process.env.REACT_APP_BACKEND_DOMAIN}`;
 
 const sample: MatchAnalysisResponse = {
   match_metadata: {},
-  parsed_game_data: { players: [], damage_per_tick: [] },
+  parsed_match_data: { players: [], damage_per_tick: [] },
   players: [],
   npcs: [],
 };

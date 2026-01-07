@@ -1,4 +1,4 @@
-"""create parsed game payload
+"""create parsed match payload
 
 Revision ID: a5efbb84a293
 Revises: 8cfb023f5d33
@@ -19,14 +19,14 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade():
     op.create_table(
-        "parsedgame",
-        sa.Column("game_id", sa.Integer(), primary_key=True, nullable=False),
+        "parsedmatch",
+        sa.Column("match_id", sa.Integer(), primary_key=True, nullable=False),
         sa.Column(
             "schema_version", sa.Integer(), nullable=False, server_default=sa.text("1")
         ),
         sa.Column("raw_payload_gzip", postgresql.BYTEA(), nullable=False),
         sa.Column(
-            "game_data", postgresql.JSONB(astext_type=sa.Text()), nullable=False
+            "match_data", postgresql.JSONB(astext_type=sa.Text()), nullable=False
         ),
         sa.Column("etag", sa.String(length=64), nullable=False),
         sa.Column(
@@ -42,9 +42,9 @@ def upgrade():
             server_default=sa.text("now()"),
         ),
         sa.UniqueConstraint(
-            "game_id", "schema_version", name="uq_game_id_schema_version"
+            "match_id", "schema_version", name="uq_match_id_schema_version"
         ),
     )
 
 def downgrade():
-    op.drop_table("parsedgame")
+    op.drop_table("parsedmatch")

@@ -67,6 +67,6 @@ PositionWindow = list[Optional[PlayerPosition]]
 Positions = list[PositionWindow]
 
 # TODO: Need to include Health, Combat Type, and Move Type
-class PlayerGameData(SQLModel):
+class PlayerMatchData(SQLModel):
     positions: PositionWindow
     damage: Damage

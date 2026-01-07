@@ -1,21 +1,21 @@
 import { MatchMetadata } from "./MatchMetadata";
-import { ParsedPlayer, PlayerGameData } from "./Player";
+import { ParsedPlayer, PlayerMatchData } from "./Player";
 import { BossData } from "./Boss";
 
-// Parsed game data (aggregated by player, per backend ParsedGameData)
-export interface ParsedGameData {
-  total_game_time_s: number;
-  game_start_time_s: number;
+// Parsed match data (aggregated by player, per backend ParsedMatchData)
+export interface ParsedMatchData {
+  total_match_time_s: number;
+  match_start_time_s: number;
   players_data: ParsedPlayer[];
-  per_player_data: Record<string, PlayerGameData>; // key = player_id
+  per_player_data: Record<string, PlayerMatchData>; // key = player_id
   bosses: BossData;
 }
 
-// Full match anal\ysis response (backend MatchAnalysis)
+// Full match analysis response (backend MatchAnalysis)
 // Note: npc keys are strings (backend returns dict[str, NPC])
-export interface GameAnalysisResponse {
+export interface MatchAnalysisResponse {
   match_metadata: MatchMetadata;
-  parsed_game_data: ParsedGameData;
+  parsed_match_data: ParsedMatchData;
 }
 
 // *****NOTE******
@@ -35,9 +35,7 @@ export const WORLD_BOUNDS = Object.freeze({
   yMax: MINIMAP_MAX,
 } as const);
 
-export const defaultMatchAnalysis: GameAnalysisResponse = {
-  // NOTE: match references here are because it's coming from the Deadlock API.
-  // Parsed game data refers to these as "games"
+export const defaultMatchAnalysis: MatchAnalysisResponse = {
   match_metadata: {
     match_info: {
       duration_s: 0,
@@ -72,9 +70,9 @@ export const defaultMatchAnalysis: GameAnalysisResponse = {
       game_mode_version: 0,
     },
   },
-  parsed_game_data: {
-    total_game_time_s: 0,
-    game_start_time_s: 0,
+  parsed_match_data: {
+    total_match_time_s: 0,
+    match_start_time_s: 0,
     players_data: [],
     per_player_data: {},
     bosses: {

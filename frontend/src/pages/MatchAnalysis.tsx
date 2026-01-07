@@ -4,18 +4,18 @@ import Minimap from "../components/matchAnalysis/Minimap";
 import PlayerCards from "../components/matchAnalysis/PlayerCards";
 import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
 import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
-import GameTimeViewer from "../components/matchAnalysis/GameTimeViewer";
+import MatchTimeViewer from "../components/matchAnalysis/MatchTimeViewer";
 import LaneAnalysis from "../components/matchAnalysis/LaneAnalysis";
 import { regions } from "../data/regions";
 import { DestroyedObjective } from "../types/DestroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../types/Player";
 import { ScaledBossSnapshot } from "../types/Boss";
-import { useGameAnalysis } from "../hooks/UseMatchAnalysis";
+import { useMatchAnalysis } from "../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "../components/matchAnalysis/PrintHeroImageData";
 import { formatSecondstoMMSS } from "../utils/time";
 import {
   defaultMatchAnalysis,
-  GameAnalysisResponse,
+  MatchAnalysisResponse,
   WORLD_BOUNDS,
 } from "../types/MatchAnalysis";
 
@@ -51,17 +51,17 @@ const worldToMinimapPixels = (x: number, y: number) => {
 const MatchAnalysis = () => {
   const { match_id } = useParams();
   // Fetch match analysis via ETag-aware hook
-  const { data: matchAnalysisData } = useGameAnalysis(Number(match_id));
-  const matchAnalysis: GameAnalysisResponse =
+  const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
+  const matchAnalysis: MatchAnalysisResponse =
     matchAnalysisData ?? defaultMatchAnalysis;
   // FIXME: matchMetadata is Deadlock API stuff that we'll likely get rid of later
   const matchMetadata = matchAnalysis.match_metadata;
-  const parsedGameData = matchAnalysis.parsed_game_data;
-  const bossSnapshots = parsedGameData.bosses.snapshots;
+  const parsedMatchData = matchAnalysis.parsed_match_data;
+  const bossSnapshots = parsedMatchData.bosses.snapshots;
   // NOTE: Contains player info
-  const playersData = parsedGameData.players_data;
+  const playersData = parsedMatchData.players_data;
   // NOTE: Contains dmg/position data per player
-  const perPlayerData = parsedGameData.per_player_data;
+  const perPlayerData = parsedMatchData.per_player_data;
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
   ]);
@@ -82,7 +82,7 @@ const MatchAnalysis = () => {
           if (t <= 0) return 0;
           return t - 1;
         } else {
-          if (t >= parsedGameData.total_game_time_s) return parsedGameData.total_game_time_s;
+          if (t >= parsedMatchData.total_match_time_s) return parsedMatchData.total_match_time_s;
           return t + 1;
         }
       });
@@ -200,13 +200,13 @@ const MatchAnalysis = () => {
         players={players}
         perPlayerData={perPlayerData}
         currentTick={currentTick}
-        totalGameTime={parsedGameData.total_game_time_s}
+        totalMatchTime={parsedMatchData.total_match_time_s}
       />
 
-      <GameTimeViewer
+      <MatchTimeViewer
         currentTick={currentTick}
         setCurrentTick={setCurrentTick}
-        total_game_time_s={parsedGameData.total_game_time_s}
+        total_match_time_s={parsedMatchData.total_match_time_s}
         startRepeat={startRepeat}
         stopRepeat={stopRepeat}
       />
@@ -226,14 +226,14 @@ const MatchAnalysis = () => {
               perPlayerData={perPlayerData}
               currentTick={currentTick}
               normalizePosition={normalizePosition}
-              gameData={matchAnalysis.parsed_game_data}
+              matchData={matchAnalysis.parsed_match_data}
             />
           </div>
           <Minimap
             currentTick={currentTick}
             setCurrentTick={setCurrentTick}
-            total_game_time_s={matchAnalysis.parsed_game_data.total_game_time_s}
-            game_start_time_s={matchAnalysis.parsed_game_data.game_start_time_s}
+            total_match_time_s={matchAnalysis.parsed_match_data.total_match_time_s}
+            match_start_time_s={matchAnalysis.parsed_match_data.match_start_time_s}
             MINIMAP_SIZE={MINIMAP_SIZE}
             scaledBossSnapshots={scaledBossSnapshots}
             scaledPlayerCoords={scaledPlayerCoords}

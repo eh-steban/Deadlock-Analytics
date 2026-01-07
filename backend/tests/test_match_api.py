@@ -5,7 +5,7 @@ import pytest_asyncio
 import httpx
 from tests.test_helper import setup_database, async_session
 from app.main import app
-from app.domain.match_analysis import ParsedGameData, DamageRecord
+from app.domain.match_analysis import ParsedMatchData, DamageRecord
 from app.domain.player import ParsedPlayer
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.config import Settings, get_settings
@@ -48,7 +48,7 @@ PER_PLAYER_DATA = {
     },
 }
 
-PARSED_GAME_DATA = ParsedGameData(**PER_PLAYER_DATA)
+PARSED_MATCH_DATA = ParsedMatchData(**PER_PLAYER_DATA)
 
 # Ensure API uses the test session/DB for all requests
 @pytest_asyncio.fixture(autouse=True)

@@ -1,23 +1,23 @@
 import React from "react";
 import { formatSecondstoMMSS } from "../../utils/time";
 
-interface GameTimeViewerProps {
+interface MatchTimeViewerProps {
   currentTick: number;
   setCurrentTick: (time: number | ((t: number) => number)) => void;
-  total_game_time_s: number;
+  total_match_time_s: number;
   startRepeat: (direction: "back" | "forward") => void;
   stopRepeat: () => void;
 }
 
-const GameTimeViewer: React.FC<GameTimeViewerProps> = ({
+const MatchTimeViewer: React.FC<MatchTimeViewerProps> = ({
   currentTick,
   setCurrentTick,
-  total_game_time_s,
+  total_match_time_s,
   startRepeat,
   stopRepeat,
 }) => {
   const currentTime = formatSecondstoMMSS(currentTick);
-  const totalTime = formatSecondstoMMSS(total_game_time_s);
+  const totalTime = formatSecondstoMMSS(total_match_time_s);
 
   return (
     <div className="flex justify-center w-full">
@@ -49,16 +49,16 @@ const GameTimeViewer: React.FC<GameTimeViewerProps> = ({
 
           <button
             onClick={() =>
-              setCurrentTick((t) => Math.min(total_game_time_s, t + 1))
+              setCurrentTick((t) => Math.min(total_match_time_s, t + 1))
             }
             onMouseDown={() => startRepeat("forward")}
             onMouseUp={stopRepeat}
             onMouseLeave={stopRepeat}
             onTouchStart={() => startRepeat("forward")}
             onTouchEnd={stopRepeat}
-            disabled={currentTick >= total_game_time_s}
+            disabled={currentTick >= total_match_time_s}
             className={`px-3 py-1 text-lg rounded border transition-colors ${
-              currentTick >= total_game_time_s
+              currentTick >= total_match_time_s
                 ? "bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed"
                 : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100 cursor-pointer shadow-sm"
             }`}
@@ -70,7 +70,7 @@ const GameTimeViewer: React.FC<GameTimeViewerProps> = ({
           <input
             type="range"
             min={0}
-            max={total_game_time_s}
+            max={total_match_time_s}
             value={currentTick}
             onChange={(e) => setCurrentTick(Number(e.target.value))}
             className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
@@ -81,4 +81,4 @@ const GameTimeViewer: React.FC<GameTimeViewerProps> = ({
   );
 };
 
-export default GameTimeViewer;
+export default MatchTimeViewer;

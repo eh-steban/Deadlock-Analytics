@@ -19,11 +19,11 @@ from app.domain.player import PlayerData
 from app.services.deadlock_api_service import DeadlockAPIService
 # from app.services.player_service import PlayerService
 from app.services.transform_service import TransformService
-from app.repo.parsed_games_repo import ParsedMatchesRepo
+from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.domain.match_analysis import (
-    GameAnalysis,
-    TransformedGameData,
-    ParsedGameResponse,
+    MatchAnalysis,
+    TransformedMatchData,
+    ParsedMatchResponse,
     ParsedAttackerVictimMap,
     Positions
 )
@@ -50,7 +50,7 @@ def get_deadlock_service() -> DeadlockAPIService:
 
 ServiceDep = Annotated[DeadlockAPIService, Depends(get_deadlock_service)]
 
-@router.get("/analysis/{match_id}", response_model=GameAnalysis)
+@router.get("/analysis/{match_id}", response_model=MatchAnalysis)
 async def get_match_analysis(
     request: Request,
     match_id: int,
@@ -62,16 +62,16 @@ async def get_match_analysis(
     schema_version = 1
     repo = ParsedMatchesRepo()
     etag = ""
-    game_data: TransformedGameData | None = None
+    match_data: TransformedMatchData | None = None
 
     try:
-        # 1. Check if we have game data cached in DB
-        game_data = await repo.get_game_data(
+        # 1. Check if we have match data cached in DB
+        match_data = await repo.get_match_data(
             match_id, schema_version, session
         )
-        if game_data:
+        if match_data:
             # 2. If we have it, compute ETag and check If-None-Match
-            etag = compute_etag(game_data.model_dump(), schema_version)
+            etag = compute_etag(match_data.model_dump(), schema_version)
             if request_etag := request.headers.get("If-None-Match"):
                 not_modified_response = check_if_not_modified(request_etag, etag)
                 if not_modified_response:
@@ -113,34 +113,34 @@ async def get_match_analysis(
                         ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})
                     ]
                     # positions =
-                    parsed_game = ParsedGameResponse(
-                        total_game_time_s=parsed_json_resp.get("total_game_time_s", 0),
-                        game_start_time_s=parsed_json_resp.get("game_start_time_s", 0),
+                    parsed_match = ParsedMatchResponse(
+                        total_match_time_s=parsed_json_resp.get("total_match_time_s", 0),
+                        match_start_time_s=parsed_json_resp.get("match_start_time_s", 0),
                         damage=parsed_damage,
                         players_data=players_list,
                         positions=Positions(parsed_json_resp.get("positions", [])),
                         bosses=BossData(**parsed_json_resp.get("bosses", {}))
                     )
 
-                    # Measure compressed parsed_game size
-                    compressed_parsed_game = gzip.compress(parsed_game.model_dump_json().encode("utf-8"))
-                    compressed_size = len(compressed_parsed_game)
-                    logger.info(f"Match {match_id} - Compressed parsed_game size: {compressed_size:,} bytes ({compressed_size / 1024:.2f} KB, {compressed_size / (1024 * 1024):.2f} MB)")
+                    # Measure compressed parsed_match size
+                    compressed_parsed_match = gzip.compress(parsed_match.model_dump_json().encode("utf-8"))
+                    compressed_size = len(compressed_parsed_match)
+                    logger.info(f"Match {match_id} - Compressed parsed_match size: {compressed_size:,} bytes ({compressed_size / 1024:.2f} KB, {compressed_size / (1024 * 1024):.2f} MB)")
 
                     # player_list, npc_list = await PlayerService().map_player_data(
-                    #     game_data.players, players_list
+                    #     match_data.players, players_list
                     # )
-                    game_data = TransformService.to_game_data(parsed_game)
+                    match_data = TransformService.to_match_data(parsed_match)
 
-                    # Measure game_data size
-                    game_data_json = json.dumps(game_data.model_dump())
-                    game_data_size = len(game_data_json.encode("utf-8"))
-                    game_data_memory = sys.getsizeof(game_data)
-                    logger.info(f"Match {match_id} - game_data JSON size: {game_data_size:,} bytes ({game_data_size / 1024:.2f} KB, {game_data_size / (1024 * 1024):.2f} MB)")
-                    logger.info(f"Match {match_id} - game_data in-memory size: {game_data_memory:,} bytes ({game_data_memory / 1024:.2f} KB, {game_data_memory / (1024 * 1024):.2f} MB)")
+                    # Measure match_data size
+                    match_data_json = json.dumps(match_data.model_dump())
+                    match_data_size = len(match_data_json.encode("utf-8"))
+                    match_data_memory = sys.getsizeof(match_data)
+                    logger.info(f"Match {match_id} - match_data JSON size: {match_data_size:,} bytes ({match_data_size / 1024:.2f} KB, {match_data_size / (1024 * 1024):.2f} MB)")
+                    logger.info(f"Match {match_id} - match_data in-memory size: {match_data_memory:,} bytes ({match_data_memory / 1024:.2f} KB, {match_data_memory / (1024 * 1024):.2f} MB)")
 
                     # Log compression ratio
-                    uncompressed_size = len(parsed_game.model_dump_json().encode("utf-8"))
+                    uncompressed_size = len(parsed_match.model_dump_json().encode("utf-8"))
                     compression_ratio = (1 - compressed_size / uncompressed_size) * 100
                     logger.info(f"Match {match_id} - Compression ratio: {compression_ratio:.1f}% (uncompressed: {uncompressed_size:,} bytes, {uncompressed_size / 1024:.2f} KB, {uncompressed_size / (1024 * 1024):.2f} MB)")
 
@@ -150,12 +150,12 @@ async def get_match_analysis(
                         detail=f"Rust service error: {e.response.status_code} - {e.response.text}",
                     )
 
-                etag = compute_etag(game_data.model_dump(), schema_version)
-                await repo.create_parsed_game(
+                etag = compute_etag(match_data.model_dump(), schema_version)
+                await repo.create_parsed_match(
                     match_id,
                     schema_version,
-                    gzip.compress(parsed_game.model_dump_json().encode("utf-8")),
-                    game_data.model_dump(),
+                    gzip.compress(parsed_match.model_dump_json().encode("utf-8")),
+                    match_data.model_dump(),
                     etag,
                     session,
                 )
@@ -207,9 +207,9 @@ async def get_match_analysis(
     # Prepare analysis
     # match_info = match_metadata.match_info
     # players_list = match_info.players
-    analysis = GameAnalysis(
+    analysis = MatchAnalysis(
         match_metadata=match_metadata,
-        parsed_game_data=game_data,
+        parsed_match_data=match_data,
     )
 
     response_content = json.dumps(analysis.model_dump())
@@ -220,10 +220,10 @@ async def get_match_analysis(
     response.headers["Cache-Control"] = "public, max-age=300"
 
     response_size = len(response_content.encode('utf-8'))
-    game_time_minutes = analysis.parsed_game_data.total_game_time_s / 60
+    match_time_minutes = analysis.parsed_match_data.total_match_time_s / 60
     logger.info(
         f"Match analysis for match_id={match_id} served with ETag={etag}. "
-        f"Game time={game_time_minutes:.2f} minutes ({analysis.parsed_game_data.total_game_time_s}s). "
+        f"Match time={match_time_minutes:.2f} minutes ({analysis.parsed_match_data.total_match_time_s}s). "
         f"Response size={response_size:,} bytes ({response_size / 1024:.2f} KB, {response_size / (1024 * 1024):.2f} MB)"
     )
     return response

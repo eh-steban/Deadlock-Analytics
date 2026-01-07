@@ -1,9 +1,9 @@
-import { GameAnalysisResponse } from "../types/MatchAnalysis";
+import { MatchAnalysisResponse } from "../types/MatchAnalysis";
 
 // In-memory cache: matchId -> { data, etag, expiresAt }
 const cache = new Map<
   number,
-  { data: GameAnalysisResponse; etag?: string; expiresAt: number }
+  { data: MatchAnalysisResponse; etag?: string; expiresAt: number }
 >();
 
 // Optional: persist to localStorage using this namespace
@@ -29,7 +29,7 @@ function loadFromStorage(matchId: number) {
     const raw = localStorage.getItem(storageKey(matchId));
     if (!raw) return;
     const parsed = JSON.parse(raw) as {
-      data: GameAnalysisResponse;
+      data: MatchAnalysisResponse;
       etag?: string;
       expiresAt: number;
     };
@@ -49,10 +49,10 @@ function saveToStorage(matchId: number) {
   }
 }
 
-export async function fetchGameAnalysis(
+export async function fetchMatchAnalysis(
   matchId: number,
   opts?: { allowStaleOnError?: boolean }
-): Promise<GameAnalysisResponse> {
+): Promise<MatchAnalysisResponse> {
   const now = Date.now();
 
   if (!cache.has(matchId)) {
@@ -104,7 +104,7 @@ export async function fetchGameAnalysis(
     throw new Error(`Failed to fetch match analysis (${res.status}): ${text}`);
   }
 
-  const data: GameAnalysisResponse = await res.json();
+  const data: MatchAnalysisResponse = await res.json();
   cache.set(matchId, { data, etag, expiresAt });
   saveToStorage(matchId);
   console.log("Loaded match data from backend:", data);

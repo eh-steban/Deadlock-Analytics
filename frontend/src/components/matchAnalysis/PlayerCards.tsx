@@ -1,19 +1,19 @@
 import React from "react";
-import { ParsedGameData } from "../../types/MatchAnalysis";
+import { ParsedMatchData } from "../../types/MatchAnalysis";
 import { Region } from "../../types/Region";
 import { regions } from "../../data/regions";
 import {
   PlayerData,
-  PlayerGameData,
+  PlayerMatchData,
   DRTypeAggregateBySec,
 } from "../../types/Player";
 import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {
   players: PlayerData[];
-  perPlayerData: Record<string, PlayerGameData>;
+  perPlayerData: Record<string, PlayerMatchData>;
   currentTick: number;
-  gameData: ParsedGameData;
+  matchData: ParsedMatchData;
   normalizePosition: (x: number, y: number) => { normX: number; normY: number };
 }
 

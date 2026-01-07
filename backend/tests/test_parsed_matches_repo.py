@@ -3,7 +3,7 @@ import gzip
 import json
 from app.domain.player import ParsedPlayer
 from tests.test_helper import setup_database, async_session
-from app.domain.match_analysis import DamageRecord, ParsedGameData, PlayerPosition
+from app.domain.match_analysis import DamageRecord, ParsedMatchData, PlayerPosition
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.domain.exceptions import (
     MatchDataUnavailableException,
@@ -61,7 +61,7 @@ PER_PLAYER_DATA = {
     },
 }
 
-PARSED_GAME_DATA = ParsedGameData(**PER_PLAYER_DATA)
+PARSED_MATCH_DATA = ParsedMatchData(**PER_PLAYER_DATA)
 
 @pytest.fixture
 def repo():
@@ -71,7 +71,7 @@ def repo():
 async def test_get_per_player_data_success(repo, async_session):
     await repo.create_parsed_match(MATCH_ID, SCHEMA_VERSION, RAW_GZIP, 20, PER_PLAYER_DATA, ETAG, async_session)
     result = await repo.get_per_player_data(MATCH_ID, SCHEMA_VERSION, async_session)
-    assert result == PARSED_GAME_DATA
+    assert result == PARSED_MATCH_DATA
 
 @pytest.mark.asyncio
 async def test_get_per_player_data_not_found(repo, async_session):

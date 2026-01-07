@@ -268,8 +268,8 @@ struct DamageRecord {
 
 #[derive(Debug)]
 struct MyVisitor {
-    total_game_time_s: u32,
-    game_start_time_s: Option<u32>,
+    total_match_time_s: u32,
+    match_start_time_s: Option<u32>,
     damage_window: HashMap<u32, HashMap<u32, Vec<DamageRecord>>>,
     damage: Vec<HashMap<u32, HashMap<u32, Vec<DamageRecord>>>>,
     players: Vec<Player>,
@@ -283,8 +283,8 @@ struct MyVisitor {
 impl Default for MyVisitor {
     fn default() -> Self {
         Self {
-            total_game_time_s: 0,
-            game_start_time_s: None,
+            total_match_time_s: 0,
+            match_start_time_s: None,
             damage_window: HashMap::new(),
             damage: Vec::new(),
             players: Vec::new(),
@@ -396,10 +396,10 @@ fn get_entity_position(entity: &Entity) -> [f32; 3] {
 }
 
 impl MyVisitor {
-    pub fn get_game_data_json(&self) -> serde_json::Value {
+    pub fn get_match_data_json(&self) -> serde_json::Value {
         serde_json::json!({
-            "total_game_time_s": self.total_game_time_s,
-            "game_start_time_s": self.game_start_time_s,
+            "total_match_time_s": self.total_match_time_s,
+            "match_start_time_s": self.match_start_time_s,
             "damage": self.damage,
             "players": self.players,
             "positions": self.positions,
@@ -470,15 +470,15 @@ impl MyVisitor {
     fn handle_game_rules(&mut self, entity: &Entity) -> anyhow::Result<()> {
         debug_assert!(entity.serializer_name_heq(DEADLOCK_GAMERULES_ENTITY));
 
-        let game_start_time_s_f: f32 =
+        let match_start_time_s_f: f32 =
             entity.try_get_value(&fkey_from_path(&["m_pGameRules", "m_flGameStartTime"]))?;
         // NOTE: 0.001 is an arbitrary number; nothing special.
-        if game_start_time_s_f < 0.001 {
+        if match_start_time_s_f < 0.001 {
             return Ok(());
         }
 
-        let rounded: u32 = game_start_time_s_f.ceil() as u32;
-        self.game_start_time_s = Some(rounded);
+        let rounded: u32 = match_start_time_s_f.ceil() as u32;
+        self.match_start_time_s = Some(rounded);
 
         Ok(())
     }
@@ -579,9 +579,9 @@ impl Visitor for &mut MyVisitor {
 
         let next_window = (((1 + ctx.tick()) as f32) * ctx.tick_interval()).round() as u32;
         let this_window = ((ctx.tick() as f32) * ctx.tick_interval()).round() as u32;
-        let game_started = self.game_start_time_s.is_some() && (this_window >= (self.game_start_time_s.unwrap()));
+        let match_started = self.match_start_time_s.is_some() && (this_window >= (self.match_start_time_s.unwrap()));
 
-        if !game_started {
+        if !match_started {
             return Ok(());
         }
 
@@ -608,7 +608,7 @@ impl Visitor for &mut MyVisitor {
             // restart the current window
             // println!("Damage Window: {:?}", self.damage_window);
             // println!("Players: {:?}", self.players);
-            self.total_game_time_s = this_window;
+            self.total_match_time_s = this_window;
             self.damage.push(std::mem::replace(&mut self.damage_window, HashMap::new()));
             self.positions.push(std::mem::replace(&mut self.positions_window, Vec::new()));
         }
@@ -626,7 +626,7 @@ impl Visitor for &mut MyVisitor {
 
         // TODO: This looks like it's checked on *every* entity event.
         // Optimize by checking only when this entity is created?
-        // Or updated? Or when the game starts timestamp on this entity is updated?
+        // Or updated? Or when the match starts timestamp on this entity is updated?
         if entity.serializer_name_heq(DEADLOCK_GAMERULES_ENTITY) {
             self.handle_game_rules(entity)?;
         }
@@ -634,13 +634,13 @@ impl Visitor for &mut MyVisitor {
         // Track boss lifecycle
         match delta_header {
             DeltaHeader::CREATE => {
-                self.boss_tracker.handle_boss_create(entity, self.total_game_time_s);
+                self.boss_tracker.handle_boss_create(entity, self.total_match_time_s);
             }
             DeltaHeader::DELETE => {
-                self.boss_tracker.handle_boss_delete(entity, self.total_game_time_s);
+                self.boss_tracker.handle_boss_delete(entity, self.total_match_time_s);
             }
             DeltaHeader::UPDATE => {
-                // At a certain point in the game, you "can't" swap lanes and are locked in
+                // At a certain point in the match, you "can't" swap lanes and are locked in
                 if self.lane_data_updated == false {
                     self.check_and_update_lane_lock(entity)?;
                 }
@@ -701,7 +701,7 @@ impl Visitor for &mut MyVisitor {
                         self.boss_tracker.record_boss_damage(
                             msg.entindex_victim(),
                             ctx,
-                            self.total_game_time_s,
+                            self.total_match_time_s,
                         )?;
                     }
 
@@ -742,11 +742,6 @@ impl Visitor for &mut MyVisitor {
             //}
         }
         // Damage matrix is not a user message ID; it's embedded in PostMatchDetails.
-        // NOTE: I'm trying to be pedantic about the usage of "game" vs "match" in our code.
-        // The only reason we're referring to a "game" here as a "match" is because
-        // that's the terminology used in the protos. However, in typical tournament play
-        // a "match" consists of multiple "games". This is the only section of code where
-        // we refer to a "game" as a"match".
         if packet_type == CitadelUserMessageIds::KEUserMsgPostMatchDetails as u32 {
             let details_msg = CCitadelUserMsgPostMatchDetails::decode(data)?;
             if let Some(bytes) = details_msg.match_details {
@@ -778,7 +773,7 @@ pub fn parse_replay(replay_full_path: &str) -> Result<serde_json::Value> {
     let mut visitor = MyVisitor::default();
     let mut parser = Parser::from_stream_with_visitor(demo_file, &mut visitor)?;
     parser.run_to_end()?;
-    Ok(visitor.get_game_data_json())
+    Ok(visitor.get_match_data_json())
 }
 
 pub fn debug_print_stuff(msg: CCitadelUserMessageDamage, ctx: &Context, attacker: Option<&Entity>, victim: Option<&Entity>, inflictor: Option<&Entity>, ability: Option<&Entity>, record: &DamageRecord) {

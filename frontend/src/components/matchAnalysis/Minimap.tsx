@@ -15,7 +15,7 @@ const MINIMAP_URL =
 const Minimap = ({
   currentTick,
   setCurrentTick,
-  total_game_time_s,
+  total_match_time_s,
   scaledBossSnapshots,
   MINIMAP_SIZE,
   destroyedObjectivesSorted,
@@ -28,8 +28,8 @@ const Minimap = ({
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
-  total_game_time_s: number;
-  game_start_time_s: number;
+  total_match_time_s: number;
+  match_start_time_s: number;
   scaledBossSnapshots: ScaledBossSnapshot[];
   MINIMAP_SIZE: number;
   destroyedObjectivesSorted: Array<DestroyedObjective>;

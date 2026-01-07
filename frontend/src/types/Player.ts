@@ -81,7 +81,7 @@ export interface PlayerData {
 }
 
 // Per-player aggregated data (damage + positions windows)
-export interface PlayerGameData {
+export interface PlayerMatchData {
   positions: PositionWindow;
   damage: Damage;
 }

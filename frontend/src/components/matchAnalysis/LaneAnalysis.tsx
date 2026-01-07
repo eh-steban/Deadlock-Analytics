@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { NPCDamageStats } from '../../types/LaneAnalysis';
-import { ParsedPlayer, PlayerGameData } from "../../types/Player";
+import { ParsedPlayer, PlayerMatchData } from "../../types/Player";
 import LaneSelector from './LaneSelector';
 import SankeyDiagram from './SankeyDiagram';
 
 interface LaneAnalysisProps {
   players: ParsedPlayer[];
-  perPlayerData: Record<string, PlayerGameData>;
+  perPlayerData: Record<string, PlayerMatchData>;
   currentTick: number;
-  totalGameTime: number;
+  totalMatchTime: number;
 }
 
 const LaneAnalysis: React.FC<LaneAnalysisProps> = ({
   players,
   perPlayerData,
-  totalGameTime,
+  totalMatchTime,
 }) => {
   const [selectedLane, setSelectedLane] = useState<number | null>(null);
 
   // Calculate laning phase end (33% of total match time)
-  const laningPhaseEndTick = Math.floor(totalGameTime * 0.33);
+  const laningPhaseEndTick = Math.floor(totalMatchTime * 0.33);
 
   // Calculate NPC damage stats for selected lane during laning phase
   const npcStats = React.useMemo(() => {
@@ -29,8 +29,8 @@ const LaneAnalysis: React.FC<LaneAnalysisProps> = ({
     const stats: NPCDamageStats[] = [];
 
     lanePlayers.forEach((player) => {
-      const playerGameData = perPlayerData[player.custom_id];
-      if (!playerGameData || !playerGameData.damage) return;
+      const playerMatchData = perPlayerData[player.custom_id];
+      if (!playerMatchData || !playerMatchData.damage) return;
 
       const playerStats: NPCDamageStats = {
         playerId: player.custom_id,
@@ -43,8 +43,8 @@ const LaneAnalysis: React.FC<LaneAnalysisProps> = ({
       };
 
       // Aggregate damage during laning phase (0 to laningPhaseEndTick)
-      for (let tick = 0; tick <= laningPhaseEndTick && tick < playerGameData.damage.length; tick++) {
-        const tickDamage = playerGameData.damage[tick];
+      for (let tick = 0; tick <= laningPhaseEndTick && tick < playerMatchData.damage.length; tick++) {
+        const tickDamage = playerMatchData.damage[tick];
         if (!tickDamage) continue;
 
         Object.entries(tickDamage).forEach(([victimId, damageRecords]) => {
