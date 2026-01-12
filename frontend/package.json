@@ -9,6 +9,8 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "and": "^0.0.3",
+    "echarts": "^6.0.0",
+    "echarts-for-react": "^3.0.5",
     "point-in-polygon": "^1.1.0",
     "postcss": "^8.5.6",
     "react": "^19.0.0",
