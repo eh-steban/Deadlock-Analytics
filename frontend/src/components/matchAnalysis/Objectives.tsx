@@ -19,7 +19,7 @@ const Objectives: React.FC<ObjectivesProps> = ({
     <>
       {scaledBossSnapshots.map(
         ({
-          entity_index,
+          custom_id,
           boss_name_hash,
           team,
           lane,
@@ -48,7 +48,7 @@ const Objectives: React.FC<ObjectivesProps> = ({
           return (
             <div
               // key={`${team_id}_${team_objective_id}`}
-              key={`${entity_index}`}
+              key={`${custom_id}`}
               // title={`${team_id}_${team_objective_id}`}
               className='pointer-events-auto absolute h-2.5 w-2.5 rounded-full'
               style={{

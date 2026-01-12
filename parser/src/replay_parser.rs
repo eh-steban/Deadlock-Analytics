@@ -74,7 +74,7 @@ struct PlayerPosition {
 
 #[derive(Debug, Serialize, Clone)]
 struct BossSnapshot {
-    entity_index: i32,
+    custom_id: u32,
     boss_name_hash: u64,  // serializer_name.hash
     team: u32,
     lane: u32,
@@ -99,10 +99,10 @@ struct BossTracker {
     // Active bosses by entity index -> snapshot
     bosses: HashMap<i32, BossSnapshot>,
 
-    // Sparse damage-driven health samples: entity_index -> Vec<(time_s, health)>
+    // Sparse damage-driven health samples: custom_id -> Vec<(time_s, health)>
     health_samples: HashMap<i32, Vec<(u32, i32)>>,
 
-    // Per-second health timeline: Vec<HashMap<entity_index_string, current_health>>
+    // Per-second health timeline: Vec<HashMap<custom_id_string, current_health>>
     health_timeline: Vec<HashMap<String, i32>>,
 
     // Boss type hashes
@@ -139,12 +139,7 @@ impl BossTracker {
             || hash == self.patron_hash
     }
 
-    fn handle_boss_create(&mut self, entity: &Entity, current_time_s: u32) {
-        let hash = entity.serializer().serializer_name.hash;
-        if !self.is_boss_entity(hash) {
-            return;
-        }
-
+    fn handle_boss_create(&mut self, entity: &Entity, custom_id: u32, hash: u64, current_time_s: u32) {
         let position = get_entity_position(entity);
         let team = entity.get_value(&TEAM_KEY).unwrap_or(0);
         let lane = entity.get_value(&self.lane_key).unwrap_or(0);
@@ -156,7 +151,7 @@ impl BossTracker {
         // panic!("debug panic to inspect state");
 
         let snapshot = BossSnapshot {
-            entity_index: entity.index(),
+            custom_id: custom_id,
             boss_name_hash: hash,
             team,
             lane,
@@ -180,8 +175,8 @@ impl BossTracker {
     }
 
     fn handle_boss_delete(&mut self, entity: &Entity, current_time_s: u32) {
-        let entity_index = entity.index();
-        if let Some(boss) = self.bosses.get_mut(&entity_index) {
+        let custom_id = entity.index();
+        if let Some(boss) = self.bosses.get_mut(&custom_id) {
             boss.death_time_s = Some(current_time_s);
             boss.life_state_on_delete = entity.get_value::<i32>(&self.life_state_key);
         }
@@ -189,21 +184,21 @@ impl BossTracker {
 
     fn record_boss_damage(
         &mut self,
-        victim_entity_index: i32,
+        victim_custom_id: i32,
         ctx: &Context,
         current_time_s: u32,
     ) -> Result<()> {
         // Only record if this is a tracked boss
-        if !self.bosses.contains_key(&victim_entity_index) {
+        if !self.bosses.contains_key(&victim_custom_id) {
             return Ok(());
         }
 
         let entities = ctx.entities().unwrap();
-        if let Some(victim) = entities.get(&victim_entity_index) {
+        if let Some(victim) = entities.get(&victim_custom_id) {
             let health = victim.get_value::<i32>(&self.health_key).unwrap_or(0);
 
             self.health_samples
-                .entry(victim_entity_index)
+                .entry(victim_custom_id)
                 .or_insert_with(Vec::new)
                 .push((current_time_s, health));
         }
@@ -214,10 +209,10 @@ impl BossTracker {
     fn build_health_window(&mut self, window_s: u32) {
         let mut window_health: HashMap<String, i32> = HashMap::new();
 
-        for (entity_index, samples) in &self.health_samples {
+        for (custom_id, samples) in &self.health_samples {
             // Find the most recent sample <= window_s (carry-forward last known health)
             if let Some((_, health)) = samples.iter().rev().find(|(time, _)| *time <= window_s) {
-                window_health.insert(entity_index.to_string(), *health);
+                window_health.insert(custom_id.to_string(), *health);
             }
         }
 
@@ -297,6 +292,7 @@ impl Default for MyVisitor {
     }
 }
 
+const CWORLD_ENTITY: u64 = fxhash::hash_bytes(b"CWorld");
 const DEADLOCK_GAMERULES_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelGameRulesProxy");
 const OWNER_ENTITY_KEY: u64 = entities::fkey_from_path(&["m_hOwnerEntity"]);
 const PLAYER_NAME_KEY: u64 = entities::fkey_from_path(&["m_iszPlayerName"]);
@@ -310,6 +306,7 @@ const HERO_ID_KEY: u64 = entities::fkey_from_path(&["m_nHeroID"]);
 const LOBBY_PLAYER_SLOT_KEY: u64 = entities::fkey_from_path(&["m_unLobbyPlayerSlot"]);
 const ZIPLINE_LANE_COLOR_KEY: u64 = entities::fkey_from_path(&["m_eZipLineLaneColor"]);
 
+const CCITADELPLAYERCONTROLLER_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelPlayerController");
 const CCITADELPLAYERPAWN_ENTITY: u64 = fxhash::hash_bytes(b"CCitadelPlayerPawn");
 const CNPC_TROOPER_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_Trooper");
 const CNPC_TROOPERBOSS_ENTITY: u64 = fxhash::hash_bytes(b"CNPC_TrooperBoss");
@@ -539,6 +536,8 @@ impl MyVisitor {
                 CNPC_NEUTRAL_SINNERSSACRIFICE_ENTITY => 29, // "<CNPC_Neutral_SinnersSacrifice>".to_string(),
                 CNPC_BASE_DEFENSE_SENTRY_ENTITY => 30, // "<CNPC_BaseDefenseSentry>".to_string(),
                 CNPC_SHIELDEDSENTRY_ENTITY => 31, // "<CNPC_ShieldedSentry>".to_string(),
+                CWORLD_ENTITY => 32, // "<CWorld>".to_string(),
+                CCITADELPLAYERCONTROLLER_ENTITY => 33, // "<CCitadelPlayerController>".to_string(),
                 _ => panic!("Unknown entity - Name: {}, Hash: {}", serializer_entity_name.str, serializer_entity_name.hash),
             }
         }
@@ -634,7 +633,11 @@ impl Visitor for &mut MyVisitor {
         // Track boss lifecycle
         match delta_header {
             DeltaHeader::CREATE => {
-                self.boss_tracker.handle_boss_create(entity, self.total_match_time_s);
+                let hash = entity.serializer().serializer_name.hash;
+                if self.boss_tracker.is_boss_entity(hash) {
+                    let custom_id = self.get_custom_id(ctx, entity);
+                    self.boss_tracker.handle_boss_create(entity, custom_id, hash, self.total_match_time_s);
+                }
             }
             DeltaHeader::DELETE => {
                 self.boss_tracker.handle_boss_delete(entity, self.total_match_time_s);

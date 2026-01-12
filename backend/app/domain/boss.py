@@ -2,7 +2,7 @@ from sqlmodel import SQLModel
 from typing import Optional
 
 class BossSnapshot(SQLModel):
-    entity_index: int
+    custom_id: int
     boss_name_hash: int
     team: int
     lane: int

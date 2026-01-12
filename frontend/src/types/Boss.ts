@@ -1,5 +1,5 @@
-interface BossSnapshot {
-  entity_index: number;
+export interface BossSnapshot {
+  custom_id: number;
   boss_name_hash: number; // Will be a large integer from Rust u64
   team: number;
   lane: number;
@@ -18,7 +18,7 @@ export interface ScaledBossSnapshot extends BossSnapshot {
   top: number;
 }
 
-// Per-second health timeline: object mapping entity_index (as string) -> current_health
+// Per-second health timeline: object mapping custom_id (as string) -> current_health
 type BossHealthWindow = Record<string, number>;
 
 type BossHealthTimeline = BossHealthWindow[];
