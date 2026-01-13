@@ -24,7 +24,6 @@ export interface SankeyLink {
 interface SankeyDiagramProps {
   nodes: SankeyNode[];
   links: SankeyLink[];
-  height?: number;
 }
 
 const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
