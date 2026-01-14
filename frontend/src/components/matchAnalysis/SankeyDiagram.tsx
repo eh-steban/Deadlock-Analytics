@@ -36,14 +36,10 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
       triggerOn: 'mousemove',
       formatter: (params: any) => {
         if (params.dataType === 'edge') {
-          // Flow tooltip with percentage
           const percentage = params.data.percentage
             ? ` (${params.data.percentage.toFixed(1)}%)`
             : '';
-          return `${params.data.source} → ${params.data.target}<br/>Damage: ${params.data.value.toLocaleString()}${percentage}`;
-        } else {
-          // Node tooltip
-          return params.name;
+          return `Damage: ${params.data.value.toLocaleString()}${percentage}`;
         }
       },
     },
