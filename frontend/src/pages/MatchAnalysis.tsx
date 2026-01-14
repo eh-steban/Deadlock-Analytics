@@ -6,6 +6,7 @@ import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
 import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
 import MatchTimeViewer from "../components/matchAnalysis/MatchTimeViewer";
 import PlayerDamageDistribution from "../components/matchAnalysis/PlayerDamageDistribution";
+import TeamDamageAllocation from "../components/damageAnalysis/TeamDamageAllocation";
 import { regions } from "../data/regions";
 import { DestroyedObjective } from "../types/DestroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../types/Player";
@@ -197,6 +198,13 @@ const MatchAnalysis = () => {
       </div>
 
       <PlayerDamageDistribution
+        players={players}
+        perPlayerData={perPlayerData}
+        bossSnapshots={bossSnapshots}
+        totalMatchTime={parsedMatchData.total_match_time_s}
+      />
+
+      <TeamDamageAllocation
         players={players}
         perPlayerData={perPlayerData}
         bossSnapshots={bossSnapshots}
