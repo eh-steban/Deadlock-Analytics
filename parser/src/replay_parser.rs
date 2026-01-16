@@ -74,10 +74,11 @@ struct PlayerPosition {
 
 #[derive(Debug, Serialize, Clone)]
 struct BossSnapshot {
-    custom_id: u32,
+    entity_index: i32,    // Unique per entity instance
+    custom_id: u32,       // Entity type ID (21, 25, 26, 27, 28)
     boss_name_hash: u64,  // serializer_name.hash
     team: u32,
-    lane: u32,
+    lane: i32,
     x: f32,
     y: f32,
     z: f32,
@@ -142,7 +143,7 @@ impl BossTracker {
     fn handle_boss_create(&mut self, entity: &Entity, custom_id: u32, hash: u64, current_time_s: u32) {
         let position = get_entity_position(entity);
         let team = entity.get_value(&TEAM_KEY).unwrap_or(0);
-        let lane = entity.get_value(&self.lane_key).unwrap_or(0);
+        let lane = entity.get_value::<i32>(&self.lane_key).unwrap_or(0);
         let health = entity.get_value::<i32>(&self.health_key).unwrap_or(0);
         let max_health = entity.get_value::<i32>(&self.max_health_key).unwrap_or(0);
         let life_state = entity.get_value::<i32>(&self.life_state_key).unwrap_or(0);
@@ -151,6 +152,7 @@ impl BossTracker {
         // panic!("debug panic to inspect state");
 
         let snapshot = BossSnapshot {
+            entity_index: entity.index(),
             custom_id: custom_id,
             boss_name_hash: hash,
             team,

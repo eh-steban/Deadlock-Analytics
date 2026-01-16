@@ -1,6 +1,7 @@
 export interface BossSnapshot {
-  custom_id: number;
-  boss_name_hash: number; // Will be a large integer from Rust u64
+  entity_index: number;
+  custom_id: number;    // Entity type ID (21, 25, 26, 27, 28)
+  boss_name_hash: number;
   team: number;
   lane: number;
   x: number;
