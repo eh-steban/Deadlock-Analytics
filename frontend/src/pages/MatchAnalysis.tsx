@@ -5,7 +5,7 @@ import PlayerCards from "../components/matchAnalysis/PlayerCards";
 import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
 import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
 import MatchTimeViewer from "../components/matchAnalysis/MatchTimeViewer";
-import PlayerDamageDistribution from "../components/matchAnalysis/PlayerDamageDistribution";
+import PlayerDamageDistribution from "../components/damageAnalysis/PlayerDamageDistribution";
 import TeamDamageAllocation from "../components/damageAnalysis/TeamDamageAllocation";
 import ObjectiveDamageContribution from "../components/damageAnalysis/ObjectiveDamageContribution";
 import { regions } from "../data/regions";

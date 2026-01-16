@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { ParsedPlayer, PlayerMatchData } from '../../types/Player';
 import { BossSnapshot } from '../../types/Boss';
-import PlayerSelector from './PlayerSelector';
-import TimeRangeSelector, { TimeRange } from './TimeRangeSelector';
-import SankeyDiagram, { SankeyNode, SankeyLink } from './SankeyDiagram';
+import PlayerSelector from '../matchAnalysis/PlayerSelector';
+import TimeRangeSelector, { TimeRange } from '../matchAnalysis/TimeRangeSelector';
+import SankeyDiagram, { SankeyNode, SankeyLink } from '../matchAnalysis/SankeyDiagram';
 import { getTimeRangeTicks } from '../../utils/timeRanges';
 import { aggregatePlayerDamage } from '../../services/damage';
 
