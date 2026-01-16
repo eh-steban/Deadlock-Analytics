@@ -5,7 +5,7 @@ import TeamSelector, { Team } from '../matchAnalysis/TeamSelector';
 import TimeRangeSelector, { TimeRange } from '../matchAnalysis/TimeRangeSelector';
 import SankeyDiagram, { SankeyNode, SankeyLink } from '../matchAnalysis/SankeyDiagram';
 import { getTimeRangeTicks } from '../../utils/timeRanges';
-import { aggregateTeamDamage } from '../../utils/damageAggregation';
+import { aggregateTeamDamage } from '../../services/damage';
 
 interface TeamDamageAllocationProps {
   players: ParsedPlayer[];
@@ -22,12 +22,9 @@ const TeamDamageAllocation: React.FC<TeamDamageAllocationProps> = ({
 }) => {
   const [selectedTeam, setSelectedTeam] = useState<Team>(2); // Default to Amber
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('full');
-
-  // Get team name
   const teamName = selectedTeam === 2 ? 'Amber' : 'Sapphire';
   const teamColor = selectedTeam === 2 ? '#FF8C00' : '#4169E1';
 
-  // Aggregate damage data
   const damageData = useMemo(() => {
     const [startTick, endTick] = getTimeRangeTicks(totalMatchTime, selectedTimeRange);
     return aggregateTeamDamage(

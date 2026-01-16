@@ -5,7 +5,7 @@ import PlayerSelector from './PlayerSelector';
 import TimeRangeSelector, { TimeRange } from './TimeRangeSelector';
 import SankeyDiagram, { SankeyNode, SankeyLink } from './SankeyDiagram';
 import { getTimeRangeTicks } from '../../utils/timeRanges';
-import { aggregatePlayerDamage } from '../../utils/damageAggregation';
+import { aggregatePlayerDamage } from '../../services/damage';
 
 interface PlayerDamageDistributionProps {
   players: ParsedPlayer[];
@@ -70,9 +70,9 @@ const PlayerDamageDistribution: React.FC<PlayerDamageDistributionProps> = ({
       if (target.type === 'player') {
         targetColor = target.team === 2 ? '#FF8C00' : '#4169E1';
       } else if (target.type === 'boss') {
-        targetColor = '#8B4513'; // Brown for bosses
+        targetColor = '#8B4513';
       } else if (target.type === 'lane_creeps') {
-        targetColor = '#4CAF50'; // Green for creeps
+        targetColor = '#4CAF50';
       }
 
       nodes.push({
