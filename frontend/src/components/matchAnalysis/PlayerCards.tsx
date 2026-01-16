@@ -1,12 +1,12 @@
 import React from "react";
-import { ParsedMatchData } from "../../types/MatchAnalysis";
-import { Region } from "../../types/Region";
+import { ParsedMatchData } from "../../domain/matchAnalysis";
+import { Region } from "../../domain/region";
 import { regions } from "../../data/regions";
 import {
   PlayerData,
   PlayerMatchData,
   DRTypeAggregateBySec,
-} from "../../types/Player";
+} from "../../domain/player";
 import pointInPolygon from "point-in-polygon";
 
 interface PlayerCardsProps {

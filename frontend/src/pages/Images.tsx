@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PrintHeroImageData from "../components/matchAnalysis/PrintHeroImageData";
 import PrintGeneralImages from "../components/images/PrintGeneralImages";
-import { Hero } from "../types/Player";
+import { Hero } from "../domain/player";
 
 const Images: React.FC = () => {
   const [heroData, setHeroData] = useState<Hero[]>([]);

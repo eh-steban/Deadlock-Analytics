@@ -1,5 +1,5 @@
 import React from "react";
-import { ScaledPlayerCoord, PlayerData } from "../../types/Player";
+import { ScaledPlayerCoord, PlayerData } from "../../domain/player";
 
 interface PlayerPositionsProps {
   scaledPlayerCoords: ScaledPlayerCoord[];

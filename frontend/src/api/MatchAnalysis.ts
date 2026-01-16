@@ -1,4 +1,4 @@
-import { MatchAnalysisResponse } from "../types/MatchAnalysis";
+import { MatchAnalysisResponse } from "../domain/matchAnalysis";
 
 // In-memory cache: matchId -> { data, etag, expiresAt }
 const cache = new Map<

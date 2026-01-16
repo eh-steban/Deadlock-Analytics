@@ -1,5 +1,4 @@
-import { DestroyedObjective } from "./DestroyedObjective";
-import { PlayerInfo } from "./Player";
+import { DestroyedObjective } from "./destroyedObjective";
 
 // FIXME: I don't think we need this anymore?
 // It comes from the Deadlock API, but there are parser equivalents.
@@ -8,11 +7,14 @@ export interface MatchMetadata {
   match_info: MatchInfoFields;
 }
 
+// TODO: Previously `players: Array<any>;` was `players: Array<PlayerInfo>;`
+// This was to grab the DeadlockAPI response. Since we're not using that
+// as much, I've changed it to any with a change it'll be removed altogether
 export interface MatchInfoFields {
   duration_s: number;
   match_outcome: number;
   winning_team: number;
-  players: Array<PlayerInfo>;
+  players: Array<any>;
   start_time: number;
   match_id: number;
   legacy_objectives_mask: any;

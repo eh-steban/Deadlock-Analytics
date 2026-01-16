@@ -4,10 +4,10 @@ import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
 import RegionsMapping from "./RegionsMapping";
 import PlayerPositions from "./PlayerPositions";
-import { Region } from "../../types/Region";
-import { ScaledPlayerCoord, PlayerData } from "../../types/Player";
-import { ScaledBossSnapshot } from "../../types/Boss";
-import { DestroyedObjective } from "../../types/DestroyedObjective";
+import { Region } from "../../domain/region";
+import { ScaledPlayerCoord, PlayerData } from "../../domain/player";
+import { ScaledBossSnapshot } from "../../domain/boss";
+import { DestroyedObjective } from "../../domain/destroyedObjective";
 
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";

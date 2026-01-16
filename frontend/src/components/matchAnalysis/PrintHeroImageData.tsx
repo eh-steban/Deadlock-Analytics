@@ -1,5 +1,5 @@
 import React from "react";
-import { Hero } from "../../types/Player";
+import { Hero } from "../../domain/player";
 
 type Props = {
   heroData: Hero[];

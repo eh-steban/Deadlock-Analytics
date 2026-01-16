@@ -9,9 +9,9 @@ import PlayerDamageDistribution from "../components/damageAnalysis/PlayerDamageD
 import TeamDamageAllocation from "../components/damageAnalysis/TeamDamageAllocation";
 import ObjectiveDamageContribution from "../components/damageAnalysis/ObjectiveDamageContribution";
 import { regions } from "../data/regions";
-import { DestroyedObjective } from "../types/DestroyedObjective";
-import { Hero, PlayerData, ScaledPlayerCoord } from "../types/Player";
-import { ScaledBossSnapshot } from "../types/Boss";
+import { DestroyedObjective } from "../domain/destroyedObjective";
+import { Hero, PlayerData, ScaledPlayerCoord } from "../domain/player";
+import { ScaledBossSnapshot } from "../domain/boss";
 import { useMatchAnalysis } from "../hooks/UseMatchAnalysis";
 import PrintHeroImageData from "../components/matchAnalysis/PrintHeroImageData";
 import { formatSecondstoMMSS } from "../utils/time";
@@ -19,7 +19,7 @@ import {
   defaultMatchAnalysis,
   MatchAnalysisResponse,
   WORLD_BOUNDS,
-} from "../types/MatchAnalysis";
+} from "../domain/matchAnalysis";
 
 const MINIMAP_SIZE = 768;
 // FIXME: Use this value once we're confident in how our map

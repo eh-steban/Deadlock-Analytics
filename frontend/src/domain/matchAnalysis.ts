@@ -1,6 +1,6 @@
-import { MatchMetadata } from "./MatchMetadata";
-import { ParsedPlayer, PlayerMatchData } from "./Player";
-import { BossData } from "./Boss";
+import { MatchMetadata } from "./matchMetadata";
+import { ParsedPlayer, PlayerMatchData } from "./player";
+import { BossData } from "./boss";
 
 // Parsed match data (aggregated by player, per backend ParsedMatchData)
 export interface ParsedMatchData {

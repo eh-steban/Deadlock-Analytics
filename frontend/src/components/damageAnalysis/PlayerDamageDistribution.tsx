@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ParsedPlayer, PlayerMatchData } from '../../types/Player';
-import { BossSnapshot } from '../../types/Boss';
+import { ParsedPlayer, PlayerMatchData } from '../../domain/player';
+import { BossSnapshot } from '../../domain/boss';
 import PlayerSelector from '../matchAnalysis/PlayerSelector';
 import TimeRangeSelector, { TimeRange } from '../matchAnalysis/TimeRangeSelector';
 import SankeyDiagram, { SankeyNode, SankeyLink } from '../matchAnalysis/SankeyDiagram';

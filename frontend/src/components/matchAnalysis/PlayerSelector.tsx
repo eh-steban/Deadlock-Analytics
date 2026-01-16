@@ -1,5 +1,5 @@
 import React from 'react';
-import { ParsedPlayer } from '../../types/Player';
+import { ParsedPlayer } from '../../domain/player';
 
 interface PlayerSelectorProps {
   players: ParsedPlayer[];

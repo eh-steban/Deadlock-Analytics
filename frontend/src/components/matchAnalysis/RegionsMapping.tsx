@@ -1,5 +1,5 @@
 import React from "react";
-import { Region } from "../../types/Region";
+import { Region } from "../../domain/region";
 
 interface RegionsMappingProps {
   MINIMAP_SIZE: number;

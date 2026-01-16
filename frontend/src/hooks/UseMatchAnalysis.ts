@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { fetchMatchAnalysis } from '../api/MatchAnalysis';
-import { MatchAnalysisResponse } from '../types/MatchAnalysis';
+import { MatchAnalysisResponse } from '../domain/matchAnalysis';
 
 export function useMatchAnalysis(matchId: number) {
   const [data, setData] = useState<MatchAnalysisResponse | null>(null);

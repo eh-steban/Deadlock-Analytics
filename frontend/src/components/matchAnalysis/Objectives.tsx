@@ -1,6 +1,6 @@
 import React from "react";
-import { ScaledBossSnapshot } from "../../types/Boss";
-import { DestroyedObjective } from "../../types/DestroyedObjective";
+import { ScaledBossSnapshot } from "../../domain/boss";
+import { DestroyedObjective } from "../../domain/destroyedObjective";
 
 interface ObjectivesProps {
   scaledBossSnapshots: ScaledBossSnapshot[];

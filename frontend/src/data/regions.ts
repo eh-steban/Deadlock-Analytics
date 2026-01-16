@@ -1,4 +1,4 @@
-import { Region } from "../types/Region";
+import { Region } from "../domain/region";
 
 export const regions: Region[] = [
   {
