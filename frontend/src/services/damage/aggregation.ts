@@ -257,11 +257,8 @@ export function aggregateObjectiveDamage(
     (boss) => boss.team === enemyTeamId
   );
 
-  // FIXME: bossMap is keyed by custom_id because damage data uses custom_id as victim key
-  // This means damage to all bosses of the same type gets aggregated together
-  // To fix this properly, the parser would need to use entity_index as victim ID
   const bossMap = new Map<number, BossSnapshot>();
-  objectiveBosses.forEach((boss) => bossMap.set(boss.custom_id, boss));
+  objectiveBosses.forEach((boss) => bossMap.set(boss.entity_index, boss));
 
   const teamPlayers = players.filter((p) => p.team === teamId);
 

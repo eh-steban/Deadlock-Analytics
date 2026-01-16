@@ -545,6 +545,17 @@ impl MyVisitor {
         }
     }
 
+    fn get_damage_entity_id(&mut self, ctx: &Context, entity: &Entity) -> u32 {
+        let hash = entity.serializer().serializer_name.hash;
+        if hash == CCITADELPLAYERPAWN_ENTITY {
+            return self.get_custom_id(ctx, entity);
+        }
+        if self.boss_tracker.is_boss_entity(hash) {
+            return entity.index() as u32;
+        }
+        self.get_custom_id(ctx, entity)
+    }
+
     fn push_damage_record(
         &mut self,
         ctx: &Context,
@@ -552,15 +563,15 @@ impl MyVisitor {
         victim: &Entity,
         record: DamageRecord
     ) -> Result<()> {
-        let attacker_player_slot = self.get_custom_id(ctx, attacker);
-        let victim_player_slot = self.get_custom_id(ctx, victim);
+        let attacker_id = self.get_damage_entity_id(ctx, attacker);
+        let victim_id = self.get_damage_entity_id(ctx, victim);
 
         let victims_list = self.damage_window
-            .entry(attacker_player_slot)
+            .entry(attacker_id)
             .or_insert(HashMap::new());
 
         let victim_damage = victims_list
-            .entry(victim_player_slot)
+            .entry(victim_id)
             .or_insert(Vec::new());
 
         //println!("Damage Record: {:?}", record);

@@ -8,8 +8,7 @@ interface EntityMaps {
 
 /**
  * Create lookup maps for players and bosses
- * FIXME: bossMap uses custom_id as key because damage data uses custom_id as victim ID
- * This means multiple bosses of the same type share the same key (last one wins)
+ * bossMap uses entity_index as key (unique per entity instance)
  */
 export function createEntityMaps(
   players: ParsedPlayer[],
@@ -19,7 +18,7 @@ export function createEntityMaps(
   players.forEach((p) => playerMap.set(p.custom_id, p));
 
   const bossMap = new Map<number, BossSnapshot>();
-  bossSnapshots.forEach((boss) => bossMap.set(boss.custom_id, boss));
+  bossSnapshots.forEach((boss) => bossMap.set(boss.entity_index, boss));
 
   return { playerMap, bossMap };
 }
@@ -34,13 +33,19 @@ export function sumDamageRecords(
   return damageRecords.reduce((sum, record) => sum + (record.damage || 0), 0);
 }
 
-/**
- * Get display name for a boss
- * TODO: Need to add hashtable for boss_name_hash lookup to show
- * human-readable names like "Guardian", "Walker", "Shrine", etc.
- */
+// Map custom_id to human-readable boss type names
+const BOSS_TYPE_NAMES: Record<number, string> = {
+  21: 'Guardian',
+  25: 'Shrine',
+  26: 'Walker',
+  27: 'Base Guardian',
+  28: 'Patron',
+};
+
 export function getBossDisplayName(boss: BossSnapshot): string {
-  return `Boss ${boss.boss_name_hash} - Lane ${boss.lane}`;
+  const typeName = BOSS_TYPE_NAMES[boss.custom_id] || `Boss ${boss.custom_id}`;
+  const laneStr = boss.lane > 0 ? ` - Lane ${boss.lane}` : '';
+  return `${typeName}${laneStr} #${boss.entity_index}`;
 }
 
 /**
