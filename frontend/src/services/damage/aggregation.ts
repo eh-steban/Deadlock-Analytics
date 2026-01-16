@@ -66,7 +66,12 @@ export function aggregateTeamDamage(
     const playerData = perPlayerData[player.custom_id];
     if (!playerData || !playerData.damage) return;
 
-    aggregateDamageByVictim(playerData, startTick, endTick, damageByVictim);
+  // Filter for player victims only
+  const playerVictimFilter = (victimId: string): boolean => {
+    return !!victimId && playerMap.has(String(victimId));
+  };
+
+    aggregateDamageByVictim(playerData, startTick, endTick, damageByVictim, playerVictimFilter);
   });
 
   const { targets, totalDamage } = categorizeVictimDamage(
