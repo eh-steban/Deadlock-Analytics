@@ -283,7 +283,7 @@ const MatchAnalysis = () => {
       {/* Digestible Damage Matrix Table for Abrams (player_slot 1) */}
       {/* <DamageMatrixTable matchMetadata={matchMetadata} /> */}
 
-      <PrintHeroImageData heroData={heroData} />
+      {/* <PrintHeroImageData heroData={heroData} /> */}
     </>
   );
 };
