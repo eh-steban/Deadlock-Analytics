@@ -1,5 +1,5 @@
 import { ParsedPlayer, PlayerMatchData } from '../../domain/player';
-import { BossSnapshot } from '../../domain/boss';
+import { BossSnapshot, getBossDisplayName } from '../../domain/boss';
 import { DamageTarget } from '../../domain/damageAnalysis';
 
 interface EntityMaps {
@@ -63,21 +63,6 @@ export function aggregateDamageByVictim(
       outputMap.set(victimId, (outputMap.get(victimId) || 0) + totalDamage);
     });
   }
-}
-
-// Map custom_id to human-readable boss type names
-const BOSS_TYPE_NAMES: Record<number, string> = {
-  21: 'Guardian',
-  25: 'Shrine',
-  26: 'Walker',
-  27: 'Base Guardian',
-  28: 'Patron',
-};
-
-export function getBossDisplayName(boss: BossSnapshot): string {
-  const typeName = BOSS_TYPE_NAMES[boss.custom_id] || `Boss ${boss.custom_id}`;
-  const laneStr = boss.lane > 0 ? ` - Lane ${boss.lane}` : '';
-  return `${typeName}${laneStr} #${boss.entity_index}`;
 }
 
 /**

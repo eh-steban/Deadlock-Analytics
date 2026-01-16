@@ -1,5 +1,5 @@
 import { ParsedPlayer, PlayerMatchData } from '../../domain/player';
-import { BossSnapshot } from '../../domain/boss';
+import { BossSnapshot, getBossDisplayName } from '../../domain/boss';
 import {
   PlayerDamageDistribution,
   TeamDamageDistribution,
@@ -11,7 +11,6 @@ import {
 import {
   createEntityMaps,
   aggregateDamageByVictim,
-  getBossDisplayName,
   getBossUniqueKey,
   sortAndCalculatePercentages,
   categorizeVictimDamage,
