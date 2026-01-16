@@ -1,7 +1,6 @@
 import { ParsedPlayer, PlayerMatchData } from '../../types/Player';
 import { BossSnapshot } from '../../types/Boss';
 import {
-  DamageTarget,
   PlayerDamageDistribution,
   TeamDamageDistribution,
   PlayerContribution,
@@ -11,10 +10,11 @@ import {
 } from '../../domain/damageAnalysis';
 import {
   createEntityMaps,
-  sumDamageRecords,
+  aggregateDamageByVictim,
   getBossDisplayName,
   getBossUniqueKey,
   sortAndCalculatePercentages,
+  categorizeVictimDamage,
 } from './helpers';
 
 /**
@@ -32,92 +32,13 @@ export function aggregatePlayerDamage(
   const { playerMap, bossMap } = createEntityMaps(players, bossSnapshots);
   const damageByVictim = new Map<string, number>();
 
-  // Aggregate damage across ticks
-  for (
-    let tick = startTick;
-    tick <= endTick && tick < playerData.damage.length;
-    tick++
-  ) {
-    const tickDamage = playerData.damage[tick];
-    if (!tickDamage) continue;
+  aggregateDamageByVictim(playerData, startTick, endTick, damageByVictim);
 
-    // Iterate through victims
-    Object.entries(tickDamage).forEach(([victimId, damageRecords]) => {
-      const totalDamage = sumDamageRecords(damageRecords);
-      if (totalDamage <= 0) return;
-
-      damageByVictim.set(
-        victimId,
-        (damageByVictim.get(victimId) || 0) + totalDamage
-      );
-    });
-  }
-
-  // Categorize victims and create targets
-  // TODO: We have neutralCreeps here, but the data does not appear yet.
-  // There could be an issue with the IDs coming from the parser or we
-  // simply aren't sending that data yet
-  const targets: DamageTarget[] = [];
-  let laneCreepsDamage = 0;
-  let neutralCreepsDamage = 0;
-  let totalDamage = 0;
-
-  damageByVictim.forEach((damage, victimId) => {
-    totalDamage += damage;
-    const victimPlayer = playerMap.get(victimId);
-    if (victimPlayer) {
-      targets.push({
-        id: victimId,
-        name: `${victimPlayer.name} (${victimPlayer.hero.name})`,
-        type: 'player',
-        damage,
-        team: victimPlayer.team,
-        heroImage: victimPlayer.hero.images.icon_hero_card_webp,
-      });
-      return;
-    }
-
-    // Check if victim is a boss (parse custom_id from victimId)
-    const entityIndex = parseInt(victimId, 10);
-    if (entityIndex) {
-      const boss = bossMap.get(entityIndex);
-      if (boss) {
-        targets.push({
-          id: victimId,
-          name: getBossDisplayName(boss),
-          type: 'boss',
-          damage,
-          team: boss.team,
-          bossNameHash: boss.boss_name_hash,
-        });
-        return;
-      }
-    }
-
-    // Otherwise, categorize as lane creeps or neutral creeps
-    // For now, we'll aggregate all non-player, non-boss entities as lane creeps
-    // TODO: Add more sophisticated categorization if needed
-    laneCreepsDamage += damage;
-  });
-
-  // Add aggregated creep damage
-  if (laneCreepsDamage > 0) {
-    targets.push({
-      id: 'lane_creeps',
-      name: 'Lane Creeps',
-      type: 'lane_creeps',
-      damage: laneCreepsDamage,
-    });
-  }
-
-  if (neutralCreepsDamage > 0) {
-    targets.push({
-      id: 'neutral_creeps',
-      name: 'Neutral Creeps',
-      type: 'neutral_creeps',
-      damage: neutralCreepsDamage,
-    });
-  }
+  const { targets, totalDamage } = categorizeVictimDamage(
+    damageByVictim,
+    playerMap,
+    bossMap
+  );
 
   sortAndCalculatePercentages(targets, totalDamage);
 
@@ -145,91 +66,14 @@ export function aggregateTeamDamage(
     const playerData = perPlayerData[player.custom_id];
     if (!playerData || !playerData.damage) return;
 
-    // Aggregate damage across ticks for this player
-    for (
-      let tick = startTick;
-      tick <= endTick && tick < playerData.damage.length;
-      tick++
-    ) {
-      const tickDamage = playerData.damage[tick];
-      if (!tickDamage) continue;
-
-      // Iterate through victims
-      Object.entries(tickDamage).forEach(([victimId, damageRecords]) => {
-        const totalDamage = sumDamageRecords(damageRecords);
-        if (totalDamage <= 0) return;
-
-        damageByVictim.set(
-          victimId,
-          (damageByVictim.get(victimId) || 0) + totalDamage
-        );
-      });
-    }
+    aggregateDamageByVictim(playerData, startTick, endTick, damageByVictim);
   });
 
-  // Categorize victims and create targets
-  const targets: DamageTarget[] = [];
-  let laneCreepsDamage = 0;
-  let neutralCreepsDamage = 0;
-  let totalDamage = 0;
-
-  damageByVictim.forEach((damage, victimId) => {
-    totalDamage += damage;
-
-    // Check if victim is an enemy player
-    const victimPlayer = playerMap.get(victimId);
-    if (victimPlayer) {
-      targets.push({
-        id: victimId,
-        name: `${victimPlayer.name} (${victimPlayer.hero.name})`,
-        type: 'player',
-        damage,
-        team: victimPlayer.team,
-        heroImage: victimPlayer.hero.images.icon_hero_card_webp,
-      });
-      return;
-    }
-
-    // Check if victim is a boss
-    const entityIndex = parseInt(victimId, 10);
-    if (entityIndex) {
-      const boss = bossMap.get(entityIndex);
-      if (boss) {
-        targets.push({
-          id: victimId,
-          name: getBossDisplayName(boss),
-          type: 'boss',
-          damage,
-          team: boss.team,
-          bossNameHash: boss.boss_name_hash,
-        });
-        return;
-      }
-    }
-
-    // Otherwise, categorize as lane creeps
-    // TODO: Add neutral creeps categorization
-    laneCreepsDamage += damage;
-  });
-
-  // Add aggregated creep damage
-  if (laneCreepsDamage > 0) {
-    targets.push({
-      id: 'lane_creeps',
-      name: 'Lane Creeps',
-      type: 'lane_creeps',
-      damage: laneCreepsDamage,
-    });
-  }
-
-  if (neutralCreepsDamage > 0) {
-    targets.push({
-      id: 'neutral_creeps',
-      name: 'Neutral Creeps',
-      type: 'neutral_creeps',
-      damage: neutralCreepsDamage,
-    });
-  }
+  const { targets, totalDamage } = categorizeVictimDamage(
+    damageByVictim,
+    playerMap,
+    bossMap
+  );
 
   sortAndCalculatePercentages(targets, totalDamage);
 
@@ -268,37 +112,25 @@ export function aggregateObjectiveDamage(
     damageByPlayerAndObjective.set(player.custom_id, new Map<string, number>());
   });
 
+  // Filter for boss victims only
+  const bossVictimFilter = (victimId: string): boolean => {
+    const entityIndex = parseInt(victimId, 10);
+    return !!entityIndex && bossMap.has(entityIndex);
+  };
+
   // Aggregate damage from all team players to objectives
   teamPlayers.forEach((player) => {
     const playerData = perPlayerData[player.custom_id];
     if (!playerData || !playerData.damage) return;
 
     const playerDamageMap = damageByPlayerAndObjective.get(player.custom_id)!;
-
-    // Aggregate damage across ticks for this player
-    for (
-      let tick = startTick;
-      tick <= endTick && tick < playerData.damage.length;
-      tick++
-    ) {
-      const tickDamage = playerData.damage[tick];
-      if (!tickDamage) continue;
-
-      // Iterate through victims
-      Object.entries(tickDamage).forEach(([victimId, damageRecords]) => {
-        // Check if victim is an objective boss
-        const entityIndex = parseInt(victimId, 10);
-        if (!entityIndex || !bossMap.has(entityIndex)) return;
-
-        const totalDamage = sumDamageRecords(damageRecords);
-        if (totalDamage <= 0) return;
-
-        playerDamageMap.set(
-          victimId,
-          (playerDamageMap.get(victimId) || 0) + totalDamage
-        );
-      });
-    }
+    aggregateDamageByVictim(
+      playerData,
+      startTick,
+      endTick,
+      playerDamageMap,
+      bossVictimFilter
+    );
   });
 
   // Build objective targets with timing information
