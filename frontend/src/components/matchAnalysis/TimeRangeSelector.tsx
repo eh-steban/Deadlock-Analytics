@@ -1,6 +1,5 @@
 import React from 'react';
-
-export type TimeRange = 'full' | 'laning' | 'mid' | 'late';
+import { TimeRange } from '../../domain/timeline';
 
 interface TimeRangeSelectorProps {
   selectedRange: TimeRange;

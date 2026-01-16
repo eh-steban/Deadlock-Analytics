@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { ParsedPlayer, PlayerMatchData } from '../../domain/player';
 import { BossSnapshot } from '../../domain/boss';
+import { TimeRange } from '../../domain/timeline';
 import TeamSelector, { Team } from '../matchAnalysis/TeamSelector';
-import TimeRangeSelector, { TimeRange } from '../matchAnalysis/TimeRangeSelector';
+import TimeRangeSelector from '../matchAnalysis/TimeRangeSelector';
 import SankeyDiagram, { SankeyNode, SankeyLink } from '../matchAnalysis/SankeyDiagram';
-import { getTimeRangeTicks } from '../../utils/timeRanges';
+import { getTimeRangeTicks } from '../../services/timeline';
 import { aggregateTeamDamage } from '../../services/damage';
 
 interface TeamDamageAllocationProps {

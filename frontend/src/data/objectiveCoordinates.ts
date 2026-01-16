@@ -1,4 +1,4 @@
-import { ObjectiveCoordinate } from '../domain/ObjectiveCoordinate';
+import { ObjectiveCoordinate } from '../domain/objectiveCoordinate';
 
 export const objectiveCoordinates: ObjectiveCoordinate[] = [
   { label: 'Midboss', x: 0.6, y: 0.5 },

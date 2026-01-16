@@ -1,4 +1,4 @@
-import { TimeRange } from '../components/shared/TimeRangeSelector';
+import { TimeRange } from '../../domain/timeline';
 
 /**
  * Calculate tick range based on total match duration and selected time phase
