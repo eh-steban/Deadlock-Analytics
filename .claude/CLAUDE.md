@@ -1,0 +1,58 @@
+# Deadlock Stats
+
+Esports analytics platform for Deadlock. Monorepo with three microservices.
+
+## Quick Reference
+
+```bash
+# Service-specific commands in each service's CLAUDE.md
+```
+
+## Project Structure
+
+```
+Deadlock-Stats/
+├── backend/          # Python/FastAPI - API, orchestration, storage
+├── frontend/         # React/TypeScript - Web app, visualizations
+├── parser/           # Rust/Axum - Replay file parsing
+├── docker-compose.yaml
+└── k8s/              # Kubernetes manifests
+```
+
+## Key Principles
+
+- **Game Alignment:** Valve's Deadlock is source of truth for domain terminology
+- **API Advisement:** Avoid translation layers between internal/external schemas where possible
+- **DDD Architecture:** Domain layer is pure business logic, no framework dependencies
+- **Visualization Philosophy:** Tell stories with data, organize by game phase
+
+## Game Phases
+
+Analytics should be organized by phase (definitions need refinement beyond time):
+
+| Phase | ~Duration | Factors to Consider |
+|-------|-----------|---------------------|
+| Laning | 33% | Early objectives, lane pressure, guardians |
+| Mid-game | 33% | Rotations, team fights begin, walkers |
+| Late game | Rest | Full team fights, final objectives |
+
+## Current Roadmap
+
+1. S3/Parquet Evaluation (current)
+2. Architecture Stabilization
+3. Event-Driven Architecture
+4. Terraform
+
+## Service Details
+
+See `.claude/rules/` for detailed standards:
+- `backend/CLAUDE.md` — Structure, commands, DDD layers
+- `frontend/CLAUDE.md` — Structure, commands, components
+- `parser/CLAUDE.md` — Structure, commands
+
+## Coding Standards
+
+See `.claude/rules/` for detailed standards:
+- `backend/` — Python, DDD architecture, testing
+- `frontend/` — React, TypeScript, visualization, testing
+- `parser/` — Rust conventions
