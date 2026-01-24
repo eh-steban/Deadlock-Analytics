@@ -7,7 +7,7 @@ def get_settings():
     return Settings()
 
 class Settings(BaseSettings):
-    # environment: str = os.getenv("ENVIRONMENT", "development")
+    ENVIRONMENT: str = "development"
     JWT_SECRET_KEY: str = "secretKey"
     JWT_ALGORITHM: str = "algo"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60

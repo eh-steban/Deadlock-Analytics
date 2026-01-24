@@ -57,7 +57,7 @@ async def callback(request: Request, session: SessionDep, settings: SettingsDep)
         key="access_token",
         value=jwt,
         httponly=True,
-        secure=False,  # FIXME: Set to True in production
+        secure=settings.ENVIRONMENT == "production",
         samesite="strict",
         max_age=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES * 60
     )
