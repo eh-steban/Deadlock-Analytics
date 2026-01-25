@@ -51,10 +51,14 @@ const TeamDamageAllocation: React.FC<TeamDamageAllocationProps> = ({
 
     const sourceNodeName = `${teamName} Team`;
 
+    // Calculate total damage for diagram (excluding lane creeps)
+    const diagramTotalDamage = targetsForDiagram.reduce((sum, t) => sum + t.damage, 0);
+
     // Create source node (team aggregate)
     const nodes: SankeyNode[] = [
       {
         name: sourceNodeName,
+        totalDamage: diagramTotalDamage,
         itemStyle: { color: teamColor },
       },
     ];
@@ -72,6 +76,7 @@ const TeamDamageAllocation: React.FC<TeamDamageAllocationProps> = ({
 
       nodes.push({
         name: target.name,
+        totalDamage: target.damage,
         itemStyle: { color: targetColor },
       });
 
@@ -95,7 +100,7 @@ const TeamDamageAllocation: React.FC<TeamDamageAllocationProps> = ({
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 my-6 mx-8">
+    <div className="bg-white rounded-lg shadow-md p-6 mt-0 mb-6 mx-8">
       <h2 className="text-2xl font-bold mb-4">Team Damage Allocation</h2>
 
       <div className="flex gap-4 mb-6 flex-wrap">

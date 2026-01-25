@@ -58,6 +58,7 @@ const PlayerDamageDistribution: React.FC<PlayerDamageDistributionProps> = ({
     const nodes: SankeyNode[] = [
       {
         name: sourceNodeName,
+        totalDamage: damageData.totalDamage,
         itemStyle: { color: teamColor },
       },
     ];
@@ -78,6 +79,7 @@ const PlayerDamageDistribution: React.FC<PlayerDamageDistributionProps> = ({
 
       nodes.push({
         name: target.name,
+        totalDamage: target.damage,
         itemStyle: { color: targetColor },
       });
 
@@ -93,7 +95,7 @@ const PlayerDamageDistribution: React.FC<PlayerDamageDistributionProps> = ({
   }, [selectedPlayer, damageData]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 my-6 mx-8">
+    <div className="bg-white rounded-lg shadow-md p-6 mt-0 mb-6 mx-8">
       <h2 className="text-2xl font-bold mb-4">Player Damage Distribution</h2>
       <div className="flex gap-4 mb-6 flex-wrap">
         <PlayerSelector

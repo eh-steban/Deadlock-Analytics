@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 
 export interface SankeyNode {
   name: string;
+  totalDamage?: number;
   itemStyle?: {
     color?: string;
   };
@@ -25,22 +26,40 @@ interface SankeyDiagramProps {
   links: SankeyLink[];
 }
 
-const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
-  nodes,
-  links,
-}) => {
+export interface SankeyTooltipParams {
+  dataType: 'node' | 'edge';
+  name: string;
+  data: {
+    totalDamage?: number;
+    value?: number;
+    percentage?: number;
+  };
+}
+
+export function formatSankeyTooltip(
+  params: SankeyTooltipParams
+): string | undefined {
+  if (params.dataType === 'edge') {
+    const percentage =
+      params.data.percentage ? ` (${params.data.percentage.toFixed(1)}%)` : '';
+    return `Damage: ${params.data.value?.toLocaleString()}${percentage}`;
+  }
+  if (params.dataType === 'node') {
+    const totalDamage = params.data.totalDamage;
+    if (totalDamage !== undefined) {
+      return `${params.name}: ${totalDamage.toLocaleString()} damage`;
+    }
+    return params.name;
+  }
+  return undefined;
+}
+
+const SankeyDiagram: React.FC<SankeyDiagramProps> = ({ nodes, links }) => {
   const option = {
     tooltip: {
       trigger: 'item',
       triggerOn: 'mousemove',
-      formatter: (params: any) => {
-        if (params.dataType === 'edge') {
-          const percentage = params.data.percentage
-            ? ` (${params.data.percentage.toFixed(1)}%)`
-            : '';
-          return `Damage: ${params.data.value.toLocaleString()}${percentage}`;
-        }
-      },
+      formatter: formatSankeyTooltip,
     },
     series: [
       {
@@ -56,8 +75,9 @@ const SankeyDiagram: React.FC<SankeyDiagramProps> = ({
             show: true,
             position: 'right',
             formatter: (params: any) => {
-              const percentage = params.data.percentage
-                ? ` (${params.data.percentage.toFixed(1)}%)`
+              const percentage =
+                params.data.percentage ?
+                  ` (${params.data.percentage.toFixed(1)}%)`
                 : '';
               return `${params.data.value.toLocaleString()}${percentage}`;
             },

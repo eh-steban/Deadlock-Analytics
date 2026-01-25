@@ -58,6 +58,7 @@ const ObjectiveDamageContribution: React.FC<ObjectiveDamageContributionProps> = 
     damageData.playerContributions.forEach((player) => {
       nodes.push({
         name: `${player.playerName} (${player.heroName})`,
+        totalDamage: player.damage,
         itemStyle: { color: teamColor },
       });
     });
@@ -67,6 +68,7 @@ const ObjectiveDamageContribution: React.FC<ObjectiveDamageContributionProps> = 
       const objectiveColor = '#8B4513'; // Brown for all objectives
       nodes.push({
         name: objective.name,
+        totalDamage: objective.damage,
         itemStyle: { color: objectiveColor },
       });
     });
@@ -101,7 +103,7 @@ const ObjectiveDamageContribution: React.FC<ObjectiveDamageContributionProps> = 
   }, [damageData.objectiveTargets]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 my-6 mx-8">
+    <div className="bg-white rounded-lg shadow-md p-6 mt-0 mb-6 mx-8">
       <h2 className="text-2xl font-bold mb-4">Objective Damage Contribution</h2>
 
       <div className="flex gap-4 mb-6 flex-wrap">

@@ -77,6 +77,36 @@ export function useMatchData(matchId: string) {
 }
 ```
 
+## UI Components (Headless UI)
+
+Use `@headlessui/react` for accessible, unstyled UI primitives. Style with Tailwind.
+
+**When to use:**
+- Tabs, modals, menus, dropdowns, comboboxes
+- Any component requiring keyboard navigation and ARIA attributes
+
+```tsx
+import { Tab } from '@headlessui/react';
+
+<Tab.Group defaultIndex={0}>
+  <Tab.List className="flex border-b border-gray-200">
+    <Tab className={({ selected }) =>
+      `px-4 py-2 ${selected ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`
+    }>
+      Tab Label
+    </Tab>
+  </Tab.List>
+  <Tab.Panels>
+    <Tab.Panel>Content</Tab.Panel>
+  </Tab.Panels>
+</Tab.Group>
+```
+
+**Benefits:**
+- Built-in accessibility (ARIA roles, keyboard navigation)
+- Unstyled — full control with Tailwind
+- From the Tailwind team, integrates seamlessly
+
 ## Styling (Tailwind)
 
 - Use utility-first approach
