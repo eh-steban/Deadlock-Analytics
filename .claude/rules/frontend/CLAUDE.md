@@ -53,9 +53,11 @@ frontend/
 │   │   └── time.ts
 │   │
 │   ├── App.tsx
-│   └── index.tsx
+│   ├── index.tsx
+│   └── vite-env.d.ts                 # TypeScript defs for Vite env vars
 │
 ├── tests/                            # Mirrors src/ structure
+│   ├── setup.ts                      # Global test setup (cleanup)
 │   ├── api/
 │   ├── domain/
 │   ├── services/
@@ -64,7 +66,7 @@ frontend/
 │
 ├── Dockerfile
 ├── package.json
-└── vite.config.ts
+└── vite.config.ts                    # Includes Vitest config in `test` block
 ```
 
 ## Layer Dependency Rules
@@ -102,8 +104,11 @@ frontend/
 cd frontend
 npm run dev
 
-# Run tests
+# Run tests (headless browser)
 npm test
+
+# Run tests in visible browser
+npm run test:browser
 
 # Run tests with coverage
 npm test -- --coverage
@@ -141,6 +146,7 @@ npm run build
 - Vite
 - Tailwind CSS
 - React Query (for server state)
+- Vitest + Playwright (browser testing)
 
 ## Data Flow
 

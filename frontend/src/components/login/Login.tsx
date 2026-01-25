@@ -1,7 +1,7 @@
-import React from "react";
-import steamLoginImg from "../../assets/steam-button-vertical.png";
+import React from 'react';
+import steamLoginImg from '../../assets/steam-button-vertical.png';
 
-const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
+const backendDomain = import.meta.env.VITE_BACKEND_DOMAIN || 'domain';
 
 const Login: React.FC = () => (
   <div className='flex h-screen w-full items-center justify-center lg:flex-row'>
