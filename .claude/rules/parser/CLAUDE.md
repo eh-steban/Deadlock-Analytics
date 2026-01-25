@@ -25,21 +25,18 @@ parser/
 ## Commands
 
 ```bash
-# Run locally (from repo root)
-docker-compose up parser
-
-# Run directly
+# Run server w/ hot reload
 cd parser
-cargo run
+cargo watch -i src/compressed-replays/ -i src/replays/ -x run
 
-# Run tests
-cargo test
+# # Run tests
+# cargo test
 
-# Linting
-cargo clippy
+# # Linting
+# cargo clippy
 
-# Format
-cargo fmt
+# # Format
+# cargo fmt
 
 # Build release
 cargo build --release
