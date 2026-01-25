@@ -32,9 +32,39 @@ parser/
 
 ## Error Handling
 
-- Use `Result<T, E>` for fallible operations
-- Define custom error types for domain errors
-- Use `thiserror` or `anyhow` as appropriate
+See `parser/error-handling.md` for detailed error handling standards.
+
+### Quick Reference
+
+- Use `Result<T, E>` for all fallible operations
+- Define custom error types with `thiserror`
+- Use `anyhow` for application-level error handling
+- Avoid `.unwrap()` in production code paths — use `?` or `ok_or_else`
+
+```rust
+// ✅ Good
+fn parse_entity(entity: &Entity) -> Result<ParsedEntity, ParseError> {
+    let value = entity.get_value(key)
+        .ok_or_else(|| ParseError::MissingField("key"))?;
+    Ok(ParsedEntity { value })
+}
+
+// ❌ Bad - can panic
+fn parse_entity(entity: &Entity) -> ParsedEntity {
+    let value = entity.get_value(key).unwrap();
+    ParsedEntity { value }
+}
+```
+
+### HTTP Error Responses
+
+Return structured JSON errors with appropriate status codes:
+
+```rust
+fn error_response(status: StatusCode, message: &str) -> (StatusCode, Json<Value>) {
+    (status, Json(serde_json::json!({ "error": message })))
+}
+```
 
 ## API Design
 

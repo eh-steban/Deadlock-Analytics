@@ -56,3 +56,23 @@ See `.claude/rules/` for detailed standards:
 - `backend/` — Python, DDD architecture, testing
 - `frontend/` — React, TypeScript, visualization, testing
 - `parser/` — Rust conventions
+
+## Error Handling & Observability
+
+See `.claude/rules/` for error handling and observability standards:
+- `error-handling.md` — Cross-service error philosophy, categories, sensitive data rules
+- `observability.md` — Logging standards, log levels, long-term roadmap
+- `backend/error-handling.md` — Python exception hierarchy, HTTP status mapping
+- `backend/observability.md` — Python logging setup, required log points
+- `frontend/error-handling.md` — Error types, Error Boundaries, graceful degradation
+- `frontend/observability.md` — Console logging guidelines, web-vitals
+- `parser/error-handling.md` — Rust Result types, eliminating panics
+- `parser/observability.md` — Tracing setup, log levels
+
+### Quick Reference
+
+| Service | Error Strategy | Logging |
+|---------|----------------|---------|
+| Backend | Exception hierarchy + HTTPException mapping | Python logging to stdout |
+| Frontend | AppError type + Error Boundaries | Console (minimal) |
+| Parser | Result<T, E> + custom error types | tracing crate |

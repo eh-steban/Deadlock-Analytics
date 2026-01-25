@@ -160,3 +160,95 @@ Focus on critical user paths rather than arbitrary coverage numbers:
 3. Edge Cases          → Empty data, extreme values
 4. Accessibility       → Screen readers, keyboard nav
 5. Performance         → Large datasets, animations
+
+## Error State Testing
+
+Every component with error state must test error display, retry functionality, and recovery.
+
+### Component Error Tests
+
+```tsx
+describe('MatchAnalysis error handling', () => {
+  it('displays error message when fetch fails', async () => {
+    vi.mocked(fetch).mockRejectedValueOnce(new Error('Network error'));
+
+    render(<MatchAnalysis matchId={123} />);
+
+    await expect.element(
+      page.getByText(/unable to load|error|failed/i)
+    ).toBeInTheDocument();
+  });
+
+  it('allows retry after error', async () => {
+    vi.mocked(fetch)
+      .mockRejectedValueOnce(new Error('fail'))
+      .mockResolvedValueOnce(makeResponse(sampleData));
+
+    render(<MatchAnalysis matchId={123} />);
+
+    await page.getByRole('button', { name: /retry/i }).click();
+
+    await expect.element(page.getByText('Match Duration')).toBeInTheDocument();
+  });
+});
+```
+
+### Hook Error Tests
+
+```tsx
+describe('useMatchAnalysis error handling', () => {
+  it('returns error state on fetch failure', async () => {
+    vi.mocked(fetch).mockRejectedValueOnce(new Error('API error'));
+
+    const { result } = renderHook(() => useMatchAnalysis(123));
+
+    await waitFor(() => {
+      expect(result.current.error).toBeDefined();
+      expect(result.current.loading).toBe(false);
+    });
+  });
+
+  it('clears error on successful retry', async () => {
+    vi.mocked(fetch)
+      .mockRejectedValueOnce(new Error('fail'))
+      .mockResolvedValueOnce(makeResponse(sampleData));
+
+    const { result } = renderHook(() => useMatchAnalysis(123));
+
+    await waitFor(() => expect(result.current.error).toBeDefined());
+
+    await act(() => result.current.refetch());
+
+    expect(result.current.error).toBeNull();
+    expect(result.current.data).toBeDefined();
+  });
+});
+```
+
+### Error Boundary Tests
+
+```tsx
+describe('ErrorBoundary', () => {
+  it('catches render errors and shows fallback', () => {
+    const ThrowError = () => { throw new Error('Test error'); };
+
+    render(
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <ThrowError />
+      </ErrorBoundary>
+    );
+
+    expect(page.getByText('Something went wrong')).toBeInTheDocument();
+  });
+});
+```
+
+### Required Error Scenarios
+
+| Scenario | Test Pattern |
+|----------|--------------|
+| Network failure | Mock fetch rejection |
+| 404 response | Mock 404 status |
+| 500 response | Mock 500 status |
+| Empty data | Render with empty arrays |
+| Stale cache fallback | Mock network fail + verify stale data shown |
