@@ -9,3 +9,6 @@ docker/.bash_history
 
 !docs/.gitkeep
 docs/psql_connection.md
+
+.env
+.vscode
