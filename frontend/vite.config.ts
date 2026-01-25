@@ -31,6 +31,7 @@ export default defineConfig(async () => {
         provider: playwright(),
         enabled: true,
         headless: true,
+        screenshotFailures: false,
         instances: [
           { browser: 'chromium' as const },
           //   // { browser: 'firefox' as const },
