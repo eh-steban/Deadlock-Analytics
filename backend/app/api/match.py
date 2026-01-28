@@ -1,8 +1,4 @@
-import base64
-import gzip
-import httpx
 import json
-import sys
 from typing import Annotated
 from fastapi import (
     APIRouter,
@@ -14,30 +10,21 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
-from app.domain.boss import BossData
-from app.domain.player import PlayerData
 from app.services.deadlock_api_service import DeadlockAPIService
-# from app.services.player_service import PlayerService
-from app.services.transform_service import TransformService
+from app.services.parser_service import ParserService
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
-from app.domain.match_analysis import (
-    MatchAnalysis,
-    TransformedMatchData,
-    ParsedMatchResponse,
-    ParsedAttackerVictimMap,
-    Positions
-)
-# from app.domain.player import PlayerInfo
+from app.domain.match_analysis import MatchAnalysis
 from app.infra.db.session import get_db_session
 from app.config import Settings, get_settings
-from app.utils.http_cache import compute_etag, check_if_not_modified
+from app.utils.http_cache import check_if_not_modified
 from app.utils.logger import get_logger
 from app.domain.exceptions import (
     DeadlockAPIError,
+    ParserServiceError,
     MatchDataUnavailableException,
-    MatchParseException,
     MatchDataIntegrityException,
 )
+from app.application.use_cases.analyze_match import AnalyzeMatchUseCase
 
 router = APIRouter()
 logger = get_logger(__name__)
@@ -48,7 +35,11 @@ SettingsDep = Annotated[Settings, Depends(get_settings)]
 def get_deadlock_service() -> DeadlockAPIService:
     return DeadlockAPIService()
 
+def get_parser_service() -> ParserService:
+    return ParserService()
+
 ServiceDep = Annotated[DeadlockAPIService, Depends(get_deadlock_service)]
+ParserServiceDep = Annotated[ParserService, Depends(get_parser_service)]
 
 @router.get("/analysis/{match_id}", response_model=MatchAnalysis)
 async def get_match_analysis(
@@ -57,107 +48,24 @@ async def get_match_analysis(
     session: SessionDep,
     settings: SettingsDep,
     deadlock_api_service: ServiceDep,
+    parser_service: ParserServiceDep,
 ):
 
     schema_version = 1
     repo = ParsedMatchesRepo()
-    etag = ""
-    match_data: TransformedMatchData | None = None
 
     try:
-        # 1. Check if we have match data cached in DB
-        match_data = await repo.get_match_data(
-            match_id, schema_version, session
-        )
-        if match_data:
-            # 2. If we have it, compute ETag and check If-None-Match
-            etag = compute_etag(match_data.model_dump(), schema_version)
-            if request_etag := request.headers.get("If-None-Match"):
-                not_modified_response = check_if_not_modified(request_etag, etag)
-                if not_modified_response:
-                    return Response(
-                        status_code=status.HTTP_304_NOT_MODIFIED,
-                        headers={"ETag": etag, "Cache-Control": "public, max-age=300"},
-                    )
-        else:
-            # 3. Need to fetch from parser service
-            demo = await deadlock_api_service.get_demo_url(match_id)
-            replay_url = demo.get("demo_url")
-            if not replay_url:
-                logger.debug(f"Replay url for match ID ({match_id}) not found.")
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="Replay URL not found for the match",
-                )
-            logger.info(f"Replay url ({replay_url}) for match ID: {match_id}")
-            encoded_replay_url = base64.urlsafe_b64encode(
-                replay_url.encode()
-            ).decode()
-            async with httpx.AsyncClient(timeout=300.0) as client:
-                try:
-                    parsed_resp = await client.post(
-                        f"{settings.PARSER_BASE_URL}/parse",
-                        json={"demo_url": encoded_replay_url},
-                        headers={"Content-Type": "application/json"},
-                    )
-                    parsed_resp.raise_for_status()
+        # Execute use case
+        use_case = AnalyzeMatchUseCase(parser_service, deadlock_api_service, repo)
+        match_data, etag = await use_case.execute(match_id, schema_version, session)
 
-                    raw_response_size = len(parsed_resp.content)
-                    logger.info(f"Match {match_id} - Raw parser response size: {raw_response_size:,} bytes ({raw_response_size / 1024:.2f} KB, {raw_response_size / (1024 * 1024):.2f} MB)")
-
-                    parsed_json_resp = parsed_resp.json()
-                    players_list = (
-                        [PlayerData(**p) for p in parsed_json_resp.get("players", [])]
-                    )
-                    parsed_damage = [
-                        ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})
-                    ]
-                    # positions =
-                    parsed_match = ParsedMatchResponse(
-                        total_match_time_s=parsed_json_resp.get("total_match_time_s", 0),
-                        match_start_time_s=parsed_json_resp.get("match_start_time_s", 0),
-                        damage=parsed_damage,
-                        players_data=players_list,
-                        positions=Positions(parsed_json_resp.get("positions", [])),
-                        bosses=BossData(**parsed_json_resp.get("bosses", {}))
-                    )
-
-                    # Measure compressed parsed_match size
-                    compressed_parsed_match = gzip.compress(parsed_match.model_dump_json().encode("utf-8"))
-                    compressed_size = len(compressed_parsed_match)
-                    logger.info(f"Match {match_id} - Compressed parsed_match size: {compressed_size:,} bytes ({compressed_size / 1024:.2f} KB, {compressed_size / (1024 * 1024):.2f} MB)")
-
-                    # player_list, npc_list = await PlayerService().map_player_data(
-                    #     match_data.players, players_list
-                    # )
-                    match_data = TransformService.to_match_data(parsed_match)
-
-                    # Measure match_data size
-                    match_data_json = json.dumps(match_data.model_dump())
-                    match_data_size = len(match_data_json.encode("utf-8"))
-                    match_data_memory = sys.getsizeof(match_data)
-                    logger.info(f"Match {match_id} - match_data JSON size: {match_data_size:,} bytes ({match_data_size / 1024:.2f} KB, {match_data_size / (1024 * 1024):.2f} MB)")
-                    logger.info(f"Match {match_id} - match_data in-memory size: {match_data_memory:,} bytes ({match_data_memory / 1024:.2f} KB, {match_data_memory / (1024 * 1024):.2f} MB)")
-
-                    # Log compression ratio
-                    uncompressed_size = len(parsed_match.model_dump_json().encode("utf-8"))
-                    compression_ratio = (1 - compressed_size / uncompressed_size) * 100
-                    logger.info(f"Match {match_id} - Compression ratio: {compression_ratio:.1f}% (uncompressed: {uncompressed_size:,} bytes, {uncompressed_size / 1024:.2f} KB, {uncompressed_size / (1024 * 1024):.2f} MB)")
-
-                except httpx.HTTPStatusError as e:
-                    raise HTTPException(
-                        status_code=e.response.status_code,
-                        detail=f"Rust service error: {e.response.status_code} - {e.response.text}",
-                    )
-
-                etag = compute_etag(match_data.model_dump(), schema_version)
-                await repo.create_parsed_match(
-                    match_id,
-                    schema_version,
-                    gzip.compress(parsed_match.model_dump_json().encode("utf-8")),
-                    match_data.model_dump(),
-                    etag,
-                    session,
+        # Check ETag for 304 Not Modified
+        if request_etag := request.headers.get("If-None-Match"):
+            not_modified_response = check_if_not_modified(request_etag, etag)
+            if not_modified_response:
+                return Response(
+                    status_code=status.HTTP_304_NOT_MODIFIED,
+                    headers={"ETag": etag, "Cache-Control": "public, max-age=300"},
                 )
 
     except MatchDataUnavailableException:
@@ -188,6 +96,16 @@ async def get_match_analysis(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Deadlock API error occurred. Check logs for details.",
+        )
+    except ParserServiceError as parser_err:
+        logger.exception(
+            "Parser service error for match_id=%s: %s",
+            match_id,
+            parser_err,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Parser service unavailable. Please try again later.",
         )
     except HTTPException:
         raise
