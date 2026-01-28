@@ -289,6 +289,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "dotenvy"
+version = "0.15.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b"
+
+[[package]]
 name = "dungers"
 version = "0.0.0"
 source = "git+https://github.com/blukai/dungers.git?rev=5419784ef771089369bdce5463a6cf6da35d3a79#5419784ef771089369bdce5463a6cf6da35d3a79"
@@ -1073,6 +1079,7 @@ dependencies = [
  "base64",
  "bzip2",
  "dashmap",
+ "dotenvy",
  "haste",
  "once_cell",
  "regex",
