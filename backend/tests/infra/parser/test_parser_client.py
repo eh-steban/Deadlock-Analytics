@@ -1,7 +1,7 @@
 import pytest
 import time
 import httpx
-from unittest.mock import AsyncMock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 from app.infra.parser.parser_client import ParserClient, CircuitBreaker
 from app.domain.exceptions import ParserServiceError
 
