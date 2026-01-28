@@ -15,13 +15,13 @@ class CircuitBreaker:
         self.failure_threshold = failure_threshold
         self.timeout = timeout
         self.failures = 0
-        self.last_failure_time = None
+        self.last_failure_time: float | None = None
         self.state = "closed"  # closed, open, half_open
 
     async def call(self, func):
         """Execute async function with circuit breaker protection."""
         if self.state == "open":
-            if time.time() - self.last_failure_time < self.timeout:
+            if self.last_failure_time and time.time() - self.last_failure_time < self.timeout:
                 logger.warning("Circuit breaker is OPEN - parser service unavailable")
                 raise ParserServiceError("Circuit breaker open: parser service temporarily unavailable")
             else:
