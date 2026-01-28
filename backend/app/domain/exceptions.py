@@ -13,3 +13,7 @@ class MatchDataIntegrityException(Exception):
 class DeadlockAPIError(Exception):
     """Raised when there is an error involving the Deadlock API."""
     pass
+
+class ParserServiceError(Exception):
+    """Raised when parser service is unavailable or returns an error."""
+    pass
