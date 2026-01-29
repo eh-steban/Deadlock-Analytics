@@ -6,6 +6,8 @@ import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
 import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
 import MatchTimeViewer from "../components/matchAnalysis/MatchTimeViewer";
 import DamageAnalysisSection from "../components/damageAnalysis/DamageAnalysisSection";
+import { ErrorMessage } from "../components/common/ErrorMessage";
+import { useErrorHandler } from "../hooks/useErrorHandler";
 import { regions } from "../data/regions";
 import { DestroyedObjective } from "../domain/destroyedObjective";
 import { Hero, PlayerData, ScaledPlayerCoord } from "../domain/player";
@@ -51,7 +53,9 @@ const worldToMinimapPixels = (x: number, y: number) => {
 const MatchAnalysis = () => {
   const { match_id } = useParams();
   // Fetch match analysis via ETag-aware hook
-  const { data: matchAnalysisData } = useMatchAnalysis(Number(match_id));
+  const { data: matchAnalysisData, loading, error: matchError, refetch } = useMatchAnalysis(Number(match_id));
+  const { error: heroError, handleError: handleHeroError, clearError: clearHeroError } = useErrorHandler();
+
   const matchAnalysis: MatchAnalysisResponse =
     matchAnalysisData ?? defaultMatchAnalysis;
   // FIXME: matchMetadata is Deadlock API stuff that we'll likely get rid of later
@@ -65,7 +69,6 @@ const MatchAnalysis = () => {
   const [heroData, setHeroData] = useState<Hero[]>([
     { id: 0, name: "Default", images: {} },
   ]);
-  const [error, setError] = useState(false);
   const isMounted = useRef(false);
 
   const [currentTick, setCurrentTick] = useState<number>(0);
@@ -177,17 +180,18 @@ const MatchAnalysis = () => {
         if (!isMounted.current) return;
         console.log("Loaded hero data:", data);
         setHeroData(data);
+        clearHeroError();
       })
       .catch((err) => {
         if (!isMounted.current) return;
         console.error("Error fetching hero data:", err);
-        setError(true);
+        handleHeroError(err);
       });
 
     return () => {
       isMounted.current = false;
     };
-  }, [match_id]);
+  }, [match_id, handleHeroError, clearHeroError]);
 
   return (
     <>
@@ -196,12 +200,43 @@ const MatchAnalysis = () => {
         <h2>Match ID: {match_id}</h2>
       </div>
 
-      <DamageAnalysisSection
-        players={players}
-        perPlayerData={perPlayerData}
-        bossSnapshots={bossSnapshots}
-        totalMatchTime={parsedMatchData.total_match_time_s}
-      />
+      {/* Display match analysis errors */}
+      {matchError && (
+        <div className='mx-auto max-w-4xl px-8 py-4'>
+          <ErrorMessage
+            error={matchError as Error}
+            title="Failed to Load Match Analysis"
+            onRetry={refetch}
+          />
+        </div>
+      )}
+
+      {/* Display hero data errors */}
+      {heroError && (
+        <div className='mx-auto max-w-4xl px-8 py-4'>
+          <ErrorMessage
+            error={heroError}
+            title="Failed to Load Hero Data"
+          />
+        </div>
+      )}
+
+      {/* Show loading state */}
+      {loading && !matchAnalysisData && (
+        <div className='mx-auto max-w-4xl px-8 py-4 text-center'>
+          <p className='text-gray-600'>Loading match analysis...</p>
+        </div>
+      )}
+
+      {/* Only show content if we have data and no errors */}
+      {matchAnalysisData && !matchError && (
+        <>
+          <DamageAnalysisSection
+            players={players}
+            perPlayerData={perPlayerData}
+            bossSnapshots={bossSnapshots}
+            totalMatchTime={parsedMatchData.total_match_time_s}
+          />
 
       <MatchTimeViewer
         currentTick={currentTick}
@@ -268,6 +303,8 @@ const MatchAnalysis = () => {
       {/* <DamageMatrixTable matchMetadata={matchMetadata} /> */}
 
       {/* <PrintHeroImageData heroData={heroData} /> */}
+        </>
+      )}
     </>
   );
 };

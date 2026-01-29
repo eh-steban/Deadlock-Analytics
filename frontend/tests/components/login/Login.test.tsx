@@ -1,7 +1,9 @@
 import { render } from 'vitest-browser-react';
 import { page } from 'vitest/browser';
-import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Login from '../../../src/components/login/Login';
+
+const testBackendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
 
 vi.mock('../../../src/assets/steam-button-vertical.png', () => ({
   default: 'mocked-steam-button.png',
@@ -14,7 +16,7 @@ describe('Login', () => {
 
   it('links to the correct auth URL', () => {
     const link = page.getByRole('link');
-    expect(link).toHaveAttribute('href', 'http://domain/auth/login');
+    expect(link).toHaveAttribute('href', `http://${testBackendDomain}/auth/login`);
   });
 
   it('displays the Steam login image with correct src', () => {

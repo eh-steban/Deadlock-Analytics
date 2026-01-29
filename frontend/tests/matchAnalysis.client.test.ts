@@ -53,6 +53,8 @@ function makeResponse(
   });
 }
 
+const testBackendDomain = import.meta.env.VITE_BACKEND_DOMAIN || "domain";
+
 function make304(headers: Record<string, string> = {}) {
   return new Response(null, { status: 304, headers: new Headers(headers) });
 }
@@ -106,7 +108,7 @@ describe('fetchMatchAnalysis ETag cache', () => {
 
     const data = await fetchMatchAnalysis(1);
     expect(data).toEqual(sample);
-    expect(fetch).toHaveBeenCalledWith(`http://domain/match/analysis/1`, {
+    expect(fetch).toHaveBeenCalledWith(`http://${testBackendDomain}/match/analysis/1`, {
       headers: {},
     });
   });
