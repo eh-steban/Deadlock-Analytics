@@ -6,6 +6,7 @@ use once_cell::sync::Lazy;
 use tokio::sync::Mutex;
 use std::sync::Arc;
 use std::path::PathBuf;
+use std::panic;
 
 use crate::demo::{decode_demo_url, setup_compressed_replay_path, download_if_needed, decompress_replay};
 use crate::replay_parser;
@@ -47,16 +48,37 @@ pub async fn parse_demo(Json(payload): Json<ParseRequest>) -> Response {
         Err((status, Json(val))) => return build_response(status, &val),
     };
 
-    let result = replay_parser::parse_replay(decompressed_path.to_str().unwrap());
-    match result {
-        Ok(json) => {
+    // Use catch_unwind to handle panics from the haste library gracefully
+    // This prevents crashes from replay format changes or library bugs
+    let path_str = decompressed_path.to_str().unwrap().to_string();
+    let parse_result = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+        replay_parser::parse_replay(&path_str)
+    }));
+
+    match parse_result {
+        Ok(Ok(json)) => {
             info!("[parse_demo] Replay parsed successfully.");
             build_response(StatusCode::OK, &json)
         },
-        Err(e) => {
+        Ok(Err(e)) => {
             error!("[parse_demo] replay_parser::parse_replay failed: {:?}", e);
             let val = serde_json::json!({
                 "error": format!("Failed to parse replay: {}", e)
+            });
+            build_response(StatusCode::INTERNAL_SERVER_ERROR, &val)
+        },
+        Err(panic_info) => {
+            // Extract panic message if possible
+            let panic_msg = if let Some(s) = panic_info.downcast_ref::<&str>() {
+                s.to_string()
+            } else if let Some(s) = panic_info.downcast_ref::<String>() {
+                s.clone()
+            } else {
+                "Unknown panic during replay parsing".to_string()
+            };
+            error!("[parse_demo] Parser panicked: {}", panic_msg);
+            let val = serde_json::json!({
+                "error": format!("Parser crashed: {}. This may be due to an unsupported replay format from a recent game update.", panic_msg)
             });
             build_response(StatusCode::INTERNAL_SERVER_ERROR, &val)
         }

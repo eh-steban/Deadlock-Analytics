@@ -1,0 +1,17 @@
+# Replay files (can be many GB)
+src/compressed-replays/
+src/replays/
+
+# Build artifacts
+target/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+
+# Docker dev files
+docker/
