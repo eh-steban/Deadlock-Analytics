@@ -63,18 +63,19 @@
 					"editor.defaultFormatter": "rust-lang.rust-analyzer",
 					"editor.formatOnSave": true
 				},
-				"rust-analyzer.checkOnSave.command": "clippy"
+				"rust-analyzer.checkOnSave": true,
+				"rust-analyzer.check.command": "clippy"
 			},
 			"extensions": [
 				"Anthropic.claude-code",
-				"eamodio.gitlens",
 				"csstools.postcss",
 				"ms-python.python",
 				"ms-python.vscode-pylance",
 				"ms-python.black-formatter",
 				"ms-python.isort",
 				"esbenp.prettier-vscode",
-				"rust-lang.rust-analyzer"
+				"rust-lang.rust-analyzer",
+				"ms-vscode-remote.remote-containers"
 			]
 		}
 	}
