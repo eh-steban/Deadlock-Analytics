@@ -3,11 +3,11 @@ services:
   devcontainer:
     build:
       context: ..
-      dockerfile: Deadlock-Stats/.devcontainer/Dockerfile
+      dockerfile: dashjump-gg/.devcontainer/Dockerfile
 
     volumes:
       # Mount only this project
-      - ../Deadlock-Stats:/workspaces/Deadlock-Stats:cached
+      - ../dashjump-gg:/workspaces/dashjump-gg:cached
       # Persist cargo cache for faster Rust builds
       - cargo-cache:/home/lifted/.cargo/registry
       - cargo-cache:/home/lifted/.cargo/git

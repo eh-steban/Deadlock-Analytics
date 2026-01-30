@@ -1,4 +1,4 @@
-# Deadlock Stats
+# dashjump.gg
 
 Esports analytics platform for Deadlock. Monorepo with three microservices.
 
@@ -11,7 +11,7 @@ Esports analytics platform for Deadlock. Monorepo with three microservices.
 ## Project Structure
 
 ```
-Deadlock-Stats/
+dashjump-gg/
 ├── backend/          # Python/FastAPI - API, orchestration, storage
 ├── frontend/         # React/TypeScript - Web app, visualizations
 ├── parser/           # Rust/Axum - Replay file parsing

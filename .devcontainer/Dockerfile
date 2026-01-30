@@ -1,4 +1,4 @@
-# Unified Development Container for Deadlock Stats Monorepo
+# Unified Development Container for dashjump.gg Monorepo
 # Contains: Node.js 24, Python 3.13, Rust (latest)
 # Note: Production containers (frontend/backend/parser/Dockerfile) remain separate
 
@@ -47,7 +47,7 @@ RUN useradd -m -u 1000 -s /bin/bash lifted \
 
 # Switch to user for remaining setup
 USER lifted
-WORKDIR /workspaces/Deadlock-Stats
+WORKDIR /workspaces/dashjump-gg
 ENV PATH="/home/lifted/.cargo/bin:/home/lifted/.local/bin:${PATH}"
 
 # === Rust and pip for user ===

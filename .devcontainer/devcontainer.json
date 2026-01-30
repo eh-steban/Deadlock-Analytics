@@ -11,7 +11,7 @@
 	"service": "devcontainer",
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
-	"workspaceFolder": "/workspaces/Deadlock-Stats",
+	"workspaceFolder": "/workspaces/dashjump-gg",
 	"mounts": [
 		"source=${localEnv:HOME}/.claude,target=/home/lifted/.claude,type=bind"
 	],
