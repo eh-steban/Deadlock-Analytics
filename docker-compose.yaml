@@ -1,0 +1,62 @@
+services:
+  dashjump-frontend:
+    build:
+      context: ./frontend
+    command:
+      - npm
+      - run
+      - dev
+      - "--"
+      - "--host"
+      - "0.0.0.0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_BACKEND_DOMAIN=localhost:8000
+    depends_on:
+      - dashjump-backend
+
+  dashjump-backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/backend
+    environment:
+      - DATABASE_URL=postgresql+psycopg://deadlock:deadlockpass@dashjump-db:5432/deadlock_db
+      - PARSER_BASE_URL=http://dashjump-parser:9000
+    depends_on:
+      - dashjump-db
+      - dashjump-parser
+
+  dashjump-parser:
+    build:
+      context: ./parser
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./parser:/parser
+      - cargo-cache:/home/lifted/.cargo
+    environment:
+      - REPLAYS_DIR=/parser/src/replays
+      - COMPRESSED_REPLAYS_DIR=/parser/src/compressed-replays
+
+  dashjump-db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: deadlock
+      POSTGRES_PASSWORD: deadlockpass
+      POSTGRES_DB: deadlock_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./backend/docker/db:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres-data:
+  cargo-cache:
