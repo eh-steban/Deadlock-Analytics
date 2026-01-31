@@ -57,6 +57,25 @@ See `.claude/rules/` for detailed standards:
 - `frontend/` — React, TypeScript, visualization, testing
 - `parser/` — Rust conventions
 
+## Infrastructure
+
+See `.claude/rules/infra/` for infrastructure and deployment:
+- `INFRA.md` — Infrastructure overview, environments, roadmap
+- `containers.md` — Docker images, multi-stage builds, optimization
+- `docker-compose.md` — Local development, networking, volumes
+- `devcontainer.md` — Unified development environment setup
+- `ci-cd.md` — GitHub Actions workflows, testing strategy
+- `deployment.md` — Production deployment, Kubernetes, scaling
+
+### Quick Reference
+
+| Environment | Status | Purpose |
+|-------------|--------|---------|
+| Devcontainer | ✅ Active | Unified dev environment (Node + Python + Rust) |
+| Docker Compose | ✅ Active | Local service orchestration |
+| GitHub Actions CI | ✅ Active | Automated testing on PRs |
+| CD Pipeline | 🚧 In Progress | Automated deployment (separate branch) |
+
 ## Error Handling & Observability
 
 See `.claude/rules/` for error handling and observability standards:
