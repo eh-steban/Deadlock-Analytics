@@ -26,7 +26,7 @@
 	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
 	// "shutdownAction": "none",
 	// Install dependencies after workspace is mounted
-	"postCreateCommand": "cd backend && pip3 install --user -r requirements.txt && cd ../frontend && npm install",
+	"postCreateCommand": "cd backend && pip3 install --user -r requirements.txt && cd ../frontend && npm install && npx playwright install chromium",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
