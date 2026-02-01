@@ -5,8 +5,11 @@ from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.pool import NullPool
 
+# Default to dashjump-db (Docker network), fallback to localhost
+# Override with TEST_DATABASE_URL environment variable for other setups
 DATABASE_URL = os.getenv(
-    "TEST_DATABASE_URL", "postgresql+psycopg://deadlock:deadlockpass@db:5432/deadlock_test_db"
+    "TEST_DATABASE_URL",
+    "postgresql+psycopg://deadlock:deadlockpass@dashjump-db:5432/deadlock_test_db"
 )
 
 # Use NullPool to ensure connection cleanup

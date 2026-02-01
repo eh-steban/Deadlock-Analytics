@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = "password"
     POSTGRES_DB: str = "db"
     DATABASE_URL: str = "url"
+    TEST_DATABASE_URL: str = "url"
 
     DEADLOCK_API_KEY: str = "key"
     DEADLOCK_API_DOMAIN: str = "apiDomain"
