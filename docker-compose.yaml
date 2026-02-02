@@ -41,9 +41,11 @@ services:
     volumes:
       - ./parser:/parser
       - cargo-cache:/home/lifted/.cargo
+      - parser-target:/parser/docker-target
     environment:
       - REPLAYS_DIR=/parser/src/replays
       - COMPRESSED_REPLAYS_DIR=/parser/src/compressed-replays
+      - CARGO_TARGET_DIR=/parser/docker-target
 
   dashjump-db:
     image: postgres:16-alpine
@@ -60,3 +62,4 @@ services:
 volumes:
   postgres-data:
   cargo-cache:
+  parser-target:
