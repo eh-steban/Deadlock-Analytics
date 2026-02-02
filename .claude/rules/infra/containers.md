@@ -16,7 +16,7 @@ Detailed documentation of container structure, optimization, and best practices.
 **File:** `backend/Dockerfile`
 
 **Key Features:**
-- Non-root user (`lifted` UID 5678)
+- Non-root user (`lifted` UID 1000)
 - PostgreSQL client for database operations
 - Dependencies installed before code copy (better caching)
 - Uvicorn ASGI server for FastAPI
@@ -41,7 +41,7 @@ Detailed documentation of container structure, optimization, and best practices.
 **File:** `parser/Dockerfile`
 
 **Key Features:**
-- Non-root user (`lifted` UID 5678)
+- Non-root user (`lifted` UID 1000)
 - Protobuf compiler for replay parsing
 - `cargo-watch` for development hot reload
 - Replay directories pre-created
@@ -69,8 +69,8 @@ Unified container with **all three language stacks** for development.
 | Container | User | UID | Rationale |
 |-----------|------|-----|-----------|
 | Devcontainer | `lifted` | 1000 | Matches host user for volume permissions |
-| Backend | `lifted` | 5678 | Non-root, production safety |
-| Parser | `lifted` | 5678 | Non-root, production safety |
+| Backend | `lifted` | 1000 | Matches devcontainer, non-root |
+| Parser | `lifted` | 1000 | Matches devcontainer, non-root |
 | Frontend | `node` | 1000 | Built-in Node image user |
 
 **Security Note:** Never run production containers as root. Even if compromised, damage is limited.

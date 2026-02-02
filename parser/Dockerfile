@@ -6,7 +6,8 @@ RUN apt-get update && \
     apt-get install -y protobuf-compiler && \
     rm -rf /var/lib/apt/lists/*
 
-RUN adduser -u 5678 --disabled-password --gecos "" lifted && chown -R lifted /parser
+# Use UID 1000 to match devcontainer (avoids permission issues with mounted volumes)
+RUN adduser -u 1000 --disabled-password --gecos "" lifted && chown -R lifted /parser
 RUN cargo install cargo-watch
 RUN mkdir -p /parser/src/compressed-replays
 RUN mkdir -p /parser/src/replays

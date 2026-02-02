@@ -8,7 +8,8 @@ WORKDIR /backend
 RUN apt-get update && apt-get install -y postgresql-client
 RUN pip install --no-cache-dir --upgrade pip
 
-RUN adduser -u 5678 --disabled-password --gecos "" lifted && chown -R lifted /backend
+# Use UID 1000 to match devcontainer (avoids permission issues with mounted volumes)
+RUN adduser -u 1000 --disabled-password --gecos "" lifted && chown -R lifted /backend
 USER lifted
 
 COPY requirements.txt /backend/
