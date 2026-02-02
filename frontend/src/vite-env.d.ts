@@ -6,6 +6,9 @@ interface ViteTypeOptions {
 
 interface ImportMetaEnv {
   readonly VITE_BACKEND_DOMAIN: string;
+  readonly MODE: string;
+  readonly DEV: boolean;
+  readonly PROD: boolean;
 }
 
 interface ImportMeta {
