@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ParsedPlayer, PlayerMatchData } from '../../domain/player';
 import { BossSnapshot } from '../../domain/boss';
 import { TimeRange } from '../../domain/timeline';
@@ -24,6 +24,16 @@ const PlayerDamageDistribution: React.FC<PlayerDamageDistributionProps> = ({
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('full');
   const [startTick, endTick] = getTimeRangeTicks(totalMatchTime, selectedTimeRange);
+
+  // Guard: wait for players data before rendering
+  if (!players || players.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-md p-6 mt-0 mb-6 mx-8">
+        <h2 className="text-2xl font-bold mb-4">Player Damage Distribution</h2>
+        <p className="text-center text-gray-500 py-8">Loading player data...</p>
+      </div>
+    );
+  }
 
   const selectedPlayer = useMemo(
     () => players.find((p) => p.custom_id === selectedPlayerId),
