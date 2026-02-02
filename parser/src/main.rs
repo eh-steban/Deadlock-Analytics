@@ -5,10 +5,14 @@ use once_cell::sync::Lazy;
 use tower_http::compression::CompressionLayer;
 use tracing::info;
 
-mod replay_parser;
 mod config;
-mod handlers;
 mod demo;
+mod domain;
+mod entities;
+mod handlers;
+mod replay_parser;
+mod tracking;
+mod utils;
 
 use config::Config;
 use handlers::{check_demo, parse_demo};
