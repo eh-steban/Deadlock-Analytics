@@ -14,7 +14,7 @@ from app.domain.player import PlayerData
 from app.domain.exceptions import ParserServiceError, DeadlockAPIError
 from app.services.parser_service import ParserService
 from app.services.deadlock_api_service import DeadlockAPIService
-from app.services.transform_service import TransformService
+from app.services.match_data_builder import MatchDataBuilder
 from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.utils.logger import get_logger
 from app.utils.http_cache import compute_etag
@@ -179,7 +179,7 @@ class AnalyzeMatchUseCase:
         )
 
         # Transform to final domain model
-        match_data = TransformService.to_match_data(parsed_match)
+        match_data = MatchDataBuilder.build(parsed_match)
 
         # Log transformation metrics
         match_data_json = json.dumps(match_data.model_dump())
