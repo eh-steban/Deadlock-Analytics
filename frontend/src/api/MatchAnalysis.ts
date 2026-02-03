@@ -108,6 +108,10 @@ export async function fetchMatchAnalysis(
   cache.set(matchId, { data, etag, expiresAt });
   saveToStorage(matchId);
   console.log("Loaded match data from backend:", data);
+  // Debug: log creep_waves separately for easy verification
+  if (data.parsed_match_data?.creep_waves) {
+    console.log("[DEBUG] creep_waves:", data.parsed_match_data.creep_waves);
+  }
   return data;
 }
 

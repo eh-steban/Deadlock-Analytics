@@ -7,7 +7,7 @@ use std::io::BufReader;
 use anyhow::Result;
 use haste::demofile::DemoFile;
 use haste::demostream::CmdHeader;
-use haste::entities::{DeltaHeader, Entity, ehandle_to_index, fkey_from_path};
+use haste::entities::{ehandle_to_index, fkey_from_path, DeltaHeader, Entity};
 use haste::parser::{Context, Parser, Visitor};
 use haste::valveprotos::deadlock::{
     CCitadelUserMessageDamage, CCitadelUserMsgPostMatchDetails, CMsgMatchMetaDataContents,
@@ -17,7 +17,7 @@ use haste::valveprotos::prost::Message;
 
 use crate::domain::{DamageRecord, Player, PlayerPosition};
 use crate::entities::constants::*;
-use crate::tracking::BossTracker;
+use crate::tracking::{BossTracker, CreepTracker};
 use crate::utils::{get_entity_position, get_steam_id32};
 
 /// Main visitor that collects all match data during parsing
@@ -32,11 +32,14 @@ struct MyVisitor {
     positions_window: Vec<PlayerPosition>,
     positions: Vec<Vec<PlayerPosition>>,
     boss_tracker: BossTracker,
+    creep_tracker: CreepTracker,
     lane_data_updated: bool,
 }
 
 impl Default for MyVisitor {
     fn default() -> Self {
+        let boss_tracker = BossTracker::new();
+        let creep_tracker = CreepTracker::new(boss_tracker.lane_key());
         Self {
             total_match_time_s: 0,
             match_start_time_s: None,
@@ -46,7 +49,8 @@ impl Default for MyVisitor {
             entity_name_hash_to_player_slot: HashMap::new(),
             positions_window: Vec::new(),
             positions: Vec::new(),
-            boss_tracker: BossTracker::new(),
+            boss_tracker,
+            creep_tracker,
             lane_data_updated: false,
         }
     }
@@ -62,6 +66,7 @@ impl MyVisitor {
             "players": self.players,
             "positions": self.positions,
             "bosses": self.boss_tracker.get_output(),
+            "creep_waves": self.creep_tracker.get_output(),
         })
     }
 
@@ -258,6 +263,9 @@ impl Visitor for &mut MyVisitor {
             // Build per-second boss health timeline
             self.boss_tracker.build_health_window(this_window);
 
+            // Build per-second creep wave snapshots
+            self.creep_tracker.build_wave_window(this_window);
+
             // Collect positions for all tracked entities
             for (_index, entity) in ctx.entities().unwrap().iter() {
                 if !self.should_track_position(entity) {
@@ -297,10 +305,14 @@ impl Visitor for &mut MyVisitor {
             self.handle_game_rules(entity)?;
         }
 
-        // Track boss lifecycle
+        // Track boss and creep lifecycle
+        let hash = entity.serializer().serializer_name.hash;
+
+        // Only track creeps after match has started to avoid pre-game entities
+        let match_started = self.match_start_time_s.is_some();
+
         match delta_header {
             DeltaHeader::CREATE => {
-                let hash = entity.serializer().serializer_name.hash;
                 if self.boss_tracker.is_boss_entity(hash) {
                     let custom_id = self.get_custom_id(ctx, entity);
                     self.boss_tracker.handle_boss_create(
@@ -310,15 +322,26 @@ impl Visitor for &mut MyVisitor {
                         self.total_match_time_s,
                     );
                 }
+                // Only track creeps after match starts
+                if match_started && CreepTracker::is_creep_entity(hash) {
+                    self.creep_tracker.handle_creep_create(entity);
+                }
             }
             DeltaHeader::DELETE => {
                 self.boss_tracker
                     .handle_boss_delete(entity, self.total_match_time_s);
+                if CreepTracker::is_creep_entity(hash) {
+                    self.creep_tracker.handle_creep_delete(entity.index());
+                }
             }
             DeltaHeader::UPDATE => {
                 // Check for lane lock updates
                 if !self.lane_data_updated {
                     self.check_and_update_lane_lock(entity)?;
+                }
+                // Update creep positions (only if match started)
+                if match_started && CreepTracker::is_creep_entity(hash) {
+                    self.creep_tracker.handle_creep_update(entity);
                 }
             }
             _ => {}

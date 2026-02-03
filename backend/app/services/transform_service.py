@@ -16,6 +16,7 @@ class TransformService:
             players_data=parsed_match.players_data,
             per_player_data={},
             bosses=parsed_match.bosses,
+            creep_waves=parsed_match.creep_waves,
         )
 
         for player in parsed_match.players_data:
