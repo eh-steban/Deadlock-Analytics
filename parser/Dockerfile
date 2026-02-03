@@ -8,11 +8,15 @@ RUN apt-get update && \
 
 # Use UID 1000 to match devcontainer (avoids permission issues with mounted volumes)
 RUN adduser -u 1000 --disabled-password --gecos "" lifted && chown -R lifted /parser
+
+# Switch to lifted user for cargo operations
+USER lifted
+
 RUN cargo install cargo-watch
 RUN mkdir -p /parser/src/compressed-replays
 RUN mkdir -p /parser/src/replays
 
-COPY . /parser/
+COPY --chown=lifted:lifted . /parser/
 
 RUN rustc --version
 RUN protoc --version
