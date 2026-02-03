@@ -156,9 +156,9 @@ class AnalyzeMatchUseCase:
         players_list = [PlayerData(**p) for p in parsed_json_resp.get("players", [])]
         parsed_damage = [ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})]
 
-        # Parse creep_waves if present
+        # Parse creep_waves if present (provide empty default for old cached data)
         creep_waves_raw = parsed_json_resp.get("creep_waves")
-        creep_waves = CreepWaveData(**creep_waves_raw) if creep_waves_raw else None
+        creep_waves = CreepWaveData(**creep_waves_raw) if creep_waves_raw else CreepWaveData(waves={})
 
         parsed_match = ParsedMatchResponse(
             total_match_time_s=parsed_json_resp.get("total_match_time_s", 0),

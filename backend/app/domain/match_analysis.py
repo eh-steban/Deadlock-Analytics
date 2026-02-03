@@ -3,6 +3,7 @@ from sqlmodel import SQLModel
 from app.domain.boss import BossData
 from app.domain.creep import CreepWaveData
 from app.domain.deadlock_api import MatchMetadata
+from app.domain.lane_pressure import LanePressureData
 from app.domain.player import (
     PlayerData,
     # PlayerInfo,
@@ -25,7 +26,7 @@ class ParsedMatchResponse(SQLModel):
     # players: list[PlayerInfo]
     positions: Positions
     bosses: BossData
-    creep_waves: Optional[CreepWaveData] = None
+    creep_waves: CreepWaveData
 
 # TODO: Created a temporary ParsedPlayer class to make this happy
 # Might change this later
@@ -36,7 +37,8 @@ class TransformedMatchData(SQLModel):
     # players: list[PlayerInfo]
     per_player_data: dict[str, PlayerMatchData]
     bosses: BossData
-    creep_waves: Optional[CreepWaveData] = None
+    creep_waves: CreepWaveData
+    lane_pressure: LanePressureData = LanePressureData(pressure={})
 
 class MatchAnalysis(SQLModel):
     match_metadata: MatchMetadata

@@ -3,6 +3,7 @@ from app.domain.match_analysis import (
     PlayerMatchData,
     TransformedMatchData,
 )
+from app.services.lane_pressure_service import LanePressureCalculator
 from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -10,6 +11,12 @@ logger = get_logger(__name__)
 class TransformService:
     @staticmethod
     def to_match_data(parsed_match: ParsedMatchResponse) -> TransformedMatchData:
+        # Calculate lane pressure from creep waves
+        lane_pressure = LanePressureCalculator.process_creep_waves(
+            parsed_match.creep_waves,
+            parsed_match.positions,
+        )
+
         match_data = TransformedMatchData(
             total_match_time_s=parsed_match.total_match_time_s,
             match_start_time_s=parsed_match.match_start_time_s,
@@ -17,6 +24,7 @@ class TransformService:
             per_player_data={},
             bosses=parsed_match.bosses,
             creep_waves=parsed_match.creep_waves,
+            lane_pressure=lane_pressure,
         )
 
         for player in parsed_match.players_data:
