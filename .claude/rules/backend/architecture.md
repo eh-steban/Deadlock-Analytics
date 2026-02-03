@@ -40,7 +40,7 @@ backend/
 
 | Language | Convention | Example |
 |----------|------------|---------|
-| Python | snake_case | `transform_match_data.py`, `user_repository.py` |
+| Python | snake_case | `match_data_service.py`, `user_repository.py` |
 
 ## Key Patterns
 
@@ -76,13 +76,28 @@ class AnalyzeMatchUseCase:
 
 ### Service Naming Convention
 
-Domain services are named by their **output** (what they produce), not input:
+Domain services follow the `Class.verb()` pattern so the call reads naturally:
 
 ```python
-# ✅ Good - describes output
-transform_match_data.py      # Outputs TransformedMatchData
-aggregate_player_damage.py   # Outputs aggregated damage stats
+# ✅ Good - reads as "MatchDataService transform" or "transform match data"
+class MatchDataService:
+    @staticmethod
+    def transform(parsed_match: ParsedMatchResponse) -> TransformedMatchData:
+        ...
 
-# ❌ Bad - describes input
-transform_parsed_match.py
+# ✅ Good - reads as "PlayersDataService aggregate"
+class PlayersDataService:
+    @staticmethod
+    def aggregate(parsed_match: ParsedMatchResponse) -> dict[str, PlayerMatchData]:
+        ...
+
+# ❌ Bad - redundant naming
+class PlayerDataAggregator:
+    def aggregate_player_data(...)  # "player data" appears twice
 ```
+
+**Guidelines:**
+- Class name = noun (what data you're working with), suffixed with `Service`
+- Method name = verb (what action you're performing)
+- Use plural form to distinguish services that work with multiple items (e.g., `PlayersDataService` handles data for multiple players)
+- Service name relates to output domain concept (e.g., `MatchDataService` produces `TransformedMatchData`)
