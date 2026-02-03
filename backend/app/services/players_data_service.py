@@ -6,33 +6,31 @@ logger = get_logger(__name__)
 # Custom IDs below this threshold indicate human players
 HUMAN_PLAYER_ID_THRESHOLD = 20
 
-
-class PlayerDataAggregator:
-    """Aggregate per-player positions and damage from parsed match data."""
+class PlayersDataService:
+    """Aggregate per-player position and damage data from parsed match."""
 
     @staticmethod
-    def initialize_player_data(parsed_match: ParsedMatchResponse) -> dict[str, PlayerMatchData]:
-        """Initialize empty per-player data structures."""
-        return {
+    def aggregate(parsed_match: ParsedMatchResponse) -> dict[str, PlayerMatchData]:
+        """
+        Aggregate per-player positions and damage data.
+
+        Processes match timeline in a single pass for performance, aggregating:
+        - Position data for human players (custom_id < 20)
+        - Damage data for all players
+
+        Args:
+            parsed_match: Parser output with position and damage data
+
+        Returns:
+            Complete dict of per-player data, ready for TransformedMatchData
+        """
+        # Initialize per-player data structures
+        per_player_data = {
             player.custom_id: PlayerMatchData.model_construct(positions=[], damage=[])
             for player in parsed_match.players_data
         }
 
-    @staticmethod
-    def aggregate_all(
-        parsed_match: ParsedMatchResponse,
-        per_player_data: dict[str, PlayerMatchData],
-    ) -> None:
-        """
-        Aggregate both positions and damage in a single timeline pass.
-
-        Performance: Single pass through match timeline (N ticks) is 2x faster
-        than separate position and damage passes (2N ticks).
-
-        Args:
-            parsed_match: Parser output with positions and damage data
-            per_player_data: Pre-initialized dict to populate (mutated in-place)
-        """
+        # Aggregate in single timeline pass
         match_duration = parsed_match.total_match_time_s - parsed_match.match_start_time_s
 
         for tick in range(match_duration):
@@ -55,3 +53,5 @@ class PlayerDataAggregator:
                     per_player_data[custom_id].damage.append(damage_by_player)
                 else:
                     per_player_data[custom_id].damage.append({})
+
+        return per_player_data
