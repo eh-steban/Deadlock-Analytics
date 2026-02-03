@@ -113,4 +113,21 @@ export async function fetchMatchAnalysis(
 
 export function __clearMatchAnalysisCache() {
   cache.clear();
+  // Also clear localStorage entries
+  const keysToRemove: string[] = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key?.startsWith(`${storageNs}:`)) {
+      keysToRemove.push(key);
+    }
+  }
+  keysToRemove.forEach((key) => localStorage.removeItem(key));
+  console.log(`[MatchAnalysis] Cleared ${keysToRemove.length} cached entries`);
+}
+
+// Expose cache clear function globally in development for easy debugging
+// Usage: In browser console, type: __clearMatchCache()
+if (import.meta.env.MODE === "development") {
+  (window as unknown as Record<string, unknown>).__clearMatchCache =
+    __clearMatchAnalysisCache;
 }
