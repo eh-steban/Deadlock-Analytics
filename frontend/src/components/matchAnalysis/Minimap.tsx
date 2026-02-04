@@ -4,10 +4,13 @@ import Objectives from "./Objectives";
 import RegionToggle from "./RegionToggle";
 import RegionsMapping from "./RegionsMapping";
 import PlayerPositions from "./PlayerPositions";
+import CreepWaveLayer from "./CreepWaveLayer";
 import { Region } from "../../domain/region";
 import { ScaledPlayerCoord, PlayerData } from "../../domain/player";
 import { ScaledBossSnapshot } from "../../domain/boss";
 import { DestroyedObjective } from "../../domain/destroyedObjective";
+import { CreepWaveData } from "../../domain/creep";
+import { LanePressureData } from "../../domain/lanePressure";
 
 const MINIMAP_URL =
   "https://assets-bucket.deadlock-api.com/assets-api-res/images/maps/minimap.png";
@@ -25,6 +28,9 @@ const Minimap = ({
   players,
   startRepeat,
   stopRepeat,
+  creepWaves,
+  lanePressure,
+  worldToMinimapPixels,
 }: {
   currentTick: number;
   setCurrentTick: Dispatch<SetStateAction<number>>;
@@ -39,6 +45,9 @@ const Minimap = ({
   players: PlayerData[];
   startRepeat: (direction: "back" | "forward") => void;
   stopRepeat: () => void;
+  creepWaves: CreepWaveData;
+  lanePressure: LanePressureData;
+  worldToMinimapPixels: (x: number, y: number) => { left: number; top: number };
 }) => {
   const mapRef = useRef<HTMLImageElement>(null);
   const [activeObjectiveKey, setActiveObjectiveKey] = useState<string | null>(
@@ -70,7 +79,6 @@ const Minimap = ({
     <>
       {/* Minimap and slider */}
       <div
-        title='MinimapPanel'
         className='h-fit shadow shadow-black/50'
       >
         <div
@@ -97,6 +105,12 @@ const Minimap = ({
           <PlayerPositions
             scaledPlayerCoords={scaledPlayerCoords}
             players={players}
+          />
+          <CreepWaveLayer
+            creepWaves={creepWaves}
+            lanePressure={lanePressure}
+            currentTick={currentTick}
+            worldToMinimapPixels={worldToMinimapPixels}
           />
         </div>
         <div className='border-top padding-0 flex w-full flex-col items-stretch gap-0 border-black/50 bg-gray-300'>

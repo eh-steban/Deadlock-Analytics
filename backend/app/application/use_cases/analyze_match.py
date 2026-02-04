@@ -2,22 +2,23 @@ import base64
 import gzip
 import json
 import sys
-from app.domain.match_analysis import (
-    TransformedMatchData,
-    ParsedMatchResponse,
-    ParsedAttackerVictimMap,
-    Positions
-)
+
 from app.domain.boss import BossData
 from app.domain.creep import CreepWaveData
+from app.domain.exceptions import DeadlockAPIError, ParserServiceError
+from app.domain.match_analysis import (
+    ParsedAttackerVictimMap,
+    ParsedMatchResponse,
+    Positions,
+    TransformedMatchData,
+)
 from app.domain.player import PlayerData
-from app.domain.exceptions import ParserServiceError, DeadlockAPIError
-from app.services.parser_service import ParserService
+from app.repo.parsed_matches_repo import ParsedMatchesRepo
 from app.services.deadlock_api_service import DeadlockAPIService
 from app.services.match_data_service import MatchDataService
-from app.repo.parsed_matches_repo import ParsedMatchesRepo
-from app.utils.logger import get_logger
+from app.services.parser_service import ParserService
 from app.utils.http_cache import compute_etag
+from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 

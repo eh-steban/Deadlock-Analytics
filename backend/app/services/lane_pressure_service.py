@@ -91,6 +91,10 @@ class LanePressureCalculator:
         """
         pressure_timeline: dict[str, list[Optional[LanePressureSnapshot]]] = {}
 
+        if not creep_waves or not creep_waves.waves:
+            logger.warning("No creep wave data available - returning empty pressure data")
+            return LanePressureData(pressure={})
+
         # Process each lane_team combination
         for lane_team_key, wave_snapshots in creep_waves.waves.items():
             pressure_snapshots: list[Optional[LanePressureSnapshot]] = []

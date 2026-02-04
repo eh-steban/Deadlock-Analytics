@@ -6,6 +6,7 @@ import ObjectiveInfoPanel from "../components/matchAnalysis/ObjectiveInfoPanel";
 import TeamDisplay from "../components/matchAnalysis/TeamDisplay";
 import MatchTimeViewer from "../components/matchAnalysis/MatchTimeViewer";
 import DamageAnalysisSection from "../components/damageAnalysis/DamageAnalysisSection";
+import LanePressurePanel from "../components/matchAnalysis/LanePressurePanel";
 import { ErrorMessage } from "../components/common/ErrorMessage";
 import { useErrorHandler } from "../hooks/useErrorHandler";
 import { regions } from "../data/regions";
@@ -264,21 +265,31 @@ const MatchAnalysis = () => {
               matchData={matchAnalysis.parsed_match_data}
             />
           </div>
-          <Minimap
-            currentTick={currentTick}
-            setCurrentTick={setCurrentTick}
-            total_match_time_s={matchAnalysis.parsed_match_data.total_match_time_s}
-            match_start_time_s={matchAnalysis.parsed_match_data.match_start_time_s}
-            MINIMAP_SIZE={MINIMAP_SIZE}
-            scaledBossSnapshots={scaledBossSnapshots}
-            scaledPlayerCoords={scaledPlayerCoords}
-            players={players}
-            destroyedObjectivesSorted={destroyedObjectivesSorted}
-            setCurrentObjectiveIndex={setCurrentObjectiveIndex}
-            regions={regions}
-            startRepeat={startRepeat}
-            stopRepeat={stopRepeat}
-          />
+          <div className="flex flex-col gap-2">
+            <LanePressurePanel
+              lanePressure={parsedMatchData.lane_pressure}
+              currentTick={currentTick}
+              players={players}
+            />
+            <Minimap
+              currentTick={currentTick}
+              setCurrentTick={setCurrentTick}
+              total_match_time_s={matchAnalysis.parsed_match_data.total_match_time_s}
+              match_start_time_s={matchAnalysis.parsed_match_data.match_start_time_s}
+              MINIMAP_SIZE={MINIMAP_SIZE}
+              scaledBossSnapshots={scaledBossSnapshots}
+              scaledPlayerCoords={scaledPlayerCoords}
+              players={players}
+              destroyedObjectivesSorted={destroyedObjectivesSorted}
+              setCurrentObjectiveIndex={setCurrentObjectiveIndex}
+              regions={regions}
+              startRepeat={startRepeat}
+              stopRepeat={stopRepeat}
+              creepWaves={parsedMatchData.creep_waves}
+              lanePressure={parsedMatchData.lane_pressure}
+              worldToMinimapPixels={worldToMinimapPixels}
+            />
+          </div>
         </div>
       </div>
 
