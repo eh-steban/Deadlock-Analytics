@@ -42,6 +42,6 @@ class MatchDataService:
             players_data=parsed_match.players_data,
             per_player_data=per_player_data,
             bosses=parsed_match.bosses,
-            creep_waves=parsed_match.creep_waves,  # Creep position data
-            lane_pressure=lane_pressure,  # Derived lane pressure metrics
+            creep_waves=parsed_match.creep_waves,
+            lane_pressure=lane_pressure,
         )
