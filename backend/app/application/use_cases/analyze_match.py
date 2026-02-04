@@ -97,9 +97,15 @@ class AnalyzeMatchUseCase:
         local_filename = None
 
         try:
-            has_demo, local_filename = await self.parser_service.check_demo_available(match_id)
+            has_demo, local_filename = await self.parser_service.check_demo_available(
+                match_id
+            )
         except ParserServiceError as e:
-            logger.warning("Parser check failed for match_id=%s, falling back to Deadlock API: %s", match_id, e)
+            logger.warning(
+                "Parser check failed for match_id=%s, falling back to Deadlock API: %s",
+                match_id,
+                e,
+            )
 
         if has_demo and local_filename:
             # Parse from local file
@@ -109,12 +115,18 @@ class AnalyzeMatchUseCase:
                     f"/parser/src/replays/{local_filename}".encode()
                 ).decode()
 
-                parsed_json_resp = await self.parser_service.parse_demo(encoded_filename)
+                parsed_json_resp = await self.parser_service.parse_demo(
+                    encoded_filename
+                )
                 logger.info("Match %s: Successfully parsed from local demo", match_id)
                 return parsed_json_resp
 
             except ParserServiceError as e:
-                logger.error("Local demo parse failed for match_id=%s, falling back to Deadlock API: %s", match_id, e)
+                logger.error(
+                    "Local demo parse failed for match_id=%s, falling back to Deadlock API: %s",
+                    match_id,
+                    e,
+                )
                 # Fall through to Deadlock API
 
         # Fallback to Deadlock API
@@ -146,7 +158,7 @@ class AnalyzeMatchUseCase:
             (TransformedMatchData, etag) tuple
         """
         # Log raw response size
-        raw_response_size = len(json.dumps(parsed_json_resp).encode('utf-8'))
+        raw_response_size = len(json.dumps(parsed_json_resp).encode("utf-8"))
         logger.info(
             f"Match {match_id} - Raw parser response size: {raw_response_size:,} bytes "
             f"({raw_response_size / 1024:.2f} KB, {raw_response_size / (1024 * 1024):.2f} MB)"
@@ -154,11 +166,17 @@ class AnalyzeMatchUseCase:
 
         # Parse into domain models
         players_list = [PlayerData(**p) for p in parsed_json_resp.get("players", [])]
-        parsed_damage = [ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})]
+        parsed_damage = [
+            ParsedAttackerVictimMap(**d) for d in parsed_json_resp.get("damage", {})
+        ]
 
         # Parse creep_waves if present (provide empty default for old cached data)
         creep_waves_raw = parsed_json_resp.get("creep_waves")
-        creep_waves = CreepWaveData(**creep_waves_raw) if creep_waves_raw else CreepWaveData(waves={})
+        creep_waves = (
+            CreepWaveData(**creep_waves_raw)
+            if creep_waves_raw
+            else CreepWaveData(waves={})
+        )
 
         parsed_match = ParsedMatchResponse(
             total_match_time_s=parsed_json_resp.get("total_match_time_s", 0),
@@ -171,7 +189,9 @@ class AnalyzeMatchUseCase:
         )
 
         # Log compression metrics
-        compressed_parsed_match = gzip.compress(parsed_match.model_dump_json().encode("utf-8"))
+        compressed_parsed_match = gzip.compress(
+            parsed_match.model_dump_json().encode("utf-8")
+        )
         compressed_size = len(compressed_parsed_match)
         logger.info(
             f"Match {match_id} - Compressed parsed_match size: {compressed_size:,} bytes "

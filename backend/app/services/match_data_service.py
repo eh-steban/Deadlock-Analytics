@@ -1,7 +1,4 @@
-from app.domain.match_analysis import (
-    ParsedMatchResponse,
-    TransformedMatchData,
-)
+from app.domain.match_analysis import ParsedMatchResponse, TransformedMatchData
 from app.services.lane_pressure_service import LanePressureCalculator
 from app.services.players_data_service import PlayersDataService
 from app.utils.logger import get_logger
