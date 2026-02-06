@@ -12,6 +12,13 @@ use crate::utils::get_entity_position;
 /// Key for grouping creeps: (lane, team)
 type WaveKey = (i32, u32);
 
+/// Distance threshold for clustering creeps into separate waves (in world units).
+/// Creeps within this distance of a wave centroid are considered part of that wave.
+/// Waves spawn every 30 seconds with 4 creeps. This threshold should be large enough
+/// to group a single wave but small enough to keep separate waves (and straggler creeps)
+/// distinct.
+const WAVE_CLUSTER_THRESHOLD: f32 = 1000.0;
+
 /// Active creep entity data
 #[derive(Debug, Clone)]
 struct ActiveCreep {
@@ -85,17 +92,34 @@ impl CreepTracker {
         self.active_creeps.remove(&entity_index);
     }
 
-    /// Handle creep position update
+    /// Handle creep position update - also adds creeps not yet tracked
     pub fn handle_creep_update(&mut self, entity: &Entity) {
+        let position = get_entity_position(entity);
+
         if let Some(creep) = self.active_creeps.get_mut(&entity.index()) {
-            let position = get_entity_position(entity);
+            // Update existing creep position
             creep.x = position[0];
             creep.y = position[1];
+        } else {
+            // Add pre-existing creep that wasn't tracked yet
+            let team: u32 = entity.get_value(&TEAM_KEY).unwrap_or(0);
+            let lane: i32 = entity.get_value(&self.lane_key).unwrap_or(0);
+
+            let creep = ActiveCreep {
+                entity_index: entity.index(),
+                lane,
+                team,
+                x: position[0],
+                y: position[1],
+            };
+
+            self.active_creeps.insert(entity.index(), creep);
         }
     }
 
-    /// Build wave snapshots for the current time window
-    /// Groups creeps by (lane, team) and computes centroid positions
+    /// Build wave snapshots for the current time window.
+    /// Groups creeps by (lane, team), then spatially clusters within each group
+    /// to keep separate waves distinct until they merge.
     pub fn build_wave_window(&mut self, window_s: u32) {
         // Fill in any missing windows with None
         while self.current_window < window_s {
@@ -109,50 +133,112 @@ impl CreepTracker {
         let mut wave_groups: HashMap<WaveKey, Vec<&ActiveCreep>> = HashMap::new();
 
         for creep in self.active_creeps.values() {
-            // Skip creeps with invalid lane (0 means not assigned)
-            if creep.lane == 0 {
-                continue;
-            }
             let key = (creep.lane, creep.team);
             wave_groups.entry(key).or_default().push(creep);
         }
 
-        // Compute centroid for each wave and store snapshot
+        // Process each lane/team group with spatial clustering
         for ((lane, team), creeps) in wave_groups {
             if creeps.is_empty() {
                 continue;
             }
 
-            let count = creeps.len() as u32;
-            let (sum_x, sum_y) = creeps
-                .iter()
-                .fold((0.0, 0.0), |(sx, sy), c| (sx + c.x, sy + c.y));
+            // Cluster creeps spatially within this lane/team
+            let clusters = Self::cluster_creeps(&creeps);
 
-            let snapshot = CreepWaveSnapshot {
-                x: sum_x / count as f32,
-                y: sum_y / count as f32,
-                count,
-                team,
-            };
+            // Create a snapshot for each cluster (separate wave)
+            for (wave_idx, cluster) in clusters.iter().enumerate() {
+                let count = cluster.len() as u32;
+                let (sum_x, sum_y) = cluster
+                    .iter()
+                    .fold((0.0, 0.0), |(sx, sy), c| (sx + c.x, sy + c.y));
 
-            // Use lane_team as key (e.g., "1_2" for lane 1, team 2)
-            let lane_key = format!("{}_{}", lane, team);
-            let timeline = self.wave_timeline.entry(lane_key).or_default();
+                let snapshot = CreepWaveSnapshot {
+                    x: sum_x / count as f32,
+                    y: sum_y / count as f32,
+                    count,
+                    team,
+                };
 
-            // Ensure timeline is long enough
-            while timeline.len() < window_s as usize {
-                timeline.push(None);
-            }
+                // Use lane_team_waveIdx as key (e.g., "1_2_0" for lane 1, team 2, wave 0)
+                let lane_key = format!("{}_{}_{}", lane, team, wave_idx);
+                let timeline = self.wave_timeline.entry(lane_key).or_default();
 
-            // Add snapshot for this window
-            if timeline.len() == window_s as usize {
-                timeline.push(Some(snapshot));
-            } else {
-                timeline[window_s as usize] = Some(snapshot);
+                // Ensure timeline is long enough
+                while timeline.len() < window_s as usize {
+                    timeline.push(None);
+                }
+
+                // Add snapshot for this window
+                if timeline.len() == window_s as usize {
+                    timeline.push(Some(snapshot));
+                } else {
+                    timeline[window_s as usize] = Some(snapshot);
+                }
             }
         }
 
         self.current_window = window_s + 1;
+    }
+
+    /// Cluster creeps spatially using proximity threshold.
+    /// Returns a vector of clusters, where each cluster is a vector of creeps.
+    fn cluster_creeps<'a>(creeps: &[&'a ActiveCreep]) -> Vec<Vec<&'a ActiveCreep>> {
+        if creeps.is_empty() {
+            return vec![];
+        }
+
+        // Sort creeps by Y position (waves move along Y axis)
+        let mut sorted_creeps: Vec<&ActiveCreep> = creeps.to_vec();
+        sorted_creeps.sort_by(|a, b| a.y.partial_cmp(&b.y).unwrap_or(std::cmp::Ordering::Equal));
+
+        let mut clusters: Vec<Vec<&'a ActiveCreep>> = vec![];
+
+        for creep in sorted_creeps {
+            // Find nearest cluster within threshold
+            let mut best_cluster_idx: Option<usize> = None;
+            let mut best_distance = f32::MAX;
+
+            for (idx, cluster) in clusters.iter().enumerate() {
+                // Calculate cluster centroid
+                let count = cluster.len() as f32;
+                let (sum_x, sum_y) = cluster
+                    .iter()
+                    .fold((0.0, 0.0), |(sx, sy), c| (sx + c.x, sy + c.y));
+                let centroid_x = sum_x / count;
+                let centroid_y = sum_y / count;
+
+                // Calculate distance to this cluster's centroid
+                let dx = creep.x - centroid_x;
+                let dy = creep.y - centroid_y;
+                let distance = (dx * dx + dy * dy).sqrt();
+
+                if distance < WAVE_CLUSTER_THRESHOLD && distance < best_distance {
+                    best_cluster_idx = Some(idx);
+                    best_distance = distance;
+                }
+            }
+
+            match best_cluster_idx {
+                Some(idx) => {
+                    // Add to existing cluster
+                    clusters[idx].push(creep);
+                }
+                None => {
+                    // Create new cluster
+                    clusters.push(vec![creep]);
+                }
+            }
+        }
+
+        // Sort clusters by their centroid Y position for consistent ordering
+        clusters.sort_by(|a, b| {
+            let a_y: f32 = a.iter().map(|c| c.y).sum::<f32>() / a.len() as f32;
+            let b_y: f32 = b.iter().map(|c| c.y).sum::<f32>() / b.len() as f32;
+            a_y.partial_cmp(&b_y).unwrap_or(std::cmp::Ordering::Equal)
+        });
+
+        clusters
     }
 
     /// Get creep wave data for JSON serialization

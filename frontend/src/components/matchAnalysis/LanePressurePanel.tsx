@@ -62,9 +62,10 @@ const LanePressurePanel = ({
       continue; // No pressure data for this tick
     }
 
-    // Parse lane and team from key (format: "lane_team")
-    const [lane, teamStr] = laneTeamKey.split('_');
-    const team = parseInt(teamStr);
+    // Parse lane and team from key (format: "lane_team_waveIdx")
+    const parts = laneTeamKey.split('_');
+    const lane = parts[0];
+    const team = parseInt(parts[1]);
     const teamName = team === 2 ? 'Amber' : 'Sapphire';
 
     // Get player names from attributed player IDs

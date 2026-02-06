@@ -64,6 +64,10 @@ class LanePressureCalculator:
             if player_pos is None:
                 continue
 
+            # Skip NPCs - only attribute to actual players
+            if player_pos.is_npc:
+                continue
+
             # Calculate Euclidean distance
             dx = player_pos.x - wave.x
             dy = player_pos.y - wave.y
